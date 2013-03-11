@@ -1,14 +1,11 @@
 ClassRequestTool::Application.routes.draw do
   resources :locations
 
-
-  resources :sessions
-
-
   resources :rooms
-
-
+  
   devise_for :users
+  
+  resources :users
 
   resources :repositories
 
