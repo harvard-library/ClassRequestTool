@@ -1,4 +1,7 @@
 ClassRequestTool::Application.routes.draw do
+  resources :courses
+
+
   resources :locations
 
   resources :rooms
@@ -59,7 +62,7 @@ ClassRequestTool::Application.routes.draw do
 
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
-  root :to => 'repositories#index'
+  root :to => 'welcome#index'
 
   # See how all your routes lay out with "rake routes"
 

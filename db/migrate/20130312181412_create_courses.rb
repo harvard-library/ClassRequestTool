@@ -1,6 +1,6 @@
-class CreateSessions < ActiveRecord::Migration
+class CreateCourses < ActiveRecord::Migration
   def change
-    create_table :sessions do |t|
+    create_table :courses do |t|
       t.string :title
       t.datetime :pre_class_appt
       t.datetime :timeframe
@@ -13,7 +13,12 @@ class CreateSessions < ActiveRecord::Migration
     end
     
     [:title, :pre_class_appt, :timeframe, :staff_involvement, :status].each do|col|
-      add_index :sessions, col
+      add_index :courses, col
+    end
+    
+    create_table(:courses_users, :id => false) do|t|
+      t.references :course
+      t.references :user
     end
   end
 end

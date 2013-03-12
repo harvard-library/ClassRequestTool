@@ -17,5 +17,10 @@ class CreateRepositories < ActiveRecord::Migration
       t.references :repository
       t.references :room
     end
+    
+    create_table(:repositories_users, :id => false) do|t|
+      t.references :repository
+      t.references :user
+    end
   end
 end

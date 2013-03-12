@@ -11,7 +11,31 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130305163854) do
+ActiveRecord::Schema.define(:version => 20130312181412) do
+
+  create_table "courses", :force => true do |t|
+    t.string   "title"
+    t.datetime "pre_class_appt"
+    t.datetime "timeframe"
+    t.integer  "user_id"
+    t.integer  "repository_id"
+    t.integer  "room_id"
+    t.text     "staff_involvement"
+    t.string   "status"
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
+  end
+
+  add_index "courses", ["pre_class_appt"], :name => "index_courses_on_pre_class_appt"
+  add_index "courses", ["staff_involvement"], :name => "index_courses_on_staff_involvement"
+  add_index "courses", ["status"], :name => "index_courses_on_status"
+  add_index "courses", ["timeframe"], :name => "index_courses_on_timeframe"
+  add_index "courses", ["title"], :name => "index_courses_on_title"
+
+  create_table "courses_users", :id => false, :force => true do |t|
+    t.integer "course_id"
+    t.integer "user_id"
+  end
 
   create_table "locations", :force => true do |t|
     t.string   "name"
@@ -41,6 +65,11 @@ ActiveRecord::Schema.define(:version => 20130305163854) do
     t.integer "room_id"
   end
 
+  create_table "repositories_users", :id => false, :force => true do |t|
+    t.integer "repository_id"
+    t.integer "user_id"
+  end
+
   create_table "rooms", :force => true do |t|
     t.string   "name"
     t.integer  "location_id"
@@ -49,25 +78,6 @@ ActiveRecord::Schema.define(:version => 20130305163854) do
   end
 
   add_index "rooms", ["name"], :name => "index_rooms_on_name"
-
-  create_table "sessions", :force => true do |t|
-    t.string   "title"
-    t.datetime "pre_class_appt"
-    t.datetime "timeframe"
-    t.integer  "user_id"
-    t.integer  "repository_id"
-    t.integer  "room_id"
-    t.text     "staff_involvement"
-    t.string   "status"
-    t.datetime "created_at",        :null => false
-    t.datetime "updated_at",        :null => false
-  end
-
-  add_index "sessions", ["pre_class_appt"], :name => "index_sessions_on_pre_class_appt"
-  add_index "sessions", ["staff_involvement"], :name => "index_sessions_on_staff_involvement"
-  add_index "sessions", ["status"], :name => "index_sessions_on_status"
-  add_index "sessions", ["timeframe"], :name => "index_sessions_on_timeframe"
-  add_index "sessions", ["title"], :name => "index_sessions_on_title"
 
   create_table "users", :force => true do |t|
     t.string   "email",                  :default => "",    :null => false

@@ -1,3 +1,7 @@
 class Repository < ActiveRecord::Base
-  # attr_accessible :title, :body
+  attr_accessible :name, :description, :class_limit, :can_edit
+  
+  has_and_belongs_to_many :user
+  has_and_belongs_to_many :rooms
+  has_many :courses
 end
