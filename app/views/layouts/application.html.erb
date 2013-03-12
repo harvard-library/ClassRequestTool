@@ -18,7 +18,9 @@
 	        <% end %> 
 			
 			<br /><br />
-			<%= render :partial => 'shared/navigation' %>
+			<% if current_user.admin? %>
+			  <%= render :partial => 'shared/navigation' %>
+			<% end %>  
 	    </div>
 	    <div id="logo">
 	      <span>

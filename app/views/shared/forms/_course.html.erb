@@ -1,0 +1,5 @@
+<%= semantic_form_for(@course) do |f| %>
+  <%= f.inputs%>
+  <%= f.input :timeframe, :as => :string, :input_html => {:class => 'datepicker'}, :hint => 'In YYYY-MM-DD format' %>
+  <%= f.actions %>
+<% end %>

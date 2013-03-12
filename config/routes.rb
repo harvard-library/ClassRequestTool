@@ -1,7 +1,6 @@
 ClassRequestTool::Application.routes.draw do
   resources :courses
 
-
   resources :locations
 
   resources :rooms
