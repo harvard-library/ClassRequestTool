@@ -1,7 +1,7 @@
 class Room < ActiveRecord::Base
-  # attr_accessible :title, :body
+  attr_accessible :location_id, :name
   
   has_and_belongs_to_many :repositories
-  has_and_belongs_to_many :courses
+  has_many :courses, :dependent => :destroy
   belongs_to :location
 end
