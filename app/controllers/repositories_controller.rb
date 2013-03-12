@@ -1,4 +1,5 @@
 class RepositoriesController < ApplicationController
+  before_filter :authenticate_admin!, :except => [:index]
   
   def index
     @repositories = Repository.all
@@ -17,7 +18,7 @@ class RepositoriesController < ApplicationController
     respond_to do |format|
       if @repository.save
         format.html { redirect_to repositories_url, notice: 'Repository was successfully created.' }
-        format.json { render json: @repository, status: :created, location: @tagged_item }
+        format.json { render json: @repository, status: :created, location: @repository }
       else
         format.html { render action: "new" }
         format.json { render json: @repository.errors, status: :unprocessable_entity }
