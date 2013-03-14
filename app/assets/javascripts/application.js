@@ -18,4 +18,5 @@
 
 $(document).ready(function(){
   $("#course_timeframe").datepicker();
+  $("#course_pre_class_appt").datepicker();
 });

@@ -1,4 +1,5 @@
 <%= semantic_form_for(@room) do |f| %>
-  <%= f.inputs%>
+  <%= f.inputs %>
+  <%= f.input :repositories, :as => :check_boxes, :label => 'Repositories Allowed in this Room' %>
   <%= f.actions %>
 <% end %>

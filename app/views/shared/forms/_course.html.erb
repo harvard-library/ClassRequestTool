@@ -8,7 +8,7 @@
 	<%= f.input :contact_name, :label => "Primary Contact Name: " %>
 	<%= f.input :contact_email, :label => "Primary Contact Email: " %>
 	<%= f.input :contact_phone, :label => "Primary Contact Phone: " %>
-	<%= f.input :pre_class_appt, :label => "Pre-Class Appointment Date (if necessary)" %>
+	<%= f.input :pre_class_appt, :label => "Pre-Class Appointment Date (if necessary)", :as => :string, :hint => 'In YYYY-MM-DD format' %>
 	<%= f.input :staff_involvement, :label => "Level of Staff Involvement", :as => :check_boxes, :collection => Course::STAFF_INVOLVEMENT %>
 	Other Involvement: <%= text_field_tag :other %>
 	<%= f.input :file, :label => "Upload Syllabus: " %>
