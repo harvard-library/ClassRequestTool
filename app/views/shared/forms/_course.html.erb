@@ -1,5 +1,24 @@
-<%= semantic_form_for(@course) do |f| %>
-  <%= f.inputs%>
-  <%= f.input :timeframe, :as => :string, :input_html => {:class => 'datepicker'}, :hint => 'In YYYY-MM-DD format' %>
+<%= semantic_form_for(@course, :html => {:multipart => true}) do |f| %>
+  <%= f.inputs do %>
+	<%= f.input :repository, :label => "Repository for Course: " %>
+	<%= f.input :title, :label => "Course Title: " %>
+	<%= f.input :subject, :label => "Course Subject: " %>
+	<%= f.input :course_number, :label => "Course Number (if Harvard)" %>
+	<%= f.input :affiliation, :label => "Affiliation (if non-Harvard)" %>
+	<%= f.input :contact_name, :label => "Primary Contact Name: " %>
+	<%= f.input :contact_email, :label => "Primary Contact Email: " %>
+	<%= f.input :contact_phone, :label => "Primary Contact Phone: " %>
+	<%= f.input :pre_class_appt, :label => "Pre-Class Appointment Date (if necessary)" %>
+	<%= f.input :staff_involvement, :label => "Level of Staff Involvement", :as => :check_boxes, :collection => Course::STAFF_INVOLVEMENT %>
+	Other Involvement: <%= text_field_tag :other %>
+	<%= f.input :file, :label => "Upload Syllabus: " %>
+	<%= f.input :room, :label => "Room for Course: " %>
+	<%= f.input :timeframe, :label => "Date/Time of Course: ", :as => :string, :hint => 'In YYYY-MM-DD format' %>
+	
+    <% if current_user.admin? %>
+      <%= f.input :status, :label => "Status: " %>
+	  <%= f.input :users, :as => :check_boxes, :label => "Assign Staff: " %>
+    <% end %>
+  <% end %>
   <%= f.actions %>
 <% end %>

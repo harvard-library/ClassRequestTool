@@ -10,6 +10,7 @@ gem 'devise'
 gem 'formtastic'
 gem 'will_paginate'
 gem 'pg'
+gem 'carrierwave'
 
 
 # Gems used only for assets and not required
@@ -25,6 +26,7 @@ group :assets do
 end
 
 gem 'jquery-rails'
+gem 'jquery-ui-rails'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'

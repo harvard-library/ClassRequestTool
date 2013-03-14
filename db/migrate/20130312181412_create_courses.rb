@@ -15,6 +15,7 @@ class CreateCourses < ActiveRecord::Migration
       t.references :room
       t.text :staff_involvement
       t.string :status
+      t.string :file
       t.timestamps
     end
     

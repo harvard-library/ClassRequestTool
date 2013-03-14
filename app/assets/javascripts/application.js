@@ -13,3 +13,9 @@
 //= require jquery
 //= require jquery_ujs
 //= require_tree .
+//= require jquery-ui
+//= require jquery.ui.datepicker
+
+$(document).ready(function(){
+  $("#course_timeframe").datepicker();
+});

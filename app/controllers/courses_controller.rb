@@ -1,11 +1,17 @@
 class CoursesController < ApplicationController
+  before_filter :authenticate_admin!, :except => [:index, :new, :create]
   
   def index
     @courses = Course.all
   end  
   
+  def show
+    @course = Course.find(params[:id])
+  end
+  
   def new
     @course = Course.new
+    @uploader = FileUploader.new
   end
   
   def edit
@@ -13,6 +19,9 @@ class CoursesController < ApplicationController
   end
   
   def create
+    unless params[:other].empty?
+      params[:course][:staff_involvement] = (params[:course][:staff_involvement] << params[:other]).reject{ |e| e.empty? }.join(", ")
+    end  
     @course = Course.new(params[:course])
     respond_to do |format|
       if @course.save

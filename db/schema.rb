@@ -28,6 +28,7 @@ ActiveRecord::Schema.define(:version => 20130312181412) do
     t.integer  "room_id"
     t.text     "staff_involvement"
     t.string   "status"
+    t.string   "file"
     t.datetime "created_at",                       :null => false
     t.datetime "updated_at",                       :null => false
   end

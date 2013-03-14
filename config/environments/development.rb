@@ -31,7 +31,6 @@ ClassRequestTool::Application.configure do
 
   # Do not compress assets
   config.assets.compress = false
-  config.serve_static_assets = true
 
   # Expands the lines which load the assets
   config.assets.debug = true
