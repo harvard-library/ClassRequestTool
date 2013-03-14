@@ -17,7 +17,7 @@
 	<%  unless @course.file.blank? %>
 	  File: <%= link_to "Syllabus", @course.file_url %> <br />
 	  <% end %>
-    <% if current_user.admin? %>
+    <% if current_user.try(:admin?) %>
       Status: <%= @course.status %> <br />
     <% end %>
 </div>

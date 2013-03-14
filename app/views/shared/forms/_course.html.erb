@@ -15,7 +15,7 @@
 	<%= f.input :room, :label => "Room for Course: " %>
 	<%= f.input :timeframe, :label => "Date/Time of Course: ", :as => :string, :hint => 'In YYYY-MM-DD format' %>
 	
-    <% if current_user.admin? %>
+    <% if current_user.try(:admin?) %>
       <%= f.input :status, :label => "Status: " %>
 	  <%= f.input :users, :as => :check_boxes, :label => "Assign Staff: " %>
     <% end %>

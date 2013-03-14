@@ -3,7 +3,7 @@
 <% if @user.admin? %>
 	Is Admin.
 <% end %>
-<% if current_user.admin? %>
+<% if current_user.try(:admin?) %>
   <ul class="actions">
     <li><%= link_to('Edit', edit_user_path(@user), :class => "action-edit") %></li>
     <% unless @user == current_user %>

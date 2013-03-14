@@ -33,7 +33,7 @@ class UsersController < ApplicationController
   def edit
     @user = User.find(params[:id])
     
-    unless current_user.admin? || @user.email == current_user.mail
+    unless current_user.try(:admin?) || @user.email == current_user.mail
        redirect_to('/') and return
     end
   end
@@ -41,7 +41,7 @@ class UsersController < ApplicationController
   def destroy
     @user = User.find(params[:id])
     
-    unless current_user.admin? || @user.email == current_user.mail
+    unless current_user.try(:admin?) || @user.email == current_user.mail
        redirect_to('/') and return
     end
     
@@ -57,7 +57,7 @@ class UsersController < ApplicationController
   def update
     @user = User.find(params[:id])
     
-    unless current_user.admin? || @user.email == current_user.mail
+    unless current_user.try(:admin?) || @user.email == current_user.mail
        redirect_to('/') and return
     end
     

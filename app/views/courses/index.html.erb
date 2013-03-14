@@ -3,13 +3,13 @@
 <div>
   <% @courses.each do |course| %>	
     <%= link_to(course.title, course ) %>
-    <% if current_user.admin? %>
+    <% if current_user.try(:admin?) %>
 	   - <%= link_to('Edit', edit_course_path(course), :class => "action-edit") %> | <%= link_to('Delete', course_path(course), :confirm => "Are you sure?", :method => :delete) %>
     <% end %>
 	<br /><br />
   <% end %>
   
-  <% if current_user.admin? %>
+  <% if current_user.try(:admin?) %>
     <%= link_to("Add New Course", new_course_path ) %>
   <% end %>
 </div>
