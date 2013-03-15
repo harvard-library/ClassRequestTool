@@ -16,8 +16,12 @@
 	Timeframe: <%= @course.timeframe unless @course.timeframe.nil? %> <br />
 	<%  unless @course.file.blank? %>
 	  File: <%= link_to "Syllabus", @course.file_url %> <br />
-	  <% end %>
+	<% end %>
     <% if current_user.try(:admin?) %>
       Status: <%= @course.status %> <br />
     <% end %>
+	Staff Member(s) Assigned: 
+	<% @course.users.each do |user| %>
+	  <%= user.email %>, 
+	<% end %>
 </div>

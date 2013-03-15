@@ -11,5 +11,5 @@ class Course < ActiveRecord::Base
   mount_uploader :file, FileUploader
   
   STAFF_INVOLVEMENT = ['Pre-Class Appointment with Reference Staff (phone or in person)', 'Assistance with Selection of Materials', 'Introduction to Archives and Special Collections Research', 'Assistance with Presentation of Materials in Class', 'No Involvement Required Beyond Set-up']
-  
+  STATUS = ['Open', 'Pending', 'Approved', 'Rejected']
 end

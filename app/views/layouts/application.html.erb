@@ -18,7 +18,7 @@
 	        <% end %> 
 			
 			<br /><br />
-			<% if user_signed_in? && current_user.try(:admin?) %>
+			<% if user_signed_in? %>
 			  <%= render :partial => 'shared/navigation' %>
 			<% end %>  
 	    </div>

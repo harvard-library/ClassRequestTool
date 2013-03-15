@@ -1,8 +1,11 @@
 class CoursesController < ApplicationController
-  before_filter :authenticate_admin!, :except => [:index, :new, :create]
+  before_filter :authenticate_admin!, :only => [:destroy, :edit, :update]
+  before_filter :authenticate_user!, :except => [:new, :create]
   
   def index
-    @courses = Course.all
+    @courses_all = Course.all
+    @courses_mine = Array.new
+    @courses_all.collect {|course| course.users.include?(current_user) ? @courses_mine << course : '' }
   end  
   
   def show

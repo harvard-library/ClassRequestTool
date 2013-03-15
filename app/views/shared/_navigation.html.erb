@@ -1,8 +1,15 @@
-<span style="font-weight: bold;">
+<% if current_user.try(:admin?) %>
+  <span style="font-weight: bold;">
 	<%= link_to "Home", "/" %> | 
 	<%= link_to "Courses", courses_path %> | 
 	<%= link_to "Repositories", repositories_path %> | 
 	<%= link_to "Locations", locations_path %> | 
 	<%= link_to "Rooms", rooms_path %> | 
 	<%= link_to "Users", users_path %>
-</span> 
+  </span> 
+<% else %>
+  <span style="font-weight: bold;">
+	<%= link_to "Home", "/" %> | 
+	<%= link_to "Courses", courses_path %>
+  </span>
+<% end %>
