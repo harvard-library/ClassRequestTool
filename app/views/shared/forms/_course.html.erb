@@ -14,6 +14,7 @@
 	<%= f.input :file, :label => "Upload Syllabus: " %>
 	<%= f.input :room, :label => "Room for Course: " %>
 	<%= f.input :timeframe, :label => "Date/Time of Course: ", :as => :string, :hint => 'In YYYY-MM-DD format' %>
+	Time of Course: <%= text_field_tag :timeframe_time, nil, :id => "basic_example_3" %>
 	
     <% if current_user.try(:admin?) %>
       <%= f.input :status, :label => "Status: " %>
