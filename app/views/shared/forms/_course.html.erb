@@ -1,6 +1,6 @@
 <%= semantic_form_for(@course, :html => {:multipart => true}) do |f| %>
   <%= f.inputs do %>
-	<%= f.input :repository, :label => "Repository for Course: " %>
+	<%= hidden_field_tag :repository_id, @repository %>
 	<%= f.input :title, :label => "Course Title: " %>
 	<%= f.input :subject, :label => "Course Subject: " %>
 	<%= f.input :course_number, :label => "Course Number (if Harvard)" %>

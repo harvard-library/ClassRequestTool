@@ -3,4 +3,10 @@
 
 <%= render :partial => 'shared/welcome_text' %>
 
-<%= link_to "Click here to Request a Course", new_course_path %>
+To begin, choose a Repository:
+<%= form_tag new_course_path, :method => :get do %>
+<p>
+  <%= select_tag :repository, options_from_collection_for_select(@repositories, "id", "name") %>
+  <%= submit_tag "Go!" %>
+</p>
+<% end %>

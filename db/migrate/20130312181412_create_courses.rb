@@ -10,7 +10,6 @@ class CreateCourses < ActiveRecord::Migration
       t.string :contact_phone, :limit => 25, :null => false
       t.datetime :pre_class_appt
       t.datetime :timeframe
-      t.references :user
       t.references :repository
       t.references :room
       t.text :staff_involvement

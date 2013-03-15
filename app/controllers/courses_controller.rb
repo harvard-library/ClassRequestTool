@@ -10,6 +10,7 @@ class CoursesController < ApplicationController
   end
   
   def new
+    @repository = Repository.find(params[:repository]).id
     @course = Course.new
     @uploader = FileUploader.new
   end
@@ -19,9 +20,14 @@ class CoursesController < ApplicationController
   end
   
   def create
+    params[:course][:repository_id] = params[:repository_id]
     unless params[:other].empty?
       params[:course][:staff_involvement] = (params[:course][:staff_involvement] << params[:other]).reject{ |e| e.empty? }.join(", ")
+    else
+      params[:course][:staff_involvement] = params[:course][:staff_involvement].reject{ |e| e.empty? }.join(", ")  
     end  
+    params[:course][:timeframe] = Date.strptime(params[:course][:timeframe], "%m/%d/%Y") unless params[:course][:timeframe].empty?
+    params[:course][:pre_class_appt] = Date.strptime(params[:course][:pre_class_appt], "%m/%d/%Y") unless params[:course][:pre_class_appt].empty?
     @course = Course.new(params[:course])
     respond_to do |format|
       if @course.save

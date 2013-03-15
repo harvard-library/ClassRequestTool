@@ -15,3 +15,5 @@
 /tmp
 .DS_Store
 config/database.yml
+
+public/uploads/*
