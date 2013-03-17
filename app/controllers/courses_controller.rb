@@ -13,7 +13,7 @@ class CoursesController < ApplicationController
   end
   
   def new
-    @repository = Repository.find(params[:repository]).id
+    @repository = Repository.find(params[:repository])
     @course = Course.new
     @uploader = FileUploader.new
   end
@@ -29,13 +29,18 @@ class CoursesController < ApplicationController
     else
       params[:course][:staff_involvement] = params[:course][:staff_involvement].reject{ |e| e.empty? }.join(", ")  
     end  
-    params[:course][:timeframe] = Date.strptime(params[:course][:timeframe], "%m/%d/%Y") unless params[:course][:timeframe].empty?
-    params[:course][:pre_class_appt] = Date.strptime(params[:course][:pre_class_appt], "%m/%d/%Y") unless params[:course][:pre_class_appt].empty?
+    p "TIME"
+    p params[:course][:timeframe]
+    params[:course][:timeframe] = DateTime.strptime(params[:course][:timeframe], '%m/%d/%Y %I:%M %P') unless params[:course][:timeframe].empty?
+    params[:course][:pre_class_appt] = DateTime.strptime(params[:course][:pre_class_appt], '%m/%d/%Y %I:%M %P') unless params[:course][:pre_class_appt].empty?
     @course = Course.new(params[:course])
     respond_to do |format|
       if @course.save
-        format.html { redirect_to courses_url, notice: 'Course was successfully created.' }
-        format.json { render json: @course, status: :created, course: @course }
+        if user_signed_in?
+          format.html { redirect_to courses_url, notice: 'Course was successfully created.' }
+        else
+          format.html { redirect_to root_url, notice: 'Course was successfully submitted for approval.' }
+        end    
       else
         format.html { render action: "new" }
         format.json { render json: @course.errors, status: :unprocessable_entity }

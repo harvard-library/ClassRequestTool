@@ -17,9 +17,10 @@
 //= require jquery.ui.datepicker
 
 $(document).ready(function(){
-  $("#course_timeframe").datepicker();
-  $("#course_pre_class_appt").datepicker();
-  $('#basic_example_3').datetimepicker({
+  $('#course_timeframe').datetimepicker({
+	timeFormat: "hh:mm tt"
+  });
+  $('#course_pre_class_appt').datetimepicker({
 	timeFormat: "hh:mm tt"
   });
 });

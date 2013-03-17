@@ -23,7 +23,6 @@ ActiveRecord::Schema.define(:version => 20130312181412) do
     t.string   "contact_phone",     :limit => 25,  :null => false
     t.datetime "pre_class_appt"
     t.datetime "timeframe"
-    t.integer  "user_id"
     t.integer  "repository_id"
     t.integer  "room_id"
     t.text     "staff_involvement"

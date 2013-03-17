@@ -11,9 +11,9 @@
 	Primary Contact Email: <%= @course.contact_email unless @course.contact_email.nil? %> <br />
 	Primary Contact Phone: <%= @course.contact_phone unless @course.contact_phone.nil? %> <br />
 	Room: <%= @course.room.name unless @course.room.nil? %> <br />
-	Pre-Class Appt: <%= @course.pre_class_appt unless @course.pre_class_appt.nil? %> <br />
+	Pre-Class Appt: <%= @course.pre_class_appt.strftime('%m/%d/%Y %I:%M %P') unless @course.pre_class_appt.nil? %> <br />
 	Staff Involvement: <%= @course.staff_involvement unless @course.staff_involvement.nil? %> <br />
-	Timeframe: <%= @course.timeframe unless @course.timeframe.nil? %> <br />
+	Timeframe: <%= @course.timeframe.strftime('%m/%d/%Y %I:%M %P') unless @course.timeframe.nil? %> <br />
 	<%  unless @course.file.blank? %>
 	  File: <%= link_to "Syllabus", @course.file_url %> <br />
 	<% end %>
