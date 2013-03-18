@@ -20,4 +20,8 @@ class Course < ActiveRecord::Base
   def scheduled?
     self.status == 'Pending'
   end  
+  
+  def self.homeless
+    Course.find(:all, :conditions => {:repository_id => nil})
+  end  
 end
