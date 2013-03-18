@@ -11,10 +11,13 @@ class Course < ActiveRecord::Base
   validates_presence_of :contact_name
   validates_presence_of :contact_email, :with => /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i, :message => "Invalid email"
   validates_presence_of :contact_phone
-  validates_presence_of :repository_id
   
   mount_uploader :file, FileUploader
   
   STAFF_INVOLVEMENT = ['Pre-Class Appointment with Reference Staff (phone or in person)', 'Assistance with Selection of Materials', 'Introduction to Archives and Special Collections Research', 'Assistance with Presentation of Materials in Class', 'No Involvement Required Beyond Set-up']
   STATUS = ['Open', 'Pending', 'Approved', 'Rejected']
+  
+  def scheduled?
+    self.status == 'Pending'
+  end  
 end

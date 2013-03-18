@@ -1,24 +1,39 @@
 <%= semantic_form_for(@course, :html => {:multipart => true}) do |f| %>
   <%= f.inputs do %>
 	<h3>Course Information</h3>
-    Repository: <%= @repository.name %><br /><br />
-	<%= hidden_field_tag :repository_id, @repository.id %>
+	<% if @repository.nil? %>
+      Repository: Don't Know<br /><br />
+	<% else %>
+	  Repository: <%= @repository.name %><br /><br />
+	  <%= hidden_field_tag :repository_id, @repository.id %>
+	<% end %>
 	<%= f.input :title, :label => "Course Title: " %>
 	<%= f.input :subject, :label => "Course Subject: " %>
 	<%= f.input :course_number, :label => "Course Number (if Harvard): " %>
 	<%= f.input :affiliation, :label => "Affiliation (if non-Harvard): " %>
-	<%= f.input :number_of_students, :label => "Number of Students: ", :hint => "Maximum for this repository is #{@repository.class_limit}" %>
+	<% unless @repository.nil? %>
+	  <%= f.input :number_of_students, :label => "Number of Students: ", :hint => "Maximum for this repository is #{@repository.class_limit}" %>
+	<% else %>
+	  <%= f.input :number_of_students, :label => "Number of Students: " %>
+	<% end %>
+	
 	<%= f.input :file, :label => "Upload Syllabus: " %>
+	
 	<h3>Requester Information</h3>
 	<%= f.input :contact_name, :label => "Primary Contact Name: " %>
 	<%= f.input :contact_email, :label => "Primary Contact Email: " %>
 	<%= f.input :contact_phone, :label => "Primary Contact Phone: " %>
-	<h3>Additional Information</h3>
-	<%= f.input :pre_class_appt, :label => "Pre-Class Appointment Date (if necessary): ", :as => :string, :hint => 'In MM/DD/YYYY HH:MM am/pm format', :input_html => { :size => 30 } %>
+	
+	<h3>Staff Involvement</h3>
 	<%= f.input :staff_involvement, :label => "Level of Staff Involvement: ", :as => :check_boxes, :collection => Course::STAFF_INVOLVEMENT %>
 	Other Involvement: <%= text_field_tag :other %>
-	<%= f.input :room, :label => "Room for Course: ", :as => :select, :collection => @repository.rooms %>
+	<%= f.input :pre_class_appt, :label => "Pre-Class Appointment Date (if necessary): ", :as => :string, :hint => 'In MM/DD/YYYY HH:MM am/pm format', :input_html => { :size => 30 } %>
+	
+	<h3>Additional Information</h3>
 	<%= f.input :timeframe, :label => "Date/Time of Course: ", :as => :string, :hint => 'In MM/DD/YYYY HH:MM am/pm format', :input_html => { :size => 30 } %>
+	<% unless @repository.nil? %>
+	  <%= f.input :room, :label => "Room for Course: ", :as => :select, :collection => @repository.rooms %>
+	<% end %>
 	
     <% if current_user.try(:admin?) %>
  	  <h3>Admin Actions</h3>

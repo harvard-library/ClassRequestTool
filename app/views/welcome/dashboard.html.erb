@@ -1,0 +1,27 @@
+<% content_for :header do %>Dashboard<% end %>
+
+<h2>Your Repositories</h2>
+  <% unless @repositories_mine.nil? || @repositories_mine.empty? %>	
+    <% @repositories_mine.each do |repo| %>	
+      <%= link_to(course.title, course ) %>
+      <% if current_user.try(:admin?) %>
+	   - <%= link_to('Edit', edit_repository_path(repo), :class => "action-edit") %> | <%= link_to('Delete', repository_path(repo), :confirm => "Are you sure?", :method => :delete) %>
+      <% end %>
+	  <br /><br />
+    <% end %>
+  <% else %>
+	None yet!
+  <% end %>
+
+<h2>Your Courses</h2>
+  <% unless @courses_mine.nil? || @courses_mine.empty? %>	
+    <% @courses_mine.each do |course| %>	
+      <%= link_to(course.title, course ) %>
+      <% if current_user.try(:admin?) %>
+	   - <%= link_to('Edit', edit_course_path(course), :class => "action-edit") %> | <%= link_to('Delete', course_path(course), :confirm => "Are you sure?", :method => :delete) %>
+      <% end %>
+	  <br /><br />
+    <% end %>
+  <% else %>
+	None yet!
+  <% end %>

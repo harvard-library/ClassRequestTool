@@ -6,6 +6,7 @@ class CoursesController < ApplicationController
     @courses_all = Course.all
     @courses_mine = Array.new
     @courses_all.collect {|course| course.users.include?(current_user) ? @courses_mine << course : '' }
+    @repositories = Repository.find(:all, :order => :name)
   end  
   
   def show
@@ -13,7 +14,7 @@ class CoursesController < ApplicationController
   end
   
   def new
-    unless params[:repository].nil?
+    unless params[:repository].nil? || params[:repository].blank?
       @repository = Repository.find(params[:repository])
     end  
     @course = Course.new
@@ -25,8 +26,11 @@ class CoursesController < ApplicationController
   end
   
   def create
-    @repository = Repository.find(params[:repository_id])
-    params[:course][:repository_id] = params[:repository_id]
+    unless params[:repository_id].nil?
+      @repository = Repository.find(params[:repository_id])
+      params[:course][:repository_id] = params[:repository_id]
+    end  
+    
     unless params[:other].empty?
       params[:course][:staff_involvement] = (params[:course][:staff_involvement] << params[:other]).reject{ |e| e.empty? }.join(", ")
     else
@@ -36,7 +40,7 @@ class CoursesController < ApplicationController
     params[:course][:pre_class_appt] = DateTime.strptime(params[:course][:pre_class_appt], '%m/%d/%Y %I:%M %P') unless params[:course][:pre_class_appt].empty?
     @course = Course.new(params[:course])
     respond_to do |format|
-      if @course.number_of_students > @repository.class_limit
+      if (!@repository.nil?) && @course.number_of_students > @repository.class_limit
         flash[:error] = "Please enter number of students below the repository maximum."
         format.html { render action: "new" }
         format.json { render json: @course.errors, status: :unprocessable_entity }
