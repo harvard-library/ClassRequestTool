@@ -1,40 +1,67 @@
 <% content_for :header do %>Dashboard<% end %>
 
 <h2>Your Repositories</h2>
-  <% unless current_user.repositories.nil? || current_user.repositories.empty? %>	
-    <% current_user.repositories.each do |repo| %>	
-      <%= link_to(repo.name, repo ) %>
-      <% if current_user.try(:admin?) %>
-	   - <%= link_to('Edit', edit_repository_path(repo), :class => "action-edit") %> | <%= link_to('Delete', repository_path(repo), :confirm => "Are you sure?", :method => :delete) %>
+  <% unless current_user.repositories.nil? || current_user.repositories.empty? %>
+	<table>
+	  <tr>
+		<th>Name</th>
+		<th></th>
+	  </tr>	
+      <% current_user.repositories.each do |repo| %>	
+        <tr>
+	  	  <td><%= link_to(repo.name, repo ) %></td>
+          <% if current_user.try(:admin?) %>
+	        <td><%= link_to('Edit', edit_repository_path(repo), :class => "action-edit") %> | <%= link_to('Delete', repository_path(repo), :confirm => "Are you sure?", :method => :delete) %></td>
+          <% end %>
+	  	</tr>
       <% end %>
-	  <br /><br />
-    <% end %>
+    </table>
   <% else %>
 	None yet!
   <% end %>
 
 <h2>Your Courses</h2>
   <% unless current_user.courses.nil? || current_user.courses.empty? %>	
+    <table>
+	  <tr>
+		<th>Name</th>
+		<th>Course Date</th>
+		<th></th>
+	  </tr>
     <% current_user.courses.each do |course| %>	
-      <%= link_to(course.title, course ) %>
-      <% if current_user.try(:admin?) %>
-	   - <%= link_to('Edit', edit_course_path(course), :class => "action-edit") %> | <%= link_to('Delete', course_path(course), :confirm => "Are you sure?", :method => :delete) %>
-      <% end %>
-	  <br /><br />
+      	<tr>
+	  	  <td><%= link_to(course.title, course ) %></td>
+		  <td><%= course.timeframe.strftime('%m/%d/%Y %I:%M %P') unless course.timeframe.nil? %></td>
+		  <td><%= link_to('Edit', edit_course_path(course), :class => "action-edit") %></td>
+          <% if current_user.try(:admin?) %>
+	   		<td> | <%= link_to('Delete', course_path(course), :confirm => "Are you sure?", :method => :delete) %></td>
+      	  <% end %>
+	    </tr>
     <% end %>
+	</table>
   <% else %>
 	None yet!
   <% end %>
 
 <h2>Homeless Courses</h2>
-  <% unless Course.homeless.nil? || Course.homeless.empty? %>	
-    <% Course.homeless.each do |course| %>	
-      <%= link_to(course.title, course ) %>
-      <% if current_user.try(:admin?) %>
-	   - <%= link_to('Edit', edit_course_path(course), :class => "action-edit") %> | <%= link_to('Delete', course_path(course), :confirm => "Are you sure?", :method => :delete) %>
+  <% unless Course.homeless.nil? || Course.homeless.empty? %>
+	<table>
+	  <tr>
+		<th>Name</th>
+		<th>Course Date</th>
+		<th></th>
+	  </tr>
+      <% Course.homeless.each do |course| %>	
+      	<tr>
+	  	  <td><%= link_to(course.title, course ) %></td>
+		  <td><%= course.timeframe.strftime('%m/%d/%Y %I:%M %P') unless course.timeframe.nil? %></td>
+		  <td><%= link_to('Edit', edit_course_path(course), :class => "action-edit") %></td>
+          <% if current_user.try(:admin?) %>
+	   		<td> | <%= link_to('Delete', course_path(course), :confirm => "Are you sure?", :method => :delete) %></td>
+    	  <% end %>
+	    </tr>
       <% end %>
-	  <br /><br />
-    <% end %>
+	</table>
   <% else %>
 	None yet!
   <% end %>

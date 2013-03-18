@@ -1,5 +1,5 @@
 class RepositoriesController < ApplicationController
-  before_filter :authenticate_admin!, :except => [:index]
+  before_filter :authenticate_admin!, :except => [:index, :show]
   
   def index
     @repositories = Repository.all

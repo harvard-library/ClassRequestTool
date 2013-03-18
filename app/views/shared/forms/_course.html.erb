@@ -35,9 +35,9 @@
 	  <%= f.input :room, :label => "Room for Course: ", :as => :select, :collection => @repository.rooms %>
 	<% end %>
 	
-    <% if current_user.try(:admin?) %>
- 	  <h3>Admin Actions</h3>
-      <%= f.input :status, :label => "Status: " %>
+    <% if user_signed_in? %>
+ 	  <h3>Staff Actions</h3>
+	  <%= f.input :status, :label => "Status: ", :as => :select, :collection => Course::STATUS %>
 	  <%= f.input :users, :as => :check_boxes, :label => "Assign Staff: " %>
     <% end %>
   <% end %>
