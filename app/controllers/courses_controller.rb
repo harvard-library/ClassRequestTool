@@ -13,7 +13,9 @@ class CoursesController < ApplicationController
   end
   
   def new
-    @repository = Repository.find(params[:repository])
+    unless params[:repository].nil?
+      @repository = Repository.find(params[:repository])
+    end  
     @course = Course.new
     @uploader = FileUploader.new
   end
@@ -23,6 +25,7 @@ class CoursesController < ApplicationController
   end
   
   def create
+    @repository = Repository.find(params[:repository_id])
     params[:course][:repository_id] = params[:repository_id]
     unless params[:other].empty?
       params[:course][:staff_involvement] = (params[:course][:staff_involvement] << params[:other]).reject{ |e| e.empty? }.join(", ")
@@ -41,7 +44,7 @@ class CoursesController < ApplicationController
         end    
       else
         format.html { render action: "new" }
-        format.json { render json: @course.errors, status: :unprocessable_entity }
+        format.json { render json: @location.errors, status: :unprocessable_entity }
       end
     end
   end

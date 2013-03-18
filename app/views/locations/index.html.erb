@@ -2,7 +2,7 @@
 
 <div>
   <% @locations.each do |location| %>	
-    <%= link_to(location.name, location ) %>
+    <%= location.name %>
     <% if current_user.try(:admin?) %>
 	   - <%= link_to('Edit', edit_location_path(location), :class => "action-edit") %> | <%= link_to('Delete', location_path(location), :confirm => "Are you sure?", :method => :delete) %>
     <% end %>

@@ -6,7 +6,12 @@ class Course < ActiveRecord::Base
   belongs_to :repository
   belongs_to :room
   
-  validates_presence_of :repository_id, :title, :contact_name, :contact_email, :contact_phone
+  
+  validates_presence_of :title, :message => "can't be empty"
+  validates_presence_of :contact_name
+  validates_presence_of :contact_email, :with => /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i, :message => "Invalid email"
+  validates_presence_of :contact_phone
+  validates_presence_of :repository_id
   
   mount_uploader :file, FileUploader
   

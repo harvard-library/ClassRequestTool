@@ -2,7 +2,7 @@
 
 <div>
   <% @repositories.each do |repo| %>	
-    <%= link_to(repo.name, repo ) %>
+    <%= repo.name %>
     <% if current_user.try(:admin?) %>
 	   - <%= link_to('Edit', edit_repository_path(repo), :class => "action-edit") %> | <%= link_to('Delete', repository_path(repo), :confirm => "Are you sure?", :method => :delete) %>
     <% end %>

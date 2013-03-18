@@ -2,7 +2,7 @@
 
 <div>
   <% @rooms.each do |room| %>	
-    <%= link_to(room.name, room ) %> in <%= room.location.name %>
+    <%= room.name %> in <%= room.location.name %>
     <% if current_user.try(:admin?) %>
 	   - <%= link_to('Edit', edit_room_path(room), :class => "action-edit") %> | <%= link_to('Delete', room_path(room), :confirm => "Are you sure?", :method => :delete) %>
     <% end %>
