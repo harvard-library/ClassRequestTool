@@ -384,3 +384,7 @@
  	margin-bottom: 5px;
  	background: #FFF none repeat scroll 0%;
  }
+
+.inline-hints {
+	font-size: 11px;
+}

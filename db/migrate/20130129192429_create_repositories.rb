@@ -3,7 +3,7 @@ class CreateRepositories < ActiveRecord::Migration
     create_table :repositories do |t|
       t.string :name
       t.text :description
-      t.integer :class_limit
+      t.integer :class_limit, :default => 0
       t.references :user
       t.boolean :can_edit
       t.timestamps

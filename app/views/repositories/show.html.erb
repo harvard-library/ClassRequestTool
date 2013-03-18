@@ -1,0 +1,31 @@
+<% content_for :header do %><%= @repository.name %><% end %>
+
+<%= form_tag new_course_path, :method => :get do %>
+<p>
+  <%= hidden_field_tag :repository, @repository.id %>
+  <%= submit_tag "Request a course for this repository" %>
+</p>
+<% end %>
+
+<div>
+	Name: <%= @repository.name %> <br />
+	Description: <%= @repository.description unless @repository.description.nil? %> <br />
+	Class Limit: <%= @repository.class_limit unless @repository.class_limit.nil? %> <br />
+	Available Rooms: 
+	<ul>
+	  <% @repository.rooms.each do |room| %>
+	    <li><%= room.name %></li>
+	  <% end %>
+	</ul>
+	<br />
+    <% if current_user.try(:admin?) %>
+	  Staff Member(s) Assigned: 
+	  <ul>
+	  <% @repository.users.each do |user| %>
+	    <li><%= user.email %></li>
+	  <% end %>
+	  </ul>
+	  <br /><br />
+	  <%= link_to('Edit', edit_repository_path(@repository), :class => "action-edit") %> | <%= link_to('Delete', repository_path(@repository), :confirm => "Are you sure?", :method => :delete) %>
+    <% end %>
+</div>

@@ -1,6 +1,6 @@
 class CoursesController < ApplicationController
   before_filter :authenticate_admin!, :only => [:destroy, :edit, :update]
-  before_filter :authenticate_user!, :except => [:new, :create]
+  before_filter :authenticate_user!, :except => [:new, :create, :summary]
   
   def index
     @courses_all = Course.all
@@ -36,16 +36,22 @@ class CoursesController < ApplicationController
     params[:course][:pre_class_appt] = DateTime.strptime(params[:course][:pre_class_appt], '%m/%d/%Y %I:%M %P') unless params[:course][:pre_class_appt].empty?
     @course = Course.new(params[:course])
     respond_to do |format|
-      if @course.save
-        if user_signed_in?
-          format.html { redirect_to courses_url, notice: 'Course was successfully created.' }
-        else
-          format.html { redirect_to root_url, notice: 'Course was successfully submitted for approval.' }
-        end    
-      else
+      if @course.number_of_students > @repository.class_limit
+        flash[:error] = "Please enter number of students below the repository maximum."
         format.html { render action: "new" }
-        format.json { render json: @location.errors, status: :unprocessable_entity }
-      end
+        format.json { render json: @course.errors, status: :unprocessable_entity }
+      else  
+        if @course.save
+          if user_signed_in?
+            format.html { redirect_to summary_course_url(@course), notice: 'Course was successfully created.' }
+          else
+            format.html { redirect_to summary_course_url(:id => @course.id), notice: 'Course was successfully submitted for approval.' }
+          end    
+        else
+          format.html { render action: "new" }
+          format.json { render json: @course.errors, status: :unprocessable_entity }
+        end
+      end  
     end
   end
   
@@ -71,6 +77,10 @@ class CoursesController < ApplicationController
       format.html { redirect_to courses_url }
       format.json { head :no_content }
     end
+  end
+  
+  def summary
+    @course = Course.find(params[:id])
   end
    
 end

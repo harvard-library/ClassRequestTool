@@ -1,5 +1,9 @@
 ClassRequestTool::Application.routes.draw do
-  resources :courses
+  resources :courses do
+    member do
+      get 'summary'
+    end  
+  end  
 
   resources :locations
 

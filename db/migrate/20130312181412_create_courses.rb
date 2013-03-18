@@ -13,6 +13,7 @@ class CreateCourses < ActiveRecord::Migration
       t.references :repository
       t.references :room
       t.text :staff_involvement
+      t.integer :number_of_students
       t.string :status
       t.string :file
       t.timestamps
