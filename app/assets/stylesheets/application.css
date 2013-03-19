@@ -388,3 +388,13 @@
 .inline-hints {
 	font-size: 11px;
 }
+
+#left {
+	float: left;
+	width: 45%;
+}
+
+#right {
+	float: right;
+	width: 45%;
+}

@@ -2,7 +2,7 @@ class RoomsController < ApplicationController
   before_filter :authenticate_admin!, :except => [:index]
   
   def index
-    @rooms = Room.all
+    @rooms = Room.find(:all, :order => :name)
   end  
   
   def new

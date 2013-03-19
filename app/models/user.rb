@@ -20,5 +20,17 @@ class User < ActiveRecord::Base
     chars = (('a'..'z').to_a + ('0'..'9').to_a) - %w(i o 0 1 l 0)
     (1..size).collect{|a| chars[rand(chars.size)] }.join
   end
+  
+  def upcoming_courses
+    upcoming = Array.new
+    self.courses.collect{|course| course.timeframe > DateTime.now ? upcoming << course : ''}
+    return upcoming
+  end
+  
+  def past_courses
+    past = Array.new
+    self.courses.collect{|course| course.timeframe > DateTime.now ? past << course : ''}
+    return past
+  end  
 
 end

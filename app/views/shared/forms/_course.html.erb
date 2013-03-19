@@ -2,11 +2,12 @@
   <%= f.inputs do %>
 	<h3>Course Information</h3>
 	<% if @repository.nil? %>
-      Repository: Don't Know<br /><br />
+      Repository: Don't Know - <%= link_to "Edit", "/" %><br /><br />
 	<% else %>
-	  Repository: <%= @repository.name %><br /><br />
+	  Repository: <%= @repository.name %> - <%= link_to "Edit", "/" %><br /><br />
 	  <%= hidden_field_tag :repository_id, @repository.id %>
 	<% end %>
+	
 	<%= f.input :title, :label => "Course Title: " %>
 	<%= f.input :subject, :label => "Course Subject: " %>
 	<%= f.input :course_number, :label => "Course Number (if Harvard): " %>

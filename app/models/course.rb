@@ -24,4 +24,11 @@ class Course < ActiveRecord::Base
   def self.homeless
     Course.find(:all, :conditions => {:repository_id => nil})
   end  
+  
+  def self.unassigned
+    courses = Course.all
+    unassigned = Array.new
+    courses.collect{|course| course.users.empty? ? unassigned << course : '' }
+    return unassigned
+  end 
 end

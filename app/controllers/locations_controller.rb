@@ -2,7 +2,7 @@ class LocationsController < ApplicationController
   before_filter :authenticate_admin!, :except => [:index]
   
   def index
-    @locations = Location.all
+    @locations = Location.find(:all, :order => :name)
   end  
   
   def new
