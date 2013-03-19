@@ -47,14 +47,10 @@ nicEditorIcons.gif: nicEditorIcons-6ed86d9880509c9176f6b83f0a408aa4.gif
 nicEditorIcons/index.gif: nicEditorIcons-6ed86d9880509c9176f6b83f0a408aa4.gif
 rails.png: rails-a3386665c05a2d82f711a4aaa72d247c.png
 rails/index.png: rails-a3386665c05a2d82f711a4aaa72d247c.png
-application.js: application-249cdb83df7ce3c443f2e6da79504b2e.js
-application/index.js: application-249cdb83df7ce3c443f2e6da79504b2e.js
-jquery-ui-timepicker-addon.js: jquery-ui-timepicker-addon-75a95400cda16cfda59ba3dd37c5b339.js
-jquery-ui-timepicker-addon/index.js: jquery-ui-timepicker-addon-75a95400cda16cfda59ba3dd37c5b339.js
+application.js: application-74a4a0e45911d22e6a233b885d6e83af.js
+application/index.js: application-74a4a0e45911d22e6a233b885d6e83af.js
 application.css: application-3d688298a3c8981ebe937e19e34a643c.css
 application/index.css: application-3d688298a3c8981ebe937e19e34a643c.css
-jquery-ui-timepicker-addon.css: jquery-ui-timepicker-addon-b34a1171177a4dc21974613c2ca5943b.css
-jquery-ui-timepicker-addon/index.css: jquery-ui-timepicker-addon-b34a1171177a4dc21974613c2ca5943b.css
 jquery-ui/animated-overlay.gif: jquery-ui/animated-overlay-602eee4c79a4796b02bb6442948c9e28.gif
 jquery-ui/animated-overlay/index.gif: jquery-ui/animated-overlay-602eee4c79a4796b02bb6442948c9e28.gif
 jquery-ui/ui-bg_flat_0_aaaaaa_40x100.png: jquery-ui/ui-bg_flat_0_aaaaaa_40x100-7d1197a52442bc56fcad60d0390f4b32.png
