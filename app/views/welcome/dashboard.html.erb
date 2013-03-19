@@ -115,4 +115,27 @@
     <% else %>
   	None yet!
     <% end %>
+	
+    <h2>Roomless Courses</h2>
+      <% unless Course.roomless.nil? || Course.roomless.empty? %>
+    	<table>
+    	  <tr>
+    		<th>Name</th>
+    		<th>Course Date</th>
+    		<th></th>
+    	  </tr>
+          <% Course.roomless.each do |course| %>	
+          	<tr>
+    	  	  <td><%= link_to(course.title, course ) %></td>
+    		  <td><%= course.timeframe.strftime('%m/%d/%Y %I:%M %P') unless course.timeframe.nil? %></td>
+    		  <td><%= link_to('Edit', edit_course_path(course), :class => "action-edit") %></td>
+              <% if current_user.try(:admin?) %>
+    	   		<td> | <%= link_to('Delete', course_path(course), :confirm => "Are you sure?", :method => :delete) %></td>
+        	  <% end %>
+    	    </tr>
+          <% end %>
+    	</table>
+      <% else %>
+    	None yet!
+      <% end %>
  </div> 

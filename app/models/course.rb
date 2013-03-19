@@ -30,5 +30,9 @@ class Course < ActiveRecord::Base
     unassigned = Array.new
     courses.collect{|course| course.users.empty? ? unassigned << course : '' }
     return unassigned
+  end
+  
+  def self.roomless
+    Course.find(:all, :conditions => {:room_id => nil})
   end 
 end
