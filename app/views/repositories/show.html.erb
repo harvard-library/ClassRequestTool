@@ -29,3 +29,28 @@
 	  <%= link_to('Edit', edit_repository_path(@repository), :class => "action-edit") %> | <%= link_to('Delete', repository_path(@repository), :confirm => "Are you sure?", :method => :delete) %>
     <% end %>
 </div>
+
+<div>
+    <h2>Courses for This Repository</h2>
+      <% unless @repository.courses.nil? || @repository.courses.empty? %>
+    	<table>
+    	  <tr>
+    		<th>Name</th>
+    		<th>Course Date</th>
+    		<th></th>
+    	  </tr>
+          <% @repository.courses.each do |course| %>	
+          	<tr>
+    	  	  <td><%= link_to(course.title, course ) %></td>
+    		  <td><%= course.timeframe.strftime('%m/%d/%Y %I:%M %P') unless course.timeframe.nil? %></td>
+    		  <td><%= link_to('Edit', edit_course_path(course), :class => "action-edit") %></td>
+              <% if current_user.try(:admin?) %>
+    	   		<td> | <%= link_to('Delete', course_path(course), :confirm => "Are you sure?", :method => :delete) %></td>
+        	  <% end %>
+    	    </tr>
+          <% end %>
+    	</table>
+      <% else %>
+    	None yet!
+      <% end %>
+</div>	  

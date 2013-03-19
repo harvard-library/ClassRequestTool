@@ -1,6 +1,10 @@
 <% content_for :header do %>Summary for <%= @course.title %><% end %>
 
 <div>
+	<%= render :partial => 'shared/summary_text' %>
+</div>	
+
+<div>
 	<h3>Course Information</h3>
 	Repository: <%= @course.repository.nil? ? "Don't Know" : @course.repository.name %> <br />
 	Title: <%= @course.title unless @course.title.nil? %> <br />
