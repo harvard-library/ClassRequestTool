@@ -11,25 +11,30 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130312181412) do
+ActiveRecord::Schema.define(:version => 20130403144125) do
 
   create_table "courses", :force => true do |t|
     t.string   "title"
     t.string   "subject"
     t.string   "course_number"
     t.string   "affiliation"
-    t.string   "contact_name",      :limit => 100, :null => false
-    t.string   "contact_email",     :limit => 150, :null => false
-    t.string   "contact_phone",     :limit => 25,  :null => false
+    t.string   "contact_name",       :limit => 100, :null => false
+    t.string   "contact_email",      :limit => 150, :null => false
+    t.string   "contact_phone",      :limit => 25,  :null => false
     t.datetime "pre_class_appt"
     t.datetime "timeframe"
+    t.datetime "time_choice_1"
+    t.datetime "time_choice_2"
+    t.datetime "time_choice_3"
     t.integer  "repository_id"
     t.integer  "room_id"
     t.text     "staff_involvement"
+    t.integer  "number_of_students"
     t.string   "status"
     t.string   "file"
-    t.datetime "created_at",                       :null => false
-    t.datetime "updated_at",                       :null => false
+    t.string   "external_syllabus"
+    t.datetime "created_at",                        :null => false
+    t.datetime "updated_at",                        :null => false
   end
 
   add_index "courses", ["affiliation"], :name => "index_courses_on_affiliation"
@@ -37,6 +42,7 @@ ActiveRecord::Schema.define(:version => 20130312181412) do
   add_index "courses", ["contact_name"], :name => "index_courses_on_contact_name"
   add_index "courses", ["contact_phone"], :name => "index_courses_on_contact_phone"
   add_index "courses", ["course_number"], :name => "index_courses_on_course_number"
+  add_index "courses", ["external_syllabus"], :name => "index_courses_on_external_syllabus"
   add_index "courses", ["pre_class_appt"], :name => "index_courses_on_pre_class_appt"
   add_index "courses", ["staff_involvement"], :name => "index_courses_on_staff_involvement"
   add_index "courses", ["status"], :name => "index_courses_on_status"
@@ -47,6 +53,21 @@ ActiveRecord::Schema.define(:version => 20130312181412) do
   create_table "courses_users", :id => false, :force => true do |t|
     t.integer "course_id"
     t.integer "user_id"
+  end
+
+  create_table "item_attributes", :force => true do |t|
+    t.string   "name",        :null => false
+    t.text     "description"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
+  add_index "item_attributes", ["description"], :name => "index_item_attributes_on_description"
+  add_index "item_attributes", ["name"], :name => "index_item_attributes_on_name"
+
+  create_table "item_attributes_rooms", :id => false, :force => true do |t|
+    t.integer "item_attribute_id"
+    t.integer "room_id"
   end
 
   create_table "locations", :force => true do |t|
@@ -60,11 +81,11 @@ ActiveRecord::Schema.define(:version => 20130312181412) do
   create_table "repositories", :force => true do |t|
     t.string   "name"
     t.text     "description"
-    t.integer  "class_limit"
+    t.integer  "class_limit", :default => 0
     t.integer  "user_id"
     t.boolean  "can_edit"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at",                 :null => false
+    t.datetime "updated_at",                 :null => false
   end
 
   add_index "repositories", ["can_edit"], :name => "index_repositories_on_can_edit"

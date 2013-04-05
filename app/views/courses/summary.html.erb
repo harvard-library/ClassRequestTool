@@ -21,18 +21,15 @@
 	Primary Contact Email: <%= @course.contact_email unless @course.contact_email.nil? %> <br />
 	Primary Contact Phone: <%= @course.contact_phone unless @course.contact_phone.nil? %> <br />
 	
-	<h3>Additional Information</h3>
+	<h3>Staff Involvement</h3>
+	Staff Involvement: <%= @course.staff_involvement unless @course.staff_involvement.nil? || @course.staff_involvement.blank? %> <br />
 	Pre-Class Appt: <%= @course.pre_class_appt.strftime('%m/%d/%Y %I:%M %P') unless @course.pre_class_appt.nil? %> <br />
-	Staff Involvement: <%= @course.staff_involvement unless @course.staff_involvement.nil? %> <br />
-	Room: <%= @course.room.name unless @course.room.nil? %> <br />
-	Timeframe: <%= @course.timeframe.strftime('%m/%d/%Y %I:%M %P') unless @course.timeframe.nil? %> <br />
 	
-    <% if current_user.try(:admin?) %>
-	  <h3>Admin Actions</h3>
-      Status: <%= @course.status %> <br />
-	  Staff Member(s) Assigned: 
-	  <% @course.users.each do |user| %>
-	    <%= user.email %>, 
-	  <% end %>
-    <% end %>
+	<h3>Additional Information</h3>
+	Room: <%= @course.room.name unless @course.room.nil? %> <br />
+	<h4>Date/Time of Course</h4>
+	Choice 1: <%= @course.time_choice_1.strftime('%m/%d/%Y %I:%M %P') unless @course.time_choice_1.nil? %> <br />
+	Choice 2: <%= @course.time_choice_2.strftime('%m/%d/%Y %I:%M %P') unless @course.time_choice_2.nil? %> <br />
+	Choice 2: <%= @course.time_choice_3.strftime('%m/%d/%Y %I:%M %P') unless @course.time_choice_3.nil? %> <br />
+
 </div>

@@ -40,10 +40,12 @@ class CoursesController < ApplicationController
     params[:course][:pre_class_appt] = DateTime.strptime(params[:course][:pre_class_appt], '%m/%d/%Y %I:%M %P') unless params[:course][:pre_class_appt].empty?
     @course = Course.new(params[:course])
     respond_to do |format|
-      if (!@repository.nil?) && @course.number_of_students > @repository.class_limit
-        flash[:error] = "Please enter number of students below the repository maximum."
-        format.html { render action: "new" }
-        format.json { render json: @course.errors, status: :unprocessable_entity }
+      if !@repository.nil? && !@course.number_of_students.nil?
+        if @course.number_of_students > @repository.class_limit
+          flash[:error] = "Please enter number of students below the repository maximum."
+          format.html { render action: "new" }
+          format.json { render json: @course.errors, status: :unprocessable_entity }
+        end  
       else  
         if @course.save
           if user_signed_in?
@@ -64,7 +66,7 @@ class CoursesController < ApplicationController
 
     respond_to do |format|
       if @course.update_attributes(params[:course])
-        format.html { redirect_to courses_url, notice: 'Course was successfully updated.' }
+        format.html { redirect_to root_url, notice: 'Course was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }

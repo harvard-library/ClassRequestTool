@@ -42,5 +42,10 @@ namespace :crt do
       end
       puts "Rooms Added!"
     end
+    
+    desc "run all tasks in bootstrap"
+    task :run_all => [:default_admin, :default_repos, :default_locations, :default_rooms] do
+      puts "Created Admin account, Repos, Locations and Rooms!"
+    end
   end
 end

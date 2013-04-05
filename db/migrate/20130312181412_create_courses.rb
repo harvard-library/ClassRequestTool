@@ -10,16 +10,20 @@ class CreateCourses < ActiveRecord::Migration
       t.string :contact_phone, :limit => 25, :null => false
       t.datetime :pre_class_appt
       t.datetime :timeframe
+      t.datetime :time_choice_1
+      t.datetime :time_choice_2
+      t.datetime :time_choice_3
       t.references :repository
       t.references :room
       t.text :staff_involvement
       t.integer :number_of_students
       t.string :status
       t.string :file
+      t.string :external_syllabus
       t.timestamps
     end
     
-    [:title, :subject, :course_number, :affiliation, :contact_name, :contact_email, :contact_phone, :pre_class_appt, :timeframe, :staff_involvement, :status].each do|col|
+    [:title, :subject, :course_number, :affiliation, :contact_name, :contact_email, :contact_phone, :pre_class_appt, :timeframe, :staff_involvement, :status, :external_syllabus].each do|col|
       add_index :courses, col
     end
     

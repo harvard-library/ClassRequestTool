@@ -3,8 +3,9 @@
 	<% if current_user.try(:admin?) %>
 	  <%= f.input :email, :input_html => { :size => 30 } %>
 	<% end %>
+	<%= f.input :repositories, :as => :check_boxes, :label => "Associated Repositories: " %>
 	<% unless @user == current_user %>
-	  <span id='admin_box'><%= f.input :admin %></span>
+	  <span id='admin_box'><%= f.input :admin, :label => "Is Admin? " %></span>
 	<% end %>
   <% end %>
   <%= f.actions %>

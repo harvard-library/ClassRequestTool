@@ -1,4 +1,7 @@
 ClassRequestTool::Application.routes.draw do
+  resources :item_attributes
+
+
   resources :courses do
     member do
       get 'summary'
