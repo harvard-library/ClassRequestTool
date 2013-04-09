@@ -23,6 +23,9 @@ class CoursesController < ApplicationController
   
   def edit
     @course = Course.find(params[:id])
+    p "time"
+    p @course.time_choice_1
+    p @course.time_choice_1.to_s
   end
   
   def create
@@ -38,6 +41,9 @@ class CoursesController < ApplicationController
     end  
     params[:course][:timeframe] = DateTime.strptime(params[:course][:timeframe], '%m/%d/%Y %I:%M %P') unless params[:course][:timeframe].empty?
     params[:course][:pre_class_appt] = DateTime.strptime(params[:course][:pre_class_appt], '%m/%d/%Y %I:%M %P') unless params[:course][:pre_class_appt].empty?
+    params[:course][:time_choice_1] = DateTime.strptime(params[:course][:time_choice_1], '%m/%d/%Y %I:%M %P') unless params[:course][:time_choice_1].empty?
+    params[:course][:time_choice_2] = DateTime.strptime(params[:course][:time_choice_2], '%m/%d/%Y %I:%M %P') unless params[:course][:time_choice_2].empty?
+    params[:course][:time_choice_3] = DateTime.strptime(params[:course][:time_choice_3], '%m/%d/%Y %I:%M %P') unless params[:course][:time_choice_3].empty?
     @course = Course.new(params[:course])
     respond_to do |format|
       if !@repository.nil? && !@course.number_of_students.nil?
@@ -63,7 +69,22 @@ class CoursesController < ApplicationController
   
   def update
     @course = Course.find(params[:id])
-
+    unless params[:repository_id].nil?
+      @repository = Repository.find(params[:repository_id])
+      params[:course][:repository_id] = params[:repository_id]
+    end  
+    
+    unless params[:other].empty?
+      params[:course][:staff_involvement] = (params[:course][:staff_involvement] << params[:other]).reject{ |e| e.empty? }.join(", ")
+    else
+      params[:course][:staff_involvement] = params[:course][:staff_involvement].reject{ |e| e.empty? }.join(", ")  
+    end  
+    params[:course][:timeframe] = DateTime.strptime(params[:course][:timeframe], '%m/%d/%Y %I:%M %P') unless params[:course][:timeframe].empty?
+    params[:course][:pre_class_appt] = DateTime.strptime(params[:course][:pre_class_appt], '%m/%d/%Y %I:%M %P') unless params[:course][:pre_class_appt].empty?
+    params[:course][:time_choice_1] = DateTime.strptime(params[:course][:time_choice_1], '%m/%d/%Y %I:%M %P') unless params[:course][:time_choice_1].empty?
+    params[:course][:time_choice_2] = DateTime.strptime(params[:course][:time_choice_2], '%m/%d/%Y %I:%M %P') unless params[:course][:time_choice_2].empty?
+    params[:course][:time_choice_3] = DateTime.strptime(params[:course][:time_choice_3], '%m/%d/%Y %I:%M %P') unless params[:course][:time_choice_3].empty?
+    
     respond_to do |format|
       if @course.update_attributes(params[:course])
         format.html { redirect_to root_url, notice: 'Course was successfully updated.' }

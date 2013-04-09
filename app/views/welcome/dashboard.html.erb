@@ -12,7 +12,7 @@
         <tr>
 	  	  <td><%= link_to(repo.name, repo ) %></td>
           <% if current_user.try(:admin?) %>
-	        <td><%= link_to('Edit', edit_repository_path(repo), :class => "action-edit") %> | <%= link_to('Delete', repository_path(repo), :confirm => "Are you sure?", :method => :delete) %></td>
+	        <td><%= link_to('Edit', edit_repository_path(repo), :class => "action-edit") %><br /><%= link_to('Delete', repository_path(repo), :confirm => "Are you sure?", :method => :delete) %></td>
           <% end %>
 	  	</tr>
       <% end %>
@@ -26,16 +26,18 @@
     <table>
 	  <tr>
 		<th>Name</th>
+		<th>Submission Date</th>
 		<th>Course Date</th>
 		<th></th>
 	  </tr>
     <% current_user.upcoming_courses.each do |course| %>	
       	<tr>
 	  	  <td><%= link_to(course.title, course ) %></td>
+		  <td><%= course.created_at.strftime('%m/%d/%Y') %></td>
 		  <td><%= course.timeframe.strftime('%m/%d/%Y %I:%M %P') unless course.timeframe.nil? %></td>
-		  <td><%= link_to('Edit', edit_course_path(course), :class => "action-edit") %>
+		  <td><%= link_to('Edit', edit_course_path(course), :class => "action-edit") %><br />
           <% if current_user.try(:admin?) %>
-	   		 | <%= link_to('Delete', course_path(course), :confirm => "Are you sure?", :method => :delete) %>
+	   		 <%= link_to('Delete', course_path(course), :confirm => "Are you sure?", :method => :delete) %>
       	  <% end %>
 		  </td>
 	    </tr>
@@ -50,16 +52,18 @@
       <table>
   	  <tr>
   		<th>Name</th>
+		<th>Submission Date</th>
   		<th>Course Date</th>
   		<th></th>
   	  </tr>
       <% current_user.past_courses.each do |course| %>	
         	<tr>
   	  	  <td><%= link_to(course.title, course ) %></td>
+		  <td><%= course.created_at.strftime('%m/%d/%Y') %></td>
   		  <td><%= course.timeframe.strftime('%m/%d/%Y %I:%M %P') unless course.timeframe.nil? %></td>
-  		  <td><%= link_to('Edit', edit_course_path(course), :class => "action-edit") %>
+  		  <td><%= link_to('Edit', edit_course_path(course), :class => "action-edit") %><br />
           <% if current_user.try(:admin?) %>
-  	   	   | <%= link_to('Delete', course_path(course), :confirm => "Are you sure?", :method => :delete) %>
+  	   	   <%= link_to('Delete', course_path(course), :confirm => "Are you sure?", :method => :delete) %>
           <% end %>
 		  </td>
   	    </tr>
@@ -75,17 +79,20 @@
 	<table>
 	  <tr>
 		<th>Name</th>
+		<th>Submission Date</th>
 		<th>Course Date</th>
 		<th></th>
 	  </tr>
       <% Course.homeless.each do |course| %>	
       	<tr>
 	  	  <td><%= link_to(course.title, course ) %></td>
+		  <td><%= course.created_at.strftime('%m/%d/%Y') %></td>
 		  <td><%= course.timeframe.strftime('%m/%d/%Y %I:%M %P') unless course.timeframe.nil? %></td>
-		  <td><%= link_to('Edit', edit_course_path(course), :class => "action-edit") %></td>
+		  <td><%= link_to('Edit', edit_course_path(course), :class => "action-edit") %><br />
           <% if current_user.try(:admin?) %>
-	   		<td> | <%= link_to('Delete', course_path(course), :confirm => "Are you sure?", :method => :delete) %></td>
+	   		<%= link_to('Delete', course_path(course), :confirm => "Are you sure?", :method => :delete) %>
     	  <% end %>
+		  </td>
 	    </tr>
       <% end %>
 	</table>
@@ -98,17 +105,20 @@
   	<table>
   	  <tr>
   		<th>Name</th>
+		<th>Submission Date</th>
   		<th>Course Date</th>
   		<th></th>
   	  </tr>
         <% Course.unassigned.each do |course| %>	
         	<tr>
   	  	  <td><%= link_to(course.title, course ) %></td>
+		  <td><%= course.created_at.strftime('%m/%d/%Y') %></td>
   		  <td><%= course.timeframe.strftime('%m/%d/%Y %I:%M %P') unless course.timeframe.nil? %></td>
-  		  <td><%= link_to('Edit', edit_course_path(course), :class => "action-edit") %></td>
-            <% if current_user.try(:admin?) %>
-  	   		<td> | <%= link_to('Delete', course_path(course), :confirm => "Are you sure?", :method => :delete) %></td>
+  		  <td><%= link_to('Edit', edit_course_path(course), :class => "action-edit") %><br />
+          <% if current_user.try(:admin?) %>
+  	   		<%= link_to('Delete', course_path(course), :confirm => "Are you sure?", :method => :delete) %>
       	  <% end %>
+		  </td>
   	    </tr>
         <% end %>
   	</table>
@@ -121,17 +131,20 @@
     	<table>
     	  <tr>
     		<th>Name</th>
+			<th>Submission Date</th>
     		<th>Course Date</th>
     		<th></th>
     	  </tr>
           <% Course.roomless.each do |course| %>	
           	<tr>
     	  	  <td><%= link_to(course.title, course ) %></td>
+			  <td><%= course.created_at.strftime('%m/%d/%Y') %></td>
     		  <td><%= course.timeframe.strftime('%m/%d/%Y %I:%M %P') unless course.timeframe.nil? %></td>
-    		  <td><%= link_to('Edit', edit_course_path(course), :class => "action-edit") %></td>
+    		  <td><%= link_to('Edit', edit_course_path(course), :class => "action-edit") %><br />
               <% if current_user.try(:admin?) %>
-    	   		<td> | <%= link_to('Delete', course_path(course), :confirm => "Are you sure?", :method => :delete) %></td>
+    	   		<%= link_to('Delete', course_path(course), :confirm => "Are you sure?", :method => :delete) %>
         	  <% end %>
+			  </td>
     	    </tr>
           <% end %>
     	</table>
