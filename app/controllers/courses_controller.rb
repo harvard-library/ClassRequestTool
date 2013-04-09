@@ -11,6 +11,8 @@ class CoursesController < ApplicationController
   
   def show
     @course = Course.find(params[:id])
+    @note = Note.new
+    @all_notes = Note.find(:all, :conditions => {:course_id => @course.id}, :order => :created_at)
   end
   
   def new
@@ -23,9 +25,6 @@ class CoursesController < ApplicationController
   
   def edit
     @course = Course.find(params[:id])
-    p "time"
-    p @course.time_choice_1
-    p @course.time_choice_1.to_s
   end
   
   def create

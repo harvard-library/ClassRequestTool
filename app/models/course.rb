@@ -5,6 +5,7 @@ class Course < ActiveRecord::Base
   belongs_to :room
   belongs_to :repository
   belongs_to :room
+  has_many :notes
   
   
   validates_presence_of :title, :message => "can't be empty"

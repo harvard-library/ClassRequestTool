@@ -1,4 +1,7 @@
 ClassRequestTool::Application.routes.draw do
+  resources :notes
+
+
   resources :item_attributes
 
 
