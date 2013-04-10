@@ -20,10 +20,12 @@ class CreateCourses < ActiveRecord::Migration
       t.string :status
       t.string :file
       t.string :external_syllabus
+      t.string :duration
+      t.text :comments
       t.timestamps
     end
     
-    [:title, :subject, :course_number, :affiliation, :contact_name, :contact_email, :contact_phone, :pre_class_appt, :timeframe, :staff_involvement, :status, :external_syllabus].each do|col|
+    [:title, :subject, :course_number, :affiliation, :contact_name, :contact_email, :contact_phone, :pre_class_appt, :timeframe, :staff_involvement, :status, :external_syllabus, :duration, :comments].each do|col|
       add_index :courses, col
     end
     

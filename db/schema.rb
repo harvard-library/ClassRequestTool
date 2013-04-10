@@ -33,15 +33,19 @@ ActiveRecord::Schema.define(:version => 20130409193619) do
     t.string   "status"
     t.string   "file"
     t.string   "external_syllabus"
+    t.string   "duration"
+    t.text     "comments"
     t.datetime "created_at",                        :null => false
     t.datetime "updated_at",                        :null => false
   end
 
   add_index "courses", ["affiliation"], :name => "index_courses_on_affiliation"
+  add_index "courses", ["comments"], :name => "index_courses_on_comments"
   add_index "courses", ["contact_email"], :name => "index_courses_on_contact_email"
   add_index "courses", ["contact_name"], :name => "index_courses_on_contact_name"
   add_index "courses", ["contact_phone"], :name => "index_courses_on_contact_phone"
   add_index "courses", ["course_number"], :name => "index_courses_on_course_number"
+  add_index "courses", ["duration"], :name => "index_courses_on_duration"
   add_index "courses", ["external_syllabus"], :name => "index_courses_on_external_syllabus"
   add_index "courses", ["pre_class_appt"], :name => "index_courses_on_pre_class_appt"
   add_index "courses", ["staff_involvement"], :name => "index_courses_on_staff_involvement"
@@ -64,6 +68,11 @@ ActiveRecord::Schema.define(:version => 20130409193619) do
 
   add_index "item_attributes", ["description"], :name => "index_item_attributes_on_description"
   add_index "item_attributes", ["name"], :name => "index_item_attributes_on_name"
+
+  create_table "item_attributes_repositories", :id => false, :force => true do |t|
+    t.integer "item_attribute_id"
+    t.integer "repository_id"
+  end
 
   create_table "item_attributes_rooms", :id => false, :force => true do |t|
     t.integer "item_attribute_id"

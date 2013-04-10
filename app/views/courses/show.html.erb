@@ -40,6 +40,9 @@
 	  No course dates selected.
 	<% end %>
 	
+	Course Duration: <%= @course.duration unless @course.duration.nil? %> hour(s) <br />
+	Comments: <%= @course.comments unless @course.comments.nil? %> <br />
+	
     <% if current_user.try(:admin?) %>
 	  <h3>Admin Actions</h3>
 	  	Status: <%= @course.status %> <br />

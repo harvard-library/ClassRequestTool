@@ -14,5 +14,10 @@ class CreateItemAttributes < ActiveRecord::Migration
       t.references :item_attribute
       t.references :room
     end
+    
+    create_table(:item_attributes_repositories, :id => false) do|t|
+      t.references :item_attribute
+      t.references :repository
+    end
   end
 end
