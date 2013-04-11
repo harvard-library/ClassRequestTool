@@ -1,5 +1,5 @@
 class Course < ActiveRecord::Base
-  attr_accessible :room_id, :repository_id, :title, :subject, :course_number, :affiliation, :contact_name, :contact_email, :contact_phone, :pre_class_appt, :staff_involvement, :status, :file, :number_of_students, :timeframe, :user_ids, :external_syllabus, :time_choice_1, :time_choice_2, :time_choice_3, :duration, :comments, :course_sessions, :session_count, :item_attribute_ids
+  attr_accessible :room_id, :repository_id, :title, :subject, :course_number, :affiliation, :contact_name, :contact_email, :contact_phone, :pre_class_appt, :staff_involvement, :status, :file, :number_of_students, :timeframe, :user_ids, :external_syllabus, :time_choice_1, :time_choice_2, :time_choice_3, :duration, :comments, :course_sessions, :session_count, :item_attribute_ids, :goal, :instruction_session
   
   has_and_belongs_to_many :users
   belongs_to :room
@@ -18,7 +18,8 @@ class Course < ActiveRecord::Base
   
   STAFF_INVOLVEMENT = ['Pre-Class Appointment with Reference Staff (phone or in person)', 'Assistance with Selection of Materials', 'Introduction to Archives and Special Collections Research', 'Assistance with Presentation of Materials in Class']
   COURSE_SESSIONS = ['Single Session', 'Multiple Sessions, Same Materials', 'Multiple Sessions, Different Materials']
-  STATUS = ['Open', 'Pending', 'Approved', 'Rejected', 'Closed']
+  STATUS = ['Pending (new request with selected repository)', 'Scheduled, unclaimed (no staff member associated with class)', 'Scheduled, claimed (staff member associated with class)', 'Homeless (a pending request with no selected repository or a request which has been rejected by the originally selected repository;', 'Closed']
+  
   
   def scheduled?
     self.status == 'Pending'
