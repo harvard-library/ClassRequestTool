@@ -1,0 +1,15 @@
+<% content_for :header do %>Rooms<% end %>
+
+<div>
+  <% @rooms.each do |room| %>	
+    <%= room.name %> in <%= room.location.name %>
+    <% if current_user.try(:admin?) %>
+	   - <%= link_to('Edit', edit_room_path(room), :class => "action-edit") %> | <%= link_to('Delete', room_path(room), :confirm => "Are you sure?", :method => :delete) %>
+    <% end %>
+	<br /><br />
+  <% end %>
+  
+  <% if current_user.try(:admin?) %>
+    <%= link_to("Add New Room", new_room_path ) %>
+  <% end %>
+</div>

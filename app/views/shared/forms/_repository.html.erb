@@ -1,0 +1,7 @@
+<%= semantic_form_for(@repository) do |f| %>
+  <%= f.inputs %>
+  <%= f.input :rooms, :as => :check_boxes, :label => 'Available Rooms for this Repository' %>
+  <%= f.input :users, :as => :check_boxes, :label => 'Staff Assigned to this Repository' %>
+  <%= f.input :item_attributes, :as => :check_boxes, :label => 'Attributes in this Room' %>
+  <%= f.actions %>
+<% end %>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Class Request Tool</title>
+  <%= stylesheet_link_tag    'application', :media => "all" %>
+  <%= javascript_include_tag 'application' %>
+  <%= csrf_meta_tags %>
+  <%= yield :header_tags -%>
+</head>
+<body <%= yield :body %>>
+	<div id="header">
+		<div id="utility">
+			<% if user_signed_in? %>
+	          Signed in as <%= current_user.email %>. Not you?
+	          <%= link_to "Sign out", destroy_user_session_path, :method => :delete %> or <%= link_to "edit account", edit_user_registration_path %>
+			<% else %>
+			  <%= link_to "Sign in", new_user_session_path %>
+	        <% end %> 
+			
+			<br /><br />
+			<%= render :partial => 'shared/navigation' %>
+	    </div>
+	    <div id="logo">
+	      <span>
+	        <a href="/" title="Class Request Tool" id="home-logo">Class Request Tool</a>
+	      </span>
+	    </div>
+	  </div>
+
+	<div id="container">	
+
+	<h1 id="content-header">
+      <% if content_for? :header %>
+       <%= yield :header %>
+      <% end %>
+    </h1>
+
+	  <% flash.each do |key, msg| %>
+	    <%= content_tag :div, msg, :class => [key], :id => "notice_#{key}" %>
+	  <% end %>
+
+    <% if content_for? :content_left %>
+		<div id="content-left">  
+        <%= yield :content_left %>
+	    </div>	
+    <% end %>
+
+    <div id="content-right">
+      <%= yield %>
+    </div>
+
+    <div class="clear"></div>
+  </div>
+
+  <div id="footer">
+	<%= render :partial => 'shared/footer' %>
+  </div>
+
+</body>
+</html>

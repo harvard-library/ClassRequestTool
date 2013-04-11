@@ -1,0 +1,15 @@
+<% content_for :header do %>Locations<% end %>
+
+<div>
+  <% @locations.each do |location| %>	
+    <%= location.name %>
+    <% if current_user.try(:admin?) %>
+	   - <%= link_to('Edit', edit_location_path(location), :class => "action-edit") %> | <%= link_to('Delete', location_path(location), :confirm => "Are you sure?", :method => :delete) %>
+    <% end %>
+	<br /><br />
+  <% end %>
+  
+  <% if current_user.try(:admin?) %>
+    <%= link_to("Add New Location", new_location_path ) %>
+  <% end %>
+</div>

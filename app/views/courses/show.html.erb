@@ -1,0 +1,71 @@
+<% content_for :header do %><%= @course.title %><% end %>
+
+<div>
+	<h3>Course Information</h3>
+	Repository: <%= @course.repository.nil? ? "Don't Know" : @course.repository.name %> <br />
+	Title: <%= @course.title unless @course.title.nil? %> <br />
+	Subject: <%= @course.subject unless @course.subject.nil? %> <br />
+	Course Number: <%= @course.course_number unless @course.course_number.nil? %> <br />
+	Affiliation: <%= @course.affiliation unless @course.affiliation.nil? %> <br />
+	Number of Students: <%= @course.number_of_students unless @course.number_of_students.nil? %> <br />
+	Syllabus: 
+	<%  if @course.file.blank? && @course.external_syllabus.nil? %>
+	  None
+	<% else %>
+	  <%= link_to "Syllabus", @course.file_url unless @course.file.blank? %> 
+	  <%= link_to @course.external_syllabus, @course.external_syllabus unless @course.external_syllabus.nil? %>
+	<% end %>
+	<br />
+	
+	<h3>Requester Information</h3>
+	Primary Contact Name: <%= @course.contact_name unless @course.contact_name.nil? %> <br />
+	Primary Contact Email: <%= @course.contact_email unless @course.contact_email.nil? %> <br />
+	Primary Contact Phone: <%= @course.contact_phone unless @course.contact_phone.nil? %> <br />
+	
+	<h3>Staff Involvement</h3>
+	Staff Involvement: <%= @course.staff_involvement unless @course.staff_involvement.nil? || @course.staff_involvement.blank? %> <br />
+	Pre-Class Appt: <%= @course.pre_class_appt.strftime('%m/%d/%Y %I:%M %P') unless @course.pre_class_appt.nil? %> <br />
+	
+	<h3>Scheduling</h3>
+	Course Frequency: <%= @course.course_sessions unless @course.course_sessions.nil? %> <br />
+	Number of Sessions: <%= @course.session_count unless @course.session_count.nil? %> <br />
+	
+	<h4>Date/Time of Course</h4>
+	<% if !@course.timeframe.nil? %>
+	  Course Date/Time: <%= @course.timeframe.strftime('%m/%d/%Y %I:%M %P') unless @course.timeframe.nil? %> <br />
+	<% elsif !@course.time_choice_1.nil? || !@course.time_choice_2.nil? || !@course.time_choice_3.nil? %>
+	  Choice 1: <%= @course.time_choice_1.strftime('%m/%d/%Y %I:%M %P') unless @course.time_choice_1.nil? %> <br />
+	  Choice 2: <%= @course.time_choice_2.strftime('%m/%d/%Y %I:%M %P') unless @course.time_choice_2.nil? %> <br />
+	  Choice 2: <%= @course.time_choice_3.strftime('%m/%d/%Y %I:%M %P') unless @course.time_choice_3.nil? %> <br />
+	<% else %>
+	  No course dates selected.
+	<% end %>
+	
+	Course Duration: <%= @course.duration unless @course.duration.nil? %> hour(s) <br />
+	Room: <%= @course.room.name unless @course.room.nil? %> <br />
+	Comments: <%= @course.comments unless @course.comments.nil? %> <br />
+	
+    <% if current_user.try(:admin?) %>
+	  <h3>Admin Actions</h3>
+	  	Status: <%= @course.status %> <br />
+	    Staff Member(s) Assigned: 
+	    <% @course.users.each do |user| %>
+	      <%= user.email %>, 
+	    <% end %>
+		<h4>Notes</h4>
+		<% unless @all_notes.nil? %>
+		  <% @all_notes.each do |note| %>
+		    <%= note.note_text %><br />
+		  <% end %>
+		<% end %>
+		
+	  <%= semantic_form_for(@note) do |f| %>
+		<%= f.input :note_text, :label => "Note: " %>
+		<%= f.input :course_id, :as => :hidden, :input_html => { :value => @course.id } %>
+		<%= f.input :user_id, :as => :hidden, :input_html => { :value => current_user.id } %>
+		<%= f.actions %>
+	  <% end %>
+    <% end %>
+	<br /><br />
+    <p><%= link_to('Edit Course Info', edit_course_path(@course), :class => "action-edit") %></p>
+</div>

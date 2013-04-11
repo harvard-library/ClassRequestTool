@@ -1,0 +1,18 @@
+<% if current_user.try(:admin?) %>
+  <span style="font-weight: bold;">
+	<%= link_to "Dashboard", "/" %> | 
+	<%= link_to "Courses", courses_path %> | 
+	<%= link_to "Repositories", repositories_path %> | 
+	<%= link_to "Locations", locations_path %> | 
+	<%= link_to "Rooms", rooms_path %> | 
+	<%= link_to "Attributes", item_attributes_path %> | 
+	<%= link_to "Users", users_path %>
+  </span> 
+<% elsif user_signed_in? %>
+  <span style="font-weight: bold;">
+	<%= link_to "Dashboard", "/" %> | 
+	<%= link_to "Courses", courses_path %>
+  </span>
+<% else %>
+	<%= link_to "Home", "/" %>
+<% end %>

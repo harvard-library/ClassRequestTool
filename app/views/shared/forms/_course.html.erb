@@ -1,0 +1,72 @@
+<%= semantic_form_for(@course, :html => {:multipart => true}) do |f| %>
+  <%= f.inputs do %>
+	<h3>Course Information</h3>
+	<% if user_signed_in? %>
+	  <%= f.input :repository, :label => "Repository: ", :input_html => { :value => @course.repository } %>
+	<% else %>  
+	  <% if @course.repository.nil? %>
+        Repository: Don't Know - <%= link_to "Edit", "/" %><br /><br />
+	  <% else %>
+	    Repository: <%= @course.repository.name %> - <%= link_to "Edit", "/" %><br /><br />
+	    <%= hidden_field_tag :repository_id, @repository.id %>
+	  <% end %>
+	<% end %>
+	
+	<%= f.input :title, :label => "Course Title: " %>
+	<%= f.input :subject, :label => "Course Subject: " %>
+	<%= f.input :course_number, :label => "Course Number (if Harvard): " %>
+	<%= f.input :affiliation, :label => "Affiliation (if non-Harvard): " %>
+	<% unless @course.repository.nil? %>
+	  <%= f.input :number_of_students, :label => "Number of Students: ", :hint => "Maximum for this repository is #{@course.repository.class_limit}" %>
+	<% else %>
+	  <%= f.input :number_of_students, :label => "Number of Students: " %>
+	<% end %>
+	Syllabus: <br />
+	<ul>
+	  <li><%= f.input :file, :label => "Upload File: " %></li>
+	  <li><%= f.input :external_syllabus, :label => "Enter URL: " %></li>
+	</ul>
+	
+	<h3>Requester Information</h3>
+	<%= f.input :contact_name, :label => "Primary Contact Name: " %>
+	<%= f.input :contact_email, :label => "Primary Contact Email: " %>
+	<%= f.input :contact_phone, :label => "Primary Contact Phone: " %>
+	
+	<h3>Staff Involvement</h3>
+	<%= f.input :staff_involvement, :label => "Level of Staff Involvement: ", :as => :check_boxes, :collection => Course::STAFF_INVOLVEMENT %>
+	Other Involvement: <%= text_field_tag :other %>
+	<%= f.input :pre_class_appt, :label => "Pre-Class Appointment Date (if necessary): ", :as => :string, :hint => 'In MM/DD/YYYY HH:MM am/pm format', :input_html => { :size => 30 } %>
+	
+	<h3>Scheduling</h3>
+	<%= f.input :course_sessions, :label => "Frequency of Course: ", :as => :radio, :collection => Course::COURSE_SESSIONS %>
+	<%= f.input :session_count, :label => "Number of Sessions: ", :input_html => { :size => 2, :maxlength => 2 } %>
+	
+	<h4>Date/Time of Course</h4>
+	<%= f.input :time_choice_1, :label => "Choice 1: ", :as => :string, :hint => 'In MM/DD/YYYY HH:MM am/pm format', :input_html => { :size => 30, :value => @course.time_choice_1.nil? ? '' : @course.time_choice_1.strftime('%m/%d/%Y %I:%M %P') } %>
+	<%= f.input :time_choice_2, :label => "Choice 2: ", :as => :string, :hint => 'In MM/DD/YYYY HH:MM am/pm format', :input_html => { :size => 30, :value => @course.time_choice_2.nil? ? '' : @course.time_choice_2.strftime('%m/%d/%Y %I:%M %P') } %>
+	<%= f.input :time_choice_3, :label => "Choice 3: ", :as => :string, :hint => 'In MM/DD/YYYY HH:MM am/pm format', :input_html => { :size => 30, :value => @course.time_choice_3.nil? ? '' : @course.time_choice_3.strftime('%m/%d/%Y %I:%M %P') } %>
+	<%= f.input :duration, :label => "Course Duration: ", :hint => '1 hour increments, maximum 3 hours', :input_html => { :size => 1, :maxlength => 1 } %>
+	
+	<% unless @course.repository.nil? %>
+	  <%= f.input :item_attributes, :as => :check_boxes, :collection => @course.repository.item_attributes, :label => "Room Attributes Needed: " %>
+	<% end %>
+	
+	<%= f.input :comments, :label => "Additional Comments: ", :input_html => { :rows => 5, :cols => 30 } %>
+	
+    <% if user_signed_in? %>
+ 	  <h3>Staff Actions</h3>
+	  <%= f.input :timeframe, :label => "Actual Date/Time of Course: ", :as => :string, :hint => 'In MM/DD/YYYY HH:MM am/pm format', :input_html => { :size => 30, :value => @course.timeframe.nil? ? '' : @course.timeframe.strftime('%m/%d/%Y %I:%M %P') } %>
+	  <%= f.input :room, :as => :select, :collection => Room.all, :label => "Room: " %>
+	
+	  <%= f.input :status, :label => "Status: ", :as => :select, :collection => Course::STATUS %>
+	  <% if current_user.admin? %>
+	    <%= f.input :users, :as => :check_boxes, :collection => User.all, :label => "Assign Staff: " %>
+	  <% elsif !@course.repository.nil? %>
+	    <%= f.input :users, :as => :check_boxes, :collection => @course.repository.users, :label => "Assign Staff: " %>
+	  <% end %>
+	
+    <% end %>
+  <% end %>
+  Please review your information above and make any edits before submitting your request.
+  <%= f.actions %>
+<% end %>

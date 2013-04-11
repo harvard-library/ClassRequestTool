@@ -1,0 +1,56 @@
+<% content_for :header do %><%= @repository.name %><% end %>
+
+<%= form_tag new_course_path, :method => :get do %>
+<p>
+  <%= hidden_field_tag :repository, @repository.id %>
+  <%= submit_tag "Request a course for this repository" %>
+</p>
+<% end %>
+
+<div>
+	Name: <%= @repository.name %> <br />
+	Description: <%= @repository.description unless @repository.description.nil? %> <br />
+	Class Limit: <%= @repository.class_limit unless @repository.class_limit.nil? %> <br />
+	Available Rooms: 
+	<ul>
+	  <% @repository.rooms.each do |room| %>
+	    <li><%= room.name %></li>
+	  <% end %>
+	</ul>
+	<br />
+    <% if current_user.try(:admin?) %>
+	  Staff Member(s) Assigned: 
+	  <ul>
+	  <% @repository.users.each do |user| %>
+	    <li><%= user.email %></li>
+	  <% end %>
+	  </ul>
+	  <br /><br />
+	  <%= link_to('Edit', edit_repository_path(@repository), :class => "action-edit") %> | <%= link_to('Delete', repository_path(@repository), :confirm => "Are you sure?", :method => :delete) %>
+    <% end %>
+</div>
+
+<div>
+    <h2>Courses for This Repository</h2>
+      <% unless @repository.courses.nil? || @repository.courses.empty? %>
+    	<table>
+    	  <tr>
+    		<th>Name</th>
+    		<th>Course Date</th>
+    		<th></th>
+    	  </tr>
+          <% @repository.courses.each do |course| %>	
+          	<tr>
+    	  	  <td><%= link_to(course.title, course ) %></td>
+    		  <td><%= course.timeframe.strftime('%m/%d/%Y %I:%M %P') unless course.timeframe.nil? %></td>
+    		  <td><%= link_to('Edit', edit_course_path(course), :class => "action-edit") %></td>
+              <% if current_user.try(:admin?) %>
+    	   		<td> | <%= link_to('Delete', course_path(course), :confirm => "Are you sure?", :method => :delete) %></td>
+        	  <% end %>
+    	    </tr>
+          <% end %>
+    	</table>
+      <% else %>
+    	None yet!
+      <% end %>
+</div>	  

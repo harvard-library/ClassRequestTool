@@ -1,0 +1,24 @@
+<% content_for :header do %>Courses<% end %>
+
+<div>
+  <h2>All Courses</h2>
+  <% unless @courses_all.empty? %>	
+    <% @courses_all.each do |course| %>	
+      <%= link_to(course.title, course ) %>
+      <% if current_user.try(:admin?) %>
+	   - <%= link_to('Edit', edit_course_path(course), :class => "action-edit") %> | <%= link_to('Delete', course_path(course), :confirm => "Are you sure?", :method => :delete) %>
+      <% end %>
+	  <br /><br />
+    <% end %>
+  <% else %>
+	None yet!
+  <% end %>
+  <br /><br />
+  To submit a new course, choose a Repository:
+  <%= form_tag new_course_path, :method => :get do %>
+  <p>
+    <%= select_tag :repository, options_from_collection_for_select(@repositories, "id", "name"), :prompt => "Don't Know" %>
+    <%= submit_tag "Go!" %>
+  </p>
+  <% end %>
+</div>

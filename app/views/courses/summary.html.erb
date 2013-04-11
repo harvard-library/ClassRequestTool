@@ -1,0 +1,35 @@
+<% content_for :header do %>Summary for <%= @course.title %><% end %>
+
+<div>
+	<%= render :partial => 'shared/summary_text' %>
+</div>	
+
+<div>
+	<h3>Course Information</h3>
+	Repository: <%= @course.repository.nil? ? "Don't Know" : @course.repository.name %> <br />
+	Title: <%= @course.title unless @course.title.nil? %> <br />
+	Subject: <%= @course.subject unless @course.subject.nil? %> <br />
+	Course Number: <%= @course.course_number unless @course.course_number.nil? %> <br />
+	Affiliation: <%= @course.affiliation unless @course.affiliation.nil? %> <br />
+	Number of Students: <%= @course.number_of_students unless @course.number_of_students.nil? %>
+	<%  unless @course.file.blank? %>
+	  File: <%= link_to "Syllabus", @course.file_url %> <br />
+	<% end %>
+	
+	<h3>Requester Information</h3>
+	Primary Contact Name: <%= @course.contact_name unless @course.contact_name.nil? %> <br />
+	Primary Contact Email: <%= @course.contact_email unless @course.contact_email.nil? %> <br />
+	Primary Contact Phone: <%= @course.contact_phone unless @course.contact_phone.nil? %> <br />
+	
+	<h3>Staff Involvement</h3>
+	Staff Involvement: <%= @course.staff_involvement unless @course.staff_involvement.nil? || @course.staff_involvement.blank? %> <br />
+	Pre-Class Appt: <%= @course.pre_class_appt.strftime('%m/%d/%Y %I:%M %P') unless @course.pre_class_appt.nil? %> <br />
+	
+	<h3>Additional Information</h3>
+	Room: <%= @course.room.name unless @course.room.nil? %> <br />
+	<h4>Date/Time of Course</h4>
+	Choice 1: <%= @course.time_choice_1.strftime('%m/%d/%Y %I:%M %P') unless @course.time_choice_1.nil? %> <br />
+	Choice 2: <%= @course.time_choice_2.strftime('%m/%d/%Y %I:%M %P') unless @course.time_choice_2.nil? %> <br />
+	Choice 2: <%= @course.time_choice_3.strftime('%m/%d/%Y %I:%M %P') unless @course.time_choice_3.nil? %> <br />
+
+</div>

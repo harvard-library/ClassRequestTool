@@ -1,0 +1,400 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or vendor/assets/stylesheets of plugins, if any, can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the top of the
+ * compiled file, but it's generally better to create a new file per style scope.
+ *
+ *= require_self
+ *= require jquery.ui.all
+ *= require_tree .
+ */
+
+ @charset "utf-8";
+
+ html {
+ 	overflow-y: scroll;
+ }
+
+ body {
+ 	background: url(/assets/background.png) #8c8179 repeat-y top center;
+ 	color: #333333;
+ 	font-family: Arial, Helvetica, sans-serif;
+ 	font-size: 13px;
+ 	margin: 0px;
+ }
+
+ a:link, a:visited {
+ 	color: #a51c30;
+ }
+
+ a:hover {
+ 	color: #bb343f;
+ }
+
+ #content-header a {
+   color: #ffffff;
+ }
+
+ h2 {
+ 	font-size: 19px;
+ 	margin-bottom: 5px;
+ }
+
+ p {
+ 	line-height: 20px;
+ 	margin-top: 5px;	
+ }
+
+ dt {
+   margin-top: 10px;
+   font-weight: bold;
+ }
+
+ dd {
+   margin-left: 20px;
+ }
+
+ .clear {
+ 	clear: both;
+ }
+
+ #skip {	
+ 	border: none;
+ 	height: 0;
+ 	left: 0;
+ 	position: absolute;
+ 	top: 0;
+ 	overflow: hidden;
+ 	width: 0;
+ }
+
+ #header {
+ 	background-color: #ffffff;
+ 	margin: 0px auto;
+ 	width: 960px;
+ }
+
+ #logo {
+ 	padding: 10px 0px 12px 15px;
+ }
+
+ #logo a, #logo span {
+ 	display: block;
+ 	height: 65px;
+ 	width: 350px;
+ }
+
+ #logo span #home-logo {
+     background: url("/assets/logo_crt.png") no-repeat scroll left top transparent;
+     display: block;
+     height: 65px;
+     text-indent: -9999px;
+ }
+
+ #container {
+ 	margin: 0px auto 25px;
+ 	width: 960px;
+ }
+
+ #utility {
+ 	float: right;
+ 	text-align: right;
+ 	margin: 15px 15px 0px 0px;
+ }
+
+ /* Navigation */
+
+ #content-left {
+ 	background-color: #bac5c6;
+ 	border-radius: 8px;
+ 	float: left;
+ 	margin-left: 15px;
+   	margin-top: 15px;
+ 	-moz-border-radius: 8px;
+ 	padding: 15px 0px;
+ 	width: 210px;	
+   	overflow: hidden;
+ }
+
+ #content-left > h4:first-child {
+   padding-top: 0px;
+ }
+
+ #content-left > div {
+   padding-left: 10px;
+   padding-right: 10px;
+ }
+
+ #content-left ul {
+ 	list-style-type: none;
+ 	margin: 0px;
+ 	padding-left: 0px;
+ }
+
+ #content-left .empty {
+   padding: 10px 0px;
+   text-align: center;
+ }
+
+ ul.navlist {
+ 	margin-bottom: 20px;
+ }
+
+ #content-left a {
+ 	font-weight: bold;
+ 	padding: 6px 3px 6px 25px;
+ 	background-color: #bac5c6;
+ 	display: block;
+   width: 182px;
+ }
+
+ #content-left a:link, .navlist a:visited {
+ 	color: #1e1e1e;
+ 	text-decoration: none;
+ }
+
+ #content-left a:hover, #content-left li#active a {
+ 	background-color: #f3f3f1;
+ }
+
+ #content-left li#active a {
+ 	background: url(/assets/menu_arrow.png) #f3f3f1 right center no-repeat;
+ }
+
+ .actions li {
+   display: inline;
+ }
+
+ #content-left ul ul li {
+ 	text-indent: 15px;
+ }
+
+ #content-left ul ul a {
+ 	font-weight: normal;
+   padding-top: 0px;
+   padding-bottom: 0px;
+ }
+
+ #content-left h4 {
+ 	display: block;
+ 	font-size: 16px;
+ 	padding: 20px 0px 0px 15px;	
+ 	margin: 0px;
+ }
+
+ #content-left p {
+ 	margin: 0px;
+ }
+
+ #content-left p a:link {
+ 	font-weight: normal;
+ 	margin: 0px;
+ 	text-decoration: underline;
+ }
+
+ #content-left p a:hover {
+ 	background-color: none;
+ }
+
+ #content-left .collapsable {
+   cursor: pointer;
+ }
+
+ .collapsable {
+   cursor: pointer;
+ }
+
+
+ /* Body */
+
+ fieldset {
+ 	border: none;
+ }	
+
+ .notice, .alert, .error {
+   text-align: center;
+   font-size: 20px;
+   font-weight: bold;
+   margin: 15px;
+ }
+
+ .error {
+   color: #A51C30;
+ }
+
+ .alert {
+   /*color: #4e84c4;*/
+ }
+
+ #content-right {
+ 	margin: 15px 40px 0px 40px;
+ }	
+
+ h2.action-button {
+ 	background: url(background_button.png) #a51c30 center center no-repeat;
+ 	display: block;
+ 	font-size: 15px;
+ 	height: 32px;
+ 	line-height: 30px;
+ 	margin-top: 10px;
+ 	margin-bottom: 5px;
+ 	text-align: center;
+ 	max-width: 333px;
+ }
+
+ h2.action-button a:link, h2.action-button a:visited {
+ 	color: #ffffff;
+ 	text-decoration: none;
+ }
+
+ h2.action-button a:hover {
+ 	text-decoration: underline;
+ }
+
+ #content li {
+ 	margin-top: 10px;
+ }
+
+ #global-links {
+ 	background: url(/assets/background_heading.png) #a51c30 repeat-x center center;
+ 	display: block;
+ 	margin: 30px auto 0px;
+ 	text-align: center;
+ 	width: 960px;
+ 	padding: 0px;
+ }
+
+ #global-links ul {
+ 	margin: 0px;
+ 	padding: 15px 0px 15px 40px;
+ }
+
+ #global-links li {
+ 	display: inline;
+ 	font-size: 11px;
+ 	list-style-type: none;
+ 	padding-right: 40px;
+ }
+
+ #global-links a {
+ 	color: #ffffff;
+ 	font-weight: bold;
+ 	text-decoration: none;
+ 	text-transform: uppercase;
+ }
+
+ #global-links a:hover {
+ 	text-decoration: underline;
+ }
+
+ #footer {
+ 	border-top: 1px solid #bac5c6;
+ 	clear: both;
+ 	margin: 0px auto 15px;
+ 	padding: 10px 0px 0px 15px;
+ 	width: 945px;
+ }
+
+ /* New Styles */
+
+ body.double-column #content-right {
+ 	margin-left: 240px;
+ 	width: 705px;
+ }
+
+ #bar {
+ 	background: url(/assets/background_heading.png) #1E1E1E repeat-x bottom center;
+ 	color: #fff;
+ 	padding: 5px 10px 5px 10px;
+ 	height: 20px;
+ }
+
+ #bar p {
+ 	margin: 0px;
+ }
+
+ #user_options {
+ 	float: right;
+ 	width: auto;
+ }
+
+ #breadcrumb {
+ 	float: left;
+ 	width: auto;
+ }
+
+ #user_options a:link, #user_options a:visited {
+ 	color: #fff;
+ }
+
+ #breadcrumb a:link, #breadcrumb a:visited {
+ 	color: #fff;
+ }
+
+
+ #content-header a {
+   color: #a51c30;
+ }
+
+ h1 {
+ 	font-size: 22px;
+ 	clear: both;
+ 	display: block;
+ 	margin: 0px;
+ 	padding: 10px 0px 10px 20px;
+ 	width: 100%;
+ }
+
+ li {
+ 	list-style-type: none;
+ 	padding-bottom: 4px;
+ }
+
+ th {
+ 	text-align: left;
+ 	padding-right: 30px;
+ }
+
+ .css1 { font-size: 1.0em; }
+ .css2 { font-size: 1.2em; }
+ .css3 { font-size: 1.4em; }
+ .css4 { font-size: 1.6em; }
+
+ #tagged_items_box {
+ 	border: 10px solid #8c8179;
+ 	margin-right: 40px;
+ 	padding: 10px 10px 10px;
+ }
+
+ #tagged_item {
+ 	border: 2px solid #8c8179;
+ 	padding: 10px 10px 5px;
+ 	margin-bottom: 8px;
+ 	background: #FFF none repeat scroll 0%;
+	
+ }
+
+ #sub_item {
+ 	border: 1px dotted #8c8179;
+ 	padding: 10px 10px 5px;
+ 	margin-bottom: 5px;
+ 	background: #FFF none repeat scroll 0%;
+ }
+
+.inline-hints {
+	font-size: 11px;
+}
+
+#left {
+	float: left;
+	width: 45%;
+}
+
+#right {
+	float: right;
+	width: 45%;
+}

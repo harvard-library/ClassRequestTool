@@ -1,0 +1,15 @@
+<% content_for :header do %>Attributes<% end %>
+
+<div>
+  <% @attributes.each do |attribute| %>	
+    <%= attribute.name %>
+    <% if current_user.try(:admin?) %>
+	   - <%= link_to('Edit', edit_item_attribute_path(attribute), :class => "action-edit") %> | <%= link_to('Delete', item_attribute_path(attribute), :confirm => "Are you sure?", :method => :delete) %>
+    <% end %>
+	<br /><br />
+  <% end %>
+  
+  <% if current_user.try(:admin?) %>
+    <%= link_to("Add New Attribute", new_item_attribute_path ) %>
+  <% end %>
+</div>
