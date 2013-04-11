@@ -22,16 +22,23 @@ class CreateCourses < ActiveRecord::Migration
       t.string :external_syllabus
       t.string :duration
       t.text :comments
+      t.string :course_sessions
+      t.string :session_count
       t.timestamps
     end
     
-    [:title, :subject, :course_number, :affiliation, :contact_name, :contact_email, :contact_phone, :pre_class_appt, :timeframe, :staff_involvement, :status, :external_syllabus, :duration, :comments].each do|col|
+    [:title, :subject, :course_number, :affiliation, :contact_name, :contact_email, :contact_phone, :pre_class_appt, :timeframe, :staff_involvement, :status, :external_syllabus, :duration, :comments, :course_sessions, :session_count].each do|col|
       add_index :courses, col
     end
     
     create_table(:courses_users, :id => false) do|t|
       t.references :course
       t.references :user
+    end
+    
+    create_table(:courses_item_attributes, :id => false) do|t|
+      t.references :item_attribute
+      t.references :course
     end
   end
 end

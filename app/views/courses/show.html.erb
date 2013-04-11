@@ -26,8 +26,9 @@
 	Staff Involvement: <%= @course.staff_involvement unless @course.staff_involvement.nil? || @course.staff_involvement.blank? %> <br />
 	Pre-Class Appt: <%= @course.pre_class_appt.strftime('%m/%d/%Y %I:%M %P') unless @course.pre_class_appt.nil? %> <br />
 	
-	<h3>Additional Information</h3>
-	Room: <%= @course.room.name unless @course.room.nil? %> <br />
+	<h3>Scheduling</h3>
+	Course Frequency: <%= @course.course_sessions unless @course.course_sessions.nil? %> <br />
+	Number of Sessions: <%= @course.session_count unless @course.session_count.nil? %> <br />
 	
 	<h4>Date/Time of Course</h4>
 	<% if !@course.timeframe.nil? %>
@@ -41,6 +42,7 @@
 	<% end %>
 	
 	Course Duration: <%= @course.duration unless @course.duration.nil? %> hour(s) <br />
+	Room: <%= @course.room.name unless @course.room.nil? %> <br />
 	Comments: <%= @course.comments unless @course.comments.nil? %> <br />
 	
     <% if current_user.try(:admin?) %>

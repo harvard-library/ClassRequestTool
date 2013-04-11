@@ -2,7 +2,7 @@
   <%= f.inputs do %>
 	<h3>Course Information</h3>
 	<% if user_signed_in? %>
-	  <%= f.input :repository, :label => "Repository: " %>
+	  <%= f.input :repository, :label => "Repository: ", :input_html => { :value => @course.repository } %>
 	<% else %>  
 	  <% if @course.repository.nil? %>
         Repository: Don't Know - <%= link_to "Edit", "/" %><br /><br />
@@ -37,7 +37,10 @@
 	Other Involvement: <%= text_field_tag :other %>
 	<%= f.input :pre_class_appt, :label => "Pre-Class Appointment Date (if necessary): ", :as => :string, :hint => 'In MM/DD/YYYY HH:MM am/pm format', :input_html => { :size => 30 } %>
 	
-	<h3>Additional Information</h3>
+	<h3>Scheduling</h3>
+	<%= f.input :course_sessions, :label => "Frequency of Course: ", :as => :radio, :collection => Course::COURSE_SESSIONS %>
+	<%= f.input :session_count, :label => "Number of Sessions: ", :input_html => { :size => 2, :maxlength => 2 } %>
+	
 	<h4>Date/Time of Course</h4>
 	<%= f.input :time_choice_1, :label => "Choice 1: ", :as => :string, :hint => 'In MM/DD/YYYY HH:MM am/pm format', :input_html => { :size => 30, :value => @course.time_choice_1.nil? ? '' : @course.time_choice_1.strftime('%m/%d/%Y %I:%M %P') } %>
 	<%= f.input :time_choice_2, :label => "Choice 2: ", :as => :string, :hint => 'In MM/DD/YYYY HH:MM am/pm format', :input_html => { :size => 30, :value => @course.time_choice_2.nil? ? '' : @course.time_choice_2.strftime('%m/%d/%Y %I:%M %P') } %>
@@ -45,7 +48,7 @@
 	<%= f.input :duration, :label => "Course Duration: ", :hint => '1 hour increments, maximum 3 hours', :input_html => { :size => 1, :maxlength => 1 } %>
 	
 	<% unless @course.repository.nil? %>
-	  <%= f.input :room, :label => "Room for Course: ", :as => :select, :collection => @course.repository.rooms %>
+	  <%= f.input :item_attributes, :as => :check_boxes, :collection => @course.repository.item_attributes, :label => "Room Attributes Needed: " %>
 	<% end %>
 	
 	<%= f.input :comments, :label => "Additional Comments: ", :input_html => { :rows => 5, :cols => 30 } %>
@@ -53,9 +56,12 @@
     <% if user_signed_in? %>
  	  <h3>Staff Actions</h3>
 	  <%= f.input :timeframe, :label => "Actual Date/Time of Course: ", :as => :string, :hint => 'In MM/DD/YYYY HH:MM am/pm format', :input_html => { :size => 30, :value => @course.timeframe.nil? ? '' : @course.timeframe.strftime('%m/%d/%Y %I:%M %P') } %>
+	  <%= f.input :room, :as => :select, :collection => Room.all, :label => "Room: " %>
 	
 	  <%= f.input :status, :label => "Status: ", :as => :select, :collection => Course::STATUS %>
-	  <% unless @course.repository.nil? %>
+	  <% if current_user.admin? %>
+	    <%= f.input :users, :as => :check_boxes, :collection => User.all, :label => "Assign Staff: " %>
+	  <% elsif !@course.repository.nil? %>
 	    <%= f.input :users, :as => :check_boxes, :collection => @course.repository.users, :label => "Assign Staff: " %>
 	  <% end %>
 	

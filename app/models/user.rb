@@ -24,13 +24,21 @@ class User < ActiveRecord::Base
   
   def upcoming_courses
     upcoming = Array.new
-    self.courses.collect{|course| course.timeframe > DateTime.now ? upcoming << course : ''}
+    if self.admin?
+      Course.all.collect{|course| !course.timeframe.nil? && course.timeframe >= DateTime.now ? upcoming << course : ''}
+    else  
+      self.courses.collect{|course| !course.timeframe.nil? && course.timeframe >= DateTime.now ? upcoming << course : ''}
+    end
     return upcoming
   end
   
   def past_courses
     past = Array.new
-    self.courses.collect{|course| course.timeframe > DateTime.now ? past << course : ''}
+    if self.admin?
+      Course.all.collect{|course| !course.timeframe.nil? && course.timeframe < DateTime.now ? past << course : ''}
+    else  
+      self.courses.collect{|course| !course.timeframe.nil? && course.timeframe < DateTime.now ? past << course : ''}
+    end
     return past
   end  
 

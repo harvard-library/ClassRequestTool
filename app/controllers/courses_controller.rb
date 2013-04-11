@@ -17,14 +17,18 @@ class CoursesController < ApplicationController
   
   def new
     unless params[:repository].nil? || params[:repository].blank?
-      @repository = Repository.find(params[:repository])
+      @course = Course.new(:repository_id => Repository.find(params[:repository]).id)
+    else
+      @course = Course.new  
     end  
-    @course = Course.new
     @uploader = FileUploader.new
   end
   
   def edit
     @course = Course.find(params[:id])
+    @staff_involvement = @course.staff_involvement.split(',')
+    p "staff involvement"
+    p @staff_involvement
   end
   
   def create
