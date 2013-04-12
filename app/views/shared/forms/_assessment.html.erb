@@ -1,0 +1,9 @@
+<%= semantic_form_for(@assessment) do |f| %>
+  <%= f.inputs do %>
+    <%= f.input :using_materials, :label => 'How did using collection materials complement your teaching goals? ', :input_html => { :rows => 5, :columns => 50 } %>
+	<%= f.input :involvement, :label => "In what ways was Houghton Library involved in your class? ", :as => :check_boxes, :collection => Assessment::INVOLVEMENT %>
+	Please evaluate how well the following met your teaching needs:<br />
+	<%= f.input :staff_experience, :label => 'Reference staff expertise: ' %>
+  <% end %>
+  <%= f.actions %>
+<% end %>

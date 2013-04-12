@@ -52,6 +52,7 @@
 	    <% @course.users.each do |user| %>
 	      <%= user.email %>, 
 	    <% end %>
+		<h4><%= link_to "Add Assessment", new_assessment_path %></h4>
 		<h4>Notes</h4>
 		<% unless @all_notes.nil? %>
 		  <% @all_notes.each do |note| %>

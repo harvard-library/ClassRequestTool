@@ -10,6 +10,9 @@ gem 'formtastic'
 gem 'will_paginate'
 gem 'pg'
 gem 'carrierwave'
+#gem "therubyracer"
+#gem "less-rails"
+#gem "twitter-bootstrap-rails"
 
 
 # Gems used only for assets and not required

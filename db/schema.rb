@@ -11,16 +11,47 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130409193619) do
+ActiveRecord::Schema.define(:version => 20130411200312) do
+
+  create_table "assessments", :force => true do |t|
+    t.text     "using_materials"
+    t.string   "involvement"
+    t.integer  "staff_experience"
+    t.integer  "staff_availability"
+    t.integer  "space"
+    t.integer  "request_course"
+    t.integer  "request_materials"
+    t.integer  "catalogs"
+    t.integer  "digital_collections"
+    t.string   "involve_again"
+    t.text     "not_involve_again"
+    t.text     "better_future"
+    t.integer  "course_id"
+    t.datetime "created_at",          :null => false
+    t.datetime "updated_at",          :null => false
+  end
+
+  add_index "assessments", ["better_future"], :name => "index_assessments_on_better_future"
+  add_index "assessments", ["catalogs"], :name => "index_assessments_on_catalogs"
+  add_index "assessments", ["digital_collections"], :name => "index_assessments_on_digital_collections"
+  add_index "assessments", ["involve_again"], :name => "index_assessments_on_involve_again"
+  add_index "assessments", ["involvement"], :name => "index_assessments_on_involvement"
+  add_index "assessments", ["not_involve_again"], :name => "index_assessments_on_not_involve_again"
+  add_index "assessments", ["request_course"], :name => "index_assessments_on_request_course"
+  add_index "assessments", ["request_materials"], :name => "index_assessments_on_request_materials"
+  add_index "assessments", ["space"], :name => "index_assessments_on_space"
+  add_index "assessments", ["staff_availability"], :name => "index_assessments_on_staff_availability"
+  add_index "assessments", ["staff_experience"], :name => "index_assessments_on_staff_experience"
+  add_index "assessments", ["using_materials"], :name => "index_assessments_on_using_materials"
 
   create_table "courses", :force => true do |t|
     t.string   "title"
     t.string   "subject"
     t.string   "course_number"
     t.string   "affiliation"
-    t.string   "contact_name",       :limit => 100, :null => false
-    t.string   "contact_email",      :limit => 150, :null => false
-    t.string   "contact_phone",      :limit => 25,  :null => false
+    t.string   "contact_name",        :limit => 100, :null => false
+    t.string   "contact_email",       :limit => 150, :null => false
+    t.string   "contact_phone",       :limit => 25,  :null => false
     t.datetime "pre_class_appt"
     t.datetime "timeframe"
     t.datetime "time_choice_1"
@@ -35,8 +66,12 @@ ActiveRecord::Schema.define(:version => 20130409193619) do
     t.string   "external_syllabus"
     t.string   "duration"
     t.text     "comments"
-    t.datetime "created_at",                        :null => false
-    t.datetime "updated_at",                        :null => false
+    t.datetime "created_at",                         :null => false
+    t.datetime "updated_at",                         :null => false
+    t.string   "course_sessions"
+    t.string   "session_count"
+    t.text     "goal"
+    t.string   "instruction_session"
   end
 
   add_index "courses", ["affiliation"], :name => "index_courses_on_affiliation"
@@ -53,6 +88,11 @@ ActiveRecord::Schema.define(:version => 20130409193619) do
   add_index "courses", ["subject"], :name => "index_courses_on_subject"
   add_index "courses", ["timeframe"], :name => "index_courses_on_timeframe"
   add_index "courses", ["title"], :name => "index_courses_on_title"
+
+  create_table "courses_item_attributes", :id => false, :force => true do |t|
+    t.integer "item_attribute_id"
+    t.integer "course_id"
+  end
 
   create_table "courses_users", :id => false, :force => true do |t|
     t.integer "course_id"

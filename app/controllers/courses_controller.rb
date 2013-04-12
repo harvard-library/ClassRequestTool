@@ -27,8 +27,6 @@ class CoursesController < ApplicationController
   def edit
     @course = Course.find(params[:id])
     @staff_involvement = @course.staff_involvement.split(',')
-    p "staff involvement"
-    p @staff_involvement
   end
   
   def create
