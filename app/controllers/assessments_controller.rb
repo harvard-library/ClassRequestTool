@@ -6,6 +6,7 @@ class AssessmentsController < ApplicationController
   
   def new
     @assessment = Assessment.new
+    @course = Course.find(params[:course_id])
   end
   
   def edit
@@ -14,6 +15,7 @@ class AssessmentsController < ApplicationController
   
   def create
     @assessment = Assessment.new(params[:assessment])
+    @assessment.course = Course.find(params[:course_id])
     respond_to do |format|
       if @assessment.save
         format.html { redirect_to course_url(@assessment.course), notice: 'assessment was successfully created.' }

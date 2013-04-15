@@ -7,7 +7,7 @@ class Course < ActiveRecord::Base
   belongs_to :room
   has_many :notes
   has_and_belongs_to_many :item_attributes
-  has_one :assessment
+  has_many :assessments
   
   
   validates_presence_of :title, :message => "can't be empty"
