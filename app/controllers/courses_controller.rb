@@ -12,7 +12,7 @@ class CoursesController < ApplicationController
   def show
     @course = Course.find(params[:id])
     @note = Note.new
-    @all_notes = Note.find(:all, :conditions => {:course_id => @course.id}, :order => :created_at)
+    @all_notes = Note.find(:all, :conditions => {:course_id => @course.id}, :order => "created_at DESC")
   end
   
   def new

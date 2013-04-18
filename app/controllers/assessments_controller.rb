@@ -2,7 +2,11 @@ class AssessmentsController < ApplicationController
   
   def index
     @assessments = Assessment.find(:all, :order => :name)
-  end  
+  end 
+  
+  def show
+    @assessment = Assessment.find(params[:id])
+  end
   
   def new
     @assessment = Assessment.new
@@ -14,6 +18,7 @@ class AssessmentsController < ApplicationController
   end
   
   def create
+    params[:assessment][:involvement] = params[:assessment][:involvement].reject{ |e| e.empty? }.join(", ")
     @assessment = Assessment.new(params[:assessment])
     @assessment.course = Course.find(params[:course_id])
     respond_to do |format|
@@ -29,7 +34,8 @@ class AssessmentsController < ApplicationController
   
   def update
     @assessment = Assessment.find(params[:id])
-
+    params[:assessment][:involvement] = params[:assessment][:involvement].reject{ |e| e.empty? }.join(", ")
+    
     respond_to do |format|
       if @assessment.update_attributes(params[:assessment])
         format.html { redirect_to assessments_url, notice: 'assessment was successfully updated.' }
