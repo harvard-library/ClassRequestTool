@@ -47,5 +47,4 @@ jQuery(function(){
   $('#course_course_sessions_multiple_sessions_different_materials').change(function() {
     $('#course_session_count_input').show();
    });
-
 });

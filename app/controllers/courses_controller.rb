@@ -110,5 +110,10 @@ class CoursesController < ApplicationController
   def summary
     @course = Course.find(params[:id])
   end
+  
+  def repo_select
+    @repo = Repository.find(params[:repo])
+    render :partial => "repo_items"
+  end
    
 end

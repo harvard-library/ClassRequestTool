@@ -1,8 +1,22 @@
+<script type="text/javascript" charset="utf-8">
+  function change_repo_items(repo_id)
+ {
+    $.ajax('<%= url_for(:action => "repo_select") %>?repo='+repo_id,
+    {
+      method: 'get',
+      success: function(data) {
+		$("#repo_items").html(data);
+      }
+    });
+  }
+ </script>
+ <noscript>Please enable Javascript.</noscript>
+
 <%= semantic_form_for(@course, :html => {:multipart => true}) do |f| %>
   <%= f.inputs do %>
 	<h3>Course Information</h3>
 	<% if user_signed_in? %>
-	  <%= f.input :repository, :label => "Repository: ", :input_html => { :value => @course.repository } %>
+	  <%= f.input :repository, :label => "Repository: ", :input_html => { :value => @course.repository, :onchange => "change_repo_items(this.options[this.selectedIndex].value);" } %>
 	<% else %>  
 	  <% if @course.repository.nil? %>
         Repository: Don't Know - <%= link_to "Edit", "/" %><br /><br />
@@ -51,6 +65,7 @@
 	
 	<% unless @course.repository.nil? %>
 	  <%= f.input :item_attributes, :as => :check_boxes, :collection => @course.repository.item_attributes, :label => "Room Attributes Needed: " %>
+	  <span id='repo_items'></span>
 	<% end %>
 	
 	<%= f.input :instruction_session, :label => "Have you scheduled a general library research instruction session for the class? ", :input_html => { :size => 40 } %>

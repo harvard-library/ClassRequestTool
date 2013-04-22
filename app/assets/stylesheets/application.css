@@ -398,3 +398,13 @@
 	float: right;
 	width: 45%;
 }
+
+#course-left {
+	float: left;
+	width: 58%;
+}
+
+#course-right {
+	float: right;
+	width: 38%;
+}
