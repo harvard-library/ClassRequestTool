@@ -32,4 +32,20 @@ $(document).ready(function(){
   $('#course_pre_class_appt').datetimepicker({
 	timeFormat: "hh:mm tt"
   });
+
+  $('#course_session_count_input').hide();
+
+});
+jQuery(function(){
+
+  $('#course_course_sessions_single_session').change(function() {
+	$('#course_session_count_input').hide();
+   });
+  $('#course_course_sessions_multiple_sessions_same_materials').change(function() {
+    $('#course_session_count_input').show();
+   });
+  $('#course_course_sessions_multiple_sessions_different_materials').change(function() {
+    $('#course_session_count_input').show();
+   });
+
 });
