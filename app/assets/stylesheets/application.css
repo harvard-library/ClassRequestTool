@@ -11,7 +11,7 @@
  *= require_self
  *= require jquery.ui.all
  *= require bootstrap
- *= require jquery-tablesorter/theme.black-ice
+ *= require jquery-tablesorter/theme.dark
  *= require jquery-tablesorter/addons/pager/jquery.tablesorter.pager
  *= require_tree .
  */

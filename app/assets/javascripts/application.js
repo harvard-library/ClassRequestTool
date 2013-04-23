@@ -36,7 +36,19 @@ $(document).ready(function(){
 
   $('#course_session_count_input').hide();
 
-  $("#course-table").tablesorter({sortList: [[0,0], [1,0]]} );
+  $("#course-table").tablesorter();
+  $("#attributes-table").tablesorter();
+  $("#locations-table").tablesorter();
+  $("#repositories-table").tablesorter();
+  $("#rooms-table").tablesorter();
+  $("#users-table").tablesorter();
+
+  $("#your-repos-table").tablesorter();
+  $("#your-upcoming-table").tablesorter();
+  $("#your-past-table").tablesorter();
+  $("#homeless-table").tablesorter();
+  $("#unassigned-table").tablesorter();
+  $("#roomless-table").tablesorter();
 
 });
 jQuery(function(){

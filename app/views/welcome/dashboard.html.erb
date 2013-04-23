@@ -11,7 +11,7 @@
 <div id="left">
 <h3>Your Repositories</h3>
   <% unless current_user.repositories.nil? || current_user.repositories.empty? %>
-	<table class="table table-condensed">
+	<table id="your-repos-table" class="table table-condensed tablesorter">
 	  <thead>
 	  <tr>
 		<th>Name</th>
@@ -35,7 +35,7 @@
 
 <h3>Your Upcoming Courses</h3>
   <% unless current_user.upcoming_courses.nil? || current_user.upcoming_courses.empty? %>	
-    <table class="table table-condensed">
+    <table id="your-upcoming-table" class="table table-condensed tablesorter">
 	  <thead>
 	  <tr>
 		<th>Name</th>
@@ -65,7 +65,7 @@
   
   <h3>Your Past Courses</h3>
     <% unless current_user.past_courses.nil? || current_user.past_courses.empty? %>	
-      <table class="table table-condensed">
+      <table id="your-past-table" class="table table-condensed tablesorter">
 	  <thead>
   	  <tr>
   		<th>Name</th>
@@ -96,7 +96,7 @@
 <div id="right">
 <h3>Homeless Courses</h3>
   <% unless Course.homeless.nil? || Course.homeless.empty? %>
-	<table class="table table-condensed">
+	<table id="homeless-table" class="table table-condensed tablesorter">
 	<thead>	
 	  <tr>
 		<th>Name</th>
@@ -126,7 +126,7 @@
   
   <h3>Unassigned Courses</h3>
     <% unless Course.unassigned.nil? || Course.unassigned.empty? %>
-  	<table class="table table-condensed">
+  	<table id="unassigned-table" class="table table-condensed tablesorter">
 	<thead>
   	  <tr>
   		<th>Name</th>
@@ -156,7 +156,7 @@
 	
     <h3>Roomless Courses</h3>
       <% unless Course.roomless.nil? || Course.roomless.empty? %>
-    	<table class="table table-condensed">
+    	<table id="roomless-table" class="table table-condensed tablesorter">
 		<thead>
     	  <tr>
     		<th>Name</th>

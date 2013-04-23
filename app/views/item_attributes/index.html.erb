@@ -1,7 +1,7 @@
 <h1>Attributes</h1>
 
 <div>
-  	<table class="table table-condensed">
+  	<table id="attributes-table" class="table table-condensed tablesorter">
 	<thead>
 	  <tr>
 		<th>Name</th>
@@ -10,7 +10,7 @@
 	</thead> 
 	<tbody>
 	    <% @attributes.each do |attribute| %>
-	    	<tr>
+	    <tr>
 	  	  <td><%= attribute.name %></td>
 		  <td>
 	      <% if current_user.try(:admin?) %>
