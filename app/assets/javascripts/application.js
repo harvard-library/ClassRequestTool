@@ -14,6 +14,7 @@
 //= require jquery_ujs
 //= require jquery-ui
 //= require jquery.ui.datepicker
+//= require jquery-tablesorter
 //= require_tree .
 
 $(document).ready(function(){
@@ -34,6 +35,8 @@ $(document).ready(function(){
   });
 
   $('#course_session_count_input').hide();
+
+  $("#course-table").tablesorter({sortList: [[0,0], [1,0]]} );
 
 });
 jQuery(function(){
