@@ -23,26 +23,13 @@
 </div>
 
 <div id="info-right">
-  	<h3>Upcoming Courses</h3>
-	  <% unless @courses.nil? || @courses.empty? %>	
-	    <table id="your-upcoming-table" class="table table-condensed tablesorter">
-		  <thead>
-		  <tr>
-			<th>Name</th>
-			<th>Submission Date</th>
-			<th>Course Date</th>
-		  </tr>
-		  </thead>
-		  <tbody>
-	    <% @courses.each do |course| %>	
-	      	<tr>
-		  	  <td><%= link_to(course.title, summary_course_url(course) ) %></td>
-			  <td><%= course.created_at.strftime('%m/%d/%Y') %></td>
-			  <td><%= course.timeframe.strftime('%m/%d/%Y %I:%M %P') unless course.timeframe.nil? %></td>
-		    </tr>
+  	<h3>Recent Courses</h3>
+	  <% unless @courses.nil? %>	
+	  	<% @courses.each do |course| %>	
+	      <ul>
+		    <li><%= link_to(course.title, summary_course_url(course) ) %> - <%= course.course_number unless course.course_number.nil? %></li>
+		  </ul>
 	    <% end %>
-		  </tbody>
-		</table>
 	  <% else %>
 		None yet!
 	  <% end %>

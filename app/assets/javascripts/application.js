@@ -26,7 +26,17 @@ $(document).ready(function(){
   });
   $('#course_time_choice_3').datetimepicker({
 	timeFormat: "hh:mm tt"
-  });	
+  });
+  $('#course_pre_class_appt_choice_1').datetimepicker({
+	timeFormat: "hh:mm tt"
+  });
+  $('#course_pre_class_appt_choice_2').datetimepicker({
+	timeFormat: "hh:mm tt"
+  });
+  $('#course_pre_class_appt_choice_3').datetimepicker({
+	timeFormat: "hh:mm tt"
+  });
+	
   $('#course_timeframe').datetimepicker({
 	timeFormat: "hh:mm tt"
   });

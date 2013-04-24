@@ -13,6 +13,7 @@ class CreateAssessments < ActiveRecord::Migration
       t.string :involve_again
       t.text :not_involve_again
       t.text :better_future
+      t.text :comments
       t.references :course
       t.timestamps
     end

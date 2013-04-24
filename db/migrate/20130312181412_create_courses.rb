@@ -9,10 +9,14 @@ class CreateCourses < ActiveRecord::Migration
       t.string :contact_email, :limit => 150, :null => false
       t.string :contact_phone, :limit => 25, :null => false
       t.datetime :pre_class_appt
+      t.datetime :pre_class_appt_choice_1
+      t.datetime :pre_class_appt_choice_2
+      t.datetime :pre_class_appt_choice_3
       t.datetime :timeframe
       t.datetime :time_choice_1
       t.datetime :time_choice_2
       t.datetime :time_choice_3
+      t.datetime :time_choice_4
       t.references :repository
       t.references :room
       t.text :staff_involvement
