@@ -1,0 +1,6 @@
+<%= semantic_form_for(@note) do |f| %>
+  <%= f.input :note_text, :label => "Note: ", :input_html => { :rows => 5, :columns => 50 } %>
+  <%= f.input :course_id, :as => :hidden, :input_html => { :value => @note.course.id } %>
+  <%= f.input :user_id, :as => :hidden, :input_html => { :value => current_user.id } %>
+  <%= f.actions %>
+<% end %>

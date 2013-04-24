@@ -12,7 +12,7 @@ class CoursesController < ApplicationController
   def show
     @course = Course.find(params[:id])
     @note = Note.new
-    @all_notes = Note.find(:all, :conditions => {:course_id => @course.id}, :order => :created_at)
+    @all_notes = Note.find(:all, :conditions => {:course_id => @course.id}, :order => "created_at DESC")
   end
   
   def new
@@ -27,8 +27,6 @@ class CoursesController < ApplicationController
   def edit
     @course = Course.find(params[:id])
     @staff_involvement = @course.staff_involvement.split(',')
-    p "staff involvement"
-    p @staff_involvement
   end
   
   def create
@@ -111,6 +109,11 @@ class CoursesController < ApplicationController
   
   def summary
     @course = Course.find(params[:id])
+  end
+  
+  def repo_select
+    @repo = Repository.find(params[:repo])
+    render :partial => "repo_items"
   end
    
 end

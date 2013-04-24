@@ -1,15 +1,32 @@
-<% content_for :header do %>Courses<% end %>
+<h1>Courses</h1>
 
 <div>
   <h2>All Courses</h2>
   <% unless @courses_all.empty? %>	
-    <% @courses_all.each do |course| %>	
-      <%= link_to(course.title, course ) %>
-      <% if current_user.try(:admin?) %>
-	   - <%= link_to('Edit', edit_course_path(course), :class => "action-edit") %> | <%= link_to('Delete', course_path(course), :confirm => "Are you sure?", :method => :delete) %>
-      <% end %>
-	  <br /><br />
-    <% end %>
+    <table id="course-table" class="table table-condensed tablesorter">
+	<thead>
+	  <tr>
+		<th>Name</th>
+		<th>Submission Date</th>
+		<th>Course Date</th>
+		<th>Actions</th>
+	  </tr>
+	</thead> 
+	<tbody>
+	    <% @courses_all.each do |course| %>	
+	    <tr>
+	  	  <td><%= link_to(course.title, course ) %></td>
+		  <td><%= course.created_at.strftime('%m/%d/%Y') %></td>
+		  <td><%= course.timeframe.strftime('%m/%d/%Y %I:%M %P') unless course.timeframe.nil? %></td>
+		  <td><%= link_to('Edit', edit_course_path(course), :class => "action-edit") %>
+	      <% if current_user.try(:admin?) %>
+	   		 | <%= link_to('Delete', course_path(course), :confirm => "Are you sure?", :method => :delete) %>
+	  	  <% end %>
+		  </td>
+	    </tr>
+	    <% end %>
+	</tbody>	
+	</table>
   <% else %>
 	None yet!
   <% end %>
@@ -22,3 +39,4 @@
   </p>
   <% end %>
 </div>
+

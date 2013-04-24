@@ -1,18 +1,22 @@
-<% if current_user.try(:admin?) %>
-  <span style="font-weight: bold;">
-	<%= link_to "Dashboard", "/" %> | 
-	<%= link_to "Courses", courses_path %> | 
-	<%= link_to "Repositories", repositories_path %> | 
-	<%= link_to "Locations", locations_path %> | 
-	<%= link_to "Rooms", rooms_path %> | 
-	<%= link_to "Attributes", item_attributes_path %> | 
-	<%= link_to "Users", users_path %>
-  </span> 
-<% elsif user_signed_in? %>
-  <span style="font-weight: bold;">
-	<%= link_to "Dashboard", "/" %> | 
-	<%= link_to "Courses", courses_path %>
-  </span>
-<% else %>
-	<%= link_to "Home", "/" %>
-<% end %>
+<%= link_to "Class Request Tool", root_path, :class => 'brand' %>
+<ul class="nav">
+	<li><%= link_to "Home", root_path %></li>
+  <% if current_user.try(:admin?) %>
+    <li><%= link_to "Dashboard", dashboard_welcome_index_url %></li>
+	<li><%= link_to "Courses", courses_path %></li>
+	<li><%= link_to "Repositories", repositories_path %></li>
+	<li><%= link_to "Locations", locations_path %></li>
+	<li><%= link_to "Rooms", rooms_path %></li>
+	<li><%= link_to "Attributes", item_attributes_path %></li>
+	<li><%= link_to "Users", users_path %></li>
+	<li><%= link_to "Sign Out", destroy_user_session_path, :method => :delete %></li>
+	<li><%= link_to "Edit Account", edit_user_registration_path %></li>
+  <% elsif user_signed_in? %>
+    <li><%= link_to "Dashboard", dashboard_welcome_index_url %></li>
+	<li><%= link_to "Courses", courses_path %></li>
+	<li><%= link_to "Sign Out", destroy_user_session_path, :method => :delete %></li>
+	<li><%= link_to "Edit Account", edit_user_registration_path %></li>
+  <% else %>
+	<li><%= link_to "Sign In", new_user_session_path %></li>
+  <% end %>
+</ul>

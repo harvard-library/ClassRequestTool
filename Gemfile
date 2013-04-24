@@ -10,6 +10,9 @@ gem 'formtastic'
 gem 'will_paginate'
 gem 'pg'
 gem 'carrierwave'
+gem 'bootstrap-sass'
+gem 'formtastic-bootstrap'
+gem 'jquery-tablesorter'
 
 
 # Gems used only for assets and not required

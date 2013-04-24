@@ -1,0 +1,20 @@
+<h3>Repository Information</h3>
+
+<div>
+	Name: <%= @course.repository.name %> <br />
+	Description: <%= @course.repository.description unless @course.repository.description.nil? %> <br />
+	Class Limit: <%= @course.repository.class_limit unless @course.repository.class_limit.nil? %> <br />
+	Available Attributes: 
+	<ul>
+	  <% @course.repository.item_attributes.each do |attribute| %>
+	    <li><%= attribute.name %> - <%= attribute.description %></li>
+	  <% end %>
+	</ul>
+	Available Rooms: 
+	<ul>
+	  <% @course.repository.rooms.each do |room| %>
+	    <li><%= room.name %></li>
+	  <% end %>
+	</ul>
+	
+</div>

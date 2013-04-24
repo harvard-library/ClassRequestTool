@@ -7,6 +7,7 @@ class Course < ActiveRecord::Base
   belongs_to :room
   has_many :notes
   has_and_belongs_to_many :item_attributes
+  has_many :assessments
   
   
   validates_presence_of :title, :message => "can't be empty"
@@ -16,14 +17,9 @@ class Course < ActiveRecord::Base
   
   mount_uploader :file, FileUploader
   
-  STAFF_INVOLVEMENT = ['Pre-Class Appointment with Reference Staff (phone or in person)', 'Assistance with Selection of Materials', 'Introduction to Archives and Special Collections Research', 'Assistance with Presentation of Materials in Class']
+  STAFF_INVOLVEMENT = ['Pre-Class Appointment with Reference Staff (phone or in person)', 'Assistance with Selection of Materials', 'Introduction to Archives and Special Collections Research', 'Assistance with Presentation of Materials in Class', 'Creation of sources list or research guide for course']
   COURSE_SESSIONS = ['Single Session', 'Multiple Sessions, Same Materials', 'Multiple Sessions, Different Materials']
-  STATUS = ['Pending (new request with selected repository)', 'Scheduled, unclaimed (no staff member associated with class)', 'Scheduled, claimed (staff member associated with class)', 'Homeless (a pending request with no selected repository or a request which has been rejected by the originally selected repository;', 'Closed']
-  
-  
-  def scheduled?
-    self.status == 'Pending'
-  end  
+  STATUS = ['Pending', 'Scheduled, unclaimed', 'Scheduled, claimed', 'Homeless', 'Closed']
   
   def self.homeless
     Course.find(:all, :conditions => {:repository_id => nil})

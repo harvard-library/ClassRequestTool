@@ -1,4 +1,4 @@
-<% content_for :header do %><%= @repository.name %><% end %>
+<h1><%= @repository.name %><h1>
 
 <%= form_tag new_course_path, :method => :get do %>
 <p>
@@ -11,12 +11,27 @@
 	Name: <%= @repository.name %> <br />
 	Description: <%= @repository.description unless @repository.description.nil? %> <br />
 	Class Limit: <%= @repository.class_limit unless @repository.class_limit.nil? %> <br />
+	Available Attributes: 
+	<% unless @repository.item_attributes.nil? || @repository.item_attributes.empty? %>
+	<ul>
+	  <% @repository.item_attributes.each do |attribute| %>
+	    <li><%= attribute.name %> - <%= attribute.description %></li>
+	  <% end %>
+	</ul>
+	<% else %>
+	  None.
+	<% end %>
+	<br />
 	Available Rooms: 
+	<% unless @repository.rooms.nil? || @repository.rooms.empty? %> 
 	<ul>
 	  <% @repository.rooms.each do |room| %>
 	    <li><%= room.name %></li>
 	  <% end %>
 	</ul>
+	<% else %>
+	  None.
+	<% end %>
 	<br />
     <% if current_user.try(:admin?) %>
 	  Staff Member(s) Assigned: 

@@ -1,14 +1,28 @@
+<script type="text/javascript" charset="utf-8">
+  function change_repo_items(repo_id)
+ {
+    $.ajax('<%= url_for(:action => "repo_select") %>?repo='+repo_id,
+    {
+      method: 'get',
+      success: function(data) {
+		$("#repo_items").html(data);
+      }
+    });
+  }
+ </script>
+ <noscript>Please enable Javascript.</noscript>
+
 <%= semantic_form_for(@course, :html => {:multipart => true}) do |f| %>
   <%= f.inputs do %>
 	<h3>Course Information</h3>
 	<% if user_signed_in? %>
-	  <%= f.input :repository, :label => "Repository: ", :input_html => { :value => @course.repository } %>
+	  <%= f.input :repository, :label => "Repository: ", :input_html => { :value => @course.repository, :onchange => "change_repo_items(this.options[this.selectedIndex].value);" } %>
 	<% else %>  
 	  <% if @course.repository.nil? %>
         Repository: Don't Know - <%= link_to "Edit", "/" %><br /><br />
 	  <% else %>
 	    Repository: <%= @course.repository.name %> - <%= link_to "Edit", "/" %><br /><br />
-	    <%= hidden_field_tag :repository_id, @repository.id %>
+	    <%= hidden_field_tag :repository_id, @course.repository.id %>
 	  <% end %>
 	<% end %>
 	
@@ -41,16 +55,17 @@
 	
 	<h3>Scheduling</h3>
 	<%= f.input :course_sessions, :label => "Frequency of Course: ", :as => :radio, :collection => Course::COURSE_SESSIONS %>
-	<%= f.input :session_count, :label => "Number of Sessions: ", :input_html => { :size => 2, :maxlength => 2 } %>
+	<%= f.input :session_count, :label => "Number of Sessions: ", :input_html => { :size => 1, :maxlength => 1 } %>
 	
 	<h4>Date/Time of Course</h4>
 	<%= f.input :time_choice_1, :label => "Choice 1: ", :as => :string, :hint => 'In MM/DD/YYYY HH:MM am/pm format', :input_html => { :size => 30, :value => @course.time_choice_1.nil? ? '' : @course.time_choice_1.strftime('%m/%d/%Y %I:%M %P') } %>
 	<%= f.input :time_choice_2, :label => "Choice 2: ", :as => :string, :hint => 'In MM/DD/YYYY HH:MM am/pm format', :input_html => { :size => 30, :value => @course.time_choice_2.nil? ? '' : @course.time_choice_2.strftime('%m/%d/%Y %I:%M %P') } %>
 	<%= f.input :time_choice_3, :label => "Choice 3: ", :as => :string, :hint => 'In MM/DD/YYYY HH:MM am/pm format', :input_html => { :size => 30, :value => @course.time_choice_3.nil? ? '' : @course.time_choice_3.strftime('%m/%d/%Y %I:%M %P') } %>
-	<%= f.input :duration, :label => "Course Duration: ", :hint => '1 hour increments, maximum 3 hours', :input_html => { :size => 1, :maxlength => 1 } %>
+	<%= f.input :duration, :label => "Course Duration (hours): ", :hint => '1 hour increments, maximum 3 hours', :input_html => { :size => 1, :maxlength => 1 } %>
 	
 	<% unless @course.repository.nil? %>
 	  <%= f.input :item_attributes, :as => :check_boxes, :collection => @course.repository.item_attributes, :label => "Room Attributes Needed: " %>
+	  <span id='repo_items'></span>
 	<% end %>
 	
 	<%= f.input :instruction_session, :label => "Have you scheduled a general library research instruction session for the class? ", :input_html => { :size => 40 } %>

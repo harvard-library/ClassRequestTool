@@ -1,13 +1,24 @@
-<% content_for :header do %>Dashboard<% end %>
+<script src="js/jquery/jquery.tablesorter.min.js"></script>
+<script >
+  $(function() {
+    $("table#sortTableExample").tablesorter({ sortList: [[1,0]] });
+  });
+</script>
+
+
+<h1>Dashboard</h1>
 
 <div id="left">
-<h2>Your Repositories</h2>
+<h3>Your Repositories</h3>
   <% unless current_user.repositories.nil? || current_user.repositories.empty? %>
-	<table>
+	<table id="your-repos-table" class="table table-condensed tablesorter">
+	  <thead>
 	  <tr>
 		<th>Name</th>
 		<th></th>
-	  </tr>	
+	  </tr>
+	  </thead>
+	  <tbody>	
       <% current_user.repositories.each do |repo| %>	
         <tr>
 	  	  <td><%= link_to(repo.name, repo ) %></td>
@@ -16,20 +27,24 @@
           <% end %>
 	  	</tr>
       <% end %>
+	  </tbody>
     </table>
   <% else %>
 	None yet!
   <% end %>
 
-<h2>Your Upcoming Courses</h2>
+<h3>Your Upcoming Courses</h3>
   <% unless current_user.upcoming_courses.nil? || current_user.upcoming_courses.empty? %>	
-    <table>
+    <table id="your-upcoming-table" class="table table-condensed tablesorter">
+	  <thead>
 	  <tr>
 		<th>Name</th>
 		<th>Submission Date</th>
 		<th>Course Date</th>
 		<th></th>
 	  </tr>
+	  </thead>
+	  <tbody>
     <% current_user.upcoming_courses.each do |course| %>	
       	<tr>
 	  	  <td><%= link_to(course.title, course ) %></td>
@@ -42,22 +57,26 @@
 		  </td>
 	    </tr>
     <% end %>
+	  </tbody>
 	</table>
   <% else %>
 	None yet!
   <% end %>
   
-  <h2>Your Past Courses</h2>
+  <h3>Your Past Courses</h3>
     <% unless current_user.past_courses.nil? || current_user.past_courses.empty? %>	
-      <table>
+      <table id="your-past-table" class="table table-condensed tablesorter">
+	  <thead>
   	  <tr>
   		<th>Name</th>
 		<th>Submission Date</th>
   		<th>Course Date</th>
   		<th></th>
   	  </tr>
+      </thead>
+	  <tbody>
       <% current_user.past_courses.each do |course| %>	
-        	<tr>
+        <tr>
   	  	  <td><%= link_to(course.title, course ) %></td>
 		  <td><%= course.created_at.strftime('%m/%d/%Y') %></td>
   		  <td><%= course.timeframe.strftime('%m/%d/%Y %I:%M %P') unless course.timeframe.nil? %></td>
@@ -68,21 +87,25 @@
 		  </td>
   	    </tr>
       <% end %>
+	  </tbody>
   	</table>
     <% else %>
   	None yet!
     <% end %>
 </div>
 <div id="right">
-<h2>Homeless Courses</h2>
+<h3>Homeless Courses</h3>
   <% unless Course.homeless.nil? || Course.homeless.empty? %>
-	<table>
+	<table id="homeless-table" class="table table-condensed tablesorter">
+	<thead>	
 	  <tr>
 		<th>Name</th>
 		<th>Submission Date</th>
 		<th>Course Date</th>
 		<th></th>
 	  </tr>
+	</thead>
+	<tbody>
       <% Course.homeless.each do |course| %>	
       	<tr>
 	  	  <td><%= link_to(course.title, course ) %></td>
@@ -95,20 +118,24 @@
 		  </td>
 	    </tr>
       <% end %>
+	</tbody>
 	</table>
   <% else %>
 	None yet!
   <% end %>
   
-  <h2>Unassigned Courses</h2>
+  <h3>Unassigned Courses</h3>
     <% unless Course.unassigned.nil? || Course.unassigned.empty? %>
-  	<table>
+  	<table id="unassigned-table" class="table table-condensed tablesorter">
+	<thead>
   	  <tr>
   		<th>Name</th>
 		<th>Submission Date</th>
   		<th>Course Date</th>
   		<th></th>
   	  </tr>
+    </thead> 
+	<tbody>
         <% Course.unassigned.each do |course| %>	
         	<tr>
   	  	  <td><%= link_to(course.title, course ) %></td>
@@ -121,20 +148,24 @@
 		  </td>
   	    </tr>
         <% end %>
+	</tbody>	
   	</table>
     <% else %>
   	None yet!
     <% end %>
 	
-    <h2>Roomless Courses</h2>
+    <h3>Roomless Courses</h3>
       <% unless Course.roomless.nil? || Course.roomless.empty? %>
-    	<table>
+    	<table id="roomless-table" class="table table-condensed tablesorter">
+		<thead>
     	  <tr>
     		<th>Name</th>
 			<th>Submission Date</th>
     		<th>Course Date</th>
     		<th></th>
     	  </tr>
+		</thead>
+		<tbody>
           <% Course.roomless.each do |course| %>	
           	<tr>
     	  	  <td><%= link_to(course.title, course ) %></td>
@@ -147,6 +178,7 @@
 			  </td>
     	    </tr>
           <% end %>
+		</tbody>
     	</table>
       <% else %>
     	None yet!

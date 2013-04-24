@@ -1,13 +1,28 @@
-<% content_for :header do %>Rooms<% end %>
+<h1>Rooms</h1>
 
 <div>
-  <% @rooms.each do |room| %>	
-    <%= room.name %> in <%= room.location.name %>
-    <% if current_user.try(:admin?) %>
-	   - <%= link_to('Edit', edit_room_path(room), :class => "action-edit") %> | <%= link_to('Delete', room_path(room), :confirm => "Are you sure?", :method => :delete) %>
-    <% end %>
-	<br /><br />
-  <% end %>
+  	<table id="rooms-table" class="table table-condensed tablesorter">
+	<thead>
+	  <tr>
+		<th>Name</th>
+		<th>Location</th>
+		<th>Actions</th>
+	  </tr>
+	</thead> 
+	<tbody>
+	    <% @rooms.each do |room| %>
+	    	<tr>
+	  	  <td><%= room.name %></td>
+		  <td><%= room.location.name %></td>
+		  <td>
+	      <% if current_user.try(:admin?) %>
+	   		<%= link_to('Edit', edit_room_path(room), :class => "action-edit") %> | <%= link_to('Delete', room_path(room), :confirm => "Are you sure?", :method => :delete) %>
+	  	  <% end %>
+		  </td>
+	    </tr>
+	    <% end %>
+	</tbody>	
+	</table>
   
   <% if current_user.try(:admin?) %>
     <%= link_to("Add New Room", new_room_path ) %>

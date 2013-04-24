@@ -14,6 +14,7 @@
 //= require jquery_ujs
 //= require jquery-ui
 //= require jquery.ui.datepicker
+//= require jquery-tablesorter
 //= require_tree .
 
 $(document).ready(function(){
@@ -32,4 +33,33 @@ $(document).ready(function(){
   $('#course_pre_class_appt').datetimepicker({
 	timeFormat: "hh:mm tt"
   });
+
+  $('#course_session_count_input').hide();
+
+  $("#course-table").tablesorter();
+  $("#attributes-table").tablesorter();
+  $("#locations-table").tablesorter();
+  $("#repositories-table").tablesorter();
+  $("#rooms-table").tablesorter();
+  $("#users-table").tablesorter();
+
+  $("#your-repos-table").tablesorter();
+  $("#your-upcoming-table").tablesorter();
+  $("#your-past-table").tablesorter();
+  $("#homeless-table").tablesorter();
+  $("#unassigned-table").tablesorter();
+  $("#roomless-table").tablesorter();
+
+});
+jQuery(function(){
+
+  $('#course_course_sessions_single_session').change(function() {
+	$('#course_session_count_input').hide();
+   });
+  $('#course_course_sessions_multiple_sessions_same_materials').change(function() {
+    $('#course_session_count_input').show();
+   });
+  $('#course_course_sessions_multiple_sessions_different_materials').change(function() {
+    $('#course_session_count_input').show();
+   });
 });

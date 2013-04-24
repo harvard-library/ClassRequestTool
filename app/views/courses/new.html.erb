@@ -1,2 +1,9 @@
-<% content_for :header do %>Request a Course<% end %>
-<%= render :partial => 'shared/forms/course' %>
+<h1>Request a Course</h1>
+
+<div id="info-left">
+  <%= render :partial => 'shared/forms/course' %>
+</div>
+
+<div id="info-right">
+  <%= render :partial => 'repo_info' %>
+</div>

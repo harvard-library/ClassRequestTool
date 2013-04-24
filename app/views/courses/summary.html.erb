@@ -1,4 +1,4 @@
-<% content_for :header do %>Summary for <%= @course.title %><% end %>
+<h1>Summary for <%= @course.title %></h1>
 
 <div>
 	<%= render :partial => 'shared/summary_text' %>
@@ -11,10 +11,15 @@
 	Subject: <%= @course.subject unless @course.subject.nil? %> <br />
 	Course Number: <%= @course.course_number unless @course.course_number.nil? %> <br />
 	Affiliation: <%= @course.affiliation unless @course.affiliation.nil? %> <br />
-	Number of Students: <%= @course.number_of_students unless @course.number_of_students.nil? %>
-	<%  unless @course.file.blank? %>
-	  File: <%= link_to "Syllabus", @course.file_url %> <br />
+	Number of Students: <%= @course.number_of_students unless @course.number_of_students.nil? %> <br />
+	Syllabus: 
+	<%  if @course.file.blank? && @course.external_syllabus.nil? %>
+	  None
+	<% else %>
+	  <%= link_to "Syllabus", @course.file_url unless @course.file.blank? %> 
+	  <%= link_to @course.external_syllabus, @course.external_syllabus unless @course.external_syllabus.nil? %>
 	<% end %>
+	<br />
 	
 	<h3>Requester Information</h3>
 	Primary Contact Name: <%= @course.contact_name unless @course.contact_name.nil? %> <br />
@@ -25,11 +30,22 @@
 	Staff Involvement: <%= @course.staff_involvement unless @course.staff_involvement.nil? || @course.staff_involvement.blank? %> <br />
 	Pre-Class Appt: <%= @course.pre_class_appt.strftime('%m/%d/%Y %I:%M %P') unless @course.pre_class_appt.nil? %> <br />
 	
-	<h3>Additional Information</h3>
-	Room: <%= @course.room.name unless @course.room.nil? %> <br />
+	<h3>Scheduling</h3>
+	Course Frequency: <%= @course.course_sessions unless @course.course_sessions.nil? %> <br />
+	Number of Sessions: <%= @course.session_count unless @course.session_count.nil? %> <br />
+	
 	<h4>Date/Time of Course</h4>
-	Choice 1: <%= @course.time_choice_1.strftime('%m/%d/%Y %I:%M %P') unless @course.time_choice_1.nil? %> <br />
-	Choice 2: <%= @course.time_choice_2.strftime('%m/%d/%Y %I:%M %P') unless @course.time_choice_2.nil? %> <br />
-	Choice 2: <%= @course.time_choice_3.strftime('%m/%d/%Y %I:%M %P') unless @course.time_choice_3.nil? %> <br />
-
+	<% if !@course.timeframe.nil? %>
+	  Course Date/Time: <%= @course.timeframe.strftime('%m/%d/%Y %I:%M %P') unless @course.timeframe.nil? %> <br />
+	<% elsif !@course.time_choice_1.nil? || !@course.time_choice_2.nil? || !@course.time_choice_3.nil? %>
+	  Choice 1: <%= @course.time_choice_1.strftime('%m/%d/%Y %I:%M %P') unless @course.time_choice_1.nil? %> <br />
+	  Choice 2: <%= @course.time_choice_2.strftime('%m/%d/%Y %I:%M %P') unless @course.time_choice_2.nil? %> <br />
+	  Choice 2: <%= @course.time_choice_3.strftime('%m/%d/%Y %I:%M %P') unless @course.time_choice_3.nil? %> <br />
+	<% else %>
+	  No course dates selected.
+	<% end %>
+	
+	Course Duration: <%= @course.duration unless @course.duration.nil? %> hour(s) <br />
+	Room: <%= @course.room.name unless @course.room.nil? %> <br />
+	Comments: <%= @course.comments unless @course.comments.nil? %> <br />
 </div>

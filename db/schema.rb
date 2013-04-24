@@ -11,7 +11,38 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130409193619) do
+ActiveRecord::Schema.define(:version => 20130411200312) do
+
+  create_table "assessments", :force => true do |t|
+    t.text     "using_materials"
+    t.string   "involvement"
+    t.integer  "staff_experience"
+    t.integer  "staff_availability"
+    t.integer  "space"
+    t.integer  "request_course"
+    t.integer  "request_materials"
+    t.integer  "catalogs"
+    t.integer  "digital_collections"
+    t.string   "involve_again"
+    t.text     "not_involve_again"
+    t.text     "better_future"
+    t.integer  "course_id"
+    t.datetime "created_at",          :null => false
+    t.datetime "updated_at",          :null => false
+  end
+
+  add_index "assessments", ["better_future"], :name => "index_assessments_on_better_future"
+  add_index "assessments", ["catalogs"], :name => "index_assessments_on_catalogs"
+  add_index "assessments", ["digital_collections"], :name => "index_assessments_on_digital_collections"
+  add_index "assessments", ["involve_again"], :name => "index_assessments_on_involve_again"
+  add_index "assessments", ["involvement"], :name => "index_assessments_on_involvement"
+  add_index "assessments", ["not_involve_again"], :name => "index_assessments_on_not_involve_again"
+  add_index "assessments", ["request_course"], :name => "index_assessments_on_request_course"
+  add_index "assessments", ["request_materials"], :name => "index_assessments_on_request_materials"
+  add_index "assessments", ["space"], :name => "index_assessments_on_space"
+  add_index "assessments", ["staff_availability"], :name => "index_assessments_on_staff_availability"
+  add_index "assessments", ["staff_experience"], :name => "index_assessments_on_staff_experience"
+  add_index "assessments", ["using_materials"], :name => "index_assessments_on_using_materials"
 
   create_table "courses", :force => true do |t|
     t.string   "title"
@@ -23,30 +54,21 @@ ActiveRecord::Schema.define(:version => 20130409193619) do
     t.string   "contact_phone",      :limit => 25,  :null => false
     t.datetime "pre_class_appt"
     t.datetime "timeframe"
-    t.datetime "time_choice_1"
-    t.datetime "time_choice_2"
-    t.datetime "time_choice_3"
     t.integer  "repository_id"
     t.integer  "room_id"
     t.text     "staff_involvement"
-    t.integer  "number_of_students"
     t.string   "status"
     t.string   "file"
-    t.string   "external_syllabus"
-    t.string   "duration"
-    t.text     "comments"
     t.datetime "created_at",                        :null => false
     t.datetime "updated_at",                        :null => false
+    t.integer  "number_of_students"
   end
 
   add_index "courses", ["affiliation"], :name => "index_courses_on_affiliation"
-  add_index "courses", ["comments"], :name => "index_courses_on_comments"
   add_index "courses", ["contact_email"], :name => "index_courses_on_contact_email"
   add_index "courses", ["contact_name"], :name => "index_courses_on_contact_name"
   add_index "courses", ["contact_phone"], :name => "index_courses_on_contact_phone"
   add_index "courses", ["course_number"], :name => "index_courses_on_course_number"
-  add_index "courses", ["duration"], :name => "index_courses_on_duration"
-  add_index "courses", ["external_syllabus"], :name => "index_courses_on_external_syllabus"
   add_index "courses", ["pre_class_appt"], :name => "index_courses_on_pre_class_appt"
   add_index "courses", ["staff_involvement"], :name => "index_courses_on_staff_involvement"
   add_index "courses", ["status"], :name => "index_courses_on_status"
@@ -100,11 +122,11 @@ ActiveRecord::Schema.define(:version => 20130409193619) do
   create_table "repositories", :force => true do |t|
     t.string   "name"
     t.text     "description"
-    t.integer  "class_limit", :default => 0
+    t.integer  "class_limit"
     t.integer  "user_id"
     t.boolean  "can_edit"
-    t.datetime "created_at",                 :null => false
-    t.datetime "updated_at",                 :null => false
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
 
   add_index "repositories", ["can_edit"], :name => "index_repositories_on_can_edit"

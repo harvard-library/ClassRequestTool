@@ -1,15 +1,29 @@
-<% content_for :header do %>Repositories<% end %>
+<h1>Repositories</h1>
 
 <div>
-  <% @repositories.each do |repo| %>	
-    <%= link_to repo.name, repo %>
-    <% if current_user.try(:admin?) %>
-	   - <%= link_to('Edit', edit_repository_path(repo), :class => "action-edit") %> | <%= link_to('Delete', repository_path(repo), :confirm => "Are you sure?", :method => :delete) %>
-    <% end %>
-	<br /><br />
-  <% end %>
+  	<table id="repositories-table" class="table table-condensed tablesorter">
+	<thead>
+	  <tr>
+		<th>Name</th>
+		<th>Actions</th>
+	  </tr>
+	</thead> 
+	<tbody>
+	    <% @repositories.each do |repo| %>
+	    	<tr>
+	  	  <td><%= link_to repo.name, repo %></td>
+		  <td>
+	      <% if current_user.try(:admin?) %>
+	   		<%= link_to('Edit', edit_repository_path(repo), :class => "action-edit") %> | <%= link_to('Delete', repository_path(repo), :confirm => "Are you sure?", :method => :delete) %>
+	  	  <% end %>
+		  </td>
+	    </tr>
+	    <% end %>
+	</tbody>	
+	</table>
   
   <% if current_user.try(:admin?) %>
     <%= link_to("Add New Repository", new_repository_path ) %>
   <% end %>
 </div>
+

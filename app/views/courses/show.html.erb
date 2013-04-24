@@ -1,4 +1,4 @@
-<% content_for :header do %><%= @course.title %><% end %>
+<h1><%= @course.title %></h1>
 
 <div>
 	<h3>Course Information</h3>
@@ -52,19 +52,30 @@
 	    <% @course.users.each do |user| %>
 	      <%= user.email %>, 
 	    <% end %>
+		<h4>Assessments</h4>
+		  <%= link_to "Add Assessment", new_assessment_path(:course_id => @course.id) %><br /><br />
+		  <% @course.assessments.each do |assessment| %>
+		    <%= link_to "View Assessment", assessment_path(assessment) %><br />
+		  <% end %>
 		<h4>Notes</h4>
-		<% unless @all_notes.nil? %>
+		<% unless @all_notes.nil? || @all_notes.empty? %>
+		  Current:<br />
 		  <% @all_notes.each do |note| %>
-		    <%= note.note_text %><br />
+		    <p>
+			  <%= note.note_text %>
+			  <br />
+		      <%= link_to "Edit", edit_note_path(note.id) %> | <%= link_to('Delete', note_path(note), :confirm => "Are you sure?", :method => :delete) %>
+		    </p>
 		  <% end %>
 		<% end %>
 		
-	  <%= semantic_form_for(@note) do |f| %>
-		<%= f.input :note_text, :label => "Note: " %>
-		<%= f.input :course_id, :as => :hidden, :input_html => { :value => @course.id } %>
-		<%= f.input :user_id, :as => :hidden, :input_html => { :value => current_user.id } %>
-		<%= f.actions %>
-	  <% end %>
+		New Note:<br />
+	    <%= semantic_form_for(@note) do |f| %>
+		  <%= f.input :note_text, :label => "Note: ", :input_html => { :rows => 5, :columns => 50 } %>
+		  <%= f.input :course_id, :as => :hidden, :input_html => { :value => @course.id } %>
+		  <%= f.input :user_id, :as => :hidden, :input_html => { :value => current_user.id } %>
+		  <%= f.actions %>
+	    <% end %>
     <% end %>
 	<br /><br />
     <p><%= link_to('Edit Course Info', edit_course_path(@course), :class => "action-edit") %></p>
