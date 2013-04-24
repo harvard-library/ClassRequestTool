@@ -1,0 +1,34 @@
+<h1>Staff Involvements</h1>
+
+<div>
+  	<table id="involvement-table" class="table table-condensed tablesorter">
+	<thead>
+	  <tr>
+		<th>Text</th>
+		<th>Repositories</th>
+		<th>Actions</th>
+	  </tr>
+	</thead> 
+	<tbody>
+	    <% @staff_involvements.each do |si| %>
+	    <tr>
+	  	  <td><%= si.involvement_text %></td>
+		  <td>
+		  <% si.repositories.each do |repo| %>
+		    <%= repo.name %><br />
+		  <% end %>
+		  </td>
+		  <td>
+	      <% if current_user.try(:admin?) %>
+	   		<%= link_to('Edit', edit_staff_involvement_path(si), :class => "action-edit") %> | <%= link_to('Delete', staff_involvement_path(si), :confirm => "Are you sure?", :method => :delete) %>
+	  	  <% end %>
+		  </td>
+	    </tr>
+	    <% end %>
+	</tbody>	
+	</table>
+  
+  <% if current_user.try(:admin?) %>
+    <%= link_to("Add New Staff Involvement", new_staff_involvement_path ) %>
+  <% end %>
+</div>

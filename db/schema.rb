@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130411200312) do
+ActiveRecord::Schema.define(:version => 20130424121842) do
 
   create_table "assessments", :force => true do |t|
     t.text     "using_materials"
@@ -49,32 +49,55 @@ ActiveRecord::Schema.define(:version => 20130411200312) do
     t.string   "subject"
     t.string   "course_number"
     t.string   "affiliation"
-    t.string   "contact_name",       :limit => 100, :null => false
-    t.string   "contact_email",      :limit => 150, :null => false
-    t.string   "contact_phone",      :limit => 25,  :null => false
+    t.string   "contact_name",        :limit => 100, :null => false
+    t.string   "contact_email",       :limit => 150, :null => false
+    t.string   "contact_phone",       :limit => 25,  :null => false
     t.datetime "pre_class_appt"
     t.datetime "timeframe"
+    t.datetime "time_choice_1"
+    t.datetime "time_choice_2"
+    t.datetime "time_choice_3"
     t.integer  "repository_id"
     t.integer  "room_id"
     t.text     "staff_involvement"
+    t.integer  "number_of_students"
     t.string   "status"
     t.string   "file"
-    t.datetime "created_at",                        :null => false
-    t.datetime "updated_at",                        :null => false
-    t.integer  "number_of_students"
+    t.string   "external_syllabus"
+    t.string   "duration"
+    t.text     "comments"
+    t.datetime "created_at",                         :null => false
+    t.datetime "updated_at",                         :null => false
+    t.string   "course_sessions"
+    t.string   "session_count"
+    t.text     "goal"
+    t.string   "instruction_session"
   end
 
   add_index "courses", ["affiliation"], :name => "index_courses_on_affiliation"
+  add_index "courses", ["comments"], :name => "index_courses_on_comments"
   add_index "courses", ["contact_email"], :name => "index_courses_on_contact_email"
   add_index "courses", ["contact_name"], :name => "index_courses_on_contact_name"
   add_index "courses", ["contact_phone"], :name => "index_courses_on_contact_phone"
   add_index "courses", ["course_number"], :name => "index_courses_on_course_number"
+  add_index "courses", ["duration"], :name => "index_courses_on_duration"
+  add_index "courses", ["external_syllabus"], :name => "index_courses_on_external_syllabus"
   add_index "courses", ["pre_class_appt"], :name => "index_courses_on_pre_class_appt"
   add_index "courses", ["staff_involvement"], :name => "index_courses_on_staff_involvement"
   add_index "courses", ["status"], :name => "index_courses_on_status"
   add_index "courses", ["subject"], :name => "index_courses_on_subject"
   add_index "courses", ["timeframe"], :name => "index_courses_on_timeframe"
   add_index "courses", ["title"], :name => "index_courses_on_title"
+
+  create_table "courses_item_attributes", :id => false, :force => true do |t|
+    t.integer "item_attribute_id"
+    t.integer "course_id"
+  end
+
+  create_table "courses_staff_involvements", :id => false, :force => true do |t|
+    t.integer "staff_involvement_id"
+    t.integer "course_id"
+  end
 
   create_table "courses_users", :id => false, :force => true do |t|
     t.integer "course_id"
@@ -122,11 +145,11 @@ ActiveRecord::Schema.define(:version => 20130411200312) do
   create_table "repositories", :force => true do |t|
     t.string   "name"
     t.text     "description"
-    t.integer  "class_limit"
+    t.integer  "class_limit", :default => 0
     t.integer  "user_id"
     t.boolean  "can_edit"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at",                 :null => false
+    t.datetime "updated_at",                 :null => false
   end
 
   add_index "repositories", ["can_edit"], :name => "index_repositories_on_can_edit"
@@ -137,6 +160,11 @@ ActiveRecord::Schema.define(:version => 20130411200312) do
   create_table "repositories_rooms", :id => false, :force => true do |t|
     t.integer "repository_id"
     t.integer "room_id"
+  end
+
+  create_table "repositories_staff_involvements", :id => false, :force => true do |t|
+    t.integer "staff_involvement_id"
+    t.integer "repository_id"
   end
 
   create_table "repositories_users", :id => false, :force => true do |t|
@@ -152,6 +180,15 @@ ActiveRecord::Schema.define(:version => 20130411200312) do
   end
 
   add_index "rooms", ["name"], :name => "index_rooms_on_name"
+
+  create_table "staff_involvements", :force => true do |t|
+    t.string   "involvement_text"
+    t.integer  "repository_id"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+  end
+
+  add_index "staff_involvements", ["involvement_text"], :name => "index_staff_involvements_on_involvement_text"
 
   create_table "users", :force => true do |t|
     t.string   "email",                  :default => "",    :null => false

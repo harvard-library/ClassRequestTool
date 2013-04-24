@@ -35,6 +35,7 @@ $(document).ready(function(){
   });
 
   $('#course_session_count_input').hide();
+  //$('#course_pre_class_appt_input').hide();
 
   $("#course-table").tablesorter();
   $("#attributes-table").tablesorter();
@@ -42,6 +43,7 @@ $(document).ready(function(){
   $("#repositories-table").tablesorter();
   $("#rooms-table").tablesorter();
   $("#users-table").tablesorter();
+  $("#involvement-table").tablesorter();
 
   $("#your-repos-table").tablesorter();
   $("#your-upcoming-table").tablesorter();

@@ -1,0 +1,5 @@
+<%= semantic_form_for(@staff_involvement) do |f| %>
+  <%= f.inputs %>
+  <%= f.input :repositories, :as => :check_boxes, :label => 'Belonging to these Repositories: ' %>
+  <%= f.actions %>
+<% end %>

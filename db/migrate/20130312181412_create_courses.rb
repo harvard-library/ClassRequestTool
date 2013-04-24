@@ -42,5 +42,10 @@ class CreateCourses < ActiveRecord::Migration
       t.references :item_attribute
       t.references :course
     end
+    
+    create_table(:courses_staff_involvements, :id => false) do|t|
+      t.references :course
+      t.references :staff_involvement
+    end
   end
 end

@@ -1,7 +1,31 @@
+<script type="text/javascript" charset="utf-8">
+  function change_repo_items(repo_id)
+ {
+    $.ajax('<%= url_for(:action => "repo_select") %>?repo='+repo_id,
+    {
+      method: 'get',
+      success: function(data) {
+		$("#repo_items").html(data);
+      }
+    });
+  }
+ </script>
+ <noscript>Please enable Javascript.</noscript>
+
 <h1>Request a Course</h1>
 
 <div id="info-left">
-  <%= render :partial => 'shared/forms/course' %>
+  <%= semantic_form_for(@course, :html => {:multipart => true}) do |f| %>
+	<%= f.inputs do %>	
+      <%= render :partial => 'shared/forms/course_info', :locals=>{:f=>f} %>
+      <%= render :partial => 'shared/forms/course_requester_info', :locals=>{:f=>f} %>
+      <%= render :partial => 'shared/forms/course_staff_involvement', :locals=>{:f=>f} %>
+      <%= render :partial => 'shared/forms/course_scheduling', :locals=>{:f=>f} %>
+      <%= render :partial => 'shared/forms/course_staff_actions', :locals=>{:f=>f} %>
+	<% end %>
+	Please review your information above and make any edits before submitting your request.
+	<%= f.actions %>
+  <% end %>	
 </div>
 
 <div id="info-right">

@@ -1,0 +1,2 @@
+module StaffInvolvementsHelper
+end
