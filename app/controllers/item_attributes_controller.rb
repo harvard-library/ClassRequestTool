@@ -2,7 +2,7 @@ class ItemAttributesController < ApplicationController
   before_filter :authenticate_admin!, :except => [:index]
   
   def index
-    @attributes = ItemAttribute.find(:all, :order => :name)
+    @attributes = ItemAttribute.paginate(:page => params[:page], :per_page => 10)
   end  
   
   def new

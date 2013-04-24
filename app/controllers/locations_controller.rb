@@ -2,7 +2,7 @@ class LocationsController < ApplicationController
   before_filter :authenticate_admin!, :except => [:index]
   
   def index
-    @locations = Location.find(:all, :order => :name)
+    @locations = Location.paginate(:page => params[:page], :per_page => 10)
   end  
   
   def new

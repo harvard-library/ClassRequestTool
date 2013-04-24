@@ -3,7 +3,7 @@ class CoursesController < ApplicationController
   before_filter :authenticate_user!, :except => [:new, :create, :summary]
   
   def index
-    @courses_all = Course.all
+    @courses_all = Course.paginate(:page => params[:page], :per_page => 10)
     @courses_mine = Array.new
     @courses_all.collect {|course| course.users.include?(current_user) ? @courses_mine << course : '' }
     @repositories = Repository.find(:all, :order => :name)
