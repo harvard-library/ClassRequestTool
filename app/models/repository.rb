@@ -5,6 +5,7 @@ class Repository < ActiveRecord::Base
   has_and_belongs_to_many :rooms
   has_many :courses
   has_and_belongs_to_many :item_attributes
+  has_and_belongs_to_many :staff_involvements
   
   validates_presence_of :name
     

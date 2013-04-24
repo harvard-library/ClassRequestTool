@@ -1,0 +1,23 @@
+<h3>Scheduling</h3>
+<%= f.input :course_sessions, :label => "Frequency of Course: ", :as => :radio, :collection => Course::COURSE_SESSIONS %>
+<%= f.input :session_count, :label => "Number of Sessions: ", :input_html => { :size => 1, :maxlength => 1 } %>
+
+<h4>Date/Time of Course</h4>
+<%= f.input :time_choice_1, :label => "Choice 1: ", :as => :string, :hint => 'In MM/DD/YYYY HH:MM am/pm format', :input_html => { :size => 30, :value => @course.time_choice_1.nil? ? '' : @course.time_choice_1.strftime('%m/%d/%Y %I:%M %P') } %>
+<%= f.input :time_choice_2, :label => "Choice 2: ", :as => :string, :hint => 'In MM/DD/YYYY HH:MM am/pm format', :input_html => { :size => 30, :value => @course.time_choice_2.nil? ? '' : @course.time_choice_2.strftime('%m/%d/%Y %I:%M %P') } %>
+<%= f.input :time_choice_3, :label => "Choice 3: ", :as => :string, :hint => 'In MM/DD/YYYY HH:MM am/pm format', :input_html => { :size => 30, :value => @course.time_choice_3.nil? ? '' : @course.time_choice_3.strftime('%m/%d/%Y %I:%M %P') } %>
+<%= f.input :duration, :label => "Course Duration (hours): ", :hint => '1 hour increments, maximum 3 hours', :input_html => { :size => 1, :maxlength => 1 } %>
+
+<h4>Date/Time of Pre-Class Appointment (if necessary)</h4>
+<%= f.input :pre_class_appt_choice_1, :label => "Choice 1: ", :as => :string, :hint => 'In MM/DD/YYYY HH:MM am/pm format', :input_html => { :size => 30, :value => @course.pre_class_appt_choice_1.nil? ? '' : @course.pre_class_appt_choice_1.strftime('%m/%d/%Y %I:%M %P') } %>
+<%= f.input :pre_class_appt_choice_2, :label => "Choice 2: ", :as => :string, :hint => 'In MM/DD/YYYY HH:MM am/pm format', :input_html => { :size => 30, :value => @course.pre_class_appt_choice_2.nil? ? '' : @course.pre_class_appt_choice_2.strftime('%m/%d/%Y %I:%M %P') } %>
+<%= f.input :pre_class_appt_choice_3, :label => "Choice 3: ", :as => :string, :hint => 'In MM/DD/YYYY HH:MM am/pm format', :input_html => { :size => 30, :value => @course.pre_class_appt_choice_3.nil? ? '' : @course.pre_class_appt_choice_3.strftime('%m/%d/%Y %I:%M %P') } %>
+
+<% unless @course.repository.nil? %>
+  <%= f.input :item_attributes, :as => :check_boxes, :collection => @course.repository.item_attributes, :label => "Room Attributes Needed: " %>
+  <span id='repo_items'></span>
+<% end %>
+
+<%= f.input :instruction_session, :label => "Have you scheduled a general library research instruction session for the class? ", :input_html => { :size => 40 } %>
+
+<%= f.input :comments, :label => "Additional Comments: ", :input_html => { :rows => 5, :cols => 30 } %>

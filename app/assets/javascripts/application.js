@@ -26,7 +26,17 @@ $(document).ready(function(){
   });
   $('#course_time_choice_3').datetimepicker({
 	timeFormat: "hh:mm tt"
-  });	
+  });
+  $('#course_pre_class_appt_choice_1').datetimepicker({
+	timeFormat: "hh:mm tt"
+  });
+  $('#course_pre_class_appt_choice_2').datetimepicker({
+	timeFormat: "hh:mm tt"
+  });
+  $('#course_pre_class_appt_choice_3').datetimepicker({
+	timeFormat: "hh:mm tt"
+  });
+	
   $('#course_timeframe').datetimepicker({
 	timeFormat: "hh:mm tt"
   });
@@ -35,6 +45,7 @@ $(document).ready(function(){
   });
 
   $('#course_session_count_input').hide();
+  //$('#course_pre_class_appt_input').hide();
 
   $("#course-table").tablesorter();
   $("#attributes-table").tablesorter();
@@ -42,6 +53,7 @@ $(document).ready(function(){
   $("#repositories-table").tablesorter();
   $("#rooms-table").tablesorter();
   $("#users-table").tablesorter();
+  $("#involvement-table").tablesorter();
 
   $("#your-repos-table").tablesorter();
   $("#your-upcoming-table").tablesorter();

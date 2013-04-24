@@ -22,5 +22,10 @@ class CreateRepositories < ActiveRecord::Migration
       t.references :repository
       t.references :user
     end
+    
+    create_table(:repositories_staff_involvements, :id => false) do|t|
+      t.references :repository
+      t.references :staff_involvement
+    end
   end
 end

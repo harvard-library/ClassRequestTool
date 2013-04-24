@@ -1,0 +1,28 @@
+<h3>Course Information</h3>
+<% if user_signed_in? %>
+  <%= f.input :repository, :label => "Repository: ", :input_html => { :value => @course.repository, :onchange => "change_repo_items(this.options[this.selectedIndex].value);" } %>
+<% else %>  
+  <% if @course.repository.nil? %>
+    Repository: Don't Know - <%= link_to "Edit", "/" %><br /><br />
+  <% else %>
+    Repository: <%= @course.repository.name %> - <%= link_to "Edit", "/" %><br /><br />
+    <%= hidden_field_tag :repository_id, @course.repository.id %>
+  <% end %>
+<% end %>
+
+<%= f.input :title, :label => "Course Title: " %>
+<%= f.input :subject, :label => "Course Subject: " %>
+<%= f.input :course_number, :label => "Course Number (if Harvard): " %>
+<%= f.input :affiliation, :label => "Affiliation (if non-Harvard): " %>
+<% unless @course.repository.nil? %>
+  <%= f.input :number_of_students, :label => "Number of Students: ", :hint => "Maximum for this repository is #{@course.repository.class_limit}" %>
+<% else %>
+  <%= f.input :number_of_students, :label => "Number of Students: " %>
+<% end %>
+Syllabus: <br />
+<ul>
+  <li><%= f.input :file, :label => "Upload File: " %></li>
+  <li><%= f.input :external_syllabus, :label => "Enter URL: " %></li>
+</ul>
+
+<%= f.input :goal, :label => "What is your goal for this class session? ", :input_html => { :rows => 5, :columns => 50 } %>

@@ -1,5 +1,5 @@
 class Course < ActiveRecord::Base
-  attr_accessible :room_id, :repository_id, :title, :subject, :course_number, :affiliation, :contact_name, :contact_email, :contact_phone, :pre_class_appt, :staff_involvement, :status, :file, :number_of_students, :timeframe, :user_ids, :external_syllabus, :time_choice_1, :time_choice_2, :time_choice_3, :duration, :comments, :course_sessions, :session_count, :item_attribute_ids, :goal, :instruction_session
+  attr_accessible :room_id, :repository_id, :title, :subject, :course_number, :affiliation, :contact_name, :contact_email, :contact_phone, :pre_class_appt, :staff_involvement, :status, :file, :number_of_students, :timeframe, :user_ids, :external_syllabus, :time_choice_1, :time_choice_2, :time_choice_3, :duration, :comments, :course_sessions, :session_count, :item_attribute_ids, :goal, :instruction_session, :pre_class_appt_choice_1, :pre_class_appt_choice_2, :pre_class_appt_choice_3
   
   has_and_belongs_to_many :users
   belongs_to :room
@@ -8,6 +8,7 @@ class Course < ActiveRecord::Base
   has_many :notes
   has_and_belongs_to_many :item_attributes
   has_many :assessments
+  has_and_belongs_to_many :staff_involvements
   
   
   validates_presence_of :title, :message => "can't be empty"
@@ -16,8 +17,7 @@ class Course < ActiveRecord::Base
   validates_presence_of :contact_phone
   
   mount_uploader :file, FileUploader
-  
-  STAFF_INVOLVEMENT = ['Pre-Class Appointment with Reference Staff (phone or in person)', 'Assistance with Selection of Materials', 'Introduction to Archives and Special Collections Research', 'Assistance with Presentation of Materials in Class', 'Creation of sources list or research guide for course']
+
   COURSE_SESSIONS = ['Single Session', 'Multiple Sessions, Same Materials', 'Multiple Sessions, Different Materials']
   STATUS = ['Pending', 'Scheduled, unclaimed', 'Scheduled, claimed', 'Homeless', 'Closed']
   

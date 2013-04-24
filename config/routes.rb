@@ -1,4 +1,7 @@
 ClassRequestTool::Application.routes.draw do
+  resources :staff_involvements
+
+
   resources :assessments
 
 

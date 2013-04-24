@@ -4,7 +4,7 @@ class WelcomeController < ApplicationController
   def index
     @repositories = Repository.find(:all, :order => :name)
     @courses = Array.new
-    Course.all.collect{|course| !course.timeframe.nil? && course.timeframe >= DateTime.now ? @courses << course : ''}
+    Course.all.collect{|course| !course.timeframe.nil? && course.timeframe < DateTime.now ? @courses << course : ''}
   end  
   
   def dashboard

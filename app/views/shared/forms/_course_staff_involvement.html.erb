@@ -1,0 +1,3 @@
+<h3>Staff Involvement</h3>
+<%= f.input :staff_involvement, :label => "Level of Staff Involvement: ", :as => :check_boxes, :collection => @course.repository.staff_involvements %>
+Other Involvement: <%= text_field_tag :other %>
