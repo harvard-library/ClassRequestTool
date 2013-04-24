@@ -30,7 +30,7 @@ class ItemAttributesController < ApplicationController
     @attribute = ItemAttribute.find(params[:id])
 
     respond_to do |format|
-      if @attribute.update_item_attributes(params[:item_attribute])
+      if @attribute.update_attributes(params[:item_attribute])
         format.html { redirect_to item_attributes_url, notice: 'Item Attribute was successfully updated.' }
         format.json { head :no_content }
       else
