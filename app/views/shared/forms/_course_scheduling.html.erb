@@ -1,4 +1,4 @@
-<h3>Scheduling</h3>
+<h3><%= link_to("Scheduling", "#", :id => 'view_section_4') %></h3>
 <%= f.input :course_sessions, :label => "Frequency of Course: ", :as => :radio, :collection => Course::COURSE_SESSIONS %>
 <%= f.input :session_count, :label => "Number of Sessions: ", :input_html => { :size => 1, :maxlength => 1 } %>
 
@@ -21,3 +21,9 @@
 <%= f.input :instruction_session, :label => "Have you scheduled a general library research instruction session for the class? ", :input_html => { :size => 40 } %>
 
 <%= f.input :comments, :label => "Additional Comments: ", :input_html => { :rows => 5, :cols => 30 } %>
+
+<%= link_to("Go Back", "#", :id => 'back_section_3') %>
+
+<% if user_signed_in? %>
+   | <%= link_to("View Staff Actions", "#", :id => 'next_section_4') %>
+<% end %>

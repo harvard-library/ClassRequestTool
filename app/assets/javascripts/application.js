@@ -45,6 +45,12 @@ $(document).ready(function(){
   });
 
   $('#course_session_count_input').hide();
+  $('#course_info_partial').show();
+  $('#requester_info_partial').hide();
+  $('#involvement_info_partial').hide();
+  $('#scheduling_info_partial').hide();
+  $('#staff_actions_partial').hide();
+  $('#submit_course').hide();
   //$('#course_pre_class_appt_input').hide();
 
   $("#course-table").tablesorter();
@@ -73,5 +79,89 @@ jQuery(function(){
    });
   $('#course_course_sessions_multiple_sessions_different_materials').change(function() {
     $('#course_session_count_input').show();
+   });
+
+  $('#next_section_1').click(function() {
+	$('#course_info_partial').hide();
+	$('#requester_info_partial').show();
+   });
+  $('#next_section_2').click(function() {
+	$('#requester_info_partial').hide();
+	$('#involvement_info_partial').show();
+   });
+  $('#next_section_3').click(function() {
+	$('#involvement_info_partial').hide();
+	$('#scheduling_info_partial').show();
+	$('#submit_course').show();
+   });
+  $('#next_section_4').click(function() {
+	$('#scheduling_info_partial').hide();
+	$('#staff_actions_partial').show();
+	$('#submit_course').show();
+   });
+
+  $('#back_section_1').click(function() {
+	$('#course_info_partial').show();
+	$('#requester_info_partial').hide();
+   });
+  $('#back_section_2').click(function() {
+	$('#requester_info_partial').show();
+	$('#involvement_info_partial').hide();
+   });
+  $('#back_section_3').click(function() {
+	$('#involvement_info_partial').show();
+	$('#scheduling_info_partial').hide();
+	$('#submit_course').hide();
+   });
+  $('#back_section_4').click(function() {
+	$('#scheduling_info_partial').show();
+	$('#staff_actions_partial').hide();
+	$('#submit_course').hide();
+   });
+
+  $('#view_section_1').click(function() {
+	$('#course_info_partial').show();
+	$('#requester_info_partial').hide();
+	$('#involvement_info_partial').hide();
+	$('#scheduling_info_partial').hide();
+	$('#staff_actions_partial').hide();
+   });
+  $('#view_section_2').click(function() {
+	$('#requester_info_partial').hide();
+	$('#course_info_partial').hide();
+	$('#involvement_info_partial').hide();
+	$('#scheduling_info_partial').hide();
+	$('#staff_actions_partial').hide();
+   });
+  $('#view_section_3').click(function() {
+	$('#involvement_info_partial').show();
+	$('#course_info_partial').hide();
+	$('#requester_info_partial').hide();
+	$('#scheduling_info_partial').hide();
+	$('#staff_actions_partial').hide();
+   });
+  $('#view_section_4').click(function() {
+	$('#scheduling_info_partial').show();
+	$('#course_info_partial').show();
+	$('#requester_info_partial').hide();
+	$('#involvement_info_partial').hide();
+	$('#staff_actions_partial').hide();
+	$('#submit_course').show();
+   });
+  $('#view_section_5').click(function() {
+	$('#staff_actions_partial').hide();
+	$('#course_info_partial').hide();
+	$('#requester_info_partial').hide();
+	$('#involvement_info_partial').hide();
+	$('#scheduling_info_partial').hide();
+	$('#submit_course').show();
+   });
+  $('#view_all').click(function() {
+	$('#staff_actions_partial').show();
+	$('#course_info_partial').show();
+	$('#requester_info_partial').show();
+	$('#involvement_info_partial').show();
+	$('#scheduling_info_partial').show();
+	$('#submit_course').show();
    });
 });

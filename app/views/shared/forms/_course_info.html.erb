@@ -1,4 +1,4 @@
-<h3>Course Information</h3>
+<h3><%= link_to("Course Information", "#", :id => 'view_section_1') %></h3>
 <% if user_signed_in? %>
   <%= f.input :repository, :label => "Repository: ", :input_html => { :value => @course.repository, :onchange => "change_repo_items(this.options[this.selectedIndex].value);" } %>
 <% else %>  
@@ -26,3 +26,5 @@ Syllabus: <br />
 </ul>
 
 <%= f.input :goal, :label => "What is your goal for this class session? ", :input_html => { :rows => 5, :columns => 50 } %>
+
+<%= link_to("Next Section", "#", :id => 'next_section_1') %>
