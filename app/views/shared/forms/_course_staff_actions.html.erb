@@ -1,5 +1,5 @@
 <% if user_signed_in? %>
-  <h3>Staff Actions</h3>
+  <h3><%= link_to("Staff Actions", "#", :id => 'view_section_5') %></h3>
   <%= f.input :timeframe, :label => "Actual Date/Time of Course: ", :as => :string, :hint => 'In MM/DD/YYYY HH:MM am/pm format', :input_html => { :size => 30, :value => @course.timeframe.nil? ? '' : @course.timeframe.strftime('%m/%d/%Y %I:%M %P') } %>
 
   <%= f.input :pre_class_appt, :label => "Actual Pre-Class Appointment Date/Time (if necessary): ", :as => :string, :hint => 'In MM/DD/YYYY HH:MM am/pm format', :input_html => { :size => 30 } %>
@@ -14,3 +14,5 @@
   <% end %>
 
 <% end %>
+<br />
+<%= link_to("Go Back", "#", :id => 'back_section_4') %>
