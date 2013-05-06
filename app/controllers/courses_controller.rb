@@ -34,12 +34,7 @@ class CoursesController < ApplicationController
       @repository = Repository.find(params[:repository_id])
       params[:course][:repository_id] = params[:repository_id]
     end  
-    
-    unless params[:other].empty?
-      params[:course][:staff_involvement] = (params[:course][:staff_involvement] << params[:other]).reject{ |e| e.empty? }.join(", ")
-    else
-      params[:course][:staff_involvement] = params[:course][:staff_involvement].reject{ |e| e.empty? }.join(", ")  
-    end  
+ 
     params[:course][:timeframe] = DateTime.strptime(params[:course][:timeframe], '%m/%d/%Y %I:%M %P') unless params[:course][:timeframe].empty?
     params[:course][:pre_class_appt] = DateTime.strptime(params[:course][:pre_class_appt], '%m/%d/%Y %I:%M %P') unless params[:course][:pre_class_appt].empty?
     params[:course][:time_choice_1] = DateTime.strptime(params[:course][:time_choice_1], '%m/%d/%Y %I:%M %P') unless params[:course][:time_choice_1].empty?
@@ -75,11 +70,6 @@ class CoursesController < ApplicationController
       params[:course][:repository_id] = params[:repository_id]
     end  
     
-    unless params[:other].empty?
-      params[:course][:staff_involvement] = (params[:course][:staff_involvement] << params[:other]).reject{ |e| e.empty? }.join(", ")
-    else
-      params[:course][:staff_involvement] = params[:course][:staff_involvement].reject{ |e| e.empty? }.join(", ")  
-    end  
     params[:course][:timeframe] = DateTime.strptime(params[:course][:timeframe], '%m/%d/%Y %I:%M %P') unless params[:course][:timeframe].empty?
     params[:course][:pre_class_appt] = DateTime.strptime(params[:course][:pre_class_appt], '%m/%d/%Y %I:%M %P') unless params[:course][:pre_class_appt].empty?
     params[:course][:time_choice_1] = DateTime.strptime(params[:course][:time_choice_1], '%m/%d/%Y %I:%M %P') unless params[:course][:time_choice_1].empty?

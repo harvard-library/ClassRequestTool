@@ -23,7 +23,18 @@
 	Primary Contact Phone: <%= @course.contact_phone unless @course.contact_phone.nil? %> <br />
 	
 	<h3>Staff Involvement</h3>
-	Staff Involvement: <%= @course.staff_involvement unless @course.staff_involvement.nil? || @course.staff_involvement.blank? %> <br />
+	Staff Involvement: <br />
+	<ul>
+	<% @course.staff_involvements.each do |si| %>
+	  <li><%= si.involvement_text %></li>
+	<% end %>
+	</ul>
+	Other Staff Involvement: <%= @course.staff_involvement unless @course.staff_involvement.nil? || @course.staff_involvement.blank? %> <br />
+	
+	<h4>Pre-Class Appointment</h4>
+	Choice 1: <%= @course.pre_class_appt.strftime('%m/%d/%Y %I:%M %P') unless @course.pre_class_appt.nil? %> <br />
+	Choice 2: <%= @course.pre_class_appt.strftime('%m/%d/%Y %I:%M %P') unless @course.pre_class_appt.nil? %> <br />
+	Choice 3: <%= @course.pre_class_appt.strftime('%m/%d/%Y %I:%M %P') unless @course.pre_class_appt.nil? %> <br />
 	Pre-Class Appt: <%= @course.pre_class_appt.strftime('%m/%d/%Y %I:%M %P') unless @course.pre_class_appt.nil? %> <br />
 	
 	<h3>Scheduling</h3>

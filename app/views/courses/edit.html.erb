@@ -23,8 +23,9 @@
       <span id="scheduling_info_partial"><%= render :partial => 'shared/forms/course_scheduling', :locals=>{:f=>f} %></span>
       <span id="staff_actions_partial"><%= render :partial => 'shared/forms/course_staff_actions', :locals=>{:f=>f} %></span>
 	<% end %>
+	<br />
 	<span id="submit_course">
-	Please review your information above and make any edits before submitting your request.
+	<p><%= link_to("Click here", "#", :id => 'view_all') %> to review your information and make any edits before submitting your request.</p>
 	<%= f.actions %>
 	</span>
   <% end %>	
