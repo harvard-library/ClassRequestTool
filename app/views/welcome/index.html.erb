@@ -1,7 +1,19 @@
 <h2>Welcome!</h2>
 <br />
-<div id="info-left">
-  	<%= render :partial => 'shared/welcome_text' %>
+<%= render :partial => 'shared/welcome_text' %>
+
+<div id="welcome-left">
+  	<h3>Repositories</h3>
+	<p>
+	
+	<% @repositories.each do |repo| %>
+	  <%= link_to repo.name, repo %><br />
+	<% end %>
+	
+	</p>
+</div>
+
+<div id="welcome-middle">
 	<h3>Request a Course</h3>
 	<p>To request a new course, choose a Repository:</p>
 	
@@ -10,25 +22,16 @@
 	  <%= select_tag :repository, options_from_collection_for_select(@repositories, "id", "name"), :prompt => "Don't Know" %>
 	  <%= submit_tag "Go!" %>
 	</p>
-	<% end %>
-
-	Or, to get more information on a repository, click on one below:
-	<p>
-	<ul>
-	<% @repositories.each do |repo| %>
-	  <li><%= link_to repo.name, repo %></li>
-	<% end %>
-	</ul>
-	</p>	
+	<% end %>	
 </div>
 
-<div id="info-right">
+<div id="welcome-right">
   	<h3>Recent Courses</h3>
 	  <% unless @courses.nil? %>	
 	  	<% @courses.each do |course| %>	
-	      <ul>
-		    <li><%= link_to(course.title, summary_course_url(course) ) %> - <%= course.course_number unless course.course_number.nil? %></li>
-		  </ul>
+	      
+		    <li><%= link_to(course.title, summary_course_url(course) ) %></li>
+		  
 	    <% end %>
 	  <% else %>
 		None yet!

@@ -8,7 +8,7 @@
 
 <h1>Dashboard</h1>
 
-<div id="left">
+<div id="dash-left">
 <h3>Your Repositories</h3>
   <% unless current_user.repositories.nil? || current_user.repositories.empty? %>
 	<table id="your-repos-table" class="table table-condensed tablesorter">
@@ -93,7 +93,7 @@
   	None yet!
     <% end %>
 </div>
-<div id="right">
+<div id="dash-right">
 <h3>Homeless Courses</h3>
   <% unless Course.homeless.nil? || Course.homeless.empty? %>
 	<table id="homeless-table" class="table table-condensed tablesorter">
