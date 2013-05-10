@@ -16,10 +16,46 @@ class Course < ActiveRecord::Base
   validates_presence_of :contact_email, :with => /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i, :message => "Invalid email"
   validates_presence_of :contact_phone
   
+  after_save :post_save_hooks
+  
   mount_uploader :file, FileUploader
 
   COURSE_SESSIONS = ['Single Session', 'Multiple Sessions, Same Materials', 'Multiple Sessions, Different Materials']
   STATUS = ['Pending', 'Scheduled, unclaimed', 'Scheduled, claimed', 'Homeless', 'Closed']
+  
+  def post_save_hooks
+    # send email to requester
+    Email.create(
+      :from => DEFAULT_MAILER_SENDER,
+      :reply_to => DEFAULT_MAILER_SENDER,
+      :to => self.contact_email,
+      :subject => "Class Request Successfully Submitted",
+      :body => "Class Request Successfully Submitted"
+    )
+    # if repository is empty, send to all admins of tool 
+    if self.repository.nil? || self.repository.blank?
+      admins = ""
+      User.all(:conditions => {:admin => true}).collect{|a| admins = a.email + ","}
+      Email.create(
+        :from => DEFAULT_MAILER_SENDER,
+        :reply_to => DEFAULT_MAILER_SENDER,
+        :to => admins,
+        :subject => "Homeless Class Request Submitted",
+        :body => "Homeless Class Request Successfully Submitted"
+      )
+    # if repository is not empty, send to all users assigned to repository selected
+    else
+      users = ""
+      self.repository.users.collect{|users| users = a.email + ","}
+      Email.create(
+        :from => DEFAULT_MAILER_SENDER,
+        :reply_to => DEFAULT_MAILER_SENDER,
+        :to => users,
+        :subject => "Class Request Submitted for #{self.repository.name}",
+        :body => "Class Request Successfully Submitted"
+      )  
+    end  
+  end
   
   def self.homeless
     Course.find(:all, :conditions => {:repository_id => nil})

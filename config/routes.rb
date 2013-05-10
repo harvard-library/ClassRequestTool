@@ -1,4 +1,7 @@
 ClassRequestTool::Application.routes.draw do
+  resources :emails
+
+
   resources :staff_involvements
 
 

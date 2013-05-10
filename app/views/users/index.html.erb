@@ -5,6 +5,7 @@
 	<thead>
 	  <tr>
 		<th>Email</th>
+		<th>Admin?</th>
 		<th>Actions</th>
 	  </tr>
 	</thead> 
@@ -12,6 +13,7 @@
 	    <% @users.each do |user| %>	
 	    	<tr>
 	  	  <td><%= link_to(user.email, user ) %></td>
+		  <td><%= user.admin ? "Yes" : "No" %></td>
 		  <td><%= link_to('Edit', edit_user_path(user), :class => "action-edit") %>
 	      <% if current_user.try(:admin?) %>
 	   		 | <%= link_to('Delete', user_path(user), :confirm => "Are you sure?", :method => :delete) %>
@@ -23,3 +25,5 @@
 	</table>
 </div>
 <%= will_paginate @users %>
+
+<p><%= link_to "New User", new_user_path %>

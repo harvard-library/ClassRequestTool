@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130424121842) do
+ActiveRecord::Schema.define(:version => 20130510170448) do
 
   create_table "assessments", :force => true do |t|
     t.text     "using_materials"
@@ -29,6 +29,7 @@ ActiveRecord::Schema.define(:version => 20130424121842) do
     t.integer  "course_id"
     t.datetime "created_at",          :null => false
     t.datetime "updated_at",          :null => false
+    t.text     "comments"
   end
 
   add_index "assessments", ["better_future"], :name => "index_assessments_on_better_future"
@@ -49,9 +50,9 @@ ActiveRecord::Schema.define(:version => 20130424121842) do
     t.string   "subject"
     t.string   "course_number"
     t.string   "affiliation"
-    t.string   "contact_name",        :limit => 100, :null => false
-    t.string   "contact_email",       :limit => 150, :null => false
-    t.string   "contact_phone",       :limit => 25,  :null => false
+    t.string   "contact_name",            :limit => 100, :null => false
+    t.string   "contact_email",           :limit => 150, :null => false
+    t.string   "contact_phone",           :limit => 25,  :null => false
     t.datetime "pre_class_appt"
     t.datetime "timeframe"
     t.datetime "time_choice_1"
@@ -66,12 +67,16 @@ ActiveRecord::Schema.define(:version => 20130424121842) do
     t.string   "external_syllabus"
     t.string   "duration"
     t.text     "comments"
-    t.datetime "created_at",                         :null => false
-    t.datetime "updated_at",                         :null => false
+    t.datetime "created_at",                             :null => false
+    t.datetime "updated_at",                             :null => false
     t.string   "course_sessions"
     t.string   "session_count"
     t.text     "goal"
     t.string   "instruction_session"
+    t.datetime "time_choice_4"
+    t.datetime "pre_class_appt_choice_1"
+    t.datetime "pre_class_appt_choice_2"
+    t.datetime "pre_class_appt_choice_3"
   end
 
   add_index "courses", ["affiliation"], :name => "index_courses_on_affiliation"
@@ -102,6 +107,19 @@ ActiveRecord::Schema.define(:version => 20130424121842) do
   create_table "courses_users", :id => false, :force => true do |t|
     t.integer "course_id"
     t.integer "user_id"
+  end
+
+  create_table "emails", :force => true do |t|
+    t.string   "to"
+    t.string   "bcc"
+    t.string   "from"
+    t.string   "reply_to"
+    t.string   "subject"
+    t.text     "body"
+    t.date     "date_sent"
+    t.boolean  "message_sent", :default => false
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
   end
 
   create_table "item_attributes", :force => true do |t|
