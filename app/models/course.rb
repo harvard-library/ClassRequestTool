@@ -81,6 +81,28 @@ class Course < ActiveRecord::Base
     end  
   end
   
+  def status_change_email
+    # send email to requester
+    Email.create(
+      :from => DEFAULT_MAILER_SENDER,
+      :reply_to => DEFAULT_MAILER_SENDER,
+      :to => self.contact_email,
+      :subject => "Class Request Confirmed for #{self.title}",
+      :body => "Class Request Confirmed for #{self.title}"
+    ) 
+  end
+  
+  def send_assessment_email
+    # send email to requester
+    Email.create(
+      :from => DEFAULT_MAILER_SENDER,
+      :reply_to => DEFAULT_MAILER_SENDER,
+      :to => self.contact_email,
+      :subject => "Class Request Closed for #{self.title}",
+      :body => "Class Request Closed for #{self.title}. Link to Assessment."
+    ) 
+  end
+  
   def self.homeless
     Course.find(:all, :conditions => {:repository_id => nil})
   end  

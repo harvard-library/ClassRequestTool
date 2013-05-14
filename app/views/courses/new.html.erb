@@ -12,7 +12,7 @@
  </script>
  <noscript>Please enable Javascript.</noscript>
 
-<h1>Request a Course</h1>
+<h1>Request a Class Session</h1>
 
 <div id="info-left">	
   <%= semantic_form_for(@course, :html => {:multipart => true}) do |f| %>
@@ -30,7 +30,9 @@
 	<br />
 	<span id="submit_course">
 	<p><%= link_to("Click here", "#", :id => 'view_all') %> to review your information and make any edits before submitting your request.</p>
-	<%= f.actions %>
+	<%= f.actions do %>
+	  <%= f.action :submit, :as => :button, :label => 'Submit Request ' %>
+	<% end %>
 	</span>
   <% end %>	
 </div>

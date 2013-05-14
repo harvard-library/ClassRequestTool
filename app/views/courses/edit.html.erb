@@ -30,7 +30,9 @@
 	<br />
 	<span id="submit_course">
 	<p><%= link_to("Click here", "#", :id => 'view_all') %> to review your information and make any edits before submitting your request.</p>
-	<%= f.actions %>
+	<%= f.actions do %>
+	  <%= f.action :submit, :as => :button, :label => 'Update Request ' %>
+	<% end %>
 	</span>
   <% end %>	
 </div>

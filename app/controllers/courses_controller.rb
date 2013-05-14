@@ -88,6 +88,11 @@ class CoursesController < ApplicationController
     respond_to do |format|
       if @course.update_attributes(params[:course])
         @course.updated_request_email
+        if params[:course][:status] = "Scheduled, claimed" && params[:send_email] = "1"
+          @course.status_change_email
+        if params[:course][:status] = "Closed" && params[:send_email] = "1"
+          @course.send_assessment_email
+        end  
         format.html { redirect_to root_url, notice: 'Course was successfully updated.' }
         format.json { head :no_content }
       else
