@@ -55,6 +55,7 @@ class CoursesController < ApplicationController
         end  
       else  
         if @course.save
+          @course.new_request_email
           if user_signed_in?
             format.html { redirect_to summary_course_url(@course), notice: 'Course was successfully created.' }
           else
@@ -75,8 +76,8 @@ class CoursesController < ApplicationController
       params[:course][:repository_id] = params[:repository_id]
     end  
     
-    params[:course][:timeframe] = DateTime.strptime(params[:course][:timeframe], '%m/%d/%Y %I:%M %P') unless params[:course][:timeframe].nil?
-    params[:course][:pre_class_appt] = DateTime.strptime(params[:course][:pre_class_appt], '%m/%d/%Y %I:%M %P') unless params[:course][:pre_class_appt].nil?
+    params[:course][:timeframe] = DateTime.strptime(params[:course][:timeframe], '%m/%d/%Y %I:%M %P') unless params[:course][:timeframe].nil? || params[:course][:timeframe].empty?
+    params[:course][:pre_class_appt] = DateTime.strptime(params[:course][:pre_class_appt], '%m/%d/%Y %I:%M %P') unless params[:course][:pre_class_appt].nil? || params[:course][:pre_class_appt].empty?
     params[:course][:time_choice_1] = DateTime.strptime(params[:course][:time_choice_1], '%m/%d/%Y %I:%M %P') unless params[:course][:time_choice_1].empty?
     params[:course][:time_choice_2] = DateTime.strptime(params[:course][:time_choice_2], '%m/%d/%Y %I:%M %P') unless params[:course][:time_choice_2].empty?
     params[:course][:time_choice_3] = DateTime.strptime(params[:course][:time_choice_3], '%m/%d/%Y %I:%M %P') unless params[:course][:time_choice_3].empty?
@@ -86,6 +87,7 @@ class CoursesController < ApplicationController
     
     respond_to do |format|
       if @course.update_attributes(params[:course])
+        @course.updated_request_email
         format.html { redirect_to root_url, notice: 'Course was successfully updated.' }
         format.json { head :no_content }
       else

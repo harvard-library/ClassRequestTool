@@ -23,7 +23,3 @@
 <%= f.input :comments, :label => "Additional Comments: ", :input_html => { :rows => 5, :cols => 30 } %>
 
 <%= link_to("Go Back", "#", :id => 'back_section_3') %>
-
-<% if user_signed_in? %>
-   | <%= link_to("View Staff Actions", "#", :id => 'next_section_4') %>
-<% end %>

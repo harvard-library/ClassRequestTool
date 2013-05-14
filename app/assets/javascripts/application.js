@@ -49,7 +49,7 @@ $(document).ready(function(){
   $('#requester_info_partial').hide();
   $('#involvement_info_partial').hide();
   $('#scheduling_info_partial').hide();
-  $('#staff_actions_partial').hide();
+  $('#staff_actions_partial').show();
   $('#submit_course').hide();
   //$('#course_pre_class_appt_input').hide();
 
@@ -115,7 +115,7 @@ jQuery(function(){
    });
   $('#back_section_4').click(function() {
 	$('#scheduling_info_partial').show();
-	$('#staff_actions_partial').hide();
+	$('#staff_actions_partial').show();
 	$('#submit_course').hide();
    });
 
@@ -124,38 +124,40 @@ jQuery(function(){
 	$('#requester_info_partial').hide();
 	$('#involvement_info_partial').hide();
 	$('#scheduling_info_partial').hide();
-	$('#staff_actions_partial').hide();
+	$('#staff_actions_partial').show();
    });
   $('#view_section_2').click(function() {
 	$('#requester_info_partial').hide();
 	$('#course_info_partial').hide();
 	$('#involvement_info_partial').hide();
 	$('#scheduling_info_partial').hide();
-	$('#staff_actions_partial').hide();
+	$('#staff_actions_partial').show();
    });
   $('#view_section_3').click(function() {
 	$('#involvement_info_partial').show();
 	$('#course_info_partial').hide();
 	$('#requester_info_partial').hide();
 	$('#scheduling_info_partial').hide();
-	$('#staff_actions_partial').hide();
+	$('#staff_actions_partial').show();
    });
   $('#view_section_4').click(function() {
 	$('#scheduling_info_partial').show();
 	$('#course_info_partial').show();
 	$('#requester_info_partial').hide();
 	$('#involvement_info_partial').hide();
-	$('#staff_actions_partial').hide();
+	$('#staff_actions_partial').show();
 	$('#submit_course').show();
    });
-  $('#view_section_5').click(function() {
-	$('#staff_actions_partial').hide();
-	$('#course_info_partial').hide();
-	$('#requester_info_partial').hide();
-	$('#involvement_info_partial').hide();
-	$('#scheduling_info_partial').hide();
-	$('#submit_course').show();
-   });
+
+//  $('#view_section_5').click(function() {
+//	$('#staff_actions_partial').show();
+//	$('#course_info_partial').hide();
+//	$('#requester_info_partial').hide();
+//	$('#involvement_info_partial').hide();
+//	$('#scheduling_info_partial').hide();
+//	$('#submit_course').show();
+//   });
+
   $('#view_all').click(function() {
 	$('#staff_actions_partial').show();
 	$('#course_info_partial').show();

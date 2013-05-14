@@ -16,21 +16,19 @@ class Course < ActiveRecord::Base
   validates_presence_of :contact_email, :with => /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i, :message => "Invalid email"
   validates_presence_of :contact_phone
   
-  after_save :post_save_hooks
-  
   mount_uploader :file, FileUploader
 
   COURSE_SESSIONS = ['Single Session', 'Multiple Sessions, Same Materials', 'Multiple Sessions, Different Materials']
   STATUS = ['Pending', 'Scheduled, unclaimed', 'Scheduled, claimed', 'Homeless', 'Closed']
   
-  def post_save_hooks
+  def new_request_email
     # send email to requester
     Email.create(
       :from => DEFAULT_MAILER_SENDER,
       :reply_to => DEFAULT_MAILER_SENDER,
       :to => self.contact_email,
-      :subject => "Class Request Successfully Submitted",
-      :body => "Class Request Successfully Submitted"
+      :subject => "Class Request Successfully Submitted for #{self.title}",
+      :body => "Class Request Successfully Submitted for #{self.title}"
     )
     # if repository is empty, send to all admins of tool 
     if self.repository.nil? || self.repository.blank?
@@ -46,13 +44,39 @@ class Course < ActiveRecord::Base
     # if repository is not empty, send to all users assigned to repository selected
     else
       users = ""
-      self.repository.users.collect{|users| users = a.email + ","}
+      self.repository.users.collect{|u| users = u.email + ","}
       Email.create(
         :from => DEFAULT_MAILER_SENDER,
         :reply_to => DEFAULT_MAILER_SENDER,
         :to => users,
         :subject => "Class Request Submitted for #{self.repository.name}",
         :body => "Class Request Successfully Submitted"
+      )  
+    end  
+  end
+  
+  def updated_request_email
+    # if assigned users is empty, send to all admins of tool 
+    if self.users.nil? || self.users.blank?
+      admins = ""
+      User.all(:conditions => {:admin => true}).collect{|a| admins = a.email + ","}
+      Email.create(
+        :from => DEFAULT_MAILER_SENDER,
+        :reply_to => DEFAULT_MAILER_SENDER,
+        :to => admins,
+        :subject => "Unassigned Class Request Updated for #{self.title}",
+        :body => "Unassigned Class Request Has Been Updated for #{self.title}"
+      )
+    # if assigned users is not empty, send to all users assigned to course selected
+    else
+      users = ""
+      self.users.collect{|u| users = u.email + ","}
+      Email.create(
+        :from => DEFAULT_MAILER_SENDER,
+        :reply_to => DEFAULT_MAILER_SENDER,
+        :to => users,
+        :subject => "Class Request Updated for #{self.title}",
+        :body => "Class Request Successfully Updated for #{self.title}"
       )  
     end  
   end

@@ -91,7 +91,7 @@ namespace :crt do
       puts "Successfully delivered expiration notices!"
     end
     
-    desc "Sets expired status on reservations and generates an email."
+    desc "Send email to admins when a class is still homeless after two days."
     task :send_homeless_notices => :environment do
       @courses = Course.find(:all, :conditions => ['repository_id IS NULL AND created_at <= ?', Time.now - 2.days])
       @courses.each do |course|
