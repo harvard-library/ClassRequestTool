@@ -1,4 +1,6 @@
 class Course < ActiveRecord::Base
+  include ActionDispatch::Routing::UrlFor
+  include Rails.application.routes.url_helpers
   attr_accessible :room_id, :repository_id, :title, :subject, :course_number, :affiliation, :contact_name, :contact_email, :contact_phone, :pre_class_appt, :staff_involvement, :status, :file, :number_of_students, :timeframe, :user_ids, :external_syllabus, :time_choice_1, :time_choice_2, :time_choice_3, :duration, :comments, :course_sessions, :session_count, :item_attribute_ids, :goal, :instruction_session, :pre_class_appt_choice_1, :pre_class_appt_choice_2, :pre_class_appt_choice_3, :staff_involvement_ids
   
   has_and_belongs_to_many :users
@@ -99,7 +101,7 @@ class Course < ActiveRecord::Base
       :reply_to => DEFAULT_MAILER_SENDER,
       :to => self.contact_email,
       :subject => "Class Request Closed for #{self.title}",
-      :body => "Class Request Closed for #{self.title}. Link to Assessment."
+      :body => "Class Request Closed for #{self.title}. Complete a course <a href='#{ROOT_URL}#{new_assessment_path(:course_id => self.id)}'> assessment</a>}."
     ) 
   end
   
