@@ -11,12 +11,10 @@
 	<li><%= link_to "Staff Involvements", staff_involvements_path %></li>
 	<li><%= link_to "Users", users_path %></li>
 	<li><%= link_to "Sign Out", destroy_user_session_path, :method => :delete %></li>
-	<li><%= link_to "Edit Account", edit_user_registration_path %></li>
   <% elsif user_signed_in? %>
     <li><%= link_to "Dashboard", dashboard_welcome_index_url %></li>
 	<li><%= link_to "Courses", courses_path %></li>
 	<li><%= link_to "Sign Out", destroy_user_session_path, :method => :delete %></li>
-	<li><%= link_to "Edit Account", edit_user_registration_path %></li>
   <% else %>
 	<li><%= link_to "Sign In", new_user_session_path %></li>
   <% end %>

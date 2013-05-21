@@ -1,5 +1,5 @@
 <h3><%= link_to("Staff Involvement", "#", :id => 'view_section_3') %></h3>
-<%= f.input :staff_involvements, :label => "Level of Staff Involvement: ", :as => :check_boxes, :collection => @course.repository.staff_involvements %>
+<%= f.input :staff_involvements, :label => "Level of Staff Involvement: ", :as => :check_boxes, :collection => @course.repository.nil? ? Repository.find_by_name("Houghton").staff_involvements : @course.repository.staff_involvements %>
 <%= f.input :staff_involvement, :label => "Other Involvement: " %>
 <br />
 <%= link_to("Go Back", "#", :id => 'back_section_2') %> | <%= link_to("Next Section", "#", :id => 'next_section_3') %>

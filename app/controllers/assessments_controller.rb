@@ -23,6 +23,7 @@ class AssessmentsController < ApplicationController
     @assessment.course = Course.find(params[:course_id])
     respond_to do |format|
       if @assessment.save
+        @assessment.new_assessment_email
         format.html { redirect_to course_url(@assessment.course), notice: 'assessment was successfully created.' }
         format.json { render json: @assessment, status: :created, assessment: @assessment }
       else

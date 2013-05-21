@@ -68,4 +68,69 @@ namespace :crt do
       puts "Created Admin account, Repos, Locations and Rooms!"
     end
   end
+  
+  namespace :cron_task do
+    desc "Send scheduled emails daily"
+    task :send_expiration_notices => :environment do
+      @reservations = Array.new
+      ReservableAssetType.all.each do |at|
+        @reservations << Reservation.find(:all, :conditions => ['status_id = ? AND end_date - current_date = ?', Status.find(:first, :conditions => ["lower(name) = 'approved'"]), at.expiration_extension_time.to_i])  
+      end  
+      @reservations.flatten!
+      notice = ReservationNotice.find(:first, :conditions => {:status_id => Status.find(:first, :conditions => ["lower(name) = 'expiring'"])})
+      @reservations.each do |reservation|
+        Email.create(
+          :from => reservation.reservable_asset.reservable_asset_type.library.from,
+          :reply_to => reservation.reservable_asset.reservable_asset_type.library.from,
+          :to => reservation.user.email,
+          :bcc => reservation.reservable_asset.reservable_asset_type.library.bcc,
+          :subject => notice.subject,
+          :body => notice.message
+        )
+      end  
+      puts "Successfully delivered expiration notices!"
+    end
+    
+    desc "Send email to admins when a class is still homeless after two days."
+    task :send_homeless_notices => :environment do
+      @courses = Course.find(:all, :conditions => ['repository_id IS NULL AND created_at <= ?', Time.now - 2.days])
+      @courses.each do |course|
+        admins = ""
+        User.all(:conditions => {:admin => true}).collect{|a| admins = a.email + ","}
+        Email.create(
+          :from => DEFAULT_MAILER_SENDER,
+          :reply_to => DEFAULT_MAILER_SENDER,
+          :to => admins,
+          :subject => "Homeless Courses - More than 2 Days",
+          :body => "Homeless Courses - More than 2 Days"
+        )
+      end
+      puts "Successfully delivered homeless notices!"
+    end
+    
+    desc "Send emails that are queued up"
+    task :send_queued_emails => :environment do
+      emails = Email.to_send
+      emails.each do |email|
+        begin
+          Notification.send_queued(email).deliver
+          email.message_sent = true
+          email.date_sent = Time.now
+          email.save
+        rescue Exception => e
+          #FAIL!
+          email.error_message = e.inspect[0..4999]
+          email.to_send = false
+          email.save
+        end
+      end  
+      puts "Successfully sent queued emails!" 
+    end
+    
+    desc "run all tasks in cron_task"
+    task :run_all => [:send_homeless_notices, :send_queued_emails] do
+      puts "Sent all notices!"
+    end
+    
+  end
 end

@@ -7,12 +7,18 @@
   <%= f.input :room, :as => :select, :collection => Room.all, :label => "Room: " %>
 
   <%= f.input :status, :label => "Status: ", :as => :select, :collection => Course::STATUS %>
+  <%= check_box_tag :send_email%> Send status change email to requester?<br /><br />
+
   <% if current_user.admin? %>
     <%= f.input :users, :as => :check_boxes, :collection => User.all, :label => "Assign Staff: " %>
   <% elsif !@course.repository.nil? %>
     <%= f.input :users, :as => :check_boxes, :collection => @course.repository.users, :label => "Assign Staff: " %>
   <% end %>
 
-<% end %>
 <br />
 <%= link_to("Go Back", "#", :id => 'back_section_4') %>
+
+<%= f.actions do %>
+  <%= f.action :submit, :as => :button, :label => 'Update Request ' %>
+<% end %>
+<% end %>

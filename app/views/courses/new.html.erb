@@ -12,21 +12,27 @@
  </script>
  <noscript>Please enable Javascript.</noscript>
 
-<h1>Request a Course</h1>
+<h1>Request a Class Session</h1>
 
-<div id="info-left">
+<div id="info-left">	
   <%= semantic_form_for(@course, :html => {:multipart => true}) do |f| %>
-	<%= f.inputs do %>	
-      <span id="course_info_partial"><%= render :partial => 'shared/forms/course_info', :locals=>{:f=>f} %></span>
-      <span id="requester_info_partial"><%= render :partial => 'shared/forms/course_requester_info', :locals=>{:f=>f} %></span>
-      <span id="involvement_info_partial"><%= render :partial => 'shared/forms/course_staff_involvement', :locals=>{:f=>f} %></span>
-      <span id="scheduling_info_partial"><%= render :partial => 'shared/forms/course_scheduling', :locals=>{:f=>f} %></span>
-      <span id="staff_actions_partial"><%= render :partial => 'shared/forms/course_staff_actions', :locals=>{:f=>f} %></span>
+	<%= f.inputs do %>
+	  <div style="float:left; width: 50%;">
+        <span id="course_info_partial"><%= render :partial => 'shared/forms/course_info', :locals=>{:f=>f} %></span>
+        <span id="requester_info_partial"><%= render :partial => 'shared/forms/course_requester_info', :locals=>{:f=>f} %></span>
+        <span id="involvement_info_partial"><%= render :partial => 'shared/forms/course_staff_involvement', :locals=>{:f=>f} %></span>
+        <span id="scheduling_info_partial"><%= render :partial => 'shared/forms/course_scheduling', :locals=>{:f=>f} %></span>
+	  </div>
+	  <div style="float:left; width: 40%; margin-left: 10px;">
+        <span id="staff_actions_partial"><%= render :partial => 'shared/forms/course_staff_actions', :locals=>{:f=>f} %></span>
+	  </div>
 	<% end %>
 	<br />
 	<span id="submit_course">
 	<p><%= link_to("Click here", "#", :id => 'view_all') %> to review your information and make any edits before submitting your request.</p>
-	<%= f.actions %>
+	<%= f.actions do %>
+	  <%= f.action :submit, :as => :button, :label => 'Submit Request ' %>
+	<% end %>
 	</span>
   <% end %>	
 </div>
