@@ -2,7 +2,7 @@ class RoomsController < ApplicationController
   before_filter :authenticate_admin!, :except => [:index]
   
   def index
-    @rooms = Room.paginate(:page => params[:page], :per_page => 10)
+    @rooms = Room.order('name').paginate(:page => params[:page], :per_page => 50)
   end  
   
   def new

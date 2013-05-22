@@ -2,7 +2,7 @@ class RepositoriesController < ApplicationController
   before_filter :authenticate_admin!, :except => [:index, :show]
   
   def index
-    @repositories = Repository.paginate(:page => params[:page], :per_page => 10)
+    @repositories = Repository.order('name').paginate(:page => params[:page], :per_page => 50)
   end  
   
   def show

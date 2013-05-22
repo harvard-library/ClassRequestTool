@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130510170448) do
+ActiveRecord::Schema.define(:version => 20130522190454) do
 
   create_table "assessments", :force => true do |t|
     t.text     "using_materials"
@@ -50,7 +50,6 @@ ActiveRecord::Schema.define(:version => 20130510170448) do
     t.string   "subject"
     t.string   "course_number"
     t.string   "affiliation"
-    t.string   "contact_name",            :limit => 100, :null => false
     t.string   "contact_email",           :limit => 150, :null => false
     t.string   "contact_phone",           :limit => 25,  :null => false
     t.datetime "pre_class_appt"
@@ -77,12 +76,14 @@ ActiveRecord::Schema.define(:version => 20130510170448) do
     t.datetime "pre_class_appt_choice_1"
     t.datetime "pre_class_appt_choice_2"
     t.datetime "pre_class_appt_choice_3"
+    t.string   "contact_first_name",      :limit => 100
+    t.string   "contact_last_name",       :limit => 100
+    t.string   "contact_username",        :limit => 100
   end
 
   add_index "courses", ["affiliation"], :name => "index_courses_on_affiliation"
   add_index "courses", ["comments"], :name => "index_courses_on_comments"
   add_index "courses", ["contact_email"], :name => "index_courses_on_contact_email"
-  add_index "courses", ["contact_name"], :name => "index_courses_on_contact_name"
   add_index "courses", ["contact_phone"], :name => "index_courses_on_contact_phone"
   add_index "courses", ["course_number"], :name => "index_courses_on_course_number"
   add_index "courses", ["duration"], :name => "index_courses_on_duration"
@@ -193,8 +194,9 @@ ActiveRecord::Schema.define(:version => 20130510170448) do
   create_table "rooms", :force => true do |t|
     t.string   "name"
     t.integer  "location_id"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at",                 :null => false
+    t.datetime "updated_at",                 :null => false
+    t.integer  "class_limit", :default => 0
   end
 
   add_index "rooms", ["name"], :name => "index_rooms_on_name"

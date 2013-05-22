@@ -1,5 +1,7 @@
 <h3><%= link_to("Requester Information", "#", :id => 'view_section_2') %></h3>
-<%= f.input :contact_name, :label => "Primary Contact Name: " %>
+<%= f.input :contact_username, :as => :hidden %>
+<%= f.input :contact_first_name, :label => "Primary Contact First Name: " %>
+<%= f.input :contact_last_name, :label => "Primary Contact Last Name: " %>
 <%= f.input :contact_email, :label => "Primary Contact Email: " %>
 <%= f.input :contact_phone, :label => "Primary Contact Phone: " %>
 
