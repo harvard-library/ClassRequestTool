@@ -22,7 +22,7 @@
 	<br />
 	
 	<h3>Requester Information</h3>
-	Primary Contact Name: <%= @course.contact_name unless @course.contact_name.nil? %> <br />
+	Primary Contact Name: <%= @course.contact_first_name unless @course.contact_last_name.nil? %> <%= @course.contact_last_name unless @course.contact_last_name.nil? %> <br />
 	Primary Contact Email: <%= @course.contact_email unless @course.contact_email.nil? %> <br />
 	Primary Contact Phone: <%= @course.contact_phone unless @course.contact_phone.nil? %> <br />
 	

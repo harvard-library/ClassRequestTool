@@ -5,7 +5,9 @@
 	<thead>
 	  <tr>
 		<th>Name</th>
-		<th>Location</th>
+		<th>Limit</th>
+		<th>Repositories Associated</th>
+		<th>Attributes</th>
 		<th>Actions</th>
 	  </tr>
 	</thead> 
@@ -13,7 +15,17 @@
 	    <% @rooms.each do |room| %>
 	    	<tr>
 	  	  <td><%= room.name %></td>
-		  <td><%= room.location.name %></td>
+		  <td><%= room.class_limit %></td>
+		  <td>
+			<% room.repositories.each do |x| %>
+			   <%= x.name %><br />
+			<% end %>
+		  </td>
+		  <td>
+			<% room.item_attributes.each do |x| %>
+			   <%= x.name %><br />
+			<% end %>
+		  </td>
 		  <td>
 	      <% if current_user.try(:admin?) %>
 	   		<%= link_to('Edit', edit_room_path(room), :class => "action-edit") %> | <%= link_to('Delete', room_path(room), :confirm => "Are you sure?", :method => :delete) %>
