@@ -51,7 +51,6 @@ $(document).ready(function(){
   $('#scheduling_info_partial').hide();
   $('#staff_actions_partial').show();
   $('#submit_course').hide();
-  //$('#course_pre_class_appt_input').hide();
 
   $("#course-table").tablesorter();
   $("#attributes-table").tablesorter();
@@ -148,15 +147,6 @@ jQuery(function(){
 	$('#staff_actions_partial').show();
 	$('#submit_course').show();
    });
-
-//  $('#view_section_5').click(function() {
-//	$('#staff_actions_partial').show();
-//	$('#course_info_partial').hide();
-//	$('#requester_info_partial').hide();
-//	$('#involvement_info_partial').hide();
-//	$('#scheduling_info_partial').hide();
-//	$('#submit_course').show();
-//   });
 
   $('#view_all').click(function() {
 	$('#staff_actions_partial').show();

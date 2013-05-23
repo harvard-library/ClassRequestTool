@@ -18,6 +18,7 @@ class CoursesController < ApplicationController
   def new
     unless params[:repository].nil? || params[:repository].blank?
       @course = Course.new(:repository_id => Repository.find(params[:repository]).id)
+      @repository = Repository.find(params[:repository])
     else
       @course = Course.new  
     end  
@@ -117,8 +118,14 @@ class CoursesController < ApplicationController
   end
   
   def repo_select
-    @repo = Repository.find(params[:repo])
-    render :partial => "repo_items"
+    unless params[:repo] == ""
+      @repository = Repository.find(params[:repo])
+    else
+      @repository = ""
+    end  
+    p "repo"
+    p @repository
+    render :partial => "repo_info"
   end
    
 end

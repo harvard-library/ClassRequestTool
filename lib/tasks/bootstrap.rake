@@ -70,27 +70,6 @@ namespace :crt do
   end
   
   namespace :cron_task do
-    desc "Send scheduled emails daily"
-    task :send_expiration_notices => :environment do
-      @reservations = Array.new
-      ReservableAssetType.all.each do |at|
-        @reservations << Reservation.find(:all, :conditions => ['status_id = ? AND end_date - current_date = ?', Status.find(:first, :conditions => ["lower(name) = 'approved'"]), at.expiration_extension_time.to_i])  
-      end  
-      @reservations.flatten!
-      notice = ReservationNotice.find(:first, :conditions => {:status_id => Status.find(:first, :conditions => ["lower(name) = 'expiring'"])})
-      @reservations.each do |reservation|
-        Email.create(
-          :from => reservation.reservable_asset.reservable_asset_type.library.from,
-          :reply_to => reservation.reservable_asset.reservable_asset_type.library.from,
-          :to => reservation.user.email,
-          :bcc => reservation.reservable_asset.reservable_asset_type.library.bcc,
-          :subject => notice.subject,
-          :body => notice.message
-        )
-      end  
-      puts "Successfully delivered expiration notices!"
-    end
-    
     desc "Send email to admins when a class is still homeless after two days."
     task :send_homeless_notices => :environment do
       @courses = Course.find(:all, :conditions => ['repository_id IS NULL AND created_at <= ?', Time.now - 2.days])

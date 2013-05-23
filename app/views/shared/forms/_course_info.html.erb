@@ -15,7 +15,7 @@
 <%= f.input :course_number, :label => "Course Number (if Harvard): " %>
 <%= f.input :affiliation, :label => "Affiliation (if non-Harvard): " %>
 <% unless @course.repository.nil? %>
-  <%= f.input :number_of_students, :label => "Number of Students: ", :hint => "Maximum for this repository is #{@course.repository.class_limit}" %>
+  <%= f.input :number_of_students, :label => "Number of Students: ", :hint => "Limit for this Repository is listed on the right." %>
 <% else %>
   <%= f.input :number_of_students, :label => "Number of Students: " %>
 <% end %>

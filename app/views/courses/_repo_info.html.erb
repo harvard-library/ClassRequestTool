@@ -1,19 +1,19 @@
 <h3>Repository Information</h3>
 
 <div>
-	<% unless @course.repository.nil? %>
-	  Name: <%= @course.repository.name %> <br />
-	  Description: <%= @course.repository.description unless @course.repository.description.nil? %> <br />
-	  Class Limit: <%= @course.repository.class_limit unless @course.repository.class_limit.nil? %> <br />
+	<% unless @repository.nil? || @repository.blank? %>
+	  Name: <%= @repository.name %> <br />
+	  Description: <%= @repository.description unless @repository.description.nil? %> <br />
+	  Class Limit: <%= @repository.class_limit unless @repository.class_limit.nil? %> <br />
 	  Available Attributes: 
 	  <ul>
-	    <% @course.repository.item_attributes.each do |attribute| %>
+	    <% @repository.item_attributes.each do |attribute| %>
 	      <li><%= attribute.name %> - <%= attribute.description %></li>
 	    <% end %>
 	  </ul>
 	  Available Rooms: 
 	  <ul>
-	    <% @course.repository.rooms.each do |room| %>
+	    <% @repository.rooms.each do |room| %>
 	      <li><%= room.name %></li>
 	    <% end %>
 	  </ul>

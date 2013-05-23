@@ -106,17 +106,17 @@ class Course < ActiveRecord::Base
   end
   
   def self.homeless
-    Course.find(:all, :conditions => {:repository_id => nil})
+    Course.find(:all, :conditions => {:repository_id => nil}, :order => 'timeframe DESC')
   end  
   
   def self.unassigned
-    courses = Course.all
+    courses = Course.order('timeframe DESC')
     unassigned = Array.new
     courses.collect{|course| course.users.empty? ? unassigned << course : '' }
     return unassigned
   end
   
   def self.roomless
-    Course.find(:all, :conditions => {:room_id => nil})
+    Course.find(:all, :conditions => {:room_id => nil}, :order => 'timeframe DESC')
   end 
 end
