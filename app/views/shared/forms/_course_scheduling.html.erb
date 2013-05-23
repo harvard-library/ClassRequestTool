@@ -15,7 +15,6 @@
 
 <% unless @course.repository.nil? %>
   <%= f.input :item_attributes, :as => :check_boxes, :collection => @course.repository.item_attributes, :label => "Room Attributes Needed: " %>
-  <span id='repo_items'></span>
 <% end %>
 
 <%= f.input :instruction_session, :label => "Have you scheduled a general library research instruction session for the class? ", :input_html => { :size => 40 } %>
