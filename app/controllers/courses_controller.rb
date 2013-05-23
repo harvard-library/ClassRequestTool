@@ -1,6 +1,6 @@
 class CoursesController < ApplicationController
   before_filter :authenticate_admin!, :only => [:destroy]
-  before_filter :authenticate_user!, :except => [:new, :create, :summary]
+  before_filter :authenticate_user!, :except => [:new, :create, :summary, :repo_select]
   
   def index
     @courses_all = Course.paginate(:page => params[:page], :per_page => 10)
@@ -122,9 +122,7 @@ class CoursesController < ApplicationController
       @repository = Repository.find(params[:repo])
     else
       @repository = ""
-    end  
-    p "repo"
-    p @repository
+    end
     render :partial => "repo_info"
   end
    
