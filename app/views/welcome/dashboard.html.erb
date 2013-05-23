@@ -10,7 +10,7 @@
 
 <div id="dash-left">
 <h3>Your Repositories</h3>
-  <% unless current_user.repositories.nil? || current_user.repositories.empty? %>
+  <% unless @your_repos.nil? || @your_repos.empty? %>
 	<table id="your-repos-table" class="table table-condensed tablesorter">
 	  <thead>
 	  <tr>
@@ -19,7 +19,7 @@
 	  </tr>
 	  </thead>
 	  <tbody>	
-      <% current_user.repositories.each do |repo| %>	
+      <% @your_repos.each do |repo| %>	
         <tr>
 	  	  <td><%= link_to(repo.name, repo ) %></td>
           <% if current_user.try(:admin?) %>
@@ -29,12 +29,13 @@
       <% end %>
 	  </tbody>
     </table>
+	<%= will_paginate @your_repos, :param_name => 'your_repos_page' %>
   <% else %>
 	None yet!
   <% end %>
 
 <h3>Your Upcoming Courses</h3>
-  <% unless current_user.upcoming_courses.nil? || current_user.upcoming_courses.empty? %>	
+  <% unless @your_upcoming.nil? || @your_upcoming.empty? %>	
     <table id="your-upcoming-table" class="table table-condensed tablesorter">
 	  <thead>
 	  <tr>
@@ -45,7 +46,7 @@
 	  </tr>
 	  </thead>
 	  <tbody>
-    <% current_user.upcoming_courses.each do |course| %>	
+    <% @your_upcoming.each do |course| %>	
       	<tr>
 	  	  <td><%= link_to(course.title, course ) %></td>
 		  <td><%= course.created_at.strftime('%m/%d/%Y') %></td>
@@ -59,12 +60,13 @@
     <% end %>
 	  </tbody>
 	</table>
+	<%= will_paginate @your_upcoming, :param_name => 'your_upcoming_page' %>
   <% else %>
 	None yet!
   <% end %>
   
   <h3>Your Past Courses</h3>
-    <% unless current_user.past_courses.nil? || current_user.past_courses.empty? %>	
+    <% unless @your_past.nil? || @your_past.empty? %>	
       <table id="your-past-table" class="table table-condensed tablesorter">
 	  <thead>
   	  <tr>
@@ -75,7 +77,7 @@
   	  </tr>
       </thead>
 	  <tbody>
-      <% current_user.past_courses.each do |course| %>	
+      <% @your_past.each do |course| %>	
         <tr>
   	  	  <td><%= link_to(course.title, course ) %></td>
 		  <td><%= course.created_at.strftime('%m/%d/%Y') %></td>
@@ -89,13 +91,14 @@
       <% end %>
 	  </tbody>
   	</table>
+	<%= will_paginate @your_past, :param_name => 'your_past_page' %>
     <% else %>
   	None yet!
     <% end %>
 </div>
 <div id="dash-right">
 <h3>Homeless Courses</h3>
-  <% unless Course.homeless.nil? || Course.homeless.empty? %>
+  <% unless @homeless.nil? || @homeless.empty? %>
 	<table id="homeless-table" class="table table-condensed tablesorter">
 	<thead>	
 	  <tr>
@@ -106,7 +109,7 @@
 	  </tr>
 	</thead>
 	<tbody>
-      <% Course.homeless.each do |course| %>	
+      <% @homeless.each do |course| %>	
       	<tr>
 	  	  <td><%= link_to(course.title, course ) %></td>
 		  <td><%= course.created_at.strftime('%m/%d/%Y') %></td>
@@ -120,12 +123,13 @@
       <% end %>
 	</tbody>
 	</table>
+	<%= will_paginate @homeless, :param_name => 'homeless_page' %>
   <% else %>
 	None yet!
   <% end %>
   
   <h3>Unassigned Courses</h3>
-    <% unless Course.unassigned.nil? || Course.unassigned.empty? %>
+    <% unless @unassigned.nil? || @unassigned.empty? %>
   	<table id="unassigned-table" class="table table-condensed tablesorter">
 	<thead>
   	  <tr>
@@ -136,7 +140,7 @@
   	  </tr>
     </thead> 
 	<tbody>
-        <% Course.unassigned.each do |course| %>	
+        <% @unassigned.each do |course| %>	
         	<tr>
   	  	  <td><%= link_to(course.title, course ) %></td>
 		  <td><%= course.created_at.strftime('%m/%d/%Y') %></td>
@@ -150,12 +154,13 @@
         <% end %>
 	</tbody>	
   	</table>
+	<%= will_paginate @unassigned, :param_name => 'unassigned_page' %>
     <% else %>
   	None yet!
     <% end %>
 	
     <h3>Roomless Courses</h3>
-      <% unless Course.roomless.nil? || Course.roomless.empty? %>
+      <% unless @roomless.nil? || @roomless.empty? %>
     	<table id="roomless-table" class="table table-condensed tablesorter">
 		<thead>
     	  <tr>
@@ -166,7 +171,7 @@
     	  </tr>
 		</thead>
 		<tbody>
-          <% Course.roomless.each do |course| %>	
+          <% @roomless.each do |course| %>	
           	<tr>
     	  	  <td><%= link_to(course.title, course ) %></td>
 			  <td><%= course.created_at.strftime('%m/%d/%Y') %></td>
@@ -180,6 +185,7 @@
           <% end %>
 		</tbody>
     	</table>
+		<%= will_paginate @roomless, :param_name => 'roomless_page' %>
       <% else %>
     	None yet!
       <% end %>
