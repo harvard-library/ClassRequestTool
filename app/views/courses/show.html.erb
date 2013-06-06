@@ -2,7 +2,7 @@
 
 <div>
 	<h3>Course Information</h3>
-	Repository: <%= @course.repository.nil? ? "Don't Know" : @course.repository.name %> <br />
+	Library/Archive: <%= @course.repository.nil? ? "Not Sure - Help me Choose" : @course.repository.name %> <br />
 	Title: <%= @course.title unless @course.title.nil? %> <br />
 	Subject: <%= @course.subject unless @course.subject.nil? %> <br />
 	Course Number: <%= @course.course_number unless @course.course_number.nil? %> <br />

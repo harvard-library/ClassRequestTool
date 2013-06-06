@@ -1,6 +1,6 @@
 <%= semantic_form_for(@attribute) do |f| %>
   <%= f.inputs%>
   <%= f.input :rooms, :as => :check_boxes, :label => 'Choose Rooms for this Attribute' %><br />
-  <%= f.input :repositories, :as => :check_boxes, :label => 'Available Repositories for this Attribute' %>
+  <%= f.input :repositories, :as => :check_boxes, :label => 'Available Libraries/Archives for this Attribute' %>
   <%= f.actions %>
 <% end %>

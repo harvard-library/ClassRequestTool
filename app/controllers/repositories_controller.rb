@@ -21,7 +21,7 @@ class RepositoriesController < ApplicationController
     @repository = Repository.new(params[:repository])
     respond_to do |format|
       if @repository.save
-        format.html { redirect_to repositories_url, notice: 'Repository was successfully created.' }
+        format.html { redirect_to repositories_url, notice: 'Library/Archive was successfully created.' }
         format.json { render json: @repository, status: :created, location: @repository }
       else
         format.html { render action: "new" }
@@ -35,7 +35,7 @@ class RepositoriesController < ApplicationController
 
     respond_to do |format|
       if @repository.update_attributes(params[:repository])
-        format.html { redirect_to repositories_url, notice: 'Repository was successfully updated.' }
+        format.html { redirect_to repositories_url, notice: 'Library/Archive was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
