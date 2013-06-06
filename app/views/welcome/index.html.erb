@@ -3,7 +3,7 @@
 <%= render :partial => 'shared/welcome_text' %>
 
 <div id="welcome-left">
-  	<h3>Repositories</h3>
+  	<h3>Libraries/Archives</h3>
 	<p>
 	
 	<% @repositories.each do |repo| %>
@@ -15,11 +15,11 @@
 
 <div id="welcome-middle">
 	<h3>Request a Class Session</h3>
-	<p>To request a new course, choose a Repository:</p>
+	<p>To request a new course, choose a Library/Archive:</p>
 	
 	<%= form_tag new_course_path, :method => :get do %>
 	<p>
-	  <%= select_tag :repository, options_from_collection_for_select(@repositories, "id", "name"), :prompt => "Don't Know" %>
+	  <%= select_tag :repository, options_from_collection_for_select(@repositories, "id", "name"), :prompt => "Not Sure - Help me Choose" %>
 	  <%= submit_tag "Go!" %>
 	</p>
 	<% end %>	

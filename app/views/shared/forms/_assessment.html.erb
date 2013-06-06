@@ -6,7 +6,7 @@
   <%= f.inputs do %>
 	<%= hidden_field_tag :course_id, @course.id %>
     <%= f.input :using_materials, :label => "How did using collection materials complement your teaching goals? ", :input_html => { :rows => 5, :columns => 50 } %>
-	<%= f.input :involvement, :label => "In what ways was #{@course.repository.name} involved in your class? ", :as => :check_boxes, :collection => Assessment::INVOLVEMENT %>
+	<%= f.input :involvement, :label => "In what ways was #{@course.repository.nil? ? "the repository" : @course.repository.name} involved in your class? ", :as => :check_boxes, :collection => Assessment::INVOLVEMENT %>
 	<p>Please evaluate how well the following met your teaching needs, 1 being Poor, 5 being Excellent and 0 being Not Applicable:</p>
 	<%= f.input :staff_experience, :as => :radio, :collection => [0,1,2,3,4,5], :label => "Reference staff expertise: " %>
 	<%= f.input :staff_availability, :as => :radio, :collection => [0,1,2,3,4,5], :label => "Reference staff availability: " %>
@@ -16,9 +16,9 @@
 	<%= f.input :catalogs, :as => :radio, :collection => [0,1,2,3,4,5], :label => "Library catalogs (Hollis, OASIS, etc.): " %>
 	<%= f.input :digital_collections, :as => :radio, :collection => [0,1,2,3,4,5], :label => "Digital collections: " %>
 	
-	<%= f.input :involve_again, :as => :radio, :label => "Do you plan to involve #{@course.repository.name} in your teaching again? " %>
+	<%= f.input :involve_again, :as => :radio, :label => "Do you plan to involve #{@course.repository.nil? ? "the repository" : @course.repository.name} in your teaching again? " %>
 	<%= f.input :not_involve_again, :label => "If no, please tell us why not: ", :input_html => { :rows => 5, :columns => 50 } %>
-	<%= f.input :better_future, :label => "What could #{@course.repository.name} do to make your teaching with special collections better in the future? ", :input_html => { :rows => 5, :columns => 50 } %>
+	<%= f.input :better_future, :label => "What could #{@course.repository.nil? ? "the repository" : @course.repository.name} do to make your teaching with special collections better in the future? ", :input_html => { :rows => 5, :columns => 50 } %>
 	<%= f.input :comments, :label => "Additional Comments: ", :input_html => { :rows => 5, :columns => 50 } %>
   <% end %>
   <%= f.actions do %>

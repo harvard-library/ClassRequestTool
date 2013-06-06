@@ -1,12 +1,19 @@
 <h3><%= link_to("Scheduling", "#", :id => 'view_section_4') %></h3>
 <%= f.input :course_sessions, :label => "Frequency of Course: ", :as => :radio, :collection => Course::COURSE_SESSIONS %>
-<%= f.input :session_count, :label => "Number of Sessions: ", :input_html => { :size => 1, :maxlength => 1 } %>
+<%= f.input :session_count, :label => "Number of Sessions: ", :input_html => { :size => 1, :maxlength => 1 }, :hint => 'If more than 4 sessions, please choose dates for the first four and add a note to the Additional Comments at the bottom of this page indicating other dates/times you would like for your sessions.' %>
 
 <h4>Date/Time of Course</h4>
+<span id="multiple">Please select one date choice per session.</span>
+<span id="single">Please select up to 3 date choices for your session.</span>
+<br /><br />
+Final scheduling of a session is subject to both room and staff availability.
+<br /><br />
 <%= f.input :time_choice_1, :label => "Choice 1: ", :as => :string, :hint => 'In MM/DD/YYYY HH:MM am/pm format', :input_html => { :size => 30, :value => @course.time_choice_1.nil? ? '' : @course.time_choice_1.strftime('%m/%d/%Y %I:%M %P') } %>
 <%= f.input :time_choice_2, :label => "Choice 2: ", :as => :string, :hint => 'In MM/DD/YYYY HH:MM am/pm format', :input_html => { :size => 30, :value => @course.time_choice_2.nil? ? '' : @course.time_choice_2.strftime('%m/%d/%Y %I:%M %P') } %>
 <%= f.input :time_choice_3, :label => "Choice 3: ", :as => :string, :hint => 'In MM/DD/YYYY HH:MM am/pm format', :input_html => { :size => 30, :value => @course.time_choice_3.nil? ? '' : @course.time_choice_3.strftime('%m/%d/%Y %I:%M %P') } %>
-<%= f.input :duration, :label => "Course Duration (hours): ", :hint => '1 hour increments, maximum 3 hours', :input_html => { :size => 1, :maxlength => 1 } %>
+<%= f.input :time_choice_4, :label => "Choice 4: ", :as => :string, :hint => 'In MM/DD/YYYY HH:MM am/pm format', :input_html => { :size => 30, :value => @course.time_choice_3.nil? ? '' : @course.time_choice_3.strftime('%m/%d/%Y %I:%M %P') } %>
+
+<%= f.input :duration, :label => "Course Duration (hours): ", :hint => '1 hour increments, maximum 3 hours', :input_html => { :size => 1, :maxlength => 4 } %>
 
 <h4>Date/Time of Pre-Class Appointment (if necessary)</h4>
 <%= f.input :pre_class_appt_choice_1, :label => "Choice 1: ", :as => :string, :hint => 'In MM/DD/YYYY HH:MM am/pm format', :input_html => { :size => 30, :value => @course.pre_class_appt_choice_1.nil? ? '' : @course.pre_class_appt_choice_1.strftime('%m/%d/%Y %I:%M %P') } %>

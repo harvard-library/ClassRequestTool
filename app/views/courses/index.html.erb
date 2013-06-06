@@ -31,10 +31,10 @@
 	None yet!
   <% end %>
   <br /><br />
-  To submit a new course, choose a Repository:
+  To submit a new course, choose a Library/Archive:
   <%= form_tag new_course_path, :method => :get do %>
   <p>
-    <%= select_tag :repository, options_from_collection_for_select(@repositories, "id", "name"), :prompt => "Don't Know" %>
+    <%= select_tag :repository, options_from_collection_for_select(@repositories, "id", "name"), :prompt => "Not Sure - Help me Choose" %>
     <%= submit_tag "Go!" %>
   </p>
   <% end %>

@@ -63,6 +63,7 @@ class CoursesController < ApplicationController
             format.html { redirect_to summary_course_url(:id => @course.id), notice: 'Course was successfully submitted for approval.' }
           end    
         else
+          flash[:error] = "Please correct the errors in the form."
           format.html { render action: "new" }
           format.json { render json: @course.errors, status: :unprocessable_entity }
         end
@@ -97,6 +98,7 @@ class CoursesController < ApplicationController
         format.html { redirect_to root_url, notice: 'Course was successfully updated.' }
         format.json { head :no_content }
       else
+        flash[:error] = "Please correct the errors in the form."
         format.html { render action: "edit" }
         format.json { render json: @course.errors, status: :unprocessable_entity }
       end

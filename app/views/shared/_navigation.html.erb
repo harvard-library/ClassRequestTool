@@ -4,7 +4,7 @@
   <% if current_user.try(:admin?) %>
     <li><%= link_to "Dashboard", dashboard_welcome_index_url %></li>
 	<li><%= link_to "Courses", courses_path %></li>
-	<li><%= link_to "Repositories", repositories_path %></li>
+	<li><%= link_to "Libraries/Archives", repositories_path %></li>
 	<li><%= link_to "Rooms", rooms_path %></li>
 	<li><%= link_to "Attributes", item_attributes_path %></li>
 	<li><%= link_to "Staff Involvements", staff_involvements_path %></li>

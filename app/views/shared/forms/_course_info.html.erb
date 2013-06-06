@@ -1,12 +1,12 @@
 <h3><%= link_to("Course Information", "#", :id => 'view_section_1') %></h3>
 
-<%= f.input :repository, :label => "Repository: ", :input_html => { :value => @course.repository, :onchange => "change_repo_items(this.options[this.selectedIndex].value);" } %>
+<%= f.input :repository, :label => "Library/Archive: ", :include_blank => "Not Sure - Help me Choose", :input_html => { :value => @course.repository, :onchange => "change_repo_items(this.options[this.selectedIndex].value);" } %>
 
 <%= f.input :title, :label => "Course Title: " %>
 <%= f.input :subject, :label => "Course Subject: " %>
 <%= f.input :course_number, :label => "Course Number (if Harvard): " %>
 <%= f.input :affiliation, :label => "Affiliation (if non-Harvard): " %>
-<%= f.input :number_of_students, :label => "Number of Students: ", :hint => "Limit for this Repository is listed on the right." %>
+<%= f.input :number_of_students, :label => "Number of Students: ", :hint => "Limit for this Library/Archive is listed on the right." %>
 
 Syllabus: <br />
 <ul>
