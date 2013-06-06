@@ -1,6 +1,6 @@
 <h1><%= @course.title %></h1>
 <br />
-<p><%= button_to('Edit Course Info', edit_course_path(@course), :class => "action-edit") %></p>
+<p><%= button_to('Edit Course Info', edit_course_path(@course), :class => "action-edit", :method => :get) %></p>
 <div>
 	<h3>Course Information</h3>
 	Library/Archive: <%= @course.repository.nil? ? "Not Sure - Help me Choose" : @course.repository.name %> <br />
