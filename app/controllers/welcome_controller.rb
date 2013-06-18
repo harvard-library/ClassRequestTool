@@ -15,5 +15,6 @@ class WelcomeController < ApplicationController
     @your_repos = current_user.repositories.paginate(:page => params[:your_repos_page], :per_page => 5)
     @your_upcoming = current_user.upcoming_courses.paginate(:page => params[:your_upcoming_page], :per_page => 5)
     @your_past = current_user.past_courses.paginate(:page => params[:your_past_page], :per_page => 5)
+    @your_unscheduled = current_user.unscheduled_courses.paginate(:page => params[:your_unscheduled_page], :per_page => 5)
   end
 end

@@ -34,6 +34,9 @@ class CoursesController < ApplicationController
     unless params[:repository_id].nil?
       @repository = Repository.find(params[:repository_id])
       params[:course][:repository_id] = params[:repository_id]
+      params[:course][:status] = "Pending"
+    else
+      params[:course][:status] = "Homeless"
     end  
   
     params[:course][:timeframe] = DateTime.strptime(params[:course][:timeframe], '%m/%d/%Y %I:%M %P') unless params[:course][:timeframe].nil? || params[:course][:timeframe].empty?
@@ -76,6 +79,14 @@ class CoursesController < ApplicationController
     unless params[:repository_id].nil?
       @repository = Repository.find(params[:repository_id])
       params[:course][:repository_id] = params[:repository_id]
+    end 
+    
+    if !params[:course][:timeframe].blank? && params[:course][:user_ids][1].empty?
+      params[:course][:status] = "Scheduled, unclaimed"
+    elsif !params[:course][:timeframe].blank? && !params[:course][:user_ids][1].empty?
+      params[:course][:status] = "Scheduled, claimed" 
+    elsif params[:course][:timeframe].blank? && !params[:course][:user_ids][1].empty?
+      params[:course][:status] = "Claimed, unscheduled"   
     end  
     
     params[:course][:timeframe] = DateTime.strptime(params[:course][:timeframe], '%m/%d/%Y %I:%M %P') unless params[:course][:timeframe].nil? || params[:course][:timeframe].empty?
@@ -126,6 +137,18 @@ class CoursesController < ApplicationController
       @repository = ""
     end
     render :partial => "repo_info"
+  end
+  
+  def take
+    @course = Course.find(params[:id])
+    @course.users << current_user
+    if @course.repository.nil?
+      @course.repository = current_user.repositories[0]
+    end
+    @course.save  
+    respond_to do |format|
+      format.html { redirect_to dashboard_welcome_index_url, notice: 'Course was successfully claimed.' }
+    end  
   end
    
 end

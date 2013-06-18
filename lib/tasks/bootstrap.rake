@@ -106,6 +106,17 @@ namespace :crt do
       puts "Successfully sent queued emails!" 
     end
     
+    desc "Auto close courses"
+    task :status_closed => :environment do
+      @courses = Course.find(:all, :conditions => ['timeframe <= ?', Time.now - 1.days]) 
+      @courses.each do |course|
+        course.status = "Closed"
+        course.save
+        course.send_assessment_email
+      end 
+      puts "Successfully sent queued emails!" 
+    end
+    
     desc "run all tasks in cron_task"
     task :run_all => [:send_homeless_notices, :send_queued_emails] do
       puts "Sent all notices!"

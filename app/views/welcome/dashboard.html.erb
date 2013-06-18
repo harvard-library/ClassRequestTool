@@ -34,6 +34,35 @@
 	None yet!
   <% end %>
 
+<h3>Your Unscheduled Courses</h3>
+  <% unless @your_unscheduled.nil? || @your_unscheduled.empty? %>	
+    <table id="your_unscheduled-table" class="table table-condensed tablesorter">
+	  <thead>
+	  <tr>
+		<th>Name</th>
+		<th>Submission Date</th>
+		<th></th>
+	  </tr>
+	  </thead>
+	  <tbody>
+    <% @your_unscheduled.each do |course| %>	
+      	<tr>
+	  	  <td><%= link_to(course.title, course ) %></td>
+		  <td><%= course.created_at.strftime('%m/%d/%Y') %></td>
+		  <td><%= link_to('Edit', edit_course_path(course), :class => "action-edit") %><br />
+          <% if current_user.try(:admin?) %>
+	   		 <%= link_to('Delete', course_path(course), :confirm => "Are you sure?", :method => :delete) %>
+      	  <% end %>
+		  </td>
+	    </tr>
+    <% end %>
+	  </tbody>
+	</table>
+	<%= will_paginate @your_unscheduled, :param_name => 'your_unscheduled_page' %>
+  <% else %>
+	None yet!
+  <% end %>
+
 <h3>Your Upcoming Courses</h3>
   <% unless @your_upcoming.nil? || @your_upcoming.empty? %>	
     <table id="your-upcoming-table" class="table table-condensed tablesorter">
@@ -115,6 +144,7 @@
 		  <td><%= course.created_at.strftime('%m/%d/%Y') %></td>
 		  <td><%= course.timeframe.strftime('%m/%d/%Y %I:%M %P') unless course.timeframe.nil? %></td>
 		  <td><%= link_to('Edit', edit_course_path(course), :class => "action-edit") %><br />
+			  <%= link_to('Take', take_course_path(course), :class => "action-edit") %><br />
           <% if current_user.try(:admin?) %>
 	   		<%= link_to('Delete', course_path(course), :confirm => "Are you sure?", :method => :delete) %>
     	  <% end %>
@@ -146,6 +176,7 @@
 		  <td><%= course.created_at.strftime('%m/%d/%Y') %></td>
   		  <td><%= course.timeframe.strftime('%m/%d/%Y %I:%M %P') unless course.timeframe.nil? %></td>
   		  <td><%= link_to('Edit', edit_course_path(course), :class => "action-edit") %><br />
+	  		  <%= link_to('Take', take_course_path(course), :class => "action-edit") %><br />
           <% if current_user.try(:admin?) %>
   	   		<%= link_to('Delete', course_path(course), :confirm => "Are you sure?", :method => :delete) %>
       	  <% end %>
@@ -177,6 +208,7 @@
 			  <td><%= course.created_at.strftime('%m/%d/%Y') %></td>
     		  <td><%= course.timeframe.strftime('%m/%d/%Y %I:%M %P') unless course.timeframe.nil? %></td>
     		  <td><%= link_to('Edit', edit_course_path(course), :class => "action-edit") %><br />
+				  <%= link_to('Take', take_course_path(course), :class => "action-edit") %><br />
               <% if current_user.try(:admin?) %>
     	   		<%= link_to('Delete', course_path(course), :confirm => "Are you sure?", :method => :delete) %>
         	  <% end %>

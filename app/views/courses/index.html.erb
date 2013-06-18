@@ -9,6 +9,7 @@
 		<th>Name</th>
 		<th>Submission Date</th>
 		<th>Course Date</th>
+		<th>Status</th>
 		<th>Actions</th>
 	  </tr>
 	</thead> 
@@ -18,6 +19,7 @@
 	  	  <td><%= link_to(course.title, course ) %></td>
 		  <td><%= course.created_at.strftime('%m/%d/%Y') %></td>
 		  <td><%= course.timeframe.strftime('%m/%d/%Y %I:%M %P') unless course.timeframe.nil? %></td>
+		  <td><%= course.status %></td>
 		  <td><%= link_to('Edit', edit_course_path(course), :class => "action-edit") %>
 	      <% if current_user.try(:admin?) %>
 	   		 | <%= link_to('Delete', course_path(course), :confirm => "Are you sure?", :method => :delete) %>

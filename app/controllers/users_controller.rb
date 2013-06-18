@@ -10,11 +10,12 @@ class UsersController < ApplicationController
   end
   
   def create
-    @user = User.new
-    @user.email = params[:user][:email]
+    admin = params[:user][:admin]
+    params[:user] = params[:user].delete_if{|key, value| key == "admin" }
+    @user = User.new(params[:user])
     @user.password = User.random_password
-    params[:user][:admin] == "1" ? @user.admin = true : @user.admin = false
-    
+    admin == "1" ? @user.admin = true : @user.admin = false
+  
     respond_to do|format|
       if @user.save
         flash[:notice] = 'Added that User'
@@ -56,15 +57,13 @@ class UsersController < ApplicationController
 
   def update
     @user = User.find(params[:id])
-    
     unless current_user.try(:admin?) || @user.email == current_user.mail
        redirect_to('/') and return
     end
-    
     admin = params[:user][:admin]
-    params[:user] = params[:user].delete("admin")
+    params[:user] = params[:user].delete_if{|key, value| key == "admin" }
     @user.attributes = params[:user]
-    admin == "1" ? @user.admin = true : @user.admin = false  
+    admin == "1" ? @user.admin = true : @user.admin = false
     respond_to do|format|
       if @user.save
         flash[:notice] = %Q|#{@user} updated|

@@ -6,7 +6,7 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable#, :harvard_auth_proxy_authenticatable        
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :remember_me
+  attr_accessible :email, :password, :password_confirmation, :remember_me, :first_name, :last_name, :repository_ids
   # attr_accessible :title, :body
   
   has_and_belongs_to_many :courses
@@ -41,5 +41,15 @@ class User < ActiveRecord::Base
     end
     return past
   end  
+  
+  def unscheduled_courses
+    unscheduled = Array.new
+    if self.admin?
+      Course.all.collect{|course| course.timeframe.nil? ? unscheduled << course : ''}
+    else  
+      self.courses.collect{|course| course.timeframe.nil? ? unscheduled << course : ''}
+    end
+    return unscheduled
+  end
 
 end
