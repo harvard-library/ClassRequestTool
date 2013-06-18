@@ -41,5 +41,15 @@ class User < ActiveRecord::Base
     end
     return past
   end  
+  
+  def unscheduled_courses
+    unscheduled = Array.new
+    if self.admin?
+      Course.all.collect{|course| course.timeframe.nil? ? unscheduled << course : ''}
+    else  
+      self.courses.collect{|course| course.timeframe.nil? ? unscheduled << course : ''}
+    end
+    return unscheduled
+  end
 
 end

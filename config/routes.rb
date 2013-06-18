@@ -17,6 +17,7 @@ ClassRequestTool::Application.routes.draw do
   resources :courses do
     member do
       get 'summary'
+      get 'take'
     end 
     collection do
       get 'repo_select'

@@ -77,6 +77,7 @@ $(document).ready(function(){
   $("#your-repos-table").tablesorter();
   $("#your-upcoming-table").tablesorter();
   $("#your-past-table").tablesorter();
+  $("#your-unscheduled-table").tablesorter();
   $("#homeless-table").tablesorter();
   $("#unassigned-table").tablesorter();
   $("#roomless-table").tablesorter();
