@@ -8,8 +8,8 @@
 <% end %>
 
 <div>
-	Name: <%= @repository.name %> <br />
-	Description: <%= @repository.description unless @repository.description.nil? %> <br />
+	Name: <%= @repository.name %> <br /><br />
+	Description: <%= raw @repository.description unless @repository.description.nil? %> <br />
 	Class Limit: <%= @repository.class_limit unless @repository.class_limit.nil? %> <br />
 	Available Attributes: 
 	<% unless @repository.item_attributes.nil? || @repository.item_attributes.empty? %>

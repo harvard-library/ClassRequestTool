@@ -36,6 +36,9 @@ GEM
     carrierwave (0.8.0)
       activemodel (>= 3.2.0)
       activesupport (>= 3.2.0)
+    ckeditor (4.0.4)
+      mime-types
+      orm_adapter
     coffee-rails (3.2.2)
       coffee-script (>= 2.2.0)
       railties (~> 3.2.0)
@@ -133,6 +136,7 @@ PLATFORMS
 DEPENDENCIES
   bootstrap-sass
   carrierwave
+  ckeditor
   coffee-rails (~> 3.2.1)
   devise
   formtastic

@@ -14,6 +14,7 @@ gem 'carrierwave'
 gem 'bootstrap-sass'
 gem 'formtastic-bootstrap'
 gem 'jquery-tablesorter'
+gem 'ckeditor'
 gem "libv8", '3.3.10.4'
 #gem 'devise_harvard_auth_proxy', :git => 'git@github.com:apatel/devise_harvard_auth_proxy.git'
 
