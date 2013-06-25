@@ -1,11 +1,11 @@
 class CoursesController < ApplicationController
   before_filter :authenticate_admin!, :only => [:destroy]
-  before_filter :authenticate_user!, :except => [:new, :create, :summary, :repo_select]
+  before_filter :authenticate_staff!, :except => [:index, :new, :create, :summary, :repo_select]
   
   def index
-    @courses_all = Course.paginate(:page => params[:page], :per_page => 10)
-    @courses_mine = Array.new
-    @courses_all.collect {|course| course.users.include?(current_user) ? @courses_mine << course : '' }
+    @courses_all = Course.paginate(:page => params[:all_page], :per_page => 10)
+    @courses_mine = current_user.mine.paginate(:page => params[:mine_page], :per_page => 5)
+    #@courses_all.collect {|course| course.users.include?(current_user) || course.contact_email == current_user.email ? @courses_mine << course : '' }
     @repositories = Repository.find(:all, :order => :name)
   end  
   

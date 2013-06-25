@@ -5,7 +5,7 @@ gem 'rails', '3.2.11'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
-gem 'therubyracer'
+gem 'therubyracer', '0.10.1'
 gem 'devise'
 gem 'formtastic'
 gem 'will_paginate'
@@ -14,6 +14,8 @@ gem 'carrierwave'
 gem 'bootstrap-sass'
 gem 'formtastic-bootstrap'
 gem 'jquery-tablesorter'
+gem 'ckeditor'
+gem "libv8", '3.3.10.4'
 #gem 'devise_harvard_auth_proxy', :git => 'git@github.com:apatel/devise_harvard_auth_proxy.git'
 
 
@@ -29,7 +31,7 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
 end
 
-gem 'jquery-rails'
+gem 'jquery-rails', '~> 2.3.0'
 gem 'jquery-ui-rails'
 
 # To use ActiveModel has_secure_password

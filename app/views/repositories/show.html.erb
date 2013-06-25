@@ -8,8 +8,8 @@
 <% end %>
 
 <div>
-	Name: <%= @repository.name %> <br />
-	Description: <%= @repository.description unless @repository.description.nil? %> <br />
+	Name: <%= @repository.name %> <br /><br />
+	Description: <%= raw @repository.description unless @repository.description.nil? %> <br />
 	Class Limit: <%= @repository.class_limit unless @repository.class_limit.nil? %> <br />
 	Available Attributes: 
 	<% unless @repository.item_attributes.nil? || @repository.item_attributes.empty? %>
@@ -37,7 +37,7 @@
 	  Staff Member(s) Assigned: 
 	  <ul>
 	  <% @repository.users.each do |user| %>
-	    <li><%= user.email %></li>
+	    <li><%= user.first_name %> <%= user.last_name %></li>
 	  <% end %>
 	  </ul>
 	  <br /><br />
@@ -45,6 +45,7 @@
     <% end %>
 </div>
 
+<% unless current_user.try(:patron?) %>
 <div>
     <h2>Courses for This Library/Archive</h2>
       <% unless @repository.courses.nil? || @repository.courses.empty? %>
@@ -68,4 +69,5 @@
       <% else %>
     	None yet!
       <% end %>
-</div>	  
+</div>	
+<% end %>  

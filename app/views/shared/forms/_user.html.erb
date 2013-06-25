@@ -7,7 +7,11 @@
 	<% end %>
 	<%= f.input :repositories, :as => :check_boxes, :label => "Associated Libraries/Archives: " %>
 	<% if @user != current_user || @user.admin? %>
-	  <span id='admin_box'><%= f.input :admin, :label => "Is Admin? " %></span>
+	  <span id='admin_box'>
+		  <%= f.input :admin, :label => "Is Admin? " %> 
+		  <%= f.input :staff, :label => "Is Staff? " %>
+		  <%= f.input :patron, :label => "Is Patron? " %>
+	  </span>
 	<% end %>
   <% end %>
   <%= f.actions %>

@@ -1,5 +1,5 @@
 class WelcomeController < ApplicationController
-  before_filter :authenticate_user!, :only => [:dashboard]
+  before_filter :authenticate_admin_or_staff!, :only => [:dashboard]
   
   def index
     @repositories = Repository.find(:all, :order => :name)

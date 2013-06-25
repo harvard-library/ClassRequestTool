@@ -7,7 +7,18 @@ class ApplicationController < ActionController::Base
     if !current_user.try(:admin?)
       redirect_to(root_url)
     end  
-    
+  end
+  
+  def authenticate_staff!
+    if !current_user.try(:staff?)
+      redirect_to(root_url)
+    end  
+  end
+  
+  def authenticate_admin_or_staff!
+    if !current_user.try(:admin?) && !current_user.try(:staff?)
+      redirect_to(root_url)
+    end  
   end
     
   def verify_credentials

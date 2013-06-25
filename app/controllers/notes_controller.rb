@@ -1,5 +1,5 @@
 class NotesController < ApplicationController
-  before_filter :authenticate_user!
+  before_filter :authenticate_admin_or_staff!
   
   def index
     @notes = Note.find(:all, :order => :name)

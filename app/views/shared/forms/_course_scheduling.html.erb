@@ -15,11 +15,6 @@ Final scheduling of a session is subject to both room and staff availability.
 
 <%= f.input :duration, :label => "Course Duration (hours): ", :hint => '1 hour increments, maximum 3 hours', :input_html => { :size => 1, :maxlength => 4 } %>
 
-<h4>Date/Time of Pre-Class Appointment (if necessary)</h4>
-<%= f.input :pre_class_appt_choice_1, :label => "Choice 1: ", :as => :string, :hint => 'In MM/DD/YYYY HH:MM am/pm format', :input_html => { :size => 30, :value => @course.pre_class_appt_choice_1.nil? ? '' : @course.pre_class_appt_choice_1.strftime('%m/%d/%Y %I:%M %P') } %>
-<%= f.input :pre_class_appt_choice_2, :label => "Choice 2: ", :as => :string, :hint => 'In MM/DD/YYYY HH:MM am/pm format', :input_html => { :size => 30, :value => @course.pre_class_appt_choice_2.nil? ? '' : @course.pre_class_appt_choice_2.strftime('%m/%d/%Y %I:%M %P') } %>
-<%= f.input :pre_class_appt_choice_3, :label => "Choice 3: ", :as => :string, :hint => 'In MM/DD/YYYY HH:MM am/pm format', :input_html => { :size => 30, :value => @course.pre_class_appt_choice_3.nil? ? '' : @course.pre_class_appt_choice_3.strftime('%m/%d/%Y %I:%M %P') } %>
-
 <% unless @course.repository.nil? %>
   <%= f.input :item_attributes, :as => :check_boxes, :collection => @course.repository.item_attributes, :label => "Room Attributes Needed: " %>
 <% end %>
