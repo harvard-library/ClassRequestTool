@@ -34,7 +34,7 @@
 	None yet!
   <% end %>
 
-<h3>Your Unscheduled Courses</h3>
+<h3>Your Claimed, Unscheduled Courses</h3>
   <% unless @your_unscheduled.nil? || @your_unscheduled.empty? %>	
     <table id="your_unscheduled-table" class="table table-condensed tablesorter">
 	  <thead>
@@ -63,7 +63,7 @@
 	None yet!
   <% end %>
 
-<h3>Your Upcoming Courses</h3>
+<h3>Your Scheduled, Claimed Courses</h3>
   <% unless @your_upcoming.nil? || @your_upcoming.empty? %>	
     <table id="your-upcoming-table" class="table table-condensed tablesorter">
 	  <thead>
@@ -94,7 +94,7 @@
 	None yet!
   <% end %>
   
-  <h3>Your Past Courses</h3>
+  <h3>Your Closed Courses</h3>
     <% unless @your_past.nil? || @your_past.empty? %>	
       <table id="your-past-table" class="table table-condensed tablesorter">
 	  <thead>
@@ -158,7 +158,7 @@
 	None yet!
   <% end %>
   
-  <h3>Unassigned Courses</h3>
+  <h3>Unclaimed Courses</h3>
     <% unless @unassigned.nil? || @unassigned.empty? %>
   	<table id="unassigned-table" class="table table-condensed tablesorter">
 	<thead>
