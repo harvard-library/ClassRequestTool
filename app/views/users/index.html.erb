@@ -8,6 +8,8 @@
 		<th>Last Name</th>
 		<th>Email</th>
 		<th>Admin?</th>
+		<th>Staff?</th>
+		<th>Patron?</th>
 		<th>Actions</th>
 	  </tr>
 	</thead> 
@@ -18,6 +20,8 @@
 		  <td><%= user.last_name %></td>
 	  	  <td><%= link_to(user.email, user ) %></td>
 		  <td><%= user.admin ? "Yes" : "No" %></td>
+		  <td><%= user.staff ? "Yes" : "No" %></td>
+		  <td><%= user.patron ? "Yes" : "No" %></td> 
 		  <td><%= link_to('Edit', edit_user_path(user), :class => "action-edit") %>
 	      <% if current_user.try(:admin?) %>
 	   		 | <%= link_to('Delete', user_path(user), :confirm => "Are you sure?", :method => :delete) %>

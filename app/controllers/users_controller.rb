@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   before_filter :authenticate_admin!, :except => [:edit, :update]
+  before_filter :authenticate_admin_or_staff!
   
   def index
     @users = User.order('email').paginate(:page => params[:page], :per_page => 50)
@@ -11,10 +12,13 @@ class UsersController < ApplicationController
   
   def create
     admin = params[:user][:admin]
-    params[:user] = params[:user].delete_if{|key, value| key == "admin" }
+    staff = params[:user][:staff]
+    patron = params[:user][:patron]
+    params[:user] = params[:user].delete_if{|key, value| key == "admin" || key == "staff" || key == "patron" }
     @user = User.new(params[:user])
     @user.password = User.random_password
     admin == "1" ? @user.admin = true : @user.admin = false
+    staff == "1" ? @user.staff = true : @user.staff = false
   
     respond_to do|format|
       if @user.save
@@ -61,9 +65,13 @@ class UsersController < ApplicationController
        redirect_to('/') and return
     end
     admin = params[:user][:admin]
-    params[:user] = params[:user].delete_if{|key, value| key == "admin" }
+    staff = params[:user][:staff]
+    patron = params[:user][:patron]
+    params[:user] = params[:user].delete_if{|key, value| key == "admin" || key == "staff" || key == "patron" }
     @user.attributes = params[:user]
     admin == "1" ? @user.admin = true : @user.admin = false
+    staff == "1" ? @user.staff = true : @user.staff = false
+    patron == "1" ? @user.patron = true : @user.patron = false
     respond_to do|format|
       if @user.save
         flash[:notice] = %Q|#{@user} updated|

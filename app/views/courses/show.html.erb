@@ -68,7 +68,7 @@
 	  	Status: <%= @course.status %> <br />
 	    Staff Member(s) Assigned: 
 	    <% @course.users.each do |user| %>
-	      <%= user.email %>, 
+	      <%= user.first_name %> <%= user.last_name %>, 
 	    <% end %>
 		<h4>Assessments</h4>
 		  <%= link_to "Add Assessment", new_assessment_path(:course_id => @course.id) %><br /><br />

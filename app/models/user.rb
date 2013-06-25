@@ -2,7 +2,7 @@ class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
   # :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, #:registerable,
+  devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable#, :harvard_auth_proxy_authenticatable        
 
   # Setup accessible (or protected) attributes for your model
@@ -50,6 +50,10 @@ class User < ActiveRecord::Base
       self.courses.collect{|course| course.timeframe.nil? ? unscheduled << course : ''}
     end
     return unscheduled
+  end
+  
+  def mine
+    Course.find(:all, :conditions => {:contact_email => self.email}, :order => 'timeframe DESC')
   end
 
 end
