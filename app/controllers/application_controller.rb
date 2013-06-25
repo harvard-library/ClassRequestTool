@@ -9,6 +9,13 @@ class ApplicationController < ActionController::Base
     end  
     
   end
+  
+  def authenticate_staff!
+    if !current_user.try(:staff?)
+      redirect_to(root_url)
+    end  
+    
+  end
     
   def verify_credentials
     user_signed_in?
