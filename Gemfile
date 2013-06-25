@@ -5,7 +5,7 @@ gem 'rails', '3.2.11'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
-gem 'therubyracer', '0.10.1'
+gem 'therubyracer'
 gem 'devise'
 gem 'formtastic'
 gem 'will_paginate'
@@ -15,9 +15,6 @@ gem 'bootstrap-sass'
 gem 'formtastic-bootstrap'
 gem 'jquery-tablesorter'
 gem 'ckeditor'
-gem "libv8", '3.3.10.4'
-#gem 'devise_harvard_auth_proxy', :git => 'git@github.com:apatel/devise_harvard_auth_proxy.git'
-
 
 # Gems used only for assets and not required
 # in production environments by default.
