@@ -1,9 +1,17 @@
-<h1>Courses</h1>
-
 <% if current_user.try(:patron?) %>
 <div>
-  <h2>All Courses</h2>
-  <% unless @courses_mine.empty? %>	
+  <h2>My Courses</h2>
+
+	To submit a new course, choose a Library/Archive:
+	  <%= form_tag new_course_path, :method => :get do %>
+	  <p>
+	    <%= select_tag :repository, options_from_collection_for_select(@repositories, "id", "name"), :prompt => "Not Sure - Help me Choose" %>
+	    <%= submit_tag "Go!" %>
+	  </p>
+	  <% end %>
+
+	<h3>Current Courses</h3>
+  <% unless @courses_mine_current.empty? %>	
     <table id="course-table" class="table table-condensed tablesorter">
 	<thead>
 	  <tr>
@@ -15,7 +23,7 @@
 	  </tr>
 	</thead> 
 	<tbody>
-	    <% @courses_mine.each do |course| %>	
+	    <% @courses_mine_current.each do |course| %>	
 	    <tr>
 	  	  <td><%= link_to(course.title, course ) %></td>
 		  <td><%= course.created_at.strftime('%m/%d/%Y') %></td>
@@ -33,16 +41,45 @@
   <% else %>
 	None yet!
   <% end %>
-  <br /><br />
-  To submit a new course, choose a Library/Archive:
-  <%= form_tag new_course_path, :method => :get do %>
-  <p>
-    <%= select_tag :repository, options_from_collection_for_select(@repositories, "id", "name"), :prompt => "Not Sure - Help me Choose" %>
-    <%= submit_tag "Go!" %>
-  </p>
+  
+</div>
+<%= will_paginate @courses_mine_current, :param_name => 'mine_current_page' %>
+
+<div>
+  <h3>Past Courses</h3>	
+  <% unless @courses_mine_past.empty? %>	
+    <table id="course-table" class="table table-condensed tablesorter">
+	<thead>
+	  <tr>
+		<th>Name</th>
+		<th>Submission Date</th>
+		<th>Course Date</th>
+		<th>Status</th>
+		<th>Actions</th>
+	  </tr>
+	</thead> 
+	<tbody>
+	    <% @courses_mine_past.each do |course| %>	
+	    <tr>
+	  	  <td><%= link_to(course.title, course ) %></td>
+		  <td><%= course.created_at.strftime('%m/%d/%Y') %></td>
+		  <td><%= course.timeframe.strftime('%m/%d/%Y %I:%M %P') unless course.timeframe.nil? %></td>
+		  <td><%= course.status %></td>
+		  <td>
+		  <% if course.timeframe.nil? %>
+		    <%= link_to('Edit', edit_course_path(course), :class => "action-edit") %> | <%= link_to('Delete', course_path(course), :confirm => "Are you sure?", :method => :delete) %>
+	  	  <% end %>
+		  </td>
+	    </tr>
+	    <% end %>
+	</tbody>	
+	</table>
+  <% else %>
+	None yet!
   <% end %>
 </div>
-<%= will_paginate @courses_mine, :param_name => 'mine_page' %>
+<%= will_paginate @courses_mine_past, :param_name => 'mine_past_page' %>
+
 <% else %>
 <div>
   <h2>All Courses</h2>
