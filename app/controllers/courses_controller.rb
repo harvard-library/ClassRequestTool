@@ -4,8 +4,8 @@ class CoursesController < ApplicationController
   
   def index
     @courses_all = Course.paginate(:page => params[:all_page], :per_page => 10)
-    @courses_mine_current = current_user.mine_current.paginate(:page => params[:mine_page], :per_page => 5)
-    @courses_mine_past = current_user.mine_past.paginate(:page => params[:mine_page], :per_page => 5)
+    @courses_mine_current = current_user.mine_current.paginate(:page => params[:mine_current_page], :per_page => 5)
+    @courses_mine_past = current_user.mine_past.paginate(:page => params[:mine_past_page], :per_page => 5)
     @repositories = Repository.find(:all, :order => :name)
   end  
   
