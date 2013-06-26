@@ -1,6 +1,6 @@
 <h3><%= link_to("Course Information", "#", :id => 'view_section_1') %></h3>
 
-<%= f.input :repository, :label => "Library/Archive: ", :include_blank => "Not Sure - Help me Choose", :input_html => { :value => @course.repository, :onchange => "change_repo_items(this.options[this.selectedIndex].value);" } %>
+<%= f.input :repository, :label => "Request a class session at: ", :include_blank => "Not Sure - Help me Choose", :input_html => { :value => @course.repository, :onchange => "change_repo_items(this.options[this.selectedIndex].value);" } %>
 
 <%= f.input :title, :label => "Course Title: " %>
 <%= f.input :subject, :label => "Course Subject: " %>

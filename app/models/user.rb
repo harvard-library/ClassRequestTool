@@ -52,8 +52,16 @@ class User < ActiveRecord::Base
     return unscheduled
   end
   
-  def mine
-    Course.find(:all, :conditions => {:contact_email => self.email}, :order => 'timeframe DESC')
+  def mine_current
+    upcoming = Array.new
+    Course.find(:all, :conditions => {:contact_email => self.email}, :order => 'timeframe DESC').collect{|course| course.timeframe.nil? || course.timeframe >= DateTime.now ? upcoming << course : ''}
+    return upcoming
+  end
+  
+  def mine_past
+    past = Array.new
+    Course.find(:all, :conditions => {:contact_email => self.email}, :order => 'timeframe DESC').collect{|course| !course.timeframe.nil? && course.timeframe < DateTime.now ? past << course : ''}
+    return past
   end
 
 end
