@@ -1,4 +1,4 @@
-<% if user_signed_in? %>
+<% if current_user.try(:admin?) || current_user.try(:staff?) %>
   <h3><%= link_to("Staff Actions", "#", :id => 'view_section_5') %></h3>
   <%= f.input :timeframe, :label => "Actual Date/Time of Course: ", :as => :string, :hint => 'In MM/DD/YYYY HH:MM am/pm format', :input_html => { :size => 30, :value => @course.timeframe.nil? ? '' : @course.timeframe.strftime('%m/%d/%Y %I:%M %P') } %>
 
