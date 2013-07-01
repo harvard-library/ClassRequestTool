@@ -1,6 +1,6 @@
 class CoursesController < ApplicationController
   before_filter :authenticate_admin!, :only => [:destroy]
-  before_filter :authenticate_staff!, :except => [:index, :new, :create, :summary, :repo_select]
+  before_filter :authenticate_admin_or_staff!, :except => [:index, :new, :create, :summary, :repo_select]
   
   def index
     @courses_all = Course.paginate(:page => params[:all_page], :per_page => 10)
