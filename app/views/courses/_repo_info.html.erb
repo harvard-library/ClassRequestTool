@@ -22,6 +22,6 @@
 	<% end %>
 	<br /><br />
 	<p>
-	<iframe src="https://www.google.com/calendar/embed?src=harvard.edu_hdua0kqiu3jhqjucfqtopbb7f0%40group.calendar.google.com&title=Houghton&amp;mode=WEEK&amp;height=600&amp;wkst=1&amp;bgcolor=%23FFFFFF&amp;ctz=America%2FNew_York" style=" border-width:0 " width="450" height="600" frameborder="0" scrolling="no"></iframe>
+	Calendar: <%= raw @repository.calendar unless @repository.calendar.nil? %> <br />
 	</p>
 </div>

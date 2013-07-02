@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130625153227) do
+ActiveRecord::Schema.define(:version => 20130702180344) do
 
   create_table "assessments", :force => true do |t|
     t.text     "using_materials"
@@ -169,6 +169,7 @@ ActiveRecord::Schema.define(:version => 20130625153227) do
     t.boolean  "can_edit"
     t.datetime "created_at",                 :null => false
     t.datetime "updated_at",                 :null => false
+    t.text     "calendar"
   end
 
   add_index "repositories", ["can_edit"], :name => "index_repositories_on_can_edit"
@@ -226,8 +227,8 @@ ActiveRecord::Schema.define(:version => 20130625153227) do
     t.datetime "updated_at",                                               :null => false
     t.string   "first_name",             :limit => 100
     t.string   "last_name",              :limit => 100
-    t.boolean  "staff"
-    t.boolean  "patron"
+    t.boolean  "staff",                                 :default => false
+    t.boolean  "patron",                                :default => true
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
