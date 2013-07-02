@@ -34,7 +34,7 @@
 	None yet!
   <% end %>
 
-<h3>Your Claimed, Unscheduled Courses</h3>
+<h3>Your Claimed, Unscheduled Classes</h3>
   <% unless @your_unscheduled.nil? || @your_unscheduled.empty? %>	
     <table id="your_unscheduled-table" class="table table-condensed tablesorter">
 	  <thead>
@@ -63,14 +63,14 @@
 	None yet!
   <% end %>
 
-<h3>Your Scheduled, Claimed Courses</h3>
+<h3>Your Scheduled, Claimed Classes</h3>
   <% unless @your_upcoming.nil? || @your_upcoming.empty? %>	
     <table id="your-upcoming-table" class="table table-condensed tablesorter">
 	  <thead>
 	  <tr>
 		<th>Name</th>
 		<th>Submission Date</th>
-		<th>Course Date</th>
+		<th>Class Date</th>
 		<th></th>
 	  </tr>
 	  </thead>
@@ -94,14 +94,14 @@
 	None yet!
   <% end %>
   
-  <h3>Your Closed Courses</h3>
+  <h3>Your Closed Classes</h3>
     <% unless @your_past.nil? || @your_past.empty? %>	
       <table id="your-past-table" class="table table-condensed tablesorter">
 	  <thead>
   	  <tr>
   		<th>Name</th>
 		<th>Submission Date</th>
-  		<th>Course Date</th>
+  		<th>Class Date</th>
   		<th></th>
   	  </tr>
       </thead>
@@ -126,14 +126,14 @@
     <% end %>
 </div>
 <div id="dash-right">
-<h3>Homeless Courses</h3>
+<h3>Homeless Classes</h3>
   <% unless @homeless.nil? || @homeless.empty? %>
 	<table id="homeless-table" class="table table-condensed tablesorter">
 	<thead>	
 	  <tr>
 		<th>Name</th>
 		<th>Submission Date</th>
-		<th>Course Date</th>
+		<th>Class Date</th>
 		<th></th>
 	  </tr>
 	</thead>
@@ -158,14 +158,14 @@
 	None yet!
   <% end %>
   
-  <h3>Unclaimed Courses</h3>
+  <h3>Unclaimed Classes</h3>
     <% unless @unassigned.nil? || @unassigned.empty? %>
   	<table id="unassigned-table" class="table table-condensed tablesorter">
 	<thead>
   	  <tr>
   		<th>Name</th>
 		<th>Submission Date</th>
-  		<th>Course Date</th>
+  		<th>Class Date</th>
   		<th></th>
   	  </tr>
     </thead> 
@@ -190,14 +190,14 @@
   	None yet!
     <% end %>
 	
-    <h3>Roomless Courses</h3>
+    <h3>Roomless Classes</h3>
       <% unless @roomless.nil? || @roomless.empty? %>
     	<table id="roomless-table" class="table table-condensed tablesorter">
 		<thead>
     	  <tr>
     		<th>Name</th>
 			<th>Submission Date</th>
-    		<th>Course Date</th>
+    		<th>Class Date</th>
     		<th></th>
     	  </tr>
 		</thead>

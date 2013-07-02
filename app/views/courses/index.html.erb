@@ -1,8 +1,8 @@
 <% if current_user.try(:patron?) %>
 <div>
-  <h2>My Courses</h2>
+  <h2>My Classes</h2>
 
-	To submit a new course, choose a Library/Archive:
+	To submit a new class, choose a Library/Archive:
 	  <%= form_tag new_course_path, :method => :get do %>
 	  <p>
 	    <%= select_tag :repository, options_from_collection_for_select(@repositories, "id", "name"), :prompt => "Not Sure - Help me Choose" %>
@@ -10,14 +10,14 @@
 	  </p>
 	  <% end %>
 
-	<h3>Current Courses</h3>
+	<h3>Current Classes</h3>
   <% unless @courses_mine_current.empty? %>	
     <table id="course-table" class="table table-condensed tablesorter">
 	<thead>
 	  <tr>
 		<th>Name</th>
 		<th>Submission Date</th>
-		<th>Course Date</th>
+		<th>Class Date</th>
 		<th>Status</th>
 		<th>Actions</th>
 	  </tr>
@@ -46,14 +46,14 @@
 <%= will_paginate @courses_mine_current, :param_name => 'mine_current_page' %>
 
 <div>
-  <h3>Past Courses</h3>	
+  <h3>Past Classes</h3>	
   <% unless @courses_mine_past.empty? %>	
     <table id="course-table" class="table table-condensed tablesorter">
 	<thead>
 	  <tr>
 		<th>Name</th>
 		<th>Submission Date</th>
-		<th>Course Date</th>
+		<th>Class Date</th>
 		<th>Status</th>
 		<th>Actions</th>
 	  </tr>
@@ -82,14 +82,14 @@
 
 <% else %>
 <div>
-  <h2>All Courses</h2>
+  <h2>All Classes</h2>
   <% unless @courses_all.empty? %>	
     <table id="course-table" class="table table-condensed tablesorter">
 	<thead>
 	  <tr>
 		<th>Name</th>
 		<th>Submission Date</th>
-		<th>Course Date</th>
+		<th>Class Date</th>
 		<th>Status</th>
 		<th>Actions</th>
 	  </tr>
@@ -114,7 +114,7 @@
 	None yet!
   <% end %>
   <br /><br />
-  To submit a new course, choose a Library/Archive:
+  To submit a new class, choose a Library/Archive:
   <%= form_tag new_course_path, :method => :get do %>
   <p>
     <%= select_tag :repository, options_from_collection_for_select(@repositories, "id", "name"), :prompt => "Not Sure - Help me Choose" %>
