@@ -1,6 +1,6 @@
 <% if current_user.try(:admin?) || current_user.try(:staff?) %>
   <h3><%= link_to("Staff Actions", "#", :id => 'view_section_5') %></h3>
-  <%= f.input :timeframe, :label => "Actual Date/Time of Course: ", :as => :string, :hint => 'In MM/DD/YYYY HH:MM am/pm format', :input_html => { :size => 30, :value => @course.timeframe.nil? ? '' : @course.timeframe.strftime('%m/%d/%Y %I:%M %P') } %>
+  <%= f.input :timeframe, :label => "Actual Date/Time of Class: ", :as => :string, :hint => 'In MM/DD/YYYY HH:MM am/pm format', :input_html => { :size => 30, :value => @course.timeframe.nil? ? '' : @course.timeframe.strftime('%m/%d/%Y %I:%M %P') } %>
 
   <%= f.input :pre_class_appt, :label => "Actual Pre-Class Appointment Date/Time (if necessary): ", :as => :string, :hint => 'In MM/DD/YYYY HH:MM am/pm format', :input_html => { :size => 30 } %>
 
@@ -15,10 +15,9 @@
     <%= f.input :users, :as => :check_boxes, :collection => @course.repository.users, :label => "Assign Staff: " %>
   <% end %>
 
-<br />
-<%= link_to("Go Back", "#", :id => 'back_section_4') %>
+  <br />
 
-<%= f.actions do %>
-  <%= f.action :submit, :as => :button, :label => 'Update Request ' %>
-<% end %>
+  <%= f.actions do %>
+    <%= f.action :submit, :as => :button, :label => 'Update Request ' %>
+  <% end %>
 <% end %>

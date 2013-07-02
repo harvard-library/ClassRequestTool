@@ -2,7 +2,5 @@
 <%= f.input :contact_username, :as => :hidden %>
 <%= f.input :contact_first_name, :label => "Primary Contact First Name: ", :input_html => { :value => current_user.first_name } %>
 <%= f.input :contact_last_name, :label => "Primary Contact Last Name: ", :input_html => { :value => current_user.last_name } %>
-<%= f.input :contact_email, :label => "Primary Contact Email: ", :input_html => { :value => current_user.email } %>
 <%= f.input :contact_phone, :label => "Primary Contact Phone: " %>
-
-<%= link_to("Go Back", "#", :id => 'back_section_1') %> | <%= link_to("Next Section", "#", :id => 'next_section_2') %>
+<%= f.input :contact_email, :label => "Primary Contact Email: ", :input_html => { :value => current_user.email } %>

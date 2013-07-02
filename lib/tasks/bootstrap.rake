@@ -80,8 +80,8 @@ namespace :crt do
           :from => DEFAULT_MAILER_SENDER,
           :reply_to => DEFAULT_MAILER_SENDER,
           :to => admins,
-          :subject => "Homeless Courses - More than 2 Days",
-          :body => "Homeless Courses - More than 2 Days"
+          :subject => "Homeless Classes - More than 2 Days",
+          :body => "Homeless Classes - More than 2 Days"
         )
       end
       puts "Successfully delivered homeless notices!"

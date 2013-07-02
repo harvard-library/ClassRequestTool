@@ -1,6 +1,7 @@
 class CoursesController < ApplicationController
   before_filter :authenticate_admin!, :only => [:destroy]
   before_filter :authenticate_admin_or_staff!, :except => [:index, :new, :create, :summary, :repo_select]
+  before_filter :authenticate_user!
   
   def index
     @courses_all = Course.paginate(:page => params[:all_page], :per_page => 10)
@@ -61,9 +62,9 @@ class CoursesController < ApplicationController
         if @course.save
           @course.new_request_email
           if user_signed_in?
-            format.html { redirect_to summary_course_url(@course), notice: 'Course was successfully created.' }
+            format.html { redirect_to summary_course_url(@course), notice: 'Class was successfully created.' }
           else
-            format.html { redirect_to summary_course_url(:id => @course.id), notice: 'Course was successfully submitted for approval.' }
+            format.html { redirect_to summary_course_url(:id => @course.id), notice: 'Class was successfully submitted for approval.' }
           end    
         else
           flash[:error] = "Please correct the errors in the form."
@@ -106,7 +107,7 @@ class CoursesController < ApplicationController
         elsif params[:course][:status] == "Closed" && params[:send_email] == "1"
           @course.send_assessment_email
         end  
-        format.html { redirect_to root_url, notice: 'Course was successfully updated.' }
+        format.html { redirect_to root_url, notice: 'Class was successfully updated.' }
         format.json { head :no_content }
       else
         flash[:error] = "Please correct the errors in the form."
@@ -147,7 +148,7 @@ class CoursesController < ApplicationController
     end
     @course.save  
     respond_to do |format|
-      format.html { redirect_to dashboard_welcome_index_url, notice: 'Course was successfully claimed.' }
+      format.html { redirect_to dashboard_welcome_index_url, notice: 'Class was successfully claimed.' }
     end  
   end
    

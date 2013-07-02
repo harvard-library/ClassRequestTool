@@ -8,7 +8,6 @@
 <% end %>
 
 <div>
-	Name: <%= @repository.name %> <br /><br />
 	Description: <%= raw @repository.description unless @repository.description.nil? %> <br />
 	Class Limit: <%= @repository.class_limit unless @repository.class_limit.nil? %> <br />
 	Available Attributes: 
@@ -32,7 +31,8 @@
 	<% else %>
 	  None.
 	<% end %>
-	<br />
+	<br /><br />
+	For more details on teaching at this Library/Archive <%= link_to "click here", @repository.landing_page, :target => "_blank" %>. <br /><br />
 	Calendar: <%= raw @repository.calendar unless @repository.calendar.nil? %> <br />
     <% if current_user.try(:admin?) %>
 	  Staff Member(s) Assigned: 
@@ -48,12 +48,12 @@
 
 <% unless current_user.try(:patron?) %>
 <div>
-    <h2>Courses for This Library/Archive</h2>
+    <h2>Classes for This Library/Archive</h2>
       <% unless @repository.courses.nil? || @repository.courses.empty? %>
     	<table>
     	  <tr>
     		<th>Name</th>
-    		<th>Course Date</th>
+    		<th>Class Date</th>
     		<th></th>
     	  </tr>
           <% @repository.courses.each do |course| %>	
