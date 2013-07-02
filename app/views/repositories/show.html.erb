@@ -33,6 +33,7 @@
 	  None.
 	<% end %>
 	<br />
+	Calendar: <%= raw @repository.calendar unless @repository.calendar.nil? %> <br />
     <% if current_user.try(:admin?) %>
 	  Staff Member(s) Assigned: 
 	  <ul>
