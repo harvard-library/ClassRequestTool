@@ -1,6 +1,5 @@
 class CoursesController < ApplicationController
-  before_filter :authenticate_admin!, :only => [:destroy]
-  before_filter :authenticate_admin_or_staff!, :except => [:index, :new, :create, :summary, :repo_select]
+  before_filter :authenticate_admin_or_staff!, :only => [:take]
   before_filter :authenticate_user!
   
   def index
