@@ -1,6 +1,5 @@
 class CoursesController < ApplicationController
-  before_filter :authenticate_admin!, :only => [:destroy]
-  before_filter :authenticate_admin_or_staff!, :except => [:index, :new, :create, :summary, :repo_select]
+  before_filter :authenticate_admin_or_staff!, :only => [:take]
   before_filter :authenticate_user!
   
   def index
@@ -32,9 +31,8 @@ class CoursesController < ApplicationController
   end
   
   def create
-    unless params[:repository_id].nil?
-      @repository = Repository.find(params[:repository_id])
-      params[:course][:repository_id] = params[:repository_id]
+    unless params[:course][:repository_id].nil?
+      @repository = Repository.find(params[:course][:repository_id])
       params[:course][:status] = "Pending"
     else
       params[:course][:status] = "Homeless"
@@ -77,16 +75,18 @@ class CoursesController < ApplicationController
   
   def update
     @course = Course.find(params[:id])
-    unless params[:repository_id].nil?
-      @repository = Repository.find(params[:repository_id])
-      params[:course][:repository_id] = params[:repository_id]
-    end 
+    unless params[:course][:repository_id].nil?
+      @repository = Repository.find(params[:course][:repository_id])
+      params[:course][:status] = "Pending"
+    else
+      params[:course][:status] = "Homeless"
+    end
     
     if !params[:course][:timeframe].blank? && params[:course][:user_ids][1].empty?
       params[:course][:status] = "Scheduled, unclaimed"
     elsif !params[:course][:timeframe].blank? && !params[:course][:user_ids][1].empty?
       params[:course][:status] = "Scheduled, claimed" 
-    elsif params[:course][:timeframe].blank? && !params[:course][:user_ids][1].empty?
+    elsif (params[:course][:timeframe].nil? || params[:course][:timeframe].blank?) && (!params[:course][:user_ids].nil? && !params[:course][:user_ids][1].empty?)
       params[:course][:status] = "Claimed, unscheduled"   
     end  
     

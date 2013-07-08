@@ -6,6 +6,7 @@
 	  <tr>
 		<th>First Name</th>
 		<th>Last Name</th>
+		<th>Username</th>
 		<th>Email</th>
 		<th>Admin?</th>
 		<th>Staff?</th>
@@ -18,7 +19,8 @@
 	    <tr>
 		  <td><%= user.first_name %></td>
 		  <td><%= user.last_name %></td>
-	  	  <td><%= link_to(user.email, user ) %></td>
+		  <td><%= link_to(user.username, user ) %></td>
+	  	  <td><%= user.email %></td>
 		  <td><%= user.admin ? "Yes" : "No" %></td>
 		  <td><%= user.staff ? "Yes" : "No" %></td>
 		  <td><%= user.patron ? "Yes" : "No" %></td> 

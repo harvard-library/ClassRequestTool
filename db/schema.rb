@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130702190037) do
+ActiveRecord::Schema.define(:version => 20130708130150) do
 
   create_table "assessments", :force => true do |t|
     t.text     "using_materials"
@@ -230,6 +230,7 @@ ActiveRecord::Schema.define(:version => 20130702190037) do
     t.string   "last_name",              :limit => 100
     t.boolean  "staff",                                 :default => false
     t.boolean  "patron",                                :default => true
+    t.string   "username",                              :default => "",    :null => false
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
