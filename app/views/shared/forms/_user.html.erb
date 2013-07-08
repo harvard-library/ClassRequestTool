@@ -3,6 +3,7 @@
 	<% if current_user.try(:admin?) %>
 	  <%= f.input :first_name, :input_html => { :size => 30 } %>
 	  <%= f.input :last_name, :input_html => { :size => 30 } %>
+	  <%= f.input :username, :input_html => { :size => 30 } %>
 	  <%= f.input :email, :input_html => { :size => 30 } %>
 	<% end %>
 	<%= f.input :repositories, :as => :check_boxes, :label => "Associated Libraries/Archives: " %>

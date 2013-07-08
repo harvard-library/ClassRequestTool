@@ -6,15 +6,16 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable#, :harvard_auth_proxy_authenticatable        
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :remember_me, :first_name, :last_name, :repository_ids
-  # attr_accessible :title, :body
+  attr_accessible :email, :password, :password_confirmation, :remember_me, :first_name, :last_name, :repository_ids, :username
+  
+  validates_uniqueness_of :username
   
   has_and_belongs_to_many :courses
   has_and_belongs_to_many :repositories
   has_many :notes
   
   def to_s
-    self.email
+    self.username
   end
   
   def self.random_password(size = 11)
