@@ -73,16 +73,6 @@ html,body {
 	width: 45%;
 }
 
-#info-left {
-	float: left;
-	width: 58%;
-}
-
-#info-right {
-	float: right;
-	width: 38%;
-}
-
 #welcome-left {
 	float: left;
 	width: 40%;
