@@ -144,10 +144,9 @@ DEPENDENCIES
   jquery-rails (~> 2.3.0)
   jquery-tablesorter
   jquery-ui-rails
-  libv8 (= 3.3.10.4)
   pg
   rails (= 3.2.11)
   sass-rails (~> 3.2.3)
-  therubyracer (= 0.10.1)
+  therubyracer
   uglifier (>= 1.0.3)
   will_paginate

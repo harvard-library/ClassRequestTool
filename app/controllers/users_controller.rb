@@ -19,7 +19,7 @@ class UsersController < ApplicationController
     @user.password = User.random_password
     admin == "1" ? @user.admin = true : @user.admin = false
     staff == "1" ? @user.staff = true : @user.staff = false
-  
+    patron == "1" ? @user.patron = true : @user.patron = false
     respond_to do|format|
       if @user.save
         flash[:notice] = 'Added that User'
@@ -38,7 +38,7 @@ class UsersController < ApplicationController
   def edit
     @user = User.find(params[:id])
     
-    unless current_user.try(:admin?) || @user.email == current_user.mail
+    unless current_user.try(:admin?) || @user.email == current_user.email
        redirect_to('/') and return
     end
   end
@@ -46,7 +46,7 @@ class UsersController < ApplicationController
   def destroy
     @user = User.find(params[:id])
     
-    unless current_user.try(:admin?) || @user.email == current_user.mail
+    unless current_user.try(:admin?) || @user.email == current_user.email
        redirect_to('/') and return
     end
     
@@ -61,7 +61,7 @@ class UsersController < ApplicationController
 
   def update
     @user = User.find(params[:id])
-    unless current_user.try(:admin?) || @user.email == current_user.mail
+    unless current_user.try(:admin?) || @user.email == current_user.email
        redirect_to('/') and return
     end
     admin = params[:user][:admin]

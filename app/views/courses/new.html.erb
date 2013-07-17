@@ -17,28 +17,20 @@
 <div id="info-left">	
   <%= semantic_form_for(@course, :html => {:multipart => true}) do |f| %>
 	<%= f.inputs do %>
-	  <div style="float:left; width: 50%;">
+	  <div style="float:left; width: 70%;">
 		<span id="requester_info"><%= render :partial => 'shared/forms/course_requester_info', :locals=>{:f=>f} %></span>
         <span id="course_info"><%= render :partial => 'shared/forms/course_info', :locals=>{:f=>f} %></span>
         <span id="involvement_info"><%= render :partial => 'shared/forms/course_staff_involvement', :locals=>{:f=>f} %></span>
         <span id="scheduling_info"><%= render :partial => 'shared/forms/course_scheduling', :locals=>{:f=>f} %></span>
 	  </div>
-	  <div style="float:left; width: 40%; margin-left: 10px;">
+	  <div style="float:left; width: 25%; margin-left: 10px;">
         <span id="staff_actions"><%= render :partial => 'shared/forms/course_staff_actions', :locals=>{:f=>f} %></span>
 	  </div>
 	<% end %>
 	<br />
-	<span id="submit_course_link">
 	<p>Be sure to review your information and make any edits before submitting your request.</p>
 	<%= f.actions do %>
 	  <%= f.action :submit, :as => :button, :label => 'Submit Request ' %>
 	<% end %>
-	</span>
   <% end %>	
-</div>
-
-<div id="info-right">
-	<span id='repo_items'>
-		<%= render :partial => 'repo_info' %>
-	</span>
 </div>

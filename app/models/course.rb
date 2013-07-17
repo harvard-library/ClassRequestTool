@@ -40,7 +40,7 @@ class Course < ActiveRecord::Base
         :from => DEFAULT_MAILER_SENDER,
         :reply_to => DEFAULT_MAILER_SENDER,
         :to => admins,
-        :subject => "Homeless Class Request Submitted",
+        :subject => "[ClassRequestTool] New Homeless Class!",
         :body => "Homeless Class Request Successfully Submitted"
       )
     # if repository is not empty, send to all users assigned to repository selected
