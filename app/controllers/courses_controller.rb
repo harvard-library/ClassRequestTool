@@ -82,9 +82,9 @@ class CoursesController < ApplicationController
       params[:course][:status] = "Homeless"
     end
     
-    if !params[:course][:timeframe].blank? && params[:course][:user_ids][1].empty?
+    if !params[:course][:timeframe].blank? && (params[:course][:user_ids].nil? || params[:course][:user_ids][1].empty?)
       params[:course][:status] = "Scheduled, unclaimed"
-    elsif !params[:course][:timeframe].blank? && !params[:course][:user_ids][1].empty?
+    elsif !params[:course][:timeframe].blank? && (!params[:course][:user_ids].nil? && !params[:course][:user_ids][1].empty?)
       params[:course][:status] = "Scheduled, claimed" 
     elsif (params[:course][:timeframe].nil? || params[:course][:timeframe].blank?) && (!params[:course][:user_ids].nil? && !params[:course][:user_ids][1].empty?)
       params[:course][:status] = "Claimed, unscheduled"   
@@ -128,6 +128,10 @@ class CoursesController < ApplicationController
   end
   
   def summary
+    @course = Course.find(params[:id])
+  end
+  
+  def recent_show
     @course = Course.find(params[:id])
   end
   

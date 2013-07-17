@@ -1,5 +1,22 @@
 <% if current_user.try(:admin?) || current_user.try(:staff?) %>
   <h3><%= link_to("Staff Actions", "#", :id => 'view_section_5') %></h3>
+
+  <% unless @course.repository.nil? %>
+    <%= link_to "Calendar", "#{@course.repository.calendar}", :target => "new" %><br />
+    <%= raw @course.repository.calendar unless @course.repository.calendar.nil? %>
+  <% end %>
+  <br /><br />
+  <div style="border: 1px solid #df7e0a; padding: 10px; background-color: #f7ec9b; width: 45%;">
+  <h4>Requester Choices</h4>
+  <% if !@course.time_choice_1.nil? || !@course.time_choice_2.nil? || !@course.time_choice_3.nil? %>
+	Choice 1: <%= @course.time_choice_1.strftime('%m/%d/%Y %I:%M %P') unless @course.time_choice_1.nil? %> <br />
+	Choice 2: <%= @course.time_choice_2.strftime('%m/%d/%Y %I:%M %P') unless @course.time_choice_2.nil? %> <br />
+	Choice 2: <%= @course.time_choice_3.strftime('%m/%d/%Y %I:%M %P') unless @course.time_choice_3.nil? %> <br />
+  <% else %>
+	No course dates selected.<br />
+  <% end %>
+  </div>
+  <br /> 
   <%= f.input :timeframe, :label => "Actual Date/Time of Class: ", :as => :string, :hint => 'In MM/DD/YYYY HH:MM am/pm format', :input_html => { :size => 30, :value => @course.timeframe.nil? ? '' : @course.timeframe.strftime('%m/%d/%Y %I:%M %P') } %>
 
   <%= f.input :pre_class_appt, :label => "Actual Pre-Class Appointment Date/Time (if necessary): ", :as => :string, :hint => 'In MM/DD/YYYY HH:MM am/pm format', :input_html => { :size => 30 } %>

@@ -109,14 +109,17 @@ class Course < ActiveRecord::Base
     Course.find(:all, :conditions => {:repository_id => nil}, :order => 'timeframe DESC')
   end  
   
-  def self.unassigned
+  def self.unscheduled_unclaimed
     courses = Course.order('timeframe DESC')
-    unassigned = Array.new
-    courses.collect{|course| course.users.empty? ? unassigned << course : '' }
-    return unassigned
+    unscheduled_unclaimed = Array.new
+    courses.collect{|course| course.users.empty? && (course.timeframe.nil? || course.timeframe.empty?) ? unscheduled_unclaimed << course : '' }
+    return unscheduled_unclaimed
   end
   
-  def self.roomless
-    Course.find(:all, :conditions => {:room_id => nil}, :order => 'timeframe DESC')
+  def self.scheduled_unclaimed
+    courses = Course.order('timeframe DESC')
+    scheduled_unclaimed = Array.new
+    courses.collect{|course| course.users.empty? && (!course.timeframe.nil? && !course.timeframe.empty?) && (!course.room.nil? && !course.room.empty?) ? scheduled_unclaimed << course : '' }
+    return scheduled_unclaimed
   end 
 end

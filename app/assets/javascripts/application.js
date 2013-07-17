@@ -19,6 +19,8 @@
 //= require_tree .
 
 $(document).ready(function(){
+  $('#your-past').hide();	
+	
   $('#course_time_choice_1').datetimepicker({
 	timeFormat: "hh:mm tt",
 	minDate: 3
@@ -76,15 +78,22 @@ $(document).ready(function(){
   $("#involvement-table").tablesorter();
 
   $("#your-repos-table").tablesorter();
+  $("#your-unscheduled-table").tablesorter();
   $("#your-upcoming-table").tablesorter();
   $("#your-past-table").tablesorter();
-  $("#your-unscheduled-table").tablesorter();
   $("#homeless-table").tablesorter();
   $("#unassigned-table").tablesorter();
   $("#roomless-table").tablesorter();
 
 });
 jQuery(function(){
+  $('#collapsable').click(function() {
+	$('#your-past').toggle(400);
+  }).next().hide();
+
+  $('#your-past-header').click(function() {
+	$('#your-past').show();
+  });	
 
   $('#course_course_sessions_single_session').change(function() {
 	$('#course_session_count_input').hide();
