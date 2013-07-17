@@ -17,6 +17,7 @@ ClassRequestTool::Application.routes.draw do
   resources :courses do
     member do
       get 'summary'
+      get 'recent_show'
       get 'take'
     end 
     collection do

@@ -24,7 +24,7 @@
 	  <% unless @courses.nil? %>	
 	  	<% @courses.each do |course| %>	
 	      
-		    <li><%= link_to(course.title, summary_course_url(course) ) %></li>
+		    <li><%= link_to(course.title, recent_show_course_url(course) ) %></li>
 		  
 	    <% end %>
 	  <% else %>

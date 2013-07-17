@@ -8,7 +8,8 @@
 
 <h1>Dashboard</h1>
 
-<div id="dash-left">
+<div id="dash-left" style="height: auto;">
+<div style="height: 20%;">
 <h3>Your Libraries/Archives</h3>
   <% unless @your_repos.nil? || @your_repos.empty? %>
 	<table id="your-repos-table" class="table table-condensed tablesorter">
@@ -33,8 +34,9 @@
   <% else %>
 	None yet!
   <% end %>
-
-<h3>Your Claimed, Unscheduled Classes</h3>
+</div>
+<div style="height: 20%;">
+<h3>Your claimed, unscheduled</h3>
   <% unless @your_unscheduled.nil? || @your_unscheduled.empty? %>	
     <table id="your_unscheduled-table" class="table table-condensed tablesorter">
 	  <thead>
@@ -62,8 +64,9 @@
   <% else %>
 	None yet!
   <% end %>
-
-<h3>Your Scheduled, Claimed Classes</h3>
+</div>
+<div style="height: 20%;">
+<h3>Your scheduled, claimed</h3>
   <% unless @your_upcoming.nil? || @your_upcoming.empty? %>	
     <table id="your-upcoming-table" class="table table-condensed tablesorter">
 	  <thead>
@@ -93,8 +96,10 @@
   <% else %>
 	None yet!
   <% end %>
-  
-  <h3>Your Closed Classes</h3>
+</div>
+<div style="height: 20%;">  
+  <h3><%= link_to("Your closed", "#", :id => 'collapsable') %></h3>
+  <span id="your-past">
     <% unless @your_past.nil? || @your_past.empty? %>	
       <table id="your-past-table" class="table table-condensed tablesorter">
 	  <thead>
@@ -124,9 +129,13 @@
     <% else %>
   	None yet!
     <% end %>
+  </span>
+</div>
+
 </div>
 <div id="dash-right">
-<h3>Homeless Classes</h3>
+	
+<h3>Homeless</h3>
   <% unless @homeless.nil? || @homeless.empty? %>
 	<table id="homeless-table" class="table table-condensed tablesorter">
 	<thead>	
@@ -158,8 +167,8 @@
 	None yet!
   <% end %>
   
-  <h3>Unclaimed Classes</h3>
-    <% unless @unassigned.nil? || @unassigned.empty? %>
+  <h3>unscheduled, unclaimed</h3>
+    <% unless @unassigned_unscheduled.nil? || @unassigned_unscheduled.empty? %>
   	<table id="unassigned-table" class="table table-condensed tablesorter">
 	<thead>
   	  <tr>
@@ -170,7 +179,7 @@
   	  </tr>
     </thead> 
 	<tbody>
-        <% @unassigned.each do |course| %>	
+        <% @unassigned_unscheduled.each do |course| %>	
         	<tr>
   	  	  <td><%= link_to(course.title, course ) %></td>
 		  <td><%= course.created_at.strftime('%m/%d/%Y') %></td>
@@ -185,13 +194,13 @@
         <% end %>
 	</tbody>	
   	</table>
-	<%= will_paginate @unassigned, :param_name => 'unassigned_page' %>
+	<%= will_paginate @unassigned_unscheduled, :param_name => 'unassigned_page' %>
     <% else %>
   	None yet!
     <% end %>
 	
-    <h3>Roomless Classes</h3>
-      <% unless @roomless.nil? || @roomless.empty? %>
+    <h3>scheduled, not claimed</h3>
+      <% unless @scheduled_unclaimed.nil? || @scheduled_unclaimed.empty? %>
     	<table id="roomless-table" class="table table-condensed tablesorter">
 		<thead>
     	  <tr>
@@ -202,7 +211,7 @@
     	  </tr>
 		</thead>
 		<tbody>
-          <% @roomless.each do |course| %>	
+          <% @scheduled_unclaimed.each do |course| %>	
           	<tr>
     	  	  <td><%= link_to(course.title, course ) %></td>
 			  <td><%= course.created_at.strftime('%m/%d/%Y') %></td>
@@ -217,7 +226,7 @@
           <% end %>
 		</tbody>
     	</table>
-		<%= will_paginate @roomless, :param_name => 'roomless_page' %>
+		<%= will_paginate @scheduled_unclaimed, :param_name => 'roomless_page' %>
       <% else %>
     	None yet!
       <% end %>

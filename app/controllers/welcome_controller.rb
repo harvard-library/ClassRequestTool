@@ -4,13 +4,13 @@ class WelcomeController < ApplicationController
   def index      
     @repositories = Repository.find(:all, :order => :name)
     @courses = Array.new
-    Course.find(:all, :order => "timeframe DESC", :limit => 10).collect{|course| !course.timeframe.nil? && course.timeframe < DateTime.now ? @courses << course : ''}
+    @courses = Course.find(:all, :conditions => ["timeframe is not NULL and timeframe < ?", DateTime.now], :order => "timeframe DESC", :limit => 10)
   end  
   
   def dashboard    
     @homeless = Course.homeless.paginate(:page => params[:homeless_page], :per_page => 5)
-    @unassigned = Course.unassigned.paginate(:page => params[:unassigned_page], :per_page => 5)
-    @roomless = Course.roomless.paginate(:page => params[:roomless_page], :per_page => 5)
+    @unscheduled_unclaimed = Course.unscheduled_unclaimed.paginate(:page => params[:unassigned_page], :per_page => 5)
+    @scheduled_unclaimed = Course.scheduled_unclaimed.paginate(:page => params[:roomless_page], :per_page => 5)
     
     @your_repos = current_user.repositories.paginate(:page => params[:your_repos_page], :per_page => 5)
     @your_upcoming = current_user.upcoming_courses.paginate(:page => params[:your_upcoming_page], :per_page => 5)
