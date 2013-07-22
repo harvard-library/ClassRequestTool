@@ -5,11 +5,11 @@
 </div>	
 
 <div>
-	<h3>Course Information</h3>
+	<h3>Class Information</h3>
 	Library/Archive: <%= @course.repository.nil? ? "Not Sure - Help me Choose" : @course.repository.name %> <br />
 	Title: <%= @course.title unless @course.title.nil? %> <br />
 	Subject: <%= @course.subject unless @course.subject.nil? %> <br />
-	Course Number: <%= @course.course_number unless @course.course_number.nil? %> <br />
+	Class Number: <%= @course.course_number unless @course.course_number.nil? %> <br />
 	Affiliation: <%= @course.affiliation unless @course.affiliation.nil? %> <br />
 	Number of Students: <%= @course.number_of_students unless @course.number_of_students.nil? %> <br />
 	Syllabus: 
@@ -36,21 +36,21 @@
 	Other Staff Involvement: <%= @course.staff_involvement unless @course.staff_involvement.nil? || @course.staff_involvement.blank? %> <br />
 	
 	<h3>Scheduling</h3>
-	Course Frequency: <%= @course.course_sessions unless @course.course_sessions.nil? %> <br />
+	Class Frequency: <%= @course.course_sessions unless @course.course_sessions.nil? %> <br />
 	Number of Sessions: <%= @course.session_count unless @course.session_count.nil? %> <br />
 	
-	<h4>Date/Time of Course</h4>
+	<h4>Date/Time of Class</h4>
 	<% if !@course.timeframe.nil? %>
-	  Course Date/Time: <%= @course.timeframe.strftime('%m/%d/%Y %I:%M %P') unless @course.timeframe.nil? %> <br />
+	  Class Date/Time: <%= @course.timeframe.strftime('%m/%d/%Y %I:%M %P') unless @course.timeframe.nil? %> <br />
 	<% elsif !@course.time_choice_1.nil? || !@course.time_choice_2.nil? || !@course.time_choice_3.nil? %>
 	  Choice 1: <%= @course.time_choice_1.strftime('%m/%d/%Y %I:%M %P') unless @course.time_choice_1.nil? %> <br />
 	  Choice 2: <%= @course.time_choice_2.strftime('%m/%d/%Y %I:%M %P') unless @course.time_choice_2.nil? %> <br />
 	  Choice 2: <%= @course.time_choice_3.strftime('%m/%d/%Y %I:%M %P') unless @course.time_choice_3.nil? %> <br />
 	<% else %>
-	  No course dates selected.
+	  No class dates selected.
 	<% end %>
 	
-	Course Duration: <%= @course.duration unless @course.duration.nil? %> hour(s) <br />
+	Class Duration: <%= @course.duration unless @course.duration.nil? %> hour(s) <br />
 	Room: <%= @course.room.name unless @course.room.nil? %> <br />
 	Comments: <%= @course.comments unless @course.comments.nil? %> <br />
 </div>

@@ -1,10 +1,10 @@
 <h1><%= @course.title %></h1>	
 
 <div>
-	<h3>Course Information</h3>
+	<h3>Class Information</h3>
 	Library/Archive: <%= @course.repository.nil? ? "Not Sure - Help me Choose" : @course.repository.name %> <br />
 	Title: <%= @course.title unless @course.title.nil? %> <br />
 	Subject: <%= @course.subject unless @course.subject.nil? %> <br />
 	Class Number: <%= @course.course_number unless @course.course_number.nil? %> <br />
-	Date of Course: <%= @course.timeframe.strftime('%m/%d/%Y') unless @course.timeframe.nil? %>
+	Date of Class: <%= @course.timeframe.strftime('%m/%d/%Y') unless @course.timeframe.nil? %>
 </div>

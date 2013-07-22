@@ -29,10 +29,10 @@ class Course < ActiveRecord::Base
       :from => DEFAULT_MAILER_SENDER,
       :reply_to => DEFAULT_MAILER_SENDER,
       :to => self.contact_email,
-      :subject => "Class Request Successfully Submitted for #{self.title}",
+      :subject => "[ClassRequestTool] Class Request Successfully Submitted for #{self.title}",
       :body => "Class Request Successfully Submitted for #{self.title}"
     )
-    # if repository is empty, send to all admins of tool 
+    # if repository is empty (homeless), send to all admins of tool 
     if self.repository.nil? || self.repository.blank?
       admins = ""
       User.all(:conditions => {:admin => true}).collect{|a| admins = a.email + ","}
@@ -41,7 +41,8 @@ class Course < ActiveRecord::Base
         :reply_to => DEFAULT_MAILER_SENDER,
         :to => admins,
         :subject => "[ClassRequestTool] New Homeless Class!",
-        :body => "Homeless Class Request Successfully Submitted"
+        :body => "<p>A new homeless class request has been received in the Class Request Tool!</p> <p>See the details below.</p>
+        <p>If this is appropriate for your library or archive, <a href='#{ROOT_URL}#{edit_course_path(self)}'>edit the course</a> to reflect its new location.</p>"
       )
     # if repository is not empty, send to all users assigned to repository selected
     else
@@ -51,8 +52,9 @@ class Course < ActiveRecord::Base
         :from => DEFAULT_MAILER_SENDER,
         :reply_to => DEFAULT_MAILER_SENDER,
         :to => users,
-        :subject => "Class Request Submitted for #{self.repository.name}",
-        :body => "Class Request Successfully Submitted"
+        :subject => "[ClassRequestTool] New class for #{self.repository.name}",
+        :body => "<p>A new class request has been received for #{self.repository.name}, or a formerly homeless class has been assigned to #{self.repository.name}.</p> <p>See the details below.</p>
+        <p>If you wish to claim this course, or assign it to another staff member at #{self.repository.name}, <a href='#{ROOT_URL}#{edit_course_path(self)}'>edit the course</a> to assign staff.</p>"
       )  
     end  
   end
@@ -66,7 +68,7 @@ class Course < ActiveRecord::Base
         :from => DEFAULT_MAILER_SENDER,
         :reply_to => DEFAULT_MAILER_SENDER,
         :to => admins,
-        :subject => "Unassigned Class Request Updated for #{self.title}",
+        :subject => "[ClassRequestTool] Unassigned Class Request Updated for #{self.title}",
         :body => "Unassigned Class Request Has Been Updated for #{self.title}"
       )
     # if assigned users is not empty, send to all users assigned to course selected
@@ -77,7 +79,7 @@ class Course < ActiveRecord::Base
         :from => DEFAULT_MAILER_SENDER,
         :reply_to => DEFAULT_MAILER_SENDER,
         :to => users,
-        :subject => "Class Request Updated for #{self.title}",
+        :subject => "[ClassRequestTool] Class Request Updated for #{self.title}",
         :body => "Class Request Successfully Updated for #{self.title}"
       )  
     end  
@@ -89,20 +91,30 @@ class Course < ActiveRecord::Base
       :from => DEFAULT_MAILER_SENDER,
       :reply_to => DEFAULT_MAILER_SENDER,
       :to => self.contact_email,
-      :subject => "Class Request Confirmed for #{self.title}",
+      :subject => "[ClassRequestTool] Class Request Confirmed for #{self.title}",
       :body => "Class Request Confirmed for #{self.title}"
     ) 
   end
   
   def send_assessment_email
+    # send email to staff
+    users = ""
+    self.users.collect{|u| users = u.email + ","}
+    Email.create(
+      :from => DEFAULT_MAILER_SENDER,
+      :reply_to => DEFAULT_MAILER_SENDER,
+      :to => users,
+      :subject => "[ClassRequestTool] Class Request Closed for #{self.title}",
+      :body => "Class Request Closed for #{self.title}."
+    ) 
     # send email to requester
     Email.create(
       :from => DEFAULT_MAILER_SENDER,
       :reply_to => DEFAULT_MAILER_SENDER,
       :to => self.contact_email,
-      :subject => "Class Request Closed for #{self.title}",
-      :body => "Class Request Closed for #{self.title}. Complete a course <a href='#{ROOT_URL}#{new_assessment_path(:course_id => self.id)}'> assessment</a>}."
-    ) 
+      :subject => "Please assess your recent class at #{self.repository.name}",
+      :body => "<p>Your class session at #{self.repository.name} was recently completed. Please take a minute to help us improve instruction by filling out <a href='#{ROOT_URL}#{new_assessment_path(:course_id => self.id)}'> a short assessment about your experience</a>.</p>"
+    )
   end
   
   def self.homeless

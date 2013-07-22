@@ -14,7 +14,7 @@ class Assessment < ActiveRecord::Base
         :from => DEFAULT_MAILER_SENDER,
         :reply_to => DEFAULT_MAILER_SENDER,
         :to => admins,
-        :subject => "New Assessment on Unassigned Class: #{self.course.title}",
+        :subject => "Please assess your recent class at #{self.course.repository.name}",
         :body => "New Assessment on Unassigned Class: #{self.course.title}"
       )
     # if assigned users is not empty, send to all users assigned to course selected
@@ -25,7 +25,7 @@ class Assessment < ActiveRecord::Base
         :from => DEFAULT_MAILER_SENDER,
         :reply_to => DEFAULT_MAILER_SENDER,
         :to => users,
-        :subject => "New Assessment on Class: #{self.course.title}",
+        :subject => "Please assess your recent class at #{self.course.repository.name}",
         :body => "New Assessment on Class: #{self.course.title}"
       )  
     end  
