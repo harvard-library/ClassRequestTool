@@ -75,18 +75,32 @@ class CoursesController < ApplicationController
   
   def update
     @course = Course.find(params[:id])
-    unless params[:course][:repository_id].nil?
+    unless params[:course][:repository_id].nil? || params[:course][:repository_id].blank?
       @repository = Repository.find(params[:course][:repository_id])
       params[:course][:status] = "Pending"
     else
       params[:course][:status] = "Homeless"
     end
     
+    repo_change = false
+    staff_change = false
+    timeframe_change = false
+    
+    if (@course.repository.nil? || @course.repository.blank?) && (!params[:course][:repository_id].nil? && !params[:course][:repository_id].blank?)
+      repo_change = true
+    end
+    if (@course.users.nil? || @course.users.empty?) && (!params[:course][:user_ids].nil? && !params[:course][:user_ids][1].empty?)
+      staff_change = true
+    end
+    if (@course.timeframe.nil? || @course.timeframe.blank?) && (!params[:course][:timeframe].nil? && !params[:course][:timeframe].blank?)
+      timeframe_change = true
+    end
+    
     if !params[:course][:timeframe].blank? && (params[:course][:user_ids].nil? || params[:course][:user_ids][1].empty?)
       params[:course][:status] = "Scheduled, unclaimed"
     elsif !params[:course][:timeframe].blank? && (!params[:course][:user_ids].nil? && !params[:course][:user_ids][1].empty?)
       params[:course][:status] = "Scheduled, claimed" 
-    elsif (params[:course][:timeframe].nil? || params[:course][:timeframe].blank?) && (!params[:course][:user_ids].nil? && !params[:course][:user_ids][1].empty?)
+    elsif (params[:course][:timeframe].nil? || params[:course][:timeframe].blank?) && (!params[:course][:user_ids].nil? || !params[:course][:user_ids][1].empty?)
       params[:course][:status] = "Claimed, unscheduled"   
     end  
     
@@ -101,12 +115,20 @@ class CoursesController < ApplicationController
     
     respond_to do |format|
       if @course.update_attributes(params[:course])
-        @course.updated_request_email
-        if params[:course][:status] == "Scheduled, claimed" && params[:send_email] == "1"
-          @course.status_change_email  
-        elsif params[:course][:status] == "Closed" && params[:send_email] == "1"
+        @course.updated_request_email 
+        if params[:course][:status] == "Closed" && params[:send_email] == "1"
           @course.send_assessment_email
-        end  
+        end
+        if repo_change == true
+          @course.send_repo_change_email
+        end
+        if staff_change == true
+          @course.send_staff_change_email  
+        end
+        if timeframe_change == true && params[:send_timeframe_email] == "1"
+          @course.send_timeframe_change_email  
+        end
+        
         format.html { redirect_to root_url, notice: 'Class was successfully updated.' }
         format.json { head :no_content }
       else

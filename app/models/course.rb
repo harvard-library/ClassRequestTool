@@ -85,14 +85,42 @@ class Course < ActiveRecord::Base
     end  
   end
   
-  def status_change_email
+  def send_repo_change_email
+    # send to all users of selected repository 
+      users = ""
+      self.repository.users.collect{|u| users = u.email + ","}
+      Email.create(
+        :from => DEFAULT_MAILER_SENDER,
+        :reply_to => DEFAULT_MAILER_SENDER,
+        :to => users,
+        :subject => "[ClassRequestTool] New class for #{self.repository.name}!",
+        :body => "<p>A new class request has been received for #{self.repository.name}, or a formerly homeless class has been assigned to #{self.repository.name}.</p> <p>See the details below.</p>
+        <p>If you wish to claim this course, or assign it to another staff member at #{self.repository.name}, <a href='#{ROOT_URL}#{edit_course_path(self)}'>edit the course</a> to assign staff.</p>"
+      )   
+  end
+  
+  def send_staff_change_email
+    # send to assigned staff members
+    users = ""
+    self.users.collect{|u| users = u.email + ","}
+    Email.create(
+      :from => DEFAULT_MAILER_SENDER,
+      :reply_to => DEFAULT_MAILER_SENDER,
+      :to => self.users,
+      :subject => "[ClassRequestTool] You have been assigned a class!",
+      :body => "<p>Please <a href='#{ROOT_URL}#{edit_course_path(self)}'>confirm the class date and time</a> and if applicable, add the class to your room calendar or event management system (e.g. Aeon).</p>"
+    )   
+  end
+  
+  def send_timeframe_change_email
     # send email to requester
     Email.create(
       :from => DEFAULT_MAILER_SENDER,
       :reply_to => DEFAULT_MAILER_SENDER,
       :to => self.contact_email,
-      :subject => "[ClassRequestTool] Class Request Confirmed for #{self.title}",
-      :body => "Class Request Confirmed for #{self.title}"
+      :subject => "Your class at #{self.repository.name} has been confirmed.",
+      :body => "<p>Title: <a href='#{ROOT_URL}#{course_path(self.course)}'>#{self.title}</a><br />Confirmed Date: #{self.timeframe}<br />Duration: #{self.duration}<br />Staff contact: <staffName>, <staffEmail></p>
+      <p>If you have any questions, please add a note to the <a href='#{ROOT_URL}#{course_path(self.course)}'>class detail</a>, or email the staff member responsible.</p>"
     ) 
   end
   
@@ -124,14 +152,14 @@ class Course < ActiveRecord::Base
   def self.unscheduled_unclaimed
     courses = Course.order('timeframe DESC')
     unscheduled_unclaimed = Array.new
-    courses.collect{|course| course.users.empty? && (course.timeframe.nil? || course.timeframe.empty?) ? unscheduled_unclaimed << course : '' }
+    courses.collect{|course| (course.users.empty? && (course.timeframe.nil? || course.timeframe.blank?)) ? unscheduled_unclaimed << course : '' }
     return unscheduled_unclaimed
   end
   
   def self.scheduled_unclaimed
     courses = Course.order('timeframe DESC')
     scheduled_unclaimed = Array.new
-    courses.collect{|course| course.users.empty? && (!course.timeframe.nil? && !course.timeframe.empty?) && (!course.room.nil? && !course.room.empty?) ? scheduled_unclaimed << course : '' }
+    courses.collect{|course| course.users.empty? && (!course.timeframe.nil? && !course.timeframe.blank?) ? scheduled_unclaimed << course : '' }
     return scheduled_unclaimed
   end 
 end
