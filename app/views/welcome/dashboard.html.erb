@@ -168,7 +168,7 @@
   <% end %>
   
   <h3>unscheduled, unclaimed</h3>
-    <% unless @unassigned_unscheduled.nil? || @unassigned_unscheduled.empty? %>
+    <% unless @unscheduled_unclaimed.nil? || @unscheduled_unclaimed.empty? %>
   	<table id="unassigned-table" class="table table-condensed tablesorter">
 	<thead>
   	  <tr>
@@ -179,7 +179,7 @@
   	  </tr>
     </thead> 
 	<tbody>
-        <% @unassigned_unscheduled.each do |course| %>	
+        <% @unscheduled_unclaimed.each do |course| %>	
         	<tr>
   	  	  <td><%= link_to(course.title, course ) %></td>
 		  <td><%= course.created_at.strftime('%m/%d/%Y') %></td>
@@ -194,7 +194,7 @@
         <% end %>
 	</tbody>	
   	</table>
-	<%= will_paginate @unassigned_unscheduled, :param_name => 'unassigned_page' %>
+	<%= will_paginate @unscheduled_unclaimed, :param_name => 'unassigned_page' %>
     <% else %>
   	None yet!
     <% end %>

@@ -19,12 +19,13 @@
   <br /> 
   <%= f.input :timeframe, :label => "Actual Date/Time of Class: ", :as => :string, :hint => 'In MM/DD/YYYY HH:MM am/pm format', :input_html => { :size => 30, :value => @course.timeframe.nil? ? '' : @course.timeframe.strftime('%m/%d/%Y %I:%M %P') } %>
 
+  <%= check_box_tag :send_timeframe_email%> Send class date/time change email to requester?<br /><br />
+
   <%= f.input :pre_class_appt, :label => "Actual Pre-Class Appointment Date/Time (if necessary): ", :as => :string, :hint => 'In MM/DD/YYYY HH:MM am/pm format', :input_html => { :size => 30 } %>
 
   <%= f.input :room, :as => :select, :collection => Room.all, :label => "Room: " %>
 
   <%= f.input :status, :label => "Status: ", :as => :select, :collection => Course::STATUS %>
-  <%= check_box_tag :send_email%> Send status change email to requester?<br /><br />
 
   <% if current_user.admin? %>
     <%= f.input :users, :as => :check_boxes, :collection => User.all, :label => "Assign Staff: " %>
