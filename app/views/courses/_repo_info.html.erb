@@ -5,7 +5,7 @@
 	  Name: <%= @repository.name %> <br />
 	  Description: <%= @repository.description unless @repository.description.nil? %> <br />
 	  Class Limit: <%= @repository.class_limit unless @repository.class_limit.nil? %> <br />
-	  Available Attributes: 
+	  Available Technology Needs: 
 	  <ul>
 	    <% @repository.item_attributes.each do |attribute| %>
 	      <li><%= attribute.name %> - <%= attribute.description %></li>
