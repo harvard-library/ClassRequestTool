@@ -80,8 +80,8 @@ namespace :crt do
           :from => DEFAULT_MAILER_SENDER,
           :reply_to => DEFAULT_MAILER_SENDER,
           :to => admins,
-          :subject => "Homeless Classes - More than 2 Days",
-          :body => "Homeless Classes - More than 2 Days"
+          :subject => "[ClassRequestTool] A Homeless class is languishing!",
+          :body => "<p>A homeless class request has been waiting for 2 days now in the Class Request Tool. A Library or Archive should claim it as soon as possible.</p></p> <p>See the details below.</p><p>If this is appropriate for your library or archive, <a href='#{ROOT_URL}#{edit_course_path(course.id)}'>edit the course</a> to reflect its new location.</p>"
         )
       end
       puts "Successfully delivered homeless notices!"

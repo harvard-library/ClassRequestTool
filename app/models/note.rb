@@ -13,8 +13,9 @@ class Note < ActiveRecord::Base
         :from => DEFAULT_MAILER_SENDER,
         :reply_to => DEFAULT_MAILER_SENDER,
         :to => admins,
-        :subject => "New Note on Unassigned Class: #{self.course.title}",
-        :body => "New Note on Unassigned Class: #{self.course.title}"
+        :subject => "[ClassRequestTool] A comment has been added to a class!",
+        :body => "<p>#{self.user.username} has added a note to one of your classes. Click on the title of the class to go to the details of that class.</p>
+        <p>Title: <a href='#{ROOT_URL}#{course_path(self.course)}'>#{self.course.title}</a><br /> Course Date: #{self.course.timeframe}<br /> Comment: #{self.note_text}</p>"
       )
     # if assigned users is not empty, send to all users assigned to course selected
     else
@@ -24,8 +25,9 @@ class Note < ActiveRecord::Base
         :from => DEFAULT_MAILER_SENDER,
         :reply_to => DEFAULT_MAILER_SENDER,
         :to => users,
-        :subject => "New Note on Class: #{self.course.title}",
-        :body => "New Note on Class: #{self.course.title}"
+        :subject => "[ClassRequestTool] A comment has been added to a class!",
+        :body => "<p>#{self.user.username} has added a note to one of your classes. Click on the title of the class to go to the details of that class.</p>
+        <p>Title: <a href='#{ROOT_URL}#{course_path(self.course)}'>#{self.course.title}</a><br /> Course Date: #{self.course.timeframe}<br /> Comment: #{self.note_text}</p>"
       )  
     end  
   end

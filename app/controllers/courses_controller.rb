@@ -31,7 +31,7 @@ class CoursesController < ApplicationController
   end
   
   def create
-    unless params[:course][:repository_id].nil?
+    unless params[:course][:repository_id].nil? || params[:course][:repository_id].blank?
       @repository = Repository.find(params[:course][:repository_id])
       params[:course][:status] = "Pending"
     else

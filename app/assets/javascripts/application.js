@@ -23,30 +23,58 @@ $(document).ready(function(){
 	
   $('#course_time_choice_1').datetimepicker({
 	timeFormat: "hh:mm tt",
+	stepMinute: 15,
+	hourMin: 9,
+	hourMax: 17,
+	beforeShowDay: $.datepicker.noWeekends,
 	minDate: 3
   });
   $('#course_time_choice_2').datetimepicker({
 	timeFormat: "hh:mm tt",
+	stepMinute: 15,
+	hourMin: 9,
+	hourMax: 17,
+	beforeShowDay: $.datepicker.noWeekends,
 	minDate: 3
   });
   $('#course_time_choice_3').datetimepicker({
 	timeFormat: "hh:mm tt",
+	stepMinute: 15,
+	hourMin: 9,
+	hourMax: 17,
+	beforeShowDay: $.datepicker.noWeekends,
 	minDate: 3
   });
   $('#course_time_choice_4').datetimepicker({
 	timeFormat: "hh:mm tt",
+	stepMinute: 15,
+	hourMin: 9,
+	hourMax: 17,
+	beforeShowDay: $.datepicker.noWeekends,
 	minDate: 3
   });
   $('#course_pre_class_appt_choice_1').datetimepicker({
 	timeFormat: "hh:mm tt",
+	stepMinute: 15,
+	hourMin: 9,
+	hourMax: 17,
+	beforeShowDay: $.datepicker.noWeekends,
 	minDate: 3
   });
   $('#course_pre_class_appt_choice_2').datetimepicker({
 	timeFormat: "hh:mm tt",
+	stepMinute: 15,
+	hourMin: 9,
+	hourMax: 17,
+	beforeShowDay: $.datepicker.noWeekends,
 	minDate: 3
   });
   $('#course_pre_class_appt_choice_3').datetimepicker({
 	timeFormat: "hh:mm tt",
+	stepMinute: 15,
+	hourMin: 9,
+	hourMax: 17,
+	beforeShowDay: $.datepicker.noWeekends,
 	minDate: 3
   });
 	

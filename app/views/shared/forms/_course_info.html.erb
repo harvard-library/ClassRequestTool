@@ -13,8 +13,9 @@ Syllabus: <br />
   <li><%= f.input :external_syllabus, :label => "Enter URL: " %></li>
 </ul>
 
-<%= f.input :number_of_students, :label => "Number of Students: ", :hint => "Limit for this Library/Archive is listed on the right." %>
-
+<%= f.input :number_of_students, :label => "Number of Students: " %>
+<span>Maximum class limit is <%= @course.repository.class_limit unless @course.repository.nil? %>.</span>
+<br /><br />
 <%= f.input :instruction_session, :label => "Have you scheduled a general library research instruction session for the class? ", :input_html => { :size => 40 } %>
 
 <%= f.input :goal, :label => "What is your goal for this class session? ", :input_html => { :rows => 5, :columns => 50 } %>
