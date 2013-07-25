@@ -16,7 +16,7 @@ Final scheduling of a session is subject to both room and staff availability.
 </div>
 
 <div id="form_full_width">
-<% unless @course.repository.calendar.nil? && @course.repository.calendar.blank? %>
+<% unless (@course.repository.nil? && @course.repository.blank?) || (@course.repository.calendar.nil? && @course.repository.calendar.blank?) %>
   <%= link_to 'View Calendar', "#{@course.repository.calendar}", :onclick=>"window.open(this.href,'view_calendar', 'height=600, width=600');return false;" %>
 <% else %>
   This Library/Archive does not have a publicly available calendar. Please submit your request with your preferred times and a staff member will get back to you.
