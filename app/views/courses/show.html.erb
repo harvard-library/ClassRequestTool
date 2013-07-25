@@ -75,24 +75,8 @@
 		  <% @course.assessments.each do |assessment| %>
 		    <%= link_to "View Assessment", assessment_path(assessment) %><br />
 		  <% end %>
-		<h4>Notes</h4>
-		<% unless @all_notes.nil? || @all_notes.empty? %>
-		  Current:<br />
-		  <% @all_notes.each do |note| %>
-		    <p>
-			  <%= note.note_text %>
-			  <br />
-		      <%= link_to "Edit", edit_note_path(note.id) %> | <%= link_to('Delete', note_path(note), :confirm => "Are you sure?", :method => :delete) %>
-		    </p>
-		  <% end %>
-		<% end %>
+		<%= render :partial => 'notes/all_notes', :locals => {:notes => @all_notes } %>
 		
-		New Note:<br />
-	    <%= semantic_form_for(@note) do |f| %>
-		  <%= f.input :note_text, :label => "Note: ", :input_html => { :rows => 5, :columns => 50 } %>
-		  <%= f.input :course_id, :as => :hidden, :input_html => { :value => @course.id } %>
-		  <%= f.input :user_id, :as => :hidden, :input_html => { :value => current_user.id } %>
-		  <%= f.actions %>
-	    <% end %>
+		<%= render :partial => 'shared/forms/note', :locals => {:note => @note, :course => @course } %>
     <% end %>
 </div>

@@ -18,6 +18,18 @@ class User < ActiveRecord::Base
     self.username
   end
   
+  def user_type
+    if self.admin == true
+      return "admin"
+    elsif self.staff == true
+      return "staff"
+    elsif self.patron == true
+      return "patron"  
+    else
+      return "none"  
+    end      
+  end 
+  
   def self.random_password(size = 11)
     chars = (('a'..'z').to_a + ('0'..'9').to_a) - %w(i o 0 1 l 0)
     (1..size).collect{|a| chars[rand(chars.size)] }.join

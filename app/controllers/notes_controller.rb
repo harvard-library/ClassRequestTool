@@ -43,10 +43,11 @@ class NotesController < ApplicationController
   
   def destroy
     @note = Note.find(params[:id])
+    @course = @note.course
     @note.destroy
 
     respond_to do |format|
-      format.html { redirect_to notes_url }
+      format.html { redirect_to course_url(@course) }
       format.json { head :no_content }
     end
   end
