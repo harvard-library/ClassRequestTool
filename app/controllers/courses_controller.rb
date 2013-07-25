@@ -163,7 +163,7 @@ class CoursesController < ApplicationController
     else
       @repository = ""
     end
-    render :partial => "repo_info"
+    render :partial => "shared/forms/course_staff_involvement"
   end
   
   def take
