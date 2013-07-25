@@ -1,21 +1,30 @@
+<div id="form_wrapper">
 <h3><%= link_to("Class Information", "#", :id => 'view_section_1') %></h3>
-
-<%= f.input :repository, :label => "Request a class session at: ", :include_blank => "Not Sure - Help me Choose", :input_html => { :value => @course.repository, :onchange => "change_repo_items(this.options[this.selectedIndex].value);" } %>
-
+<div id="form_col1">
 <%= f.input :title, :label => "Class Title: " %>
+</div>
+<div id="form_col2">
 <%= f.input :subject, :label => "Class Subject: " %>
+</div>
+<div id="form_col1">
 <%= f.input :course_number, :label => "Class Number (if Harvard): " %>
+</div>
+<div id="form_col2">
 <%= f.input :affiliation, :label => "Affiliation (if non-Harvard): " %>
-
-Syllabus: <br />
-<ul>
-  <li><%= f.input :file, :label => "Upload File: " %></li>
-  <li><%= f.input :external_syllabus, :label => "Enter URL: " %></li>
-</ul>
-
-<%= f.input :number_of_students, :label => "Number of Students: " %>
-<span>Maximum class limit is <%= @course.repository.class_limit unless @course.repository.nil? %>.</span>
-<br /><br />
+</div>
+<div id="form_col1">
+<%= f.input :file, :label => "Syllabus (Upload File): " %>
+</div>
+<div id="form_col2">
+<%= f.input :external_syllabus, :label => "OR Syllabus (Enter URL): " %>
+</div>
+<div id="form_col1">
+<%= f.input :number_of_students, :label => "Number of Students: ", :hint => "Maximum class limit is #{@course.repository.class_limit unless @course.repository.nil?}" %>
+</div>
+<div id="form_full_width">
 <%= f.input :instruction_session, :label => "Have you scheduled a general library research instruction session for the class? ", :input_html => { :size => 40 } %>
-
+</div>
+<div id="form_full_width">
 <%= f.input :goal, :label => "What is your goal for this class session? ", :input_html => { :rows => 5, :columns => 50 } %>
+</div>
+</div>

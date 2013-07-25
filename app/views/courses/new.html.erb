@@ -5,7 +5,7 @@
     {
       method: 'get',
       success: function(data) {
-		$("#repo_items").html(data);
+		$("#repo_info").html(data);
       }
     });
   }
@@ -17,15 +17,11 @@
 <div id="info-left">	
   <%= semantic_form_for(@course, :html => {:multipart => true}) do |f| %>
 	<%= f.inputs do %>
-	  <div style="float:left; width: 40%;">
+	  <%= f.input :repository, :label => "Library/Archive: ", :include_blank => "Not Sure - Help me Choose", :input_html => { :value => @course.repository, :onchange => "change_repo_items(this.options[this.selectedIndex].value;" } %>
 		<span id="requester_info"><%= render :partial => 'shared/forms/course_requester_info', :locals=>{:f=>f} %></span>
         <span id="course_info"><%= render :partial => 'shared/forms/course_info', :locals=>{:f=>f} %></span>
         <span id="involvement_info"><%= render :partial => 'shared/forms/course_staff_involvement', :locals=>{:f=>f} %></span>
         <span id="scheduling_info"><%= render :partial => 'shared/forms/course_scheduling', :locals=>{:f=>f} %></span>
-	  </div>
-	  <div style="float:left; width: 55%; margin-left: 10px;">
-        <span id="staff_actions"><%= render :partial => 'shared/forms/course_staff_actions', :locals=>{:f=>f} %></span>
-	  </div>
 	<% end %>
 	<br />
 	<p>Be sure to review your information and make any edits before submitting your request.</p>

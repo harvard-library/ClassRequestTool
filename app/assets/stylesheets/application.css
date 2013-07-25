@@ -90,4 +90,40 @@ html,body {
 	width: 45%;
 }
 
+.yellow-box {
+	border: 1px solid #df7e0a; 
+	padding: 10px; 
+	background-color: #f7ec9b;
+}
+
+#form_wrapper {
+	width: 100%;
+	float: left;
+}
+
+#form_col1 {
+	width: 30%; 
+	float: left;
+	padding-right: 50px;
+	padding-bottom: 10px;
+}
+
+#form_col2 {
+	width: 60%; 
+	float: left;
+	padding-bottom: 10px;
+}
+#form_full_width {
+	width: 100%; 
+	float: left;
+	padding-bottom: 10px;
+}
+
+#form_date1 {
+	width: 20%; 
+	float: left;
+	padding-right: 30px;
+	padding-bottom: 10px;
+}
+
 

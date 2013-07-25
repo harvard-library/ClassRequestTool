@@ -1,4 +1,16 @@
+<div id="form_wrapper">
 <h3><%= link_to("Staff Involvement", "#", :id => 'view_section_3') %></h3>
+<div id="form_col1">
 <%= f.input :staff_involvements, :label => "Level of Staff Involvement: ", :as => :check_boxes, :collection => @course.repository.nil? ? Repository.find(:first, :conditions => ("name like '%Houghton%'")).staff_involvements : @course.repository.staff_involvements %>
-<%= f.input :staff_involvement, :label => "Other Involvement: " %>
-<br />
+<%= f.input :staff_involvement, :label => "Other Involvement: ", :input_html => { :rows => 5, :columns => 50 } %>
+</div>
+<% if current_user.try(:admin?) || current_user.try(:staff?) %>
+<div id="form_col2" class="yellow-box">	
+<% if current_user.admin? %>
+    <%= f.input :users, :as => :check_boxes, :collection => User.all, :label => "Assign Staff: " %>
+<% elsif !@course.repository.nil? %>
+    <%= f.input :users, :as => :check_boxes, :collection => @course.repository.users, :label => "Assign Staff: " %>
+<% end %>
+</div>
+<% end %>
+</div>

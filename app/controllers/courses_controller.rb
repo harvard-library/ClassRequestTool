@@ -55,20 +55,20 @@ class CoursesController < ApplicationController
           flash[:error] = "Please enter number of students below the repository maximum."
           format.html { render action: "new" }
           format.json { render json: @course.errors, status: :unprocessable_entity }
-        end  
-      else  
-        if @course.save
-          @course.new_request_email
-          if user_signed_in?
-            format.html { redirect_to summary_course_url(@course), notice: 'Class was successfully created.' }
-          else
-            format.html { redirect_to summary_course_url(:id => @course.id), notice: 'Class was successfully submitted for approval.' }
-          end    
+        end 
+      end   
+        
+      if @course.save
+        @course.new_request_email
+        if user_signed_in?
+          format.html { redirect_to summary_course_url(@course), notice: 'Class was successfully created.' }
         else
-          flash[:error] = "Please correct the errors in the form."
-          format.html { render action: "new" }
-          format.json { render json: @course.errors, status: :unprocessable_entity }
-        end
+          format.html { redirect_to summary_course_url(:id => @course.id), notice: 'Class was successfully submitted for approval.' }
+        end    
+      else
+        flash[:error] = "Please correct the errors in the form."
+        format.html { render action: "new" }
+        format.json { render json: @course.errors, status: :unprocessable_entity }
       end  
     end
   end
@@ -163,7 +163,8 @@ class CoursesController < ApplicationController
     else
       @repository = ""
     end
-    render :partial => "repo_info"
+    #render :partial => "shared/forms/course_staff_involvement"
+    redirect_to new_course_path(:repository => @repository)
   end
   
   def take

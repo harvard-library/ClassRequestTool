@@ -2,13 +2,12 @@
   <h3><%= link_to("Staff Actions", "#", :id => 'view_section_5') %></h3>
 
   <% unless @course.repository.calendar.nil? && @course.repository.calendar.blank? %>
-    <%= link_to "Calendar", "#{@course.repository.calendar}", :target => "new" %><br />
-    <%= raw @course.repository.calendar %>
+    <%= link_to 'View Calendar', "#{@course.repository.calendar}", :onclick=>"window.open(this.href,'view_calendar', 'height=600, width=600');return false;" %>
   <% else %>
     This Library/Archive does not have a publicly available calendar. Please submit your request with your preferred times and a staff member will get back to you.
   <% end %>
   <br /><br />
-  <div style="border: 1px solid #df7e0a; padding: 10px; background-color: #f7ec9b; width: 45%;">
+  <div id="yellow-box">
   <h4>Requester Choices</h4>
   <% if !@course.time_choice_1.nil? || !@course.time_choice_2.nil? || !@course.time_choice_3.nil? %>
 	Choice 1: <%= @course.time_choice_1.strftime('%m/%d/%Y %I:%M %P') unless @course.time_choice_1.nil? %> <br />
