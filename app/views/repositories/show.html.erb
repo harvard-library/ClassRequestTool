@@ -34,10 +34,11 @@
 	<br /><br />
 	For more details on teaching at this Library/Archive <%= link_to "click here", @repository.landing_page, :target => "_blank" %>. <br /><br />
 	<% unless @repository.calendar.nil? && @repository.calendar.blank? %>
-	  <%= raw @repository.calendar %><br /><br />
+	  <%= link_to 'View Calendar', "#{@repository.calendar}", :onclick=>"window.open(this.href,'view_calendar', 'height=600, width=600');return false;" %>
 	<% else %>
-	  This Library/Archive does not have a publicly available calendar. Please submit your request with your preferred times and a staff member will get back to you.<br /><br />
+	  This Library/Archive does not have a publicly available calendar. Please submit your request with your preferred times and a staff member will get back to you.
 	<% end %>
+	<br /><br />
     <% if current_user.try(:admin?) %>
 	  Staff Member(s) Assigned: 
 	  <ul>

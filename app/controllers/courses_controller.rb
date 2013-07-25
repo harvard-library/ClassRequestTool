@@ -163,7 +163,8 @@ class CoursesController < ApplicationController
     else
       @repository = ""
     end
-    render :partial => "shared/forms/course_staff_involvement"
+    #render :partial => "shared/forms/course_staff_involvement"
+    redirect_to new_course_path(:repository => @repository)
   end
   
   def take

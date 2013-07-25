@@ -5,7 +5,7 @@
     {
       method: 'get',
       success: function(data) {
-		$("#involvement_info").html(data);
+		$("#repo_info").html(data);
       }
     });
   }
@@ -13,7 +13,6 @@
  <noscript>Please enable Javascript.</noscript>
 
 <h1>Request a Class Session</h1>
-
 <div id="info-left">	
   <%= semantic_form_for(@course, :html => {:multipart => true}) do |f| %>
 	<%= f.inputs do %>

@@ -1,4 +1,4 @@
-<h3><%= link_to("Requester Information", "#", :id => 'view_section_2') %></h3>
+<h3><%= link_to("Requester Information", "#", :id => 'view_section_2') %></h3>	
 <%= f.input :contact_username, :as => :hidden %>
 <%= f.input :contact_first_name, :label => "Primary Contact First Name: ", :input_html => { :value => current_user.first_name, :class => 'fl' } %>
 <%= f.input :contact_last_name, :label => "Primary Contact Last Name: ", :input_html => { :value => current_user.last_name, :class => 'fl' } %>
