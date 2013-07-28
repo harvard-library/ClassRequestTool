@@ -14,7 +14,7 @@
 	<% unless @repository.item_attributes.nil? || @repository.item_attributes.empty? %>
 	<ul>
 	  <% @repository.item_attributes.each do |attribute| %>
-	    <li><%= attribute.name %> - <%= attribute.description %></li>
+	    <li><%= attribute.name %>  <%= "- #{ attribute.description }" unless attribute.description.blank? %></li>
 	  <% end %>
 	</ul>
 	<% else %>
@@ -38,8 +38,10 @@
 	<% else %>
 	  This Library/Archive does not have a publicly available calendar. Please submit your request with your preferred times and a staff member will get back to you.
 	<% end %>
-	<br /><br />
+	
     <% if current_user.try(:admin?) %>
+	<br /><br />
+	<br /><br />
 	  Staff Member(s) Assigned: 
 	  <ul>
 	  <% @repository.users.each do |user| %>
@@ -76,4 +78,7 @@
     	None yet!
       <% end %>
 </div>	
+
 <% end %>  
+<br />
+<p>Return <%= link_to "home", root_url %> to view another repository.</p>

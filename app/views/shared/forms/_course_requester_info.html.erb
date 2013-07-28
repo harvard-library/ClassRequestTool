@@ -2,14 +2,14 @@
 <h3><%= link_to("Requester Information", "#", :id => 'view_section_2') %></h3>
 <div id="form_col1">	
 <%= f.input :contact_username, :as => :hidden %>
-<%= f.input :contact_first_name, :label => "Primary Contact First Name: ", :input_html => { :value => current_user.first_name, :class => 'fl' } %>
+<%= f.input :contact_first_name, :label => "Primary Contact First Name: ", :input_html => { :value => @course.contact_first_name.nil? ? current_user.first_name : @course.contact_first_name, :class => 'fl' } %>
 </div>
 <div id="form_col2">
-<%= f.input :contact_last_name, :label => "Primary Contact Last Name: ", :input_html => { :value => current_user.last_name, :class => 'fl' } %>
+<%= f.input :contact_last_name, :label => "Primary Contact Last Name: ", :input_html => { :value => @course.contact_last_name.nil? ? current_user.last_name : @course.contact_last_name, :class => 'fl' } %>
 </div>
 <div id="form_col1">	
 <%= f.input :contact_phone, :label => "Primary Contact Phone: " %>
 </div>
 <div id="form_col2">
-<%= f.input :contact_email, :label => "Primary Contact Email: ", :input_html => { :value => current_user.email } %>
+<%= f.input :contact_email, :label => "Primary Contact Email: ", :input_html => { :value => @course.contact_email.nil? ? current_user.email : @course.contact_email } %>
 </div>

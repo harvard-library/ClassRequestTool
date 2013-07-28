@@ -89,18 +89,18 @@ class CoursesController < ApplicationController
     if (@course.repository.nil? || @course.repository.blank?) && (!params[:course][:repository_id].nil? && !params[:course][:repository_id].blank?)
       repo_change = true
     end
-    if (@course.users.nil? || @course.users.empty?) && (!params[:course][:user_ids].nil? && !params[:course][:user_ids][1].empty?)
+    if (@course.users.nil? || @course.users.blank?) && (!params[:course][:user_ids][1].nil? && !params[:course][:user_ids][1].empty?)
       staff_change = true
     end
     if (@course.timeframe.nil? || @course.timeframe.blank?) && (!params[:course][:timeframe].nil? && !params[:course][:timeframe].blank?)
       timeframe_change = true
     end
     
-    if !params[:course][:timeframe].blank? && (params[:course][:user_ids].nil? || params[:course][:user_ids][1].empty?)
+    if !params[:course][:timeframe].blank? && (params[:course][:user_ids][1].nil? || params[:course][:user_ids][1].empty?)
       params[:course][:status] = "Scheduled, unclaimed"
-    elsif !params[:course][:timeframe].blank? && (!params[:course][:user_ids].nil? && !params[:course][:user_ids][1].empty?)
+    elsif !params[:course][:timeframe].blank? && (!params[:course][:user_ids][1].nil? && !params[:course][:user_ids][1].empty?)
       params[:course][:status] = "Scheduled, claimed" 
-    elsif (params[:course][:timeframe].nil? || params[:course][:timeframe].blank?) && (!params[:course][:user_ids].nil? || !params[:course][:user_ids][1].empty?)
+    elsif (params[:course][:timeframe].nil? || params[:course][:timeframe].blank?) && (!params[:course][:user_ids][1].nil? && !params[:course][:user_ids][1].empty?)
       params[:course][:status] = "Claimed, unscheduled"   
     end  
     
@@ -129,7 +129,7 @@ class CoursesController < ApplicationController
           @course.send_timeframe_change_email  
         end
         
-        format.html { redirect_to root_url, notice: 'Class was successfully updated.' }
+        format.html { redirect_to course_url(@course), notice: 'Class was successfully updated.' }
         format.json { head :no_content }
       else
         flash[:error] = "Please correct the errors in the form."

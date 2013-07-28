@@ -67,13 +67,15 @@ class User < ActiveRecord::Base
   
   def mine_current
     upcoming = Array.new
-    Course.find(:all, :conditions => {:contact_email => self.email}, :order => 'timeframe DESC').collect{|course| course.timeframe.nil? || course.timeframe >= DateTime.now ? upcoming << course : ''}
+    upcoming = Course.find(:all, :conditions => ["contact_email = ? and timeframe is NULL or timeframe >= ?", self.email, DateTime.now], :order => 'timeframe DESC')
+
     return upcoming
   end
   
   def mine_past
     past = Array.new
-    Course.find(:all, :conditions => {:contact_email => self.email}, :order => 'timeframe DESC').collect{|course| !course.timeframe.nil? && course.timeframe < DateTime.now ? past << course : ''}
+    past = Course.find(:all, :conditions => ["contact_email = ? and timeframe is not NULL and timeframe < ?", self.email, DateTime.now], :order => 'timeframe DESC')
+
     return past
   end
 

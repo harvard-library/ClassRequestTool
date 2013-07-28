@@ -1,6 +1,8 @@
 <h1><%= @course.title %></h1>
 <br />
+<% if (current_user.try(:patron?) && @course.timeframe.nil?) || (current_user.try(:staff?) || current_user.try(:admin?)) %>
 <p><%= button_to('Edit Class Info', edit_course_path(@course), :class => "action-edit", :method => :get) %></p>
+<% end %>
 <div>
 	<h3>Course Information</h3>
 	Library/Archive: <%= @course.repository.nil? ? "Not Sure - Help me Choose" : @course.repository.name %> <br />
