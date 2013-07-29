@@ -1,8 +1,8 @@
 class NotesController < ApplicationController
-  before_filter :authenticate_admin_or_staff!
+  before_filter :authenticate_admin_or_staff!, :only => [:destroy, :update]
   
   def index
-    @notes = Note.find(:all, :order => :name)
+    @notes = Note.find(:all, :order => :created_at)
   end  
   
   def new

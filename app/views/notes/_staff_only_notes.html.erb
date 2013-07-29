@@ -1,4 +1,5 @@
 <% unless notes.nil? || notes.empty? %>
+  <h5>Staff Only Notes:</h5>
   <% notes.each do |note| %>
     <p>
 	  <%= note.note_text %> recorded by: <%= note.user.username %>(<%= note.user.user_type %>) on: <%= note.created_at.strftime('%m/%d/%Y %I:%M %P') %>

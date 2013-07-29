@@ -1,7 +1,7 @@
 class Note < ActiveRecord::Base
   include ActionDispatch::Routing::UrlFor
   include Rails.application.routes.url_helpers
-  attr_accessible :note_text, :user_id, :course_id
+  attr_accessible :note_text, :user_id, :course_id, :staff_comment
   
   belongs_to :user
   belongs_to :course
