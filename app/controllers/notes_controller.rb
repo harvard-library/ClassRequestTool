@@ -1,8 +1,8 @@
 class NotesController < ApplicationController
-  before_filter :authenticate_admin_or_staff!
+  before_filter :authenticate_admin_or_staff!, :only => [:destroy, :update]
   
   def index
-    @notes = Note.find(:all, :order => :name)
+    @notes = Note.find(:all, :order => :created_at)
   end  
   
   def new
@@ -43,10 +43,11 @@ class NotesController < ApplicationController
   
   def destroy
     @note = Note.find(params[:id])
+    @course = @note.course
     @note.destroy
 
     respond_to do |format|
-      format.html { redirect_to notes_url }
+      format.html { redirect_to course_url(@course) }
       format.json { head :no_content }
     end
   end

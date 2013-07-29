@@ -1,7 +1,10 @@
 <h1><%= @course.title %></h1>
 <br />
+<div id="welcome-left">
+<% if (current_user.try(:patron?) && @course.timeframe.nil?) || (current_user.try(:staff?) || current_user.try(:admin?)) %>
 <p><%= button_to('Edit Class Info', edit_course_path(@course), :class => "action-edit", :method => :get) %></p>
-<div>
+<% end %>
+
 	<h3>Course Information</h3>
 	Library/Archive: <%= @course.repository.nil? ? "Not Sure - Help me Choose" : @course.repository.name %> <br />
 	Title: <%= @course.title unless @course.title.nil? %> <br />
@@ -62,8 +65,9 @@
 	Class Duration: <%= @course.duration unless @course.duration.nil? %> hour(s) <br />
 	Room: <%= @course.room.name unless @course.room.nil? %> <br />
 	Comments: <%= @course.comments unless @course.comments.nil? %> <br />
-	
-    <% if current_user.try(:admin?) %>
+</div>
+<div id="welcome-right">	
+    <% if current_user.try(:staff?) || current_user.try(:admin?) %>
 	  <h3>Admin Actions</h3>
 	  	Status: <%= @course.status %> <br />
 	    Staff Member(s) Assigned: 
@@ -75,24 +79,25 @@
 		  <% @course.assessments.each do |assessment| %>
 		    <%= link_to "View Assessment", assessment_path(assessment) %><br />
 		  <% end %>
-		<h4>Notes</h4>
-		<% unless @all_notes.nil? || @all_notes.empty? %>
-		  Current:<br />
-		  <% @all_notes.each do |note| %>
-		    <p>
-			  <%= note.note_text %>
-			  <br />
-		      <%= link_to "Edit", edit_note_path(note.id) %> | <%= link_to('Delete', note_path(note), :confirm => "Are you sure?", :method => :delete) %>
-		    </p>
-		  <% end %>
-		<% end %>
+		  
+		<h4>Notes</h4>  
+  	    <%= render :partial => 'notes/all_notes', :locals => {:notes => @notes } %>
+  		<%= render :partial => 'notes/staff_only_notes', :locals => {:notes => @staff_only_notes } %>
 		
-		New Note:<br />
-	    <%= semantic_form_for(@note) do |f| %>
-		  <%= f.input :note_text, :label => "Note: ", :input_html => { :rows => 5, :columns => 50 } %>
-		  <%= f.input :course_id, :as => :hidden, :input_html => { :value => @course.id } %>
-		  <%= f.input :user_id, :as => :hidden, :input_html => { :value => current_user.id } %>
-		  <%= f.actions %>
+		<%= render :partial => 'shared/forms/note', :locals => {:note => @note, :course => @course } %>
+	<% elsif current_user.try(:patron?)%>	
+  	  <h3>Additional Actions</h3>
+  		Status: <%= @course.status %> <br />
+	  <h4>Assessments</h4>
+	    <%= link_to "Add Assessment", new_assessment_path(:course_id => @course.id) %><br /><br />
+	    <% @course.assessments.each do |assessment| %>
+	      <%= link_to "View Assessment", assessment_path(assessment) %><br />
 	    <% end %>
+		
+		<h4>Notes</h4>
+	    <%= render :partial => 'notes/all_notes', :locals => {:notes => @notes } %>
+	
+	    <%= render :partial => 'shared/forms/note', :locals => {:note => @note, :course => @course } %>
     <% end %>
 </div>
+

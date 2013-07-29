@@ -1,5 +1,7 @@
 class Note < ActiveRecord::Base
-  attr_accessible :note_text, :user_id, :course_id
+  include ActionDispatch::Routing::UrlFor
+  include Rails.application.routes.url_helpers
+  attr_accessible :note_text, :user_id, :course_id, :staff_comment
   
   belongs_to :user
   belongs_to :course
@@ -15,7 +17,7 @@ class Note < ActiveRecord::Base
         :to => admins,
         :subject => "[ClassRequestTool] A comment has been added to a class!",
         :body => "<p>#{self.user.username} has added a note to one of your classes. Click on the title of the class to go to the details of that class.</p>
-        <p>Title: <a href='#{ROOT_URL}#{course_path(self.course)}'>#{self.course.title}</a><br /> Course Date: #{self.course.timeframe}<br /> Comment: #{self.note_text}</p>"
+        <p>Title: <a href='#{ROOT_URL}#{course_path(self.course)}'>#{self.course.title}</a><br />Course Date: #{self.course.timeframe}<br />Comment: #{self.note_text}</p>"
       )
     # if assigned users is not empty, send to all users assigned to course selected
     else
@@ -27,7 +29,7 @@ class Note < ActiveRecord::Base
         :to => users,
         :subject => "[ClassRequestTool] A comment has been added to a class!",
         :body => "<p>#{self.user.username} has added a note to one of your classes. Click on the title of the class to go to the details of that class.</p>
-        <p>Title: <a href='#{ROOT_URL}#{course_path(self.course)}'>#{self.course.title}</a><br /> Course Date: #{self.course.timeframe}<br /> Comment: #{self.note_text}</p>"
+        <p>Title: <a href='#{ROOT_URL}#{course_path(self.course)}'>#{self.course.title}</a><br />Course Date: #{self.course.timeframe}<br />Comment: #{self.note_text}</p>"
       )  
     end  
   end

@@ -18,6 +18,18 @@ class User < ActiveRecord::Base
     self.username
   end
   
+  def user_type
+    if self.admin == true
+      return "admin"
+    elsif self.staff == true
+      return "staff"
+    elsif self.patron == true
+      return "patron"  
+    else
+      return "none"  
+    end      
+  end 
+  
   def self.random_password(size = 11)
     chars = (('a'..'z').to_a + ('0'..'9').to_a) - %w(i o 0 1 l 0)
     (1..size).collect{|a| chars[rand(chars.size)] }.join
@@ -55,13 +67,15 @@ class User < ActiveRecord::Base
   
   def mine_current
     upcoming = Array.new
-    Course.find(:all, :conditions => {:contact_email => self.email}, :order => 'timeframe DESC').collect{|course| course.timeframe.nil? || course.timeframe >= DateTime.now ? upcoming << course : ''}
+    upcoming = Course.find(:all, :conditions => ["contact_email = ? and timeframe is NULL or timeframe >= ?", self.email, DateTime.now], :order => 'timeframe DESC')
+
     return upcoming
   end
   
   def mine_past
     past = Array.new
-    Course.find(:all, :conditions => {:contact_email => self.email}, :order => 'timeframe DESC').collect{|course| !course.timeframe.nil? && course.timeframe < DateTime.now ? past << course : ''}
+    past = Course.find(:all, :conditions => ["contact_email = ? and timeframe is not NULL and timeframe < ?", self.email, DateTime.now], :order => 'timeframe DESC')
+
     return past
   end
 

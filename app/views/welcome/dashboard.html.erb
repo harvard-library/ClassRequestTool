@@ -8,8 +8,8 @@
 
 <h1>Dashboard</h1>
 
-<div id="dash-left" style="height: auto;">
-<div style="height: 20%;">
+<div id="dash-wrap">
+<div id="dash_widget">	
 <h3>Your Libraries/Archives</h3>
   <% unless @your_repos.nil? || @your_repos.empty? %>
 	<table id="your-repos-table" class="table table-condensed tablesorter">
@@ -35,7 +35,43 @@
 	None yet!
   <% end %>
 </div>
-<div style="height: 20%;">
+
+<div id="dash_widget">	
+<h3>Homeless</h3>
+  <% unless @homeless.nil? || @homeless.empty? %>
+	<table id="homeless-table" class="table table-condensed tablesorter">
+	<thead>	
+	  <tr>
+		<th>Name</th>
+		<th>Submission Date</th>
+		<th>Class Date</th>
+		<th></th>
+	  </tr>
+	</thead>
+	<tbody>
+      <% @homeless.each do |course| %>	
+      	<tr>
+	  	  <td><%= link_to(course.title, course ) %></td>
+		  <td><%= course.created_at.strftime('%m/%d/%Y') %></td>
+		  <td><%= course.timeframe.strftime('%m/%d/%Y %I:%M %P') unless course.timeframe.nil? %></td>
+		  <td><%= link_to('Edit', edit_course_path(course), :class => "action-edit") %><br />
+			  <%= link_to('Add Note', course_path(course), :class => "action-edit") %><br />
+			  <%= link_to('Take', take_course_path(course), :class => "action-edit") %><br />
+          <% if current_user.try(:admin?) %>
+	   		<%= link_to('Delete', course_path(course), :confirm => "Are you sure?", :method => :delete) %>
+    	  <% end %>
+		  </td>
+	    </tr>
+      <% end %>
+	</tbody>
+	</table>
+	<%= will_paginate @homeless, :param_name => 'homeless_page' %>
+  <% else %>
+	None yet!
+  <% end %>
+</div>
+
+<div id="dash_widget">
 <h3>Your claimed, unscheduled</h3>
   <% unless @your_unscheduled.nil? || @your_unscheduled.empty? %>	
     <table id="your_unscheduled-table" class="table table-condensed tablesorter">
@@ -52,6 +88,7 @@
 	  	  <td><%= link_to(course.title, course ) %></td>
 		  <td><%= course.created_at.strftime('%m/%d/%Y') %></td>
 		  <td><%= link_to('Edit', edit_course_path(course), :class => "action-edit") %><br />
+			  <%= link_to('Add Note', course_path(course), :class => "action-edit") %><br />
           <% if current_user.try(:admin?) %>
 	   		 <%= link_to('Delete', course_path(course), :confirm => "Are you sure?", :method => :delete) %>
       	  <% end %>
@@ -65,7 +102,43 @@
 	None yet!
   <% end %>
 </div>
-<div style="height: 20%;">
+
+<div id="dash_widget">  
+  <h3>unscheduled, unclaimed</h3>
+    <% unless @unscheduled_unclaimed.nil? || @unscheduled_unclaimed.empty? %>
+  	<table id="unassigned-table" class="table table-condensed tablesorter">
+	<thead>
+  	  <tr>
+  		<th>Name</th>
+		<th>Submission Date</th>
+  		<th>Class Date</th>
+  		<th></th>
+  	  </tr>
+    </thead> 
+	<tbody>
+        <% @unscheduled_unclaimed.each do |course| %>	
+        	<tr>
+  	  	  <td><%= link_to(course.title, course ) %></td>
+		  <td><%= course.created_at.strftime('%m/%d/%Y') %></td>
+  		  <td><%= course.timeframe.strftime('%m/%d/%Y %I:%M %P') unless course.timeframe.nil? %></td>
+  		  <td><%= link_to('Edit', edit_course_path(course), :class => "action-edit") %><br />
+			  <%= link_to('Add Note', course_path(course), :class => "action-edit") %><br />
+	  		  <%= link_to('Take', take_course_path(course), :class => "action-edit") %><br />
+          <% if current_user.try(:admin?) %>
+  	   		<%= link_to('Delete', course_path(course), :confirm => "Are you sure?", :method => :delete) %>
+      	  <% end %>
+		  </td>
+  	    </tr>
+        <% end %>
+	</tbody>	
+  	</table>
+	<%= will_paginate @unscheduled_unclaimed, :param_name => 'unassigned_page' %>
+    <% else %>
+  	None yet!
+    <% end %>
+</div>
+
+<div id="dash_widget">
 <h3>Your scheduled, claimed</h3>
   <% unless @your_upcoming.nil? || @your_upcoming.empty? %>	
     <table id="your-upcoming-table" class="table table-condensed tablesorter">
@@ -84,6 +157,7 @@
 		  <td><%= course.created_at.strftime('%m/%d/%Y') %></td>
 		  <td><%= course.timeframe.strftime('%m/%d/%Y %I:%M %P') unless course.timeframe.nil? %></td>
 		  <td><%= link_to('Edit', edit_course_path(course), :class => "action-edit") %><br />
+			  <%= link_to('Add Note', course_path(course), :class => "action-edit") %><br />
           <% if current_user.try(:admin?) %>
 	   		 <%= link_to('Delete', course_path(course), :confirm => "Are you sure?", :method => :delete) %>
       	  <% end %>
@@ -97,7 +171,43 @@
 	None yet!
   <% end %>
 </div>
-<div style="height: 20%;">  
+
+<div id="dash_widget">	
+    <h3>scheduled, not claimed</h3>
+      <% unless @scheduled_unclaimed.nil? || @scheduled_unclaimed.empty? %>
+    	<table id="roomless-table" class="table table-condensed tablesorter">
+		<thead>
+    	  <tr>
+    		<th>Name</th>
+			<th>Submission Date</th>
+    		<th>Class Date</th>
+    		<th></th>
+    	  </tr>
+		</thead>
+		<tbody>
+          <% @scheduled_unclaimed.each do |course| %>	
+          	<tr>
+    	  	  <td><%= link_to(course.title, course ) %></td>
+			  <td><%= course.created_at.strftime('%m/%d/%Y') %></td>
+    		  <td><%= course.timeframe.strftime('%m/%d/%Y %I:%M %P') unless course.timeframe.nil? %></td>
+    		  <td><%= link_to('Edit', edit_course_path(course), :class => "action-edit") %><br />
+				  <%= link_to('Add Note', course_path(course), :class => "action-edit") %><br />
+				  <%= link_to('Take', take_course_path(course), :class => "action-edit") %><br />
+              <% if current_user.try(:admin?) %>
+    	   		<%= link_to('Delete', course_path(course), :confirm => "Are you sure?", :method => :delete) %>
+        	  <% end %>
+			  </td>
+    	    </tr>
+          <% end %>
+		</tbody>
+    	</table>
+		<%= will_paginate @scheduled_unclaimed, :param_name => 'roomless_page' %>
+      <% else %>
+    	None yet!
+      <% end %>
+</div>
+
+<div id="dash_widget">  
   <h3><%= link_to("Your closed", "#", :id => 'collapsable') %></h3>
   <span id="your-past">
     <% unless @your_past.nil? || @your_past.empty? %>	
@@ -117,6 +227,7 @@
 		  <td><%= course.created_at.strftime('%m/%d/%Y') %></td>
   		  <td><%= course.timeframe.strftime('%m/%d/%Y %I:%M %P') unless course.timeframe.nil? %></td>
   		  <td><%= link_to('Edit', edit_course_path(course), :class => "action-edit") %><br />
+			  <%= link_to('Add Note', course_path(course), :class => "action-edit") %><br />
           <% if current_user.try(:admin?) %>
   	   	   <%= link_to('Delete', course_path(course), :confirm => "Are you sure?", :method => :delete) %>
           <% end %>
@@ -132,102 +243,4 @@
   </span>
 </div>
 
-</div>
-<div id="dash-right">
-	
-<h3>Homeless</h3>
-  <% unless @homeless.nil? || @homeless.empty? %>
-	<table id="homeless-table" class="table table-condensed tablesorter">
-	<thead>	
-	  <tr>
-		<th>Name</th>
-		<th>Submission Date</th>
-		<th>Class Date</th>
-		<th></th>
-	  </tr>
-	</thead>
-	<tbody>
-      <% @homeless.each do |course| %>	
-      	<tr>
-	  	  <td><%= link_to(course.title, course ) %></td>
-		  <td><%= course.created_at.strftime('%m/%d/%Y') %></td>
-		  <td><%= course.timeframe.strftime('%m/%d/%Y %I:%M %P') unless course.timeframe.nil? %></td>
-		  <td><%= link_to('Edit', edit_course_path(course), :class => "action-edit") %><br />
-			  <%= link_to('Take', take_course_path(course), :class => "action-edit") %><br />
-          <% if current_user.try(:admin?) %>
-	   		<%= link_to('Delete', course_path(course), :confirm => "Are you sure?", :method => :delete) %>
-    	  <% end %>
-		  </td>
-	    </tr>
-      <% end %>
-	</tbody>
-	</table>
-	<%= will_paginate @homeless, :param_name => 'homeless_page' %>
-  <% else %>
-	None yet!
-  <% end %>
-  
-  <h3>unscheduled, unclaimed</h3>
-    <% unless @unscheduled_unclaimed.nil? || @unscheduled_unclaimed.empty? %>
-  	<table id="unassigned-table" class="table table-condensed tablesorter">
-	<thead>
-  	  <tr>
-  		<th>Name</th>
-		<th>Submission Date</th>
-  		<th>Class Date</th>
-  		<th></th>
-  	  </tr>
-    </thead> 
-	<tbody>
-        <% @unscheduled_unclaimed.each do |course| %>	
-        	<tr>
-  	  	  <td><%= link_to(course.title, course ) %></td>
-		  <td><%= course.created_at.strftime('%m/%d/%Y') %></td>
-  		  <td><%= course.timeframe.strftime('%m/%d/%Y %I:%M %P') unless course.timeframe.nil? %></td>
-  		  <td><%= link_to('Edit', edit_course_path(course), :class => "action-edit") %><br />
-	  		  <%= link_to('Take', take_course_path(course), :class => "action-edit") %><br />
-          <% if current_user.try(:admin?) %>
-  	   		<%= link_to('Delete', course_path(course), :confirm => "Are you sure?", :method => :delete) %>
-      	  <% end %>
-		  </td>
-  	    </tr>
-        <% end %>
-	</tbody>	
-  	</table>
-	<%= will_paginate @unscheduled_unclaimed, :param_name => 'unassigned_page' %>
-    <% else %>
-  	None yet!
-    <% end %>
-	
-    <h3>scheduled, not claimed</h3>
-      <% unless @scheduled_unclaimed.nil? || @scheduled_unclaimed.empty? %>
-    	<table id="roomless-table" class="table table-condensed tablesorter">
-		<thead>
-    	  <tr>
-    		<th>Name</th>
-			<th>Submission Date</th>
-    		<th>Class Date</th>
-    		<th></th>
-    	  </tr>
-		</thead>
-		<tbody>
-          <% @scheduled_unclaimed.each do |course| %>	
-          	<tr>
-    	  	  <td><%= link_to(course.title, course ) %></td>
-			  <td><%= course.created_at.strftime('%m/%d/%Y') %></td>
-    		  <td><%= course.timeframe.strftime('%m/%d/%Y %I:%M %P') unless course.timeframe.nil? %></td>
-    		  <td><%= link_to('Edit', edit_course_path(course), :class => "action-edit") %><br />
-				  <%= link_to('Take', take_course_path(course), :class => "action-edit") %><br />
-              <% if current_user.try(:admin?) %>
-    	   		<%= link_to('Delete', course_path(course), :confirm => "Are you sure?", :method => :delete) %>
-        	  <% end %>
-			  </td>
-    	    </tr>
-          <% end %>
-		</tbody>
-    	</table>
-		<%= will_paginate @scheduled_unclaimed, :param_name => 'roomless_page' %>
-      <% else %>
-    	None yet!
-      <% end %>
- </div> 
+</div> 

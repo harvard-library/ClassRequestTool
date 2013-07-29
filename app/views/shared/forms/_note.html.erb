@@ -1,6 +1,9 @@
-<%= semantic_form_for(@note) do |f| %>
-  <%= f.input :note_text, :label => "Note: ", :input_html => { :rows => 5, :columns => 50 } %>
-  <%= f.input :course_id, :as => :hidden, :input_html => { :value => @note.course.id } %>
+<%= semantic_form_for(note) do |f| %>
+  <%= f.input :note_text, :label => "Add a New Note: ", :input_html => { :rows => 5, :columns => 50 } %>
+  <%= f.input :course_id, :as => :hidden, :input_html => { :value => course.id } %>
   <%= f.input :user_id, :as => :hidden, :input_html => { :value => current_user.id } %>
+  <% if current_user.try(:staff?) || current_user.try(:admin?) %>
+    <%= f.input :staff_comment, :label => "Staff Comment? ", :input_html => { :value => true } %>
+  <% end %>
   <%= f.actions %>
 <% end %>
