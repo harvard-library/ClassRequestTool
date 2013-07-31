@@ -11,11 +11,15 @@ class User < ActiveRecord::Base
   validates_uniqueness_of :username
   
   has_and_belongs_to_many :courses
-  has_and_belongs_to_many :repositories
+  has_and_belongs_to_many :repositories, :order => "name"
   has_many :notes
   
   def to_s
-    self.username
+    self.full_name
+  end
+  
+  def full_name
+    return "#{self.first_name} #{self.last_name}"
   end
   
   def user_type

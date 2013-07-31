@@ -17,7 +17,7 @@
 <div id="info-left">	
   <%= semantic_form_for(@course, :html => {:multipart => true}) do |f| %>
 	<%= f.inputs do %>
-	  <%= f.input :repository, :label => "Library/Archive: ", :include_blank => "Not Sure - Help me Choose", :input_html => { :value => @course.repository, :onchange => "change_repo_items(this.options[this.selectedIndex].value;" } %>
+	  <h3><%= @course.repository.name %></h3>
 		<span id="requester_info"><%= render :partial => 'shared/forms/course_requester_info', :locals=>{:f=>f} %></span>
         <span id="course_info"><%= render :partial => 'shared/forms/course_info', :locals=>{:f=>f} %></span>
         <span id="involvement_info"><%= render :partial => 'shared/forms/course_staff_involvement', :locals=>{:f=>f} %></span>
