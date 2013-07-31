@@ -3,7 +3,7 @@
   <%= f.input :course_id, :as => :hidden, :input_html => { :value => course.id } %>
   <%= f.input :user_id, :as => :hidden, :input_html => { :value => current_user.id } %>
   <% if current_user.try(:staff?) || current_user.try(:admin?) %>
-    <%= f.input :staff_comment, :label => "Staff Comment? ", :input_html => { :value => true } %>
+    <%= f.input :staff_comment, :label => "Staff Note? ", :input_html => {:checked => "checked"} %>
   <% end %>
   <%= f.actions %>
 <% end %>

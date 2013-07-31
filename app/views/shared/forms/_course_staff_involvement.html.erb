@@ -5,12 +5,8 @@
 <%= f.input :staff_involvement, :label => "Other Involvement: ", :input_html => { :rows => 5, :columns => 50 } %>
 </div>
 <% if current_user.try(:admin?) || current_user.try(:staff?) %>
-<div id="form_col2" class="yellow-box">	
-<% if current_user.admin? %>
-    <%= f.input :users, :as => :check_boxes, :collection => User.all, :label => "Assign Staff: " %>
-<% elsif !@course.repository.nil? %>
+  <div id="form_col2" class="yellow-box">	
     <%= f.input :users, :as => :check_boxes, :collection => @course.repository.users, :label => "Assign Staff: " %>
-<% end %>
-</div>
+  </div>
 <% end %>
 </div>

@@ -14,8 +14,6 @@ class CoursesController < ApplicationController
     @note = Note.new
     @staff_only_notes = Note.find(:all, :conditions => {:course_id => @course.id, :staff_comment => true}, :order => "created_at DESC")
     @notes = Note.find(:all, :conditions => {:course_id => @course.id, :staff_comment => false}, :order => "created_at DESC")
-    p @staff_only_notes
-    p @notes
   end
   
   def new
