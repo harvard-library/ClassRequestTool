@@ -1,3 +1,10 @@
+GIT
+  remote: git@github.com:apatel/devise_harvard_auth_proxy.git
+  revision: 7a3f9890dd182f6e7449b070b4ff86c29ce3bda7
+  specs:
+    devise_harvard_auth_proxy (0.2.0)
+      devise (>= 1.4.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -139,6 +146,7 @@ DEPENDENCIES
   ckeditor
   coffee-rails (~> 3.2.1)
   devise
+  devise_harvard_auth_proxy!
   formtastic
   formtastic-bootstrap
   jquery-rails (~> 2.3.0)
