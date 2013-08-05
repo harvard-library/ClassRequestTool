@@ -9,8 +9,8 @@
 <h1>Dashboard</h1>
 
 <div id="dash-wrap">
-<div id="dash_widget">	
-<h3>Your Libraries/Archives</h3>
+  <div id="dash_widget">	
+  <h3>Your Libraries/Archives</h3>
   <% unless @your_repos.nil? || @your_repos.empty? %>
 	<table id="your-repos-table" class="table table-condensed tablesorter">
 	  <thead>
@@ -34,10 +34,10 @@
   <% else %>
 	None yet!
   <% end %>
-</div>
+  </div>
 
-<div id="dash_widget">	
-<h3>Homeless</h3>
+  <div id="dash_widget">	
+  <h3>Homeless</h3>
   <% unless @homeless.nil? || @homeless.empty? %>
 	<table id="homeless-table" class="table table-condensed tablesorter">
 	<thead>	
@@ -69,10 +69,11 @@
   <% else %>
 	None yet!
   <% end %>
+  </div>
 </div>
-
-<div id="dash_widget">
-<h3>Your claimed, unscheduled</h3>
+<div id="dash-wrap">
+  <div id="dash_widget">
+  <h3>Your claimed, unscheduled</h3>
   <% unless @your_unscheduled.nil? || @your_unscheduled.empty? %>	
     <table id="your_unscheduled-table" class="table table-condensed tablesorter">
 	  <thead>
@@ -101,9 +102,9 @@
   <% else %>
 	None yet!
   <% end %>
-</div>
+  </div>
 
-<div id="dash_widget">  
+  <div id="dash_widget">  
   <h3>unscheduled, unclaimed</h3>
     <% unless @unscheduled_unclaimed.nil? || @unscheduled_unclaimed.empty? %>
   	<table id="unassigned-table" class="table table-condensed tablesorter">
@@ -136,10 +137,11 @@
     <% else %>
   	None yet!
     <% end %>
+  </div>
 </div>
-
-<div id="dash_widget">
-<h3>Your scheduled, claimed</h3>
+<div id="dash-wrap">
+  <div id="dash_widget">
+  <h3>Your scheduled, claimed</h3>
   <% unless @your_upcoming.nil? || @your_upcoming.empty? %>	
     <table id="your-upcoming-table" class="table table-condensed tablesorter">
 	  <thead>
@@ -170,9 +172,9 @@
   <% else %>
 	None yet!
   <% end %>
-</div>
+  </div>
 
-<div id="dash_widget">	
+  <div id="dash_widget">	
     <h3>scheduled, not claimed</h3>
       <% unless @scheduled_unclaimed.nil? || @scheduled_unclaimed.empty? %>
     	<table id="roomless-table" class="table table-condensed tablesorter">
@@ -205,9 +207,10 @@
       <% else %>
     	None yet!
       <% end %>
+  </div>
 </div>
-
-<div id="dash_widget">  
+<div id="dash-wrap">
+  <div id="dash_widget">  
   <h3><%= link_to("Your closed", "#", :id => 'collapsable') %></h3>
   <span id="your-past">
     <% unless @your_past.nil? || @your_past.empty? %>	
@@ -241,6 +244,5 @@
   	None yet!
     <% end %>
   </span>
+  </div>
 </div>
-
-</div> 
