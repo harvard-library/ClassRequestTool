@@ -22,6 +22,10 @@ class User < ActiveRecord::Base
     return "#{self.first_name} #{self.last_name}"
   end
   
+  def self.all_admins
+    self.find(:all, :conditions => {:admin => true})
+  end  
+  
   def user_type
     if self.admin == true
       return "admin"

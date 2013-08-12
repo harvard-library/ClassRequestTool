@@ -9,15 +9,9 @@
 <div id="welcome-left">
   	<h3>Participating Special Collections Libraries/Archives</h3>
 	<p>
-  	  <%= form_tag new_course_path, :method => :get do %>
-  	  <p>
-  	    <%= submit_tag :repository, "Not Sure - Help me Choose" %>
-		<p>Select this option if you would like us to match your class with a library/archive</p>
-  	  </p>
-  	  <% end %>
-	  
+	<%= link_to "Not Sure - Help me Choose", new_course_path %><br /> 
 	<% @repositories.each do |repo| %>
-	  <%= link_to repo.name, repo %><br />
+	  <%= link_to repo.name, repo %><br /> 
 	<% end %>
 	</p>
 	<p>See all Archives and Special Collections at Harvard</p>
