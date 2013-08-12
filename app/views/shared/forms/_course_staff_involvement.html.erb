@@ -6,7 +6,11 @@
 </div>
 <% if current_user.try(:admin?) || current_user.try(:staff?) %>
   <div id="form_col2" class="yellow-box">	
-    <%= f.input :users, :as => :check_boxes, :collection => @course.repository.users, :label => "Assign Staff: " %>
+	<% if @course.repository.nil? %>
+	  <%= f.input :users, :as => :check_boxes, :collection => User.all_admins, :label => "Assign Staff: " %>  
+	<% else %>  
+      <%= f.input :users, :as => :check_boxes, :collection => @course.repository.users, :label => "Assign Staff: " %>
+	<% end %>  
   </div>
 <% end %>
 </div>

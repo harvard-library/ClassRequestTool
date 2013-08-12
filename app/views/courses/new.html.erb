@@ -17,7 +17,7 @@
 <div id="info-left">	
   <%= semantic_form_for(@course, :html => {:multipart => true}) do |f| %>
 	<%= f.inputs do %>
-	  <h3><%= @course.repository.name %></h3>
+	  <h3><%= @course.repository.nil? ? "Not Sure - Help me Choose" : @course.repository.name %></h3>
 		<span id="requester_info"><%= render :partial => 'shared/forms/course_requester_info', :locals=>{:f=>f} %></span>
         <span id="course_info"><%= render :partial => 'shared/forms/course_info', :locals=>{:f=>f} %></span>
         <span id="involvement_info"><%= render :partial => 'shared/forms/course_staff_involvement', :locals=>{:f=>f} %></span>
@@ -25,6 +25,7 @@
 	<% end %>
 	<br />
 	<p>Be sure to review your information and make any edits before submitting your request.</p>
+	<p>Please note that some of the information you provide may be used to promote the variety of classes being offered at special collections libraries and archives at Harvard.</p>
 	<%= f.actions do %>
 	  <%= f.action :submit, :as => :button, :label => 'Submit Request ' %>
 	<% end %>
