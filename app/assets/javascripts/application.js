@@ -15,6 +15,7 @@
 //= require jquery-ui
 //= require jquery.ui.datepicker
 //= require jquery-tablesorter
+//= require bootstrap
 //= require ckeditor/init
 //= require_tree .
 
