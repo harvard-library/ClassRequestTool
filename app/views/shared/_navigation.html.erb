@@ -1,16 +1,20 @@
-<%= image_tag "header_image.jpg" %>
 
-<ul class="nav">
+<%= image_tag "header_image.jpg", :class => "brand" %>
+<ul class="nav" role="navigation">
 	<li><%= link_to "Home", root_path %></li>
 
   <% if current_user.try(:admin?) %>
     <li><%= link_to "Dashboard", dashboard_welcome_index_url %></li>
 	<li><%= link_to "Classes", courses_path %></li>
-	<li><%= link_to "Libraries/Archives", repositories_path %></li>
-	<li><%= link_to "Rooms", rooms_path %></li>
-	<li><%= link_to "Technology Needs", item_attributes_path %></li>
-	<li><%= link_to "Staff Involvements", staff_involvements_path %></li>
-	<li><%= link_to "Users", users_path %></li>
+	<li class="dropdown"><a id="drop1" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">Staff Area <b class="caret"></b></a>
+		<ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
+			<li><%= link_to "Libraries/Archives", repositories_path %></li>
+			<li><%= link_to "Rooms", rooms_path %></li>
+			<li><%= link_to "Technology Needs", item_attributes_path %></li>
+			<li><%= link_to "Staff Involvements", staff_involvements_path %></li>
+			<li><%= link_to "Users", users_path %></li>
+	  </ul>	
+	</li>						  
 	<li><%= link_to "Edit Account", edit_user_registration_path %></li>
 	<li><%= link_to "Sign Out", destroy_user_session_path, :method => :delete %></li>
   <% elsif current_user.try(:staff?) %>
