@@ -73,12 +73,12 @@ class Course < ActiveRecord::Base
       )
     # if assigned users is not empty, send to all users assigned to course selected
     else
-      users = ""
-      self.users.collect{|u| users = u.email + ","}
+      emails = ""
+      self.users.collect{|u| emails = u.email + ","}
       Email.create(
         :from => DEFAULT_MAILER_SENDER,
         :reply_to => DEFAULT_MAILER_SENDER,
-        :to => users,
+        :to => emails,
         :subject => "[ClassRequestTool] Class Request Updated for #{self.title}",
         :body => "Class Request Successfully Updated for #{self.title}"
       )  
@@ -101,12 +101,12 @@ class Course < ActiveRecord::Base
   
   def send_staff_change_email
     # send to assigned staff members
-    users = ""
-    self.users.collect{|u| users = u.email + ","}
+    emails = ""
+    self.users.collect{|u| emails = u.email + ","}
     Email.create(
       :from => DEFAULT_MAILER_SENDER,
       :reply_to => DEFAULT_MAILER_SENDER,
-      :to => self.users,
+      :to => emails,
       :subject => "[ClassRequestTool] You have been assigned a class!",
       :body => "<p>Please <a href='#{ROOT_URL}#{edit_course_path(self)}'>confirm the class date and time</a> and if applicable, add the class to your room calendar or event management system (e.g. Aeon).</p>"
     )   
