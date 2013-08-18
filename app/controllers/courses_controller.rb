@@ -1,6 +1,6 @@
 class CoursesController < ApplicationController
   before_filter :authenticate_admin_or_staff!, :only => [:take]
-  before_filter :authenticate_user!, :except => [:take]
+  before_filter :authenticate_user!, :except => [:take, :recent_show]
   
   def index
     @courses_all = Course.paginate(:page => params[:all_page], :per_page => 10)
