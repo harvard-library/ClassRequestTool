@@ -146,7 +146,11 @@ class Course < ActiveRecord::Base
   end
   
   def primary_contact
-    User.find(self.primary_contact_id)
+    unless self.primary_contact_id.nil?
+      User.find(self.primary_contact_id)
+    else
+      return nil
+    end    
   end  
   
   def self.homeless
