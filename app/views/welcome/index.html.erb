@@ -1,27 +1,28 @@
 <% if user_signed_in? %>
-  <h2>Welcome, <%= current_user.first_name %>!</h2>
+  <h3>Welcome, <%= current_user.first_name %>!</h3>
 <% else %>
-  <h2>Welcome!</h2>
+  <h3>Welcome!</h3>
 <% end %>
-<br />
+
 <%= render :partial => 'shared/welcome_text' %>
 
 <div id="welcome-left">
-  	<h3>Participating Special Collections Libraries/Archives</h3>
+  	<h4>Participating Special Collections Libraries/Archives</h4>
 	<p>
 	<%= link_to "Not Sure - Help me Choose", new_course_path %><br /> 
+	<sup>Select this option if you would like us to match your class with a library/archive.<br /></sup>
 	<% @repositories.each do |repo| %>
 	  <%= link_to repo.name, repo %><br /> 
 	<% end %>
 	</p>
-	<p>See all Archives and Special Collections at Harvard</p>
+	<p><a href="http://lib.harvard.edu/archives-and-special-collections-harvard">See all Archives and Special Collections at Harvard</a></p>
 	<p>
 	Are you a Special Collections Library/Archive at Harvard?<br /> Would you like to participate?<br /> <a href="mailto:rhowarth@fas.harvard.edu">Join us!</a>
 	</p>
 </div>
 
 <div id="welcome-right">
-  	<h3>Recent Classes</h3>
+  	<h4>Recent Classes</h4>
 	  <% unless @courses.nil? %>	
 	  	<% @courses.each do |course| %>	
 	      

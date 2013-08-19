@@ -1,7 +1,7 @@
 <%= semantic_form_for(note) do |f| %>
   <%= f.input :note_text, :label => "Add a New Note: ", :input_html => { :rows => 5, :columns => 50 } %>
-  <%= f.input :course_id, :as => :hidden, :input_html => { :value => course.id } %>
-  <%= f.input :user_id, :as => :hidden, :input_html => { :value => current_user.id } %>
+  <%= f.hidden_field :course_id, :value => course.id %>
+  <%= f.hidden_field :user_id, :value => current_user.id %>
   <% if current_user.try(:staff?) || current_user.try(:admin?) %>
     <%= f.input :staff_comment, :label => "Staff Note? ", :input_html => {:checked => "checked"} %>
   <% end %>

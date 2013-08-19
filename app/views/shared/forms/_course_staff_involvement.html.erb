@@ -7,8 +7,10 @@
 <% if current_user.try(:admin?) || current_user.try(:staff?) %>
   <div id="form_col2" class="yellow-box">	
 	<% if @course.repository.nil? %>
+	  <%= f.input :primary_contact_id, :as => :select, :collection => User.all_admins, :label => "Assign Primary Contact: " %>  
 	  <%= f.input :users, :as => :check_boxes, :collection => User.all_admins, :label => "Assign Staff: " %>  
 	<% else %>  
+	  <%= f.input :primary_contact_id, :as => :select, :collection => @course.repository.users, :label => "Assign Primary Contact: " %>
       <%= f.input :users, :as => :check_boxes, :collection => @course.repository.users, :label => "Assign Staff: " %>
 	<% end %>  
   </div>

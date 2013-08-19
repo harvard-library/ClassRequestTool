@@ -1,7 +1,7 @@
 class Course < ActiveRecord::Base
   include ActionDispatch::Routing::UrlFor
   include Rails.application.routes.url_helpers
-  attr_accessible :room_id, :repository_id, :title, :subject, :course_number, :affiliation, :contact_username, :contact_first_name, :contact_last_name, :contact_email, :contact_phone, :pre_class_appt, :staff_involvement, :status, :file, :number_of_students, :timeframe, :user_ids, :external_syllabus, :time_choice_1, :time_choice_2, :time_choice_3, :time_choice_4, :duration, :comments, :course_sessions, :session_count, :item_attribute_ids, :goal, :instruction_session, :pre_class_appt_choice_1, :pre_class_appt_choice_2, :pre_class_appt_choice_3, :staff_involvement_ids
+  attr_accessible :room_id, :repository_id, :title, :subject, :course_number, :affiliation, :contact_username, :contact_first_name, :contact_last_name, :contact_email, :contact_phone, :pre_class_appt, :staff_involvement, :status, :file, :number_of_students, :timeframe, :user_ids, :external_syllabus, :time_choice_1, :time_choice_2, :time_choice_3, :time_choice_4, :duration, :comments, :course_sessions, :session_count, :item_attribute_ids, :goal, :instruction_session, :pre_class_appt_choice_1, :pre_class_appt_choice_2, :pre_class_appt_choice_3, :staff_involvement_ids, :primary_contact_id
   
   has_and_belongs_to_many :users
   belongs_to :room
@@ -73,12 +73,12 @@ class Course < ActiveRecord::Base
       )
     # if assigned users is not empty, send to all users assigned to course selected
     else
-      users = ""
-      self.users.collect{|u| users = u.email + ","}
+      emails = ""
+      self.users.collect{|u| emails = u.email + ","}
       Email.create(
         :from => DEFAULT_MAILER_SENDER,
         :reply_to => DEFAULT_MAILER_SENDER,
-        :to => users,
+        :to => emails,
         :subject => "[ClassRequestTool] Class Request Updated for #{self.title}",
         :body => "Class Request Successfully Updated for #{self.title}"
       )  
@@ -101,12 +101,12 @@ class Course < ActiveRecord::Base
   
   def send_staff_change_email
     # send to assigned staff members
-    users = ""
-    self.users.collect{|u| users = u.email + ","}
+    emails = ""
+    self.users.collect{|u| emails = u.email + ","}
     Email.create(
       :from => DEFAULT_MAILER_SENDER,
       :reply_to => DEFAULT_MAILER_SENDER,
-      :to => self.users,
+      :to => emails,
       :subject => "[ClassRequestTool] You have been assigned a class!",
       :body => "<p>Please <a href='#{ROOT_URL}#{edit_course_path(self)}'>confirm the class date and time</a> and if applicable, add the class to your room calendar or event management system (e.g. Aeon).</p>"
     )   
@@ -144,6 +144,14 @@ class Course < ActiveRecord::Base
       :body => "<p>Your class session at #{self.repository.name} was recently completed. Please take a minute to help us improve instruction by filling out <a href='#{ROOT_URL}#{new_assessment_path(:course_id => self.id)}'> a short assessment about your experience</a>.</p>"
     )
   end
+  
+  def primary_contact
+    unless self.primary_contact_id.nil?
+      User.find(self.primary_contact_id)
+    else
+      return nil
+    end    
+  end  
   
   def self.homeless
     Course.find(:all, :conditions => {:repository_id => nil}, :order => 'timeframe DESC')

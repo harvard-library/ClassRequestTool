@@ -1,7 +1,14 @@
 <h1>Summary for <%= @course.title %></h1>
 
 <div>
-	<%= render :partial => 'shared/summary_text' %>
+	<p>Thank you for submitting your request.</p>
+
+	<p>A staff member will be in touch within 3 business days to schedule a pre-class meeting with you and to finalize arrangements for your class.</p>
+
+	<p>You may expect a reply from your selected repository within 72 hours.</p>
+	<% unless @course.repository.nil? %>
+	<p><%= link_to "Click here", repository_url(@course.repository.id), :target => "blank" %> for class policies to review or share with students.</p>
+	<% end %>
 </div>	
 
 <div>
@@ -43,13 +50,14 @@
 	<% if !@course.timeframe.nil? %>
 	  Class Date/Time: <%= @course.timeframe.strftime('%m/%d/%Y %I:%M %P') unless @course.timeframe.nil? %> <br />
 	<% elsif !@course.time_choice_1.nil? || !@course.time_choice_2.nil? || !@course.time_choice_3.nil? %>
+	  These dates/times have not yet been confirmed. The repository will confirm timing based on room and staff availability.<br /><br />
 	  Choice 1: <%= @course.time_choice_1.strftime('%m/%d/%Y %I:%M %P') unless @course.time_choice_1.nil? %> <br />
 	  Choice 2: <%= @course.time_choice_2.strftime('%m/%d/%Y %I:%M %P') unless @course.time_choice_2.nil? %> <br />
 	  Choice 2: <%= @course.time_choice_3.strftime('%m/%d/%Y %I:%M %P') unless @course.time_choice_3.nil? %> <br />
 	<% else %>
 	  No class dates selected.
 	<% end %>
-	
+	<br />
 	Class Duration: <%= @course.duration unless @course.duration.nil? %> hour(s) <br />
 	Room: <%= @course.room.name unless @course.room.nil? %> <br />
 	Comments: <%= @course.comments unless @course.comments.nil? %> <br />

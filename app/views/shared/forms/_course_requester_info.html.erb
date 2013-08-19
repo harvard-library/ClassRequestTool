@@ -1,7 +1,7 @@
 <div id="form_wrapper">
 <h3><%= link_to("Requester Information", "#", :id => 'view_section_2') %></h3>
 <div id="form_col1">	
-<%= f.input :contact_username, :as => :hidden %>
+<%= f.input :contact_username, :value => current_user.username %>
 <%= f.input :contact_first_name, :label => "Primary Contact First Name: ", :input_html => { :value => @course.contact_first_name.nil? ? current_user.first_name : @course.contact_first_name, :class => 'fl' } %>
 </div>
 <div id="form_col2">
