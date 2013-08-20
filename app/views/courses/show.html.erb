@@ -27,7 +27,13 @@
 	Primary Contact Phone: <%= @course.contact_phone unless @course.contact_phone.nil? %> <br />
 	
 	<h3>Staff Involvement</h3>
-	Primary Library/Archive Contact: <%= @course.primary_contact.nil? ? "None" : @course.primary_contact.email %><br />
+	Primary Library/Archive Contact: 
+	<% unless @course.primary_contact.nil? %>
+	   <%= mail_to @course.primary_contact.email, "#{@course.primary_contact.first_name} #{@course.primary_contact.last_name}" %>
+	<% else %>
+	  None
+	<% end %>
+	<br />
 	Staff Involvement: <br />
 	<ul>
 	<% @course.staff_involvements.each do |si| %>
