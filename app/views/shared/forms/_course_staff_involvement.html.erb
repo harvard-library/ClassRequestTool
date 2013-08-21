@@ -1,7 +1,7 @@
 <div id="form_wrapper">
-<h3><%= link_to("Staff Involvement", "#", :id => 'view_section_3') %></h3>
+<h3>Staff Involvement</h3>
 <div id="form_col1">
-<%= f.input :staff_involvements, :label => "Level of Staff Involvement: ", :as => :check_boxes, :collection => @course.repository.nil? ? Repository.find(:first, :conditions => ("name like '%Houghton%'")).staff_involvements : @course.repository.staff_involvements %>
+<%= f.input :staff_involvements, :label => "Please select or suggest ways our staff can be of assistance for this class: ", :as => :check_boxes, :collection => @course.repository.nil? ? Repository.find(:first, :conditions => ("name like '%Houghton%'")).staff_involvements : @course.repository.staff_involvements %>
 <%= f.input :staff_involvement, :label => "Other Involvement: ", :input_html => { :rows => 5, :columns => 50 } %>
 </div>
 <% if current_user.try(:admin?) || current_user.try(:staff?) %>

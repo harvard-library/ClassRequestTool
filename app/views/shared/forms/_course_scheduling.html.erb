@@ -1,16 +1,16 @@
 <div id="form_wrapper">
 
-<h3><%= link_to("Scheduling", "#", :id => 'view_section_4') %></h3>
+<h3>Scheduling</h3>
 
 <div id="form_full_width">
-<%= f.input :course_sessions, :label => "Frequency of Class: ", :as => :radio, :collection => Course::COURSE_SESSIONS %>
-<%= f.input :session_count, :label => "Number of Sessions: ", :input_html => { :size => 1, :maxlength => 1 }, :hint => 'If more than 4 sessions, please choose dates for the first four and add a note to the Additional Comments at the bottom of this page indicating other dates/times you would like for your sessions.' %>
+<%= f.input :course_sessions, :label => "Select One", :as => :radio, :collection => Course::COURSE_SESSIONS %>
+<%= f.input :session_count, :label => "Number of Sessions: ", :input_html => { :size => 1, :maxlength => 1 }, :hint => 'If more than four sessions, please indicate in a note below your request for a multi-session or reoccurring class (e.g. Wednesdays 2-4pm).' %>
 </div>
 
 <div id="form_full_width">
 <h4>Date/Time of Class</h4>
-<span id="multiple">Please select one date choice per session.</span>
-<span id="single">Please select up to 3 date choices for your session.</span>
+<span id="multiple">Please enter your preferred date and time for each session. Second choices and back-up times/days may be indicated in the notes field below. If your only options for scheduling fall outside normal business hours, please use the note field to detail your availability.</span>
+<span id="single">Please select up to 3 dates/times for your session.</span>
 <br /><br />
 Final scheduling of a session is subject to both room and staff availability.
 </div>
@@ -19,7 +19,7 @@ Final scheduling of a session is subject to both room and staff availability.
 <% if (@course.repository.nil? || @course.repository.blank?) || (@course.repository.calendar.nil? || @course.repository.calendar.blank?) %>
   This Library/Archive does not have a publicly available calendar. Please submit your request with your preferred times and a staff member will get back to you.
 <% else %>
-  <%= link_to 'View Calendar', "#{@course.repository.calendar}", :onclick=>"window.open(this.href,'view_calendar', 'height=600, width=600');return false;" %>
+  <%= link_to 'View Calendar to see availability', "#{@course.repository.calendar}", :onclick=>"window.open(this.href,'view_calendar', 'height=600, width=600');return false;" %>
 <% end %>
 </div>
 
@@ -53,7 +53,7 @@ Final scheduling of a session is subject to both room and staff availability.
 <div id="form_full_width">
 <% unless @course.repository.nil? %>
   <br />
-  <%= f.input :item_attributes, :as => :check_boxes, :collection => @course.repository.item_attributes, :label => "Room Technology Need Needed: " %>
+  <%= f.input :item_attributes, :as => :check_boxes, :collection => @course.repository.item_attributes, :label => "Room Technology Availble: " %>
 <% end %>
 <br />
 <%= f.input :comments, :label => "If you have any special room arrangements or further instructions regarding your class session, please enter them below: ", :input_html => { :rows => 5, :cols => 30 } %>
