@@ -223,6 +223,20 @@ Devise.setup do |config|
   #   manager.intercept_401 = false
   #   manager.default_strategies(:scope => :user).unshift :some_external_strategy
   # end
+  config.warden do |manager|
+    manager.default_strategies(:scope => :user).unshift :harvard_auth_proxy_authenticatable
+  end
+ 
+  config.authen_application = 'HLS_BCIS_LRRS_DEV'
+  config.pin_url = 'http://localhost:3001/pin/authenticate?__authen_application='
+  config.debug = true
+  config.disable_token_authenticity_checks = true
+  config.post_logout_url = 'http://www.google.com/'
+  config.creation_attributes = Proc.new do |user,user_info,authentication_info|
+    user.email = user_info[:mail]
+    #user.edupersonaffiliation = user_info[:edupersonaffiliation]
+    #user.guid = authentication_info[:user_id]
+  end
 
   # ==> Mountable engine configurations
   # When using Devise inside an engine, let's call it `MyEngine`, and this engine
