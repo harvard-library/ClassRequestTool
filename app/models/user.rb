@@ -45,31 +45,19 @@ class User < ActiveRecord::Base
   
   def upcoming_courses
     upcoming = Array.new
-    if self.admin?
-      Course.all.collect{|course| !course.timeframe.nil? && course.timeframe >= DateTime.now ? upcoming << course : ''}
-    else  
-      self.courses.collect{|course| !course.timeframe.nil? && course.timeframe >= DateTime.now ? upcoming << course : ''}
-    end
+    self.courses.collect{|course| !course.timeframe.nil? && course.timeframe >= DateTime.now ? upcoming << course : ''}
     return upcoming
   end
   
   def past_courses
     past = Array.new
-    if self.admin?
-      Course.all.collect{|course| !course.timeframe.nil? && course.timeframe < DateTime.now ? past << course : ''}
-    else  
-      self.courses.collect{|course| !course.timeframe.nil? && course.timeframe < DateTime.now ? past << course : ''}
-    end
+    self.courses.collect{|course| !course.timeframe.nil? && course.timeframe < DateTime.now ? past << course : ''}
     return past
   end  
   
   def unscheduled_courses
-    unscheduled = Array.new
-    if self.admin?
-      Course.all.collect{|course| course.timeframe.nil? ? unscheduled << course : ''}
-    else  
-      self.courses.collect{|course| course.timeframe.nil? ? unscheduled << course : ''}
-    end
+    unscheduled = Array.new 
+    self.courses.collect{|course| course.timeframe.nil? ? unscheduled << course : ''}
     return unscheduled
   end
   
