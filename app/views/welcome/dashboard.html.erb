@@ -37,7 +37,7 @@
   </div>
 
   <div id="dash_widget">	
-  <h3>Homeless</h3>
+  <h3>Homeless Classes</h3>
   <% unless @homeless.nil? || @homeless.empty? %>
 	<table id="homeless-table" class="table table-condensed tablesorter">
 	<thead>	
@@ -73,7 +73,7 @@
 </div>
 <div id="dash-wrap">
   <div id="dash_widget">
-  <h3>Your claimed, unscheduled</h3>
+  <h3>Your Claimed, Unscheduled Classes</h3>
   <% unless @your_unscheduled.nil? || @your_unscheduled.empty? %>	
     <table id="your_unscheduled-table" class="table table-condensed tablesorter">
 	  <thead>
@@ -105,7 +105,7 @@
   </div>
 
   <div id="dash_widget">  
-  <h3>unscheduled, unclaimed</h3>
+  <h3>Unscheduled, Unclaimed Classes</h3>
     <% unless @unscheduled_unclaimed.nil? || @unscheduled_unclaimed.empty? %>
   	<table id="unassigned-table" class="table table-condensed tablesorter">
 	<thead>
@@ -141,7 +141,7 @@
 </div>
 <div id="dash-wrap">
   <div id="dash_widget">
-  <h3>Your scheduled, claimed</h3>
+  <h3>Your Scheduled, Claimed Classes</h3>
   <% unless @your_upcoming.nil? || @your_upcoming.empty? %>	
     <table id="your-upcoming-table" class="table table-condensed tablesorter">
 	  <thead>
@@ -175,7 +175,7 @@
   </div>
 
   <div id="dash_widget">	
-    <h3>scheduled, not claimed</h3>
+    <h3>Scheduled, Unclaimed Classes</h3>
       <% unless @scheduled_unclaimed.nil? || @scheduled_unclaimed.empty? %>
     	<table id="roomless-table" class="table table-condensed tablesorter">
 		<thead>
@@ -211,7 +211,7 @@
 </div>
 <div id="dash-wrap">
   <div id="dash_widget">  
-  <h3><%= link_to("Your closed", "#", :id => 'collapsable') %></h3>
+  <h3><%= link_to("Your Closed Classes", "#", :id => 'collapsable') %></h3>
   <span id="your-past">
     <% unless @your_past.nil? || @your_past.empty? %>	
       <table id="your-past-table" class="table table-condensed tablesorter">

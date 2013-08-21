@@ -10,7 +10,7 @@
 <div>
 	Description: <%= raw @repository.description unless @repository.description.nil? %> <br />
 	Class Limit: <%= @repository.class_limit unless @repository.class_limit.nil? %> <br />
-	Available Technology Needs: 
+	Technology Available: 
 	<% unless @repository.item_attributes.nil? || @repository.item_attributes.empty? %>
 	<ul>
 	  <% @repository.item_attributes.each do |attribute| %>
@@ -21,17 +21,20 @@
 	  None.
 	<% end %>
 	<br />
-	Available Rooms: 
-	<% unless @repository.rooms.nil? || @repository.rooms.empty? %> 
-	<ul>
-	  <% @repository.rooms.each do |room| %>
-	    <li><%= room.name %></li>
+	<% unless current_user.try(:patron?) %>
+	  Available Rooms: 
+	  <% unless @repository.rooms.nil? || @repository.rooms.empty? %> 
+	  <ul>
+	    <% @repository.rooms.each do |room| %>
+	      <li><%= room.name %></li>
+	    <% end %>
+	  </ul>
+	  <% else %>
+	    None.
 	  <% end %>
-	</ul>
-	<% else %>
-	  None.
+	  <br />
 	<% end %>
-	<br /><br />
+	<br />  
 	For more details on teaching at this Library/Archive <%= link_to "click here", @repository.landing_page, :target => "_blank" %>. <br /><br />
 	<% unless @repository.calendar.nil? || @repository.calendar.blank? %>
 	  <%= link_to 'View Calendar', "#{@repository.calendar}", :onclick=>"window.open(this.href,'view_calendar', 'height=600, width=600');return false;" %>
@@ -81,4 +84,4 @@
 
 <% end %>  
 <br />
-<p>Return <%= link_to "home", root_url %> to view another repository.</p>
+<p>Return <%= link_to "home", root_url %> to view another library/archive.</p>

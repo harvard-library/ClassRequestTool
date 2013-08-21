@@ -1,4 +1,4 @@
-<h1>Technology Needs</h1>
+<h1>Technology Available</h1>
 
 <div>
   	<table id="attributes-table" class="table table-condensed tablesorter">
@@ -23,7 +23,7 @@
 	</table>
   
   <% if current_user.try(:admin?) %>
-    <%= link_to("Add New Technology Need", new_item_attribute_path ) %>
+    <%= link_to("Add New Technology", new_item_attribute_path ) %>
   <% end %>
 </div>
 <%= will_paginate @attributes %>

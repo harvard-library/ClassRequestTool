@@ -1,5 +1,5 @@
 <% if current_user.try(:admin?) || current_user.try(:staff?) %>
-  <h3><%= link_to("Staff Actions", "#", :id => 'view_section_5') %></h3>
+  <h3>Staff Actions</h3>
 
   <% unless @course.repository.calendar.nil? && @course.repository.calendar.blank? %>
     <%= link_to 'View Calendar', "#{@course.repository.calendar}", :onclick=>"window.open(this.href,'view_calendar', 'height=600, width=600');return false;" %>
