@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130728170521) do
+ActiveRecord::Schema.define(:version => 20130818163934) do
 
   create_table "assessments", :force => true do |t|
     t.text     "using_materials"
@@ -26,10 +26,10 @@ ActiveRecord::Schema.define(:version => 20130728170521) do
     t.string   "involve_again"
     t.text     "not_involve_again"
     t.text     "better_future"
+    t.text     "comments"
     t.integer  "course_id"
     t.datetime "created_at",          :null => false
     t.datetime "updated_at",          :null => false
-    t.text     "comments"
   end
 
   add_index "assessments", ["better_future"], :name => "index_assessments_on_better_future"
@@ -53,10 +53,14 @@ ActiveRecord::Schema.define(:version => 20130728170521) do
     t.string   "contact_email",           :limit => 150, :null => false
     t.string   "contact_phone",           :limit => 25,  :null => false
     t.datetime "pre_class_appt"
+    t.datetime "pre_class_appt_choice_1"
+    t.datetime "pre_class_appt_choice_2"
+    t.datetime "pre_class_appt_choice_3"
     t.datetime "timeframe"
     t.datetime "time_choice_1"
     t.datetime "time_choice_2"
     t.datetime "time_choice_3"
+    t.datetime "time_choice_4"
     t.integer  "repository_id"
     t.integer  "room_id"
     t.text     "staff_involvement"
@@ -66,19 +70,16 @@ ActiveRecord::Schema.define(:version => 20130728170521) do
     t.string   "external_syllabus"
     t.string   "duration"
     t.text     "comments"
-    t.datetime "created_at",                             :null => false
-    t.datetime "updated_at",                             :null => false
     t.string   "course_sessions"
     t.string   "session_count"
     t.text     "goal"
     t.string   "instruction_session"
-    t.datetime "time_choice_4"
-    t.datetime "pre_class_appt_choice_1"
-    t.datetime "pre_class_appt_choice_2"
-    t.datetime "pre_class_appt_choice_3"
+    t.datetime "created_at",                             :null => false
+    t.datetime "updated_at",                             :null => false
     t.string   "contact_first_name",      :limit => 100
     t.string   "contact_last_name",       :limit => 100
     t.string   "contact_username",        :limit => 100
+    t.integer  "primary_contact_id"
   end
 
   add_index "courses", ["affiliation"], :name => "index_courses_on_affiliation"
@@ -86,9 +87,13 @@ ActiveRecord::Schema.define(:version => 20130728170521) do
   add_index "courses", ["contact_email"], :name => "index_courses_on_contact_email"
   add_index "courses", ["contact_phone"], :name => "index_courses_on_contact_phone"
   add_index "courses", ["course_number"], :name => "index_courses_on_course_number"
+  add_index "courses", ["course_sessions"], :name => "index_courses_on_course_sessions"
   add_index "courses", ["duration"], :name => "index_courses_on_duration"
   add_index "courses", ["external_syllabus"], :name => "index_courses_on_external_syllabus"
+  add_index "courses", ["goal"], :name => "index_courses_on_goal"
+  add_index "courses", ["instruction_session"], :name => "index_courses_on_instruction_session"
   add_index "courses", ["pre_class_appt"], :name => "index_courses_on_pre_class_appt"
+  add_index "courses", ["session_count"], :name => "index_courses_on_session_count"
   add_index "courses", ["staff_involvement"], :name => "index_courses_on_staff_involvement"
   add_index "courses", ["status"], :name => "index_courses_on_status"
   add_index "courses", ["subject"], :name => "index_courses_on_subject"
@@ -101,8 +106,8 @@ ActiveRecord::Schema.define(:version => 20130728170521) do
   end
 
   create_table "courses_staff_involvements", :id => false, :force => true do |t|
-    t.integer "staff_involvement_id"
     t.integer "course_id"
+    t.integer "staff_involvement_id"
   end
 
   create_table "courses_users", :id => false, :force => true do |t|
@@ -152,12 +157,12 @@ ActiveRecord::Schema.define(:version => 20130728170521) do
   add_index "locations", ["name"], :name => "index_locations_on_name"
 
   create_table "notes", :force => true do |t|
-    t.text     "note_text",                        :null => false
-    t.integer  "user_id",                          :null => false
-    t.integer  "course_id",                        :null => false
-    t.datetime "created_at",                       :null => false
-    t.datetime "updated_at",                       :null => false
-    t.boolean  "staff_comment", :default => false
+    t.text     "note_text",     :null => false
+    t.integer  "user_id",       :null => false
+    t.integer  "course_id",     :null => false
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+    t.boolean  "staff_comment"
   end
 
   add_index "notes", ["note_text"], :name => "index_notes_on_note_text"
@@ -185,8 +190,8 @@ ActiveRecord::Schema.define(:version => 20130728170521) do
   end
 
   create_table "repositories_staff_involvements", :id => false, :force => true do |t|
-    t.integer "staff_involvement_id"
     t.integer "repository_id"
+    t.integer "staff_involvement_id"
   end
 
   create_table "repositories_users", :id => false, :force => true do |t|

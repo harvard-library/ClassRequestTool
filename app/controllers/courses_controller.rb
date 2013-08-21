@@ -1,6 +1,6 @@
 class CoursesController < ApplicationController
   before_filter :authenticate_admin_or_staff!, :only => [:take]
-  before_filter :authenticate_user!, :except => [:take]
+  before_filter :authenticate_user!, :except => [:take, :recent_show]
   
   def index
     @courses_all = Course.paginate(:page => params[:all_page], :per_page => 10)
@@ -51,13 +51,13 @@ class CoursesController < ApplicationController
     @course = Course.new(params[:course])
     
     respond_to do |format|
-      if !@repository.nil? && !@course.number_of_students.nil?
-        if @course.number_of_students > @repository.class_limit
-          flash[:error] = "Please enter number of students below the repository maximum."
-          format.html { render action: "new" }
-          format.json { render json: @course.errors, status: :unprocessable_entity }
-        end 
-      end   
+      # if !@repository.nil? && !@course.number_of_students.nil?
+      #   if @course.number_of_students > @repository.class_limit
+      #     flash[:error] = "Please enter number of students below the repository maximum."
+      #     format.html { render action: "new" }
+      #     format.json { render json: @course.errors, status: :unprocessable_entity }
+      #   end 
+      # end   
         
       if @course.save
         @course.new_request_email
