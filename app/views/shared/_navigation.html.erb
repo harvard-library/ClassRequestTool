@@ -10,7 +10,7 @@
 		<ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
 			<li><%= link_to "Libraries/Archives", repositories_path %></li>
 			<li><%= link_to "Rooms", rooms_path %></li>
-			<li><%= link_to "Technology Needs", item_attributes_path %></li>
+			<li><%= link_to "Technology", item_attributes_path %></li>
 			<li><%= link_to "Staff Involvements", staff_involvements_path %></li>
 			<li><%= link_to "Users", users_path %></li>
 	  </ul>	
@@ -23,6 +23,7 @@
 	<li><%= link_to "Edit Account", edit_user_registration_path %></li>
 	<li><%= link_to "Sign Out", destroy_user_session_path, :method => :delete %></li>
   <% elsif user_signed_in? %>
+    <li><%= link_to "Request a Class", courses_path %></li>
 	<li><%= link_to "My Classes", courses_path %></li>
 	<li><%= link_to "Edit Account", edit_user_registration_path %></li>
 	<li><%= link_to "Sign Out", destroy_user_session_path, :method => :delete %></li>

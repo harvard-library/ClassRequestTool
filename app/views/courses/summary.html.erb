@@ -34,31 +34,35 @@
 	Primary Contact Phone: <%= @course.contact_phone unless @course.contact_phone.nil? %> <br />
 	
 	<h3>Staff Involvement</h3>
-	Staff Involvement: <br />
 	<ul>
 	<% @course.staff_involvements.each do |si| %>
 	  <li><%= si.involvement_text %></li>
 	<% end %>
 	</ul>
-	Other Staff Involvement: <%= @course.staff_involvement unless @course.staff_involvement.nil? || @course.staff_involvement.blank? %> <br />
+	<%= @course.staff_involvement unless @course.staff_involvement.nil? || @course.staff_involvement.blank? %>
 	
 	<h3>Scheduling</h3>
-	Class Frequency: <%= @course.course_sessions unless @course.course_sessions.nil? %> <br />
+	<%= @course.course_sessions unless @course.course_sessions.nil? %> <br />
 	Number of Sessions: <%= @course.session_count unless @course.session_count.nil? %> <br />
 	
 	<h4>Date/Time of Class</h4>
 	<% if !@course.timeframe.nil? %>
 	  Class Date/Time: <%= @course.timeframe.strftime('%m/%d/%Y %I:%M %P') unless @course.timeframe.nil? %> <br />
 	<% elsif !@course.time_choice_1.nil? || !@course.time_choice_2.nil? || !@course.time_choice_3.nil? %>
-	  These dates/times have not yet been confirmed. The repository will confirm timing based on room and staff availability.<br /><br />
+	  <i>Note that these requests must be confirmed by the library/archive. Request dates and times are subject to staff availability.</i><br /><br />
 	  Choice 1: <%= @course.time_choice_1.strftime('%m/%d/%Y %I:%M %P') unless @course.time_choice_1.nil? %> <br />
 	  Choice 2: <%= @course.time_choice_2.strftime('%m/%d/%Y %I:%M %P') unless @course.time_choice_2.nil? %> <br />
-	  Choice 2: <%= @course.time_choice_3.strftime('%m/%d/%Y %I:%M %P') unless @course.time_choice_3.nil? %> <br />
+	  Choice 3: <%= @course.time_choice_3.strftime('%m/%d/%Y %I:%M %P') unless @course.time_choice_3.nil? %> <br />
 	<% else %>
 	  No class dates selected.
 	<% end %>
 	<br />
 	Class Duration: <%= @course.duration unless @course.duration.nil? %> hour(s) <br />
-	Room: <%= @course.room.name unless @course.room.nil? %> <br />
 	Comments: <%= @course.comments unless @course.comments.nil? %> <br />
 </div>
+
+<div style="float: right;">
+  <% if @course.timeframe.nil? %>
+    <%= link_to('Edit', edit_course_path(@course), :class => "action-edit") %> | <%= link_to('Delete', course_path(@course), :confirm => "Are you sure?", :method => :delete) %>
+  <% end %>
+</div>	
