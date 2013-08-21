@@ -40,7 +40,7 @@
 	  <li><%= si.involvement_text %></li>
 	<% end %>
 	</ul>
-	Other Staff Involvement: <%= @course.staff_involvement unless @course.staff_involvement.nil? || @course.staff_involvement.blank? %> <br />
+	<%= @course.staff_involvement unless @course.staff_involvement.nil? || @course.staff_involvement.blank? %> <br />
 	
 	<h4>Pre-Class Appointment</h4>
 	<% if !@course.pre_class_appt.nil? %>
@@ -50,7 +50,7 @@
 	  Choice 2: <%= @course.pre_class_appt_choice_2.strftime('%m/%d/%Y %I:%M %P') unless @course.pre_class_appt_choice_2.nil? %> <br />
 	  Choice 3: <%= @course.pre_class_appt_choice_3.strftime('%m/%d/%Y %I:%M %P') unless @course.pre_class_appt_choice_3.nil? %> <br />
 	<% else %>
-	  No class dates selected.
+	  To be scheduled, if required.
 	<% end %>
 	
 	
@@ -82,7 +82,8 @@
 	      <%= user.first_name %> <%= user.last_name %>, 
 	    <% end %>
 		<h4>Assessments</h4>
-		  <%= link_to "Add Assessment", new_assessment_path(:course_id => @course.id) %><br /><br />
+		<p>After your class we may send you an assessment form to learn about your experience and improve our service.</p>
+		<p>If you would like to submit an additional assessment, please <%= link_to "click here", new_assessment_path(:course_id => @course.id) %>.</p>
 		  <% @course.assessments.each do |assessment| %>
 		    <%= link_to "View Assessment", assessment_path(assessment) %><br />
 		  <% end %>
@@ -96,7 +97,8 @@
   	  <h3>Additional Actions</h3>
   		Status: <%= @course.status %> <br />
 	  <h4>Assessments</h4>
-	    <%= link_to "Add Assessment", new_assessment_path(:course_id => @course.id) %><br /><br />
+	    <p>After your class we may send you an assessment form to learn about your experience and improve our service.</p>
+	    <p>If you would like to submit an additional assessment, please <%= link_to "click here", new_assessment_path(:course_id => @course.id) %>.</p>
 	    <% @course.assessments.each do |assessment| %>
 	      <%= link_to "View Assessment", assessment_path(assessment) %><br />
 	    <% end %>
