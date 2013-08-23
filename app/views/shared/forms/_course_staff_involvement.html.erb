@@ -1,5 +1,5 @@
 <div id="form_wrapper">
-<h3>Staff Involvement</h3>
+<h4>Staff Involvement</h4>
 <div id="form_col1">
 <%= f.input :staff_involvements, :label => "Please select or suggest ways our staff can be of assistance for this class: ", :as => :check_boxes, :collection => @course.repository.nil? ? Repository.find(:first, :conditions => ("name like '%Houghton%'")).staff_involvements : @course.repository.staff_involvements %>
 <%= f.input :staff_involvement, :label => "Other Involvement: ", :input_html => { :rows => 5, :columns => 50 } %>

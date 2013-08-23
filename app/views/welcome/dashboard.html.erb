@@ -6,11 +6,11 @@
 </script>
 
 
-<h1>Dashboard</h1>
+<h3>Dashboard</h3>
 
 <div id="dash-wrap">
   <div id="dash_widget">	
-  <h3>Your Libraries/Archives</h3>
+  <h4>Your Libraries/Archives</h4>
   <% unless @your_repos.nil? || @your_repos.empty? %>
 	<table id="your-repos-table" class="table table-condensed tablesorter">
 	  <thead>
@@ -37,7 +37,7 @@
   </div>
 
   <div id="dash_widget">	
-  <h3>Homeless Classes</h3>
+  <h4>Homeless Classes</h4>
   <% unless @homeless.nil? || @homeless.empty? %>
 	<table id="homeless-table" class="table table-condensed tablesorter">
 	<thead>	
@@ -73,7 +73,7 @@
 </div>
 <div id="dash-wrap">
   <div id="dash_widget">
-  <h3>Your Claimed, Unscheduled Classes</h3>
+  <h4>Your Claimed, Unscheduled Classes</h4>
   <% unless @your_unscheduled.nil? || @your_unscheduled.empty? %>	
     <table id="your_unscheduled-table" class="table table-condensed tablesorter">
 	  <thead>
@@ -105,7 +105,7 @@
   </div>
 
   <div id="dash_widget">  
-  <h3>Unscheduled, Unclaimed Classes</h3>
+  <h4>Unscheduled, Unclaimed Classes</h4>
     <% unless @unscheduled_unclaimed.nil? || @unscheduled_unclaimed.empty? %>
   	<table id="unassigned-table" class="table table-condensed tablesorter">
 	<thead>
@@ -141,7 +141,7 @@
 </div>
 <div id="dash-wrap">
   <div id="dash_widget">
-  <h3>Your Scheduled, Claimed Classes</h3>
+  <h4>Your Scheduled, Claimed Classes</h4>
   <% unless @your_upcoming.nil? || @your_upcoming.empty? %>	
     <table id="your-upcoming-table" class="table table-condensed tablesorter">
 	  <thead>
@@ -175,7 +175,7 @@
   </div>
 
   <div id="dash_widget">	
-    <h3>Scheduled, Unclaimed Classes</h3>
+    <h4>Scheduled, Unclaimed Classes</h4>
       <% unless @scheduled_unclaimed.nil? || @scheduled_unclaimed.empty? %>
     	<table id="roomless-table" class="table table-condensed tablesorter">
 		<thead>
@@ -211,7 +211,7 @@
 </div>
 <div id="dash-wrap">
   <div id="dash_widget">  
-  <h3><%= link_to("Your Closed Classes", "#", :id => 'collapsable') %></h3>
+  <h4><%= link_to("Your Closed Classes", "#", :id => 'collapsable') %></h4>
   <span id="your-past">
     <% unless @your_past.nil? || @your_past.empty? %>	
       <table id="your-past-table" class="table table-condensed tablesorter">

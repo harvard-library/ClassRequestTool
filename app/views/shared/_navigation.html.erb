@@ -1,5 +1,5 @@
 
-<%= image_tag "header_image.jpg", :class => "brand" %>
+<%= image_tag "lengthened_banner_monotypec_red_text2.jpg", :class => "brand" %>
 <ul class="nav" role="navigation">
 	<li><%= link_to "Home", root_path %></li>
 
@@ -28,6 +28,6 @@
 	<li><%= link_to "Edit Account", edit_user_registration_path %></li>
 	<li><%= link_to "Sign Out", destroy_user_session_path, :method => :delete %></li>
   <% else %>
-	<li><%= link_to "Sign In/Sign Up", new_user_session_path %></li>
+	<li style="border:1px dashed black;"><%= link_to "Sign In/Sign Up", new_user_session_path %></li>
   <% end %>
 </ul>
