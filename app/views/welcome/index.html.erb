@@ -10,7 +10,7 @@
   	<h4>Participating Special Collections Libraries/Archives</h4>
 	<p>
 	<%= link_to "Not Sure - Help me Choose", new_course_path %><br /> 
-	<sup>Select this option if you would like us to match your class with a library/archive.<br /></sup>
+	<span style="font-size: 13px; margin-left:1em;"><sup>Select this option if you would like us to match your class with a library/archive.<br /></span>
 	<% @repositories.each do |repo| %>
 	  <%= link_to repo.name, repo %><br /> 
 	<% end %>

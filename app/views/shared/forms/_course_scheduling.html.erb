@@ -1,6 +1,6 @@
 <div id="form_wrapper">
 
-<h3>Scheduling</h3>
+<h4>Scheduling</h4>
 
 <div id="form_full_width">
 <%= f.input :course_sessions, :label => "Select One", :as => :radio, :collection => Course::COURSE_SESSIONS %>
@@ -9,8 +9,10 @@
 
 <div id="form_full_width">
 <h4>Date/Time of Class</h4>
-<span id="multiple">Please enter your preferred date and time for each session. Second choices and back-up times/days may be indicated in the notes field below. If your only options for scheduling fall outside normal business hours, please use the note field to detail your availability.</span>
-<span id="single">Please select up to 3 dates/times for your session.</span>
+<span id="multiple">Please enter your preferred date and time for each session. Second choices and back-up times/days may be indicated in the notes field below. If your only options for scheduling fall outside normal business hours, please use the note field to detail your availability.
+</span>
+<span id="single">Please select up to 3 dates/times for your session.
+</span>
 <br /><br />
 Final scheduling of a session is subject to both room and staff availability.
 </div>
@@ -19,7 +21,7 @@ Final scheduling of a session is subject to both room and staff availability.
 <% if (@course.repository.nil? || @course.repository.blank?) || (@course.repository.calendar.nil? || @course.repository.calendar.blank?) %>
   This Library/Archive does not have a publicly available calendar. Please submit your request with your preferred times and a staff member will get back to you.
 <% else %>
-  <%= link_to 'View Calendar to see availability', "#{@course.repository.calendar}", :onclick=>"window.open(this.href,'view_calendar', 'height=600, width=600');return false;" %>
+  <%= link_to image_tag('calendar_icon.png')+"View Calendar to see availability", "#{@course.repository.calendar}", :onclick=>"window.open(this.href,'view_calendar', 'height=600, width=600');return false;" %>
 <% end %>
 </div>
 

@@ -1,5 +1,5 @@
 <div id="form_wrapper">
-<h3>Requester Information</h3>
+<h4>Requester Information</h4>
 <div id="form_col1">	
 <%= f.hidden_field :contact_username, :value => current_user.username %>
 <%= f.input :contact_first_name, :label => "Primary Contact First Name: ", :input_html => { :value => @course.contact_first_name.nil? ? current_user.first_name : @course.contact_first_name, :class => 'fl' } %>
