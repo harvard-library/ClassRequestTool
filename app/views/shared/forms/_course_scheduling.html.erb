@@ -25,6 +25,7 @@ Final scheduling of a session is subject to both room and staff availability.
 <% end %>
 </div>
 
+<div id="form_full_width">
 <div id="form_date1">
 <%= f.input :time_choice_1, :label => "Choice 1: ", :as => :string, :hint => 'In MM/DD/YYYY HH:MM am/pm format', :input_html => { :size => 30, :value => @course.time_choice_1.nil? ? '' : @course.time_choice_1.strftime('%m/%d/%Y %I:%M %P') } %>
 </div>
@@ -34,9 +35,20 @@ Final scheduling of a session is subject to both room and staff availability.
 <div id="form_date1">
 <%= f.input :time_choice_3, :label => "Choice 3: ", :as => :string, :hint => 'In MM/DD/YYYY HH:MM am/pm format', :input_html => { :size => 30, :value => @course.time_choice_3.nil? ? '' : @course.time_choice_3.strftime('%m/%d/%Y %I:%M %P') } %>
 </div>
-<div id="form_date1">
+<% if !@course.session_count.nil? && @course.session_count != "Single Session" %>
+<script type="text/javascript">
+  $.ajax('#course_time_choice_4_input');
+  $('#course_timeframe_2_input').show();
+  $('#course_timeframe_3_input').show();
+  $('#course_timeframe_4_input').show();
+</script>
+<% end %>
+<div id="form_date1">	
 <%= f.input :time_choice_4, :label => "Choice 4: ", :as => :string, :hint => 'In MM/DD/YYYY HH:MM am/pm format', :input_html => { :size => 30, :value => @course.time_choice_3.nil? ? '' : @course.time_choice_3.strftime('%m/%d/%Y %I:%M %P') } %>
 </div>
+
+</div>
+
 <div id="form_full_width">
 <p>To request class visits outside of regular hours, please add your timing preferences in the note section below.</p>	
 <%= f.input :duration, :label => "Class Duration (hours): ", :hint => '1 hour increments, maximum 3 hours', :input_html => { :size => 1, :maxlength => 4 } %>
@@ -44,11 +56,23 @@ Final scheduling of a session is subject to both room and staff availability.
 
 <% if current_user.try(:admin?) || current_user.try(:staff?) %>
 <div id="form_full_width" class="yellow-box">
-<%= f.input :timeframe, :label => "Actual Date/Time of Class: ", :as => :string, :hint => 'In MM/DD/YYYY HH:MM am/pm format', :input_html => { :size => 30, :value => @course.timeframe.nil? ? '' : @course.timeframe.strftime('%m/%d/%Y %I:%M %P') } %>
-
-<%= check_box_tag :send_timeframe_email%> Send class date/time change email to requester?<br /><br />
+<div id="form_date1">
+<%= f.input :timeframe, :label => "Actual Date/Time 1: ", :as => :string, :hint => 'In MM/DD/YYYY HH:MM am/pm format', :input_html => { :size => 30, :value => @course.timeframe.nil? ? '' : @course.timeframe.strftime('%m/%d/%Y %I:%M %P') } %>
+</div>
+<div id="form_date1">
+<%= f.input :timeframe_2, :label => "Actual Date/Time 2: ", :as => :string, :hint => 'In MM/DD/YYYY HH:MM am/pm format', :input_html => { :size => 30, :value => @course.timeframe_2.nil? ? '' : @course.timeframe_2.strftime('%m/%d/%Y %I:%M %P') } %>
+</div>
+<div id="form_date1">
+<%= f.input :timeframe_3, :label => "Actual Date/Time 3: ", :as => :string, :hint => 'In MM/DD/YYYY HH:MM am/pm format', :input_html => { :size => 30, :value => @course.timeframe_3.nil? ? '' : @course.timeframe_3.strftime('%m/%d/%Y %I:%M %P') } %>
+</div>
+<div id="form_date1">
+<%= f.input :timeframe_4, :label => "Actual Date/Time 4: ", :as => :string, :hint => 'In MM/DD/YYYY HH:MM am/pm format', :input_html => { :size => 30, :value => @course.timeframe_4.nil? ? '' : @course.timeframe_4.strftime('%m/%d/%Y %I:%M %P') } %>
+</div>
+<div id="form_full_width">
+<%= check_box_tag :send_timeframe_email %> Send class date/time change email to requester?<br /><br />
 
 <%= f.input :pre_class_appt, :label => "Actual Pre-Class Appointment Date/Time (if necessary): ", :as => :string, :hint => 'In MM/DD/YYYY HH:MM am/pm format', :input_html => { :size => 30 } %>
+</div>
 </div>	
 <% end %>
 

@@ -82,12 +82,24 @@ $(document).ready(function(){
   $('#course_timeframe').datetimepicker({
 	timeFormat: "hh:mm tt"
   });
+  $('#course_timeframe_2').datetimepicker({
+	timeFormat: "hh:mm tt"
+  });
+  $('#course_timeframe_3').datetimepicker({
+	timeFormat: "hh:mm tt"
+  });
+  $('#course_timeframe_4').datetimepicker({
+	timeFormat: "hh:mm tt"
+  });
   $('#course_pre_class_appt').datetimepicker({
 	timeFormat: "hh:mm tt"
   });
 
   $('#course_session_count_input').hide();
   $('#course_time_choice_4_input').hide();
+  $('#course_timeframe_2_input').hide();
+  $('#course_timeframe_3_input').hide();
+  $('#course_timeframe_4_input').hide();
   $('#multiple').hide();
   $('#single').hide();
 
@@ -133,12 +145,18 @@ jQuery(function(){
   $('#course_course_sessions_multiple_sessions_same_materials').change(function() {
     $('#course_session_count_input').show();
 	$('#course_time_choice_4_input').show();
+	$('#course_timeframe_2_input').show();
+	$('#course_timeframe_3_input').show();
+	$('#course_timeframe_4_input').show();
 	$('#multiple').show();
 	$('#single').hide();
    });
   $('#course_course_sessions_multiple_sessions_different_materials').change(function() {
     $('#course_session_count_input').show();
 	$('#course_time_choice_4_input').show();
+	$('#course_timeframe_2_input').show();
+	$('#course_timeframe_3_input').show();
+	$('#course_timeframe_4_input').show();
 	$('#multiple').show();
 	$('#single').hide();
    });
@@ -220,3 +238,4 @@ jQuery(function(){
 	$('#submit_course').show();
    });
 });
+
