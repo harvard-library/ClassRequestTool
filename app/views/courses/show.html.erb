@@ -61,6 +61,9 @@
 	<h4>Date/Time of Class</h4>
 	<% if !@course.timeframe.nil? %>
 	  Class Date/Time: <%= @course.timeframe.strftime('%m/%d/%Y %I:%M %P') unless @course.timeframe.nil? %> <br />
+	  Class Date/Time 2: <%= @course.timeframe_2.strftime('%m/%d/%Y %I:%M %P') unless @course.timeframe_2.nil? %> <br />
+	  Class Date/Time 3: <%= @course.timeframe_3.strftime('%m/%d/%Y %I:%M %P') unless @course.timeframe_3.nil? %> <br />
+	  Class Date/Time 4: <%= @course.timeframe_4.strftime('%m/%d/%Y %I:%M %P') unless @course.timeframe_4.nil? %> <br />
 	<% elsif !@course.time_choice_1.nil? || !@course.time_choice_2.nil? || !@course.time_choice_3.nil? %>
 	  Choice 1: <%= @course.time_choice_1.strftime('%m/%d/%Y %I:%M %P') unless @course.time_choice_1.nil? %> <br />
 	  Choice 2: <%= @course.time_choice_2.strftime('%m/%d/%Y %I:%M %P') unless @course.time_choice_2.nil? %> <br />

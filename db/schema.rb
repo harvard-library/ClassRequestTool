@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130818163934) do
+ActiveRecord::Schema.define(:version => 20130824035811) do
 
   create_table "assessments", :force => true do |t|
     t.text     "using_materials"
@@ -80,6 +80,9 @@ ActiveRecord::Schema.define(:version => 20130818163934) do
     t.string   "contact_last_name",       :limit => 100
     t.string   "contact_username",        :limit => 100
     t.integer  "primary_contact_id"
+    t.datetime "timeframe_2"
+    t.datetime "timeframe_3"
+    t.datetime "timeframe_4"
   end
 
   add_index "courses", ["affiliation"], :name => "index_courses_on_affiliation"

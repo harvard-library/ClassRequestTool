@@ -1,6 +1,6 @@
 <script type="text/javascript" charset="utf-8">
   function change_repo_items(repo_id)
- {
+  {
     $.ajax('<%= url_for(:action => "repo_select") %>?repo='+repo_id,
     {
       method: 'get',
