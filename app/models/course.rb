@@ -21,7 +21,7 @@ class Course < ActiveRecord::Base
   mount_uploader :file, FileUploader
 
   COURSE_SESSIONS = ['Single Session', 'Multiple Sessions, Same Materials', 'Multiple Sessions, Different Materials']
-  STATUS = ['Pending', 'Scheduled, unclaimed', 'Scheduled, claimed', 'Claimed, unscheduled', 'Homeless', 'Closed']
+  STATUS = ['Scheduled, Unclaimed', 'Scheduled, Claimed', 'Claimed, Unscheduled', 'Unclaimed, Unscheduled', 'Homeless', 'Closed']
   
   def new_request_email
     # send email to requester
