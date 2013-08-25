@@ -110,6 +110,7 @@
 	    <% end %>
 	</tbody>	
 	</table>
+	<%= will_paginate @courses_all, :param_name => 'all_page' %>
   <% else %>
 	None yet!
   <% end %>
@@ -122,5 +123,4 @@
   </p>
   <% end %>
 </div>
-<%= will_paginate @courses_all, :param_name => 'all_page' %>
 <% end %>
