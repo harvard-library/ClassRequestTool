@@ -71,7 +71,7 @@ Final scheduling of a session is subject to both room and staff availability.
 <div id="form_full_width">
 <%= check_box_tag :send_timeframe_email %> Send class date/time change email to requester?<br /><br />
 
-<%= f.input :pre_class_appt, :label => "Actual Pre-Class Appointment Date/Time (if necessary): ", :as => :string, :hint => 'In MM/DD/YYYY HH:MM am/pm format', :input_html => { :size => 30 } %>
+<%= f.input :pre_class_appt, :label => "Actual Pre-Class Appointment Date/Time (if necessary): ", :as => :string, :hint => 'In MM/DD/YYYY HH:MM am/pm format', :input_html => { :size => 30, :value => @course.pre_class_appt.nil? ? '' : @course.pre_class_appt.strftime('%m/%d/%Y %I:%M %P') } %>
 </div>
 </div>	
 <% end %>
