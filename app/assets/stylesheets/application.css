@@ -39,7 +39,13 @@ html,body {
 
 #footer {
   background-color: #f8ead8;
-  padding-top: 15px;
+  padding: 20px 0px 20px 0px;
+}
+
+#feedback {
+  float: right; 
+  border:1px dashed black; 
+  padding: 5px;	
 }
 
 /* Lastly, apply responsive CSS fixes as necessary */
@@ -135,4 +141,7 @@ th {
     font-weight: bold;
 }
 
+.controls {
+	width: auto;
+}
 
