@@ -74,5 +74,11 @@ class User < ActiveRecord::Base
 
     return past
   end
+  
+  def upcoming_repo_courses
+    upcoming_repo = Array.new
+    self.repositories[0].courses.collect{|course| !course.timeframe.nil? && course.timeframe >= DateTime.now ? upcoming_repo << course : ''}
+    return upcoming_repo
+  end
 
 end
