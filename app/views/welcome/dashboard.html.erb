@@ -16,12 +16,14 @@
       	  <tr>
       		<th>Name</th>
       		<th>Class Date</th>
+			<th>Status</th>
       		<th></th>
       	  </tr>
             <% @your_repo_courses.each do |course| %>	
             	<tr>
       	  	  <td><%= link_to(course.title, course ) %></td>
       		  <td><%= course.timeframe.strftime('%m/%d/%Y %I:%M %P') unless course.timeframe.nil? %></td>
+			  <td><%= course.status unless course.status.nil? %></td>
       		  <td><%= link_to('Edit', edit_course_path(course), :class => "action-edit") %></td>
                 <% if current_user.try(:admin?) %>
       	   		<td> | <%= link_to('Delete', course_path(course), :confirm => "Are you sure?", :method => :delete) %></td>
