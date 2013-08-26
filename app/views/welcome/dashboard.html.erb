@@ -24,10 +24,11 @@
       	  	  <td><%= link_to(course.title, course ) %></td>
       		  <td><%= course.timeframe.strftime('%m/%d/%Y %I:%M %P') unless course.timeframe.nil? %></td>
 			  <td><%= course.status unless course.status.nil? %></td>
-      		  <td><%= link_to('Edit', edit_course_path(course), :class => "action-edit") %></td>
-                <% if current_user.try(:admin?) %>
-      	   		<td> | <%= link_to('Delete', course_path(course), :confirm => "Are you sure?", :method => :delete) %></td>
+      		  <td><%= link_to('Edit', edit_course_path(course), :class => "action-edit") %>
+              <% if current_user.try(:admin?) %>
+      	   		<br /><%= link_to('Delete', course_path(course), :confirm => "Are you sure?", :method => :delete) %>
           	  <% end %>
+			  </td>
       	    </tr>
             <% end %>
       	</table>
