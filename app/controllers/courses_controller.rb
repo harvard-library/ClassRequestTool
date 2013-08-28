@@ -34,16 +34,28 @@ class CoursesController < ApplicationController
   def create
     unless params[:course][:repository_id].nil? || params[:course][:repository_id].blank?
       @repository = Repository.find(params[:course][:repository_id])
-      params[:course][:status] = "Pending"
+      params[:course][:status] = "Unclaimed, Unscheduled" 
     else
       params[:course][:status] = "Homeless"
     end  
+    
+    if !params[:course][:timeframe].blank? && (params[:course][:user_ids][1].nil? || params[:course][:user_ids][1].empty?)
+      params[:course][:status] = "Scheduled, Unclaimed"
+    elsif !params[:course][:timeframe].blank? && (!params[:course][:user_ids][1].nil? && !params[:course][:user_ids][1].empty?)
+      params[:course][:status] = "Scheduled, Claimed" 
+    elsif (params[:course][:timeframe].nil? || params[:course][:timeframe].blank?) && (!params[:course][:user_ids].nil? && !params[:course][:user_ids][1].empty?)
+      params[:course][:status] = "Claimed, Unscheduled"   
+    end 
   
     params[:course][:timeframe] = DateTime.strptime(params[:course][:timeframe], '%m/%d/%Y %I:%M %P') unless params[:course][:timeframe].nil? || params[:course][:timeframe].empty?
+    params[:course][:timeframe_2] = DateTime.strptime(params[:course][:timeframe_2], '%m/%d/%Y %I:%M %P') unless params[:course][:timeframe_2].nil? || params[:course][:timeframe_2].empty?
+    params[:course][:timeframe_3] = DateTime.strptime(params[:course][:timeframe_3], '%m/%d/%Y %I:%M %P') unless params[:course][:timeframe_3].nil? || params[:course][:timeframe_3].empty?
+    params[:course][:timeframe_4] = DateTime.strptime(params[:course][:timeframe_4], '%m/%d/%Y %I:%M %P') unless params[:course][:timeframe_4].nil? || params[:course][:timeframe_4].empty?
     params[:course][:pre_class_appt] = DateTime.strptime(params[:course][:pre_class_appt], '%m/%d/%Y %I:%M %P') unless params[:course][:pre_class_appt].nil? || params[:course][:pre_class_appt].empty?
     params[:course][:time_choice_1] = DateTime.strptime(params[:course][:time_choice_1], '%m/%d/%Y %I:%M %P') unless params[:course][:time_choice_1].empty?
     params[:course][:time_choice_2] = DateTime.strptime(params[:course][:time_choice_2], '%m/%d/%Y %I:%M %P') unless params[:course][:time_choice_2].empty?
     params[:course][:time_choice_3] = DateTime.strptime(params[:course][:time_choice_3], '%m/%d/%Y %I:%M %P') unless params[:course][:time_choice_3].empty?
+    params[:course][:time_choice_4] = DateTime.strptime(params[:course][:time_choice_4], '%m/%d/%Y %I:%M %P') unless params[:course][:time_choice_4].empty?
     #params[:course][:pre_class_appt_choice_1] = DateTime.strptime(params[:course][:pre_class_appt_choice_1], '%m/%d/%Y %I:%M %P') unless params[:course][:pre_class_appt_choice_1].empty?
     #params[:course][:pre_class_appt_choice_2] = DateTime.strptime(params[:course][:pre_class_appt_choice_2], '%m/%d/%Y %I:%M %P') unless params[:course][:pre_class_appt_choice_2].empty?
     #params[:course][:pre_class_appt_choice_3] = DateTime.strptime(params[:course][:pre_class_appt_choice_3], '%m/%d/%Y %I:%M %P') unless params[:course][:pre_class_appt_choice_3].empty?
@@ -76,9 +88,10 @@ class CoursesController < ApplicationController
   
   def update
     @course = Course.find(params[:id])
+    
     unless params[:course][:repository_id].nil? || params[:course][:repository_id].blank?
       @repository = Repository.find(params[:course][:repository_id])
-      params[:course][:status] = "Pending"
+      params[:course][:status] = "Unclaimed, Unscheduled"
     else
       params[:course][:status] = "Homeless"
     end
@@ -98,22 +111,32 @@ class CoursesController < ApplicationController
     end
     
     if !params[:course][:timeframe].blank? && (params[:course][:user_ids][1].nil? || params[:course][:user_ids][1].empty?)
-      params[:course][:status] = "Scheduled, unclaimed"
+      params[:course][:status] = "Scheduled, Unclaimed"
     elsif !params[:course][:timeframe].blank? && (!params[:course][:user_ids][1].nil? && !params[:course][:user_ids][1].empty?)
-      params[:course][:status] = "Scheduled, claimed" 
+      params[:course][:status] = "Scheduled, Claimed" 
     elsif (params[:course][:timeframe].nil? || params[:course][:timeframe].blank?) && (!params[:course][:user_ids][1].nil? && !params[:course][:user_ids][1].empty?)
-      params[:course][:status] = "Claimed, unscheduled"   
+      params[:course][:status] = "Claimed, Unscheduled"   
     end  
     
     params[:course][:timeframe] = DateTime.strptime(params[:course][:timeframe], '%m/%d/%Y %I:%M %P') unless params[:course][:timeframe].nil? || params[:course][:timeframe].empty?
+    params[:course][:timeframe_2] = DateTime.strptime(params[:course][:timeframe_2], '%m/%d/%Y %I:%M %P') unless params[:course][:timeframe_2].nil? || params[:course][:timeframe_2].empty?
+    params[:course][:timeframe_3] = DateTime.strptime(params[:course][:timeframe_3], '%m/%d/%Y %I:%M %P') unless params[:course][:timeframe_3].nil? || params[:course][:timeframe_3].empty?
+    params[:course][:timeframe_4] = DateTime.strptime(params[:course][:timeframe_4], '%m/%d/%Y %I:%M %P') unless params[:course][:timeframe_4].nil? || params[:course][:timeframe_4].empty?
     params[:course][:pre_class_appt] = DateTime.strptime(params[:course][:pre_class_appt], '%m/%d/%Y %I:%M %P') unless params[:course][:pre_class_appt].nil? || params[:course][:pre_class_appt].empty?
     params[:course][:time_choice_1] = DateTime.strptime(params[:course][:time_choice_1], '%m/%d/%Y %I:%M %P') unless params[:course][:time_choice_1].empty?
     params[:course][:time_choice_2] = DateTime.strptime(params[:course][:time_choice_2], '%m/%d/%Y %I:%M %P') unless params[:course][:time_choice_2].empty?
     params[:course][:time_choice_3] = DateTime.strptime(params[:course][:time_choice_3], '%m/%d/%Y %I:%M %P') unless params[:course][:time_choice_3].empty?
+    params[:course][:time_choice_4] = DateTime.strptime(params[:course][:time_choice_4], '%m/%d/%Y %I:%M %P') unless params[:course][:time_choice_4].empty?
     #params[:course][:pre_class_appt_choice_1] = DateTime.strptime(params[:course][:pre_class_appt_choice_1], '%m/%d/%Y %I:%M %P') unless params[:course][:pre_class_appt_choice_1].empty?
     #params[:course][:pre_class_appt_choice_2] = DateTime.strptime(params[:course][:pre_class_appt_choice_2], '%m/%d/%Y %I:%M %P') unless params[:course][:pre_class_appt_choice_2].empty?
     #params[:course][:pre_class_appt_choice_3] = DateTime.strptime(params[:course][:pre_class_appt_choice_3], '%m/%d/%Y %I:%M %P') unless params[:course][:pre_class_appt_choice_3].empty?
     
+    unless params[:course][:timeframe].nil? || params[:course][:timeframe].blank?
+      if params[:course][:timeframe] < DateTime.now
+        params[:course][:status] = "Closed"
+      end 
+    end  
+      
     respond_to do |format|
       if @course.update_attributes(params[:course])
         @course.updated_request_email 

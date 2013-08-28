@@ -2,6 +2,30 @@
 body { padding-top: 190px; }
 @import "bootstrap-responsive";
 
+.content {
+  background-color: #f8ead8;
+}
+
+.navbar-inner {
+  background-color: #f8ead8; /* fallback color, place your own */
+
+  /* Gradients for modern browsers, replace as you see fit */
+  background-image: -moz-linear-gradient(top, #f8ead8, #f8ead8);
+  background-image: -ms-linear-gradient(top, #f8ead8, #f8ead8);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#f8ead8), to(#f8ead8));
+  background-image: -webkit-linear-gradient(top, #f8ead8, #f8ead8);
+  background-image: -o-linear-gradient(top, #f8ead8, #f8ead8);
+  background-image: linear-gradient(top, #f8ead8, #f8ead8);
+  background-repeat: repeat-x;
+
+  /* IE8-9 gradient filter */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f8ead8', endColorstr='#f8ead8', GradientType=0);
+}
+
+.navbar-inner .container {
+	width: 990px;
+}
+
 .dropdown-menu .sub-menu {
   left: 100%;
   position: absolute;

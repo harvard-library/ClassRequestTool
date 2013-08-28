@@ -1,6 +1,6 @@
 <% if current_user.try(:patron?) %>
 <div>
-  <h2>My Classes</h2>
+  <h3>My Classes</h3>
 
 	To submit a new class, choose a Library/Archive:
 	  <%= form_tag new_course_path, :method => :get do %>
@@ -10,7 +10,7 @@
 	  </p>
 	  <% end %>
 
-	<h3>Current Classes</h3>
+	<h4>Current Classes</h4>
   <% unless @courses_mine_current.empty? %>	
     <table id="course-table" class="table table-condensed tablesorter">
 	<thead>
@@ -46,7 +46,7 @@
 <%= will_paginate @courses_mine_current, :param_name => 'mine_current_page' %>
 
 <div>
-  <h3>Past Classes</h3>	
+  <h4>Past Classes</h4>	
   <% unless @courses_mine_past.empty? %>	
     <table id="course-table" class="table table-condensed tablesorter">
 	<thead>
@@ -82,7 +82,7 @@
 
 <% else %>
 <div>
-  <h2>All Classes</h2>
+  <h3>All Classes</h3>
   <% unless @courses_all.empty? %>	
     <table id="course-table" class="table table-condensed tablesorter">
 	<thead>
@@ -110,6 +110,7 @@
 	    <% end %>
 	</tbody>	
 	</table>
+	<%= will_paginate @courses_all, :param_name => 'all_page' %>
   <% else %>
 	None yet!
   <% end %>
@@ -122,5 +123,4 @@
   </p>
   <% end %>
 </div>
-<%= will_paginate @courses_all, :param_name => 'all_page' %>
 <% end %>

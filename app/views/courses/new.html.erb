@@ -12,12 +12,12 @@
  </script>
  <noscript>Please enable Javascript.</noscript>
 
-<h1>Request a Class Session</h1>
+<h3>Request a Class Session</h3>
 
 <div id="info-left">	
   <%= semantic_form_for(@course, :html => {:multipart => true}) do |f| %>
 	<%= f.inputs do %>
-	  <h3><%= @course.repository.nil? ? "Not Sure - Help me Choose" : @course.repository.name %></h3>
+	  <h4><%= @course.repository.nil? ? "Not Sure - Help me Choose" : @course.repository.name %></h4>
 	  <% unless @course.repository.nil? %>
 		<%= f.hidden_field :repository_id, :value => @course.repository.id %>
 	  <% end %>	

@@ -28,7 +28,8 @@ $(document).ready(function(){
 	hourMin: 9,
 	hourMax: 17,
 	beforeShowDay: $.datepicker.noWeekends,
-	minDate: 3
+	minDate: 3,
+	numberOfMonths: 2
   });
   $('#course_time_choice_2').datetimepicker({
 	timeFormat: "hh:mm tt",
@@ -36,7 +37,8 @@ $(document).ready(function(){
 	hourMin: 9,
 	hourMax: 17,
 	beforeShowDay: $.datepicker.noWeekends,
-	minDate: 3
+	minDate: 3,
+	numberOfMonths: 2
   });
   $('#course_time_choice_3').datetimepicker({
 	timeFormat: "hh:mm tt",
@@ -44,7 +46,8 @@ $(document).ready(function(){
 	hourMin: 9,
 	hourMax: 17,
 	beforeShowDay: $.datepicker.noWeekends,
-	minDate: 3
+	minDate: 3,
+	numberOfMonths: 2
   });
   $('#course_time_choice_4').datetimepicker({
 	timeFormat: "hh:mm tt",
@@ -52,7 +55,8 @@ $(document).ready(function(){
 	hourMin: 9,
 	hourMax: 17,
 	beforeShowDay: $.datepicker.noWeekends,
-	minDate: 3
+	minDate: 3,
+	numberOfMonths: 2
   });
   $('#course_pre_class_appt_choice_1').datetimepicker({
 	timeFormat: "hh:mm tt",
@@ -60,7 +64,8 @@ $(document).ready(function(){
 	hourMin: 9,
 	hourMax: 17,
 	beforeShowDay: $.datepicker.noWeekends,
-	minDate: 3
+	minDate: 3,
+	numberOfMonths: 2
   });
   $('#course_pre_class_appt_choice_2').datetimepicker({
 	timeFormat: "hh:mm tt",
@@ -68,7 +73,8 @@ $(document).ready(function(){
 	hourMin: 9,
 	hourMax: 17,
 	beforeShowDay: $.datepicker.noWeekends,
-	minDate: 3
+	minDate: 3,
+	numberOfMonths: 2
   });
   $('#course_pre_class_appt_choice_3').datetimepicker({
 	timeFormat: "hh:mm tt",
@@ -76,20 +82,45 @@ $(document).ready(function(){
 	hourMin: 9,
 	hourMax: 17,
 	beforeShowDay: $.datepicker.noWeekends,
-	minDate: 3
+	minDate: 3,
+	numberOfMonths: 2
   });
 	
   $('#course_timeframe').datetimepicker({
-	timeFormat: "hh:mm tt"
+	timeFormat: "hh:mm tt",
+	numberOfMonths: 2
+  });
+  $('#course_timeframe_2').datetimepicker({
+	timeFormat: "hh:mm tt",
+	numberOfMonths: 2
+  });
+  $('#course_timeframe_3').datetimepicker({
+	timeFormat: "hh:mm tt",
+	numberOfMonths: 2
+  });
+  $('#course_timeframe_4').datetimepicker({
+	timeFormat: "hh:mm tt",
+	numberOfMonths: 2
   });
   $('#course_pre_class_appt').datetimepicker({
-	timeFormat: "hh:mm tt"
+	timeFormat: "hh:mm tt",
+	numberOfMonths: 2
   });
 
   $('#course_session_count_input').hide();
   $('#course_time_choice_4_input').hide();
+  $('#course_timeframe_2_input').hide();
+  $('#course_timeframe_3_input').hide();
+  $('#course_timeframe_4_input').hide();
   $('#multiple').hide();
   $('#single').hide();
+  $('#multiple_label_1').hide();
+  $('#multiple_label_2').hide();
+  $('#multiple_label_3').hide();
+  $('#multiple_label_4').hide();
+  $('#single_label_1').show();
+  $('#single_label_2').show();
+  $('#single_label_3').show();
 
   $('#course_info_partial').show();
   $('#requester_info_partial').hide();
@@ -129,18 +160,45 @@ jQuery(function(){
 	$('#course_time_choice_4_input').hide();
 	$('#multiple').hide();
 	$('#single').show();
+    $('#multiple_label_1').hide();
+    $('#multiple_label_2').hide();
+    $('#multiple_label_3').hide();
+    $('#multiple_label_4').hide();
+    $('#single_label_1').show();
+    $('#single_label_2').show();
+    $('#single_label_3').show();
    });
   $('#course_course_sessions_multiple_sessions_same_materials').change(function() {
     $('#course_session_count_input').show();
 	$('#course_time_choice_4_input').show();
+	$('#course_timeframe_2_input').show();
+	$('#course_timeframe_3_input').show();
+	$('#course_timeframe_4_input').show();
 	$('#multiple').show();
 	$('#single').hide();
+    $('#multiple_label_1').show();
+    $('#multiple_label_2').show();
+    $('#multiple_label_3').show();
+    $('#multiple_label_4').show();
+    $('#single_label_1').hide();
+    $('#single_label_2').hide();
+    $('#single_label_3').hide();
    });
   $('#course_course_sessions_multiple_sessions_different_materials').change(function() {
     $('#course_session_count_input').show();
 	$('#course_time_choice_4_input').show();
+	$('#course_timeframe_2_input').show();
+	$('#course_timeframe_3_input').show();
+	$('#course_timeframe_4_input').show();
 	$('#multiple').show();
 	$('#single').hide();
+    $('#multiple_label_1').show();
+    $('#multiple_label_2').show();
+    $('#multiple_label_3').show();
+    $('#multiple_label_4').show();
+    $('#single_label_1').hide();
+    $('#single_label_2').hide();
+    $('#single_label_3').hide();
    });
 
   $('#next_section_1').click(function() {
@@ -220,3 +278,4 @@ jQuery(function(){
 	$('#submit_course').show();
    });
 });
+
