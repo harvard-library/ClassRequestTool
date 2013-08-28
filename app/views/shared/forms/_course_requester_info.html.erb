@@ -1,7 +1,12 @@
 <div id="form_wrapper">
 <h4>Requester Information</h4>
 <div id="form_col1">	
-<%= f.hidden_field :contact_username, :value => current_user.username %>
+<% if current_user.try(:admin?) || current_user.try(:staff?) %>
+  <%= f.input :contact_username, :label => "Primary Contact Username: " %>
+<% else %>  
+  <%= f.hidden_field :contact_username, :value => current_user.username %>
+<% end %>	
+
 <%= f.input :contact_first_name, :label => "Primary Contact First Name: ", :input_html => { :value => @course.contact_first_name.nil? ? current_user.first_name : @course.contact_first_name, :class => 'fl' } %>
 </div>
 <div id="form_col2">

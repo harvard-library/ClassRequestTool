@@ -11,7 +11,9 @@
 		<th>Admin?</th>
 		<th>Staff?</th>
 		<th>Patron?</th>
-		<th>Actions</th>
+	  <% if current_user.try(:admin?) %>
+	  <th>Actions</th>
+  	  <% end %>
 	  </tr>
 	</thead> 
 	<tbody>
@@ -24,11 +26,9 @@
 		  <td><%= user.admin ? "Yes" : "No" %></td>
 		  <td><%= user.staff ? "Yes" : "No" %></td>
 		  <td><%= user.patron ? "Yes" : "No" %></td> 
-		  <td><%= link_to('Edit', edit_user_path(user), :class => "action-edit") %>
-	      <% if current_user.try(:admin?) %>
-	   		 | <%= link_to('Delete', user_path(user), :confirm => "Are you sure?", :method => :delete) %>
+		  <% if current_user.try(:admin?) %>
+		    <td><%= link_to('Edit', edit_user_path(user), :class => "action-edit") %> | <%= link_to('Delete', user_path(user), :confirm => "Are you sure?", :method => :delete) %></td>
 	  	  <% end %>
-		  </td>
 	    </tr>
 	    <% end %>
 	</tbody>	
