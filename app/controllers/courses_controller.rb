@@ -43,7 +43,7 @@ class CoursesController < ApplicationController
       params[:course][:status] = "Scheduled, Unclaimed"
     elsif !params[:course][:timeframe].blank? && (!params[:course][:user_ids][1].nil? && !params[:course][:user_ids][1].empty?)
       params[:course][:status] = "Scheduled, Claimed" 
-    elsif (params[:course][:timeframe].nil? || params[:course][:timeframe].blank?) && (!params[:course][:user_ids][1].nil? && !params[:course][:user_ids][1].empty?)
+    elsif (params[:course][:timeframe].nil? || params[:course][:timeframe].blank?) && (!params[:course][:user_ids].nil? && !params[:course][:user_ids][1].empty?)
       params[:course][:status] = "Claimed, Unscheduled"   
     end 
   
@@ -88,6 +88,7 @@ class CoursesController < ApplicationController
   
   def update
     @course = Course.find(params[:id])
+    
     unless params[:course][:repository_id].nil? || params[:course][:repository_id].blank?
       @repository = Repository.find(params[:course][:repository_id])
       params[:course][:status] = "Unclaimed, Unscheduled"
@@ -130,7 +131,7 @@ class CoursesController < ApplicationController
     #params[:course][:pre_class_appt_choice_2] = DateTime.strptime(params[:course][:pre_class_appt_choice_2], '%m/%d/%Y %I:%M %P') unless params[:course][:pre_class_appt_choice_2].empty?
     #params[:course][:pre_class_appt_choice_3] = DateTime.strptime(params[:course][:pre_class_appt_choice_3], '%m/%d/%Y %I:%M %P') unless params[:course][:pre_class_appt_choice_3].empty?
     
-    unless params[:course][:timeframe].nil? || params[:course][:timeframe].empty?
+    unless params[:course][:timeframe].nil? || params[:course][:timeframe].blank?
       if params[:course][:timeframe] < DateTime.now
         params[:course][:status] = "Closed"
       end 
