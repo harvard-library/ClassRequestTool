@@ -28,7 +28,8 @@ $(document).ready(function(){
 	hourMin: 9,
 	hourMax: 17,
 	beforeShowDay: $.datepicker.noWeekends,
-	minDate: 3
+	minDate: 3,
+	numberOfMonths: 2
   });
   $('#course_time_choice_2').datetimepicker({
 	timeFormat: "hh:mm tt",
@@ -36,7 +37,8 @@ $(document).ready(function(){
 	hourMin: 9,
 	hourMax: 17,
 	beforeShowDay: $.datepicker.noWeekends,
-	minDate: 3
+	minDate: 3,
+	numberOfMonths: 2
   });
   $('#course_time_choice_3').datetimepicker({
 	timeFormat: "hh:mm tt",
@@ -44,7 +46,8 @@ $(document).ready(function(){
 	hourMin: 9,
 	hourMax: 17,
 	beforeShowDay: $.datepicker.noWeekends,
-	minDate: 3
+	minDate: 3,
+	numberOfMonths: 2
   });
   $('#course_time_choice_4').datetimepicker({
 	timeFormat: "hh:mm tt",
@@ -52,7 +55,8 @@ $(document).ready(function(){
 	hourMin: 9,
 	hourMax: 17,
 	beforeShowDay: $.datepicker.noWeekends,
-	minDate: 3
+	minDate: 3,
+	numberOfMonths: 2
   });
   $('#course_pre_class_appt_choice_1').datetimepicker({
 	timeFormat: "hh:mm tt",
@@ -60,7 +64,8 @@ $(document).ready(function(){
 	hourMin: 9,
 	hourMax: 17,
 	beforeShowDay: $.datepicker.noWeekends,
-	minDate: 3
+	minDate: 3,
+	numberOfMonths: 2
   });
   $('#course_pre_class_appt_choice_2').datetimepicker({
 	timeFormat: "hh:mm tt",
@@ -68,7 +73,8 @@ $(document).ready(function(){
 	hourMin: 9,
 	hourMax: 17,
 	beforeShowDay: $.datepicker.noWeekends,
-	minDate: 3
+	minDate: 3,
+	numberOfMonths: 2
   });
   $('#course_pre_class_appt_choice_3').datetimepicker({
 	timeFormat: "hh:mm tt",
@@ -76,23 +82,29 @@ $(document).ready(function(){
 	hourMin: 9,
 	hourMax: 17,
 	beforeShowDay: $.datepicker.noWeekends,
-	minDate: 3
+	minDate: 3,
+	numberOfMonths: 2
   });
 	
   $('#course_timeframe').datetimepicker({
-	timeFormat: "hh:mm tt"
+	timeFormat: "hh:mm tt",
+	numberOfMonths: 2
   });
   $('#course_timeframe_2').datetimepicker({
-	timeFormat: "hh:mm tt"
+	timeFormat: "hh:mm tt",
+	numberOfMonths: 2
   });
   $('#course_timeframe_3').datetimepicker({
-	timeFormat: "hh:mm tt"
+	timeFormat: "hh:mm tt",
+	numberOfMonths: 2
   });
   $('#course_timeframe_4').datetimepicker({
-	timeFormat: "hh:mm tt"
+	timeFormat: "hh:mm tt",
+	numberOfMonths: 2
   });
   $('#course_pre_class_appt').datetimepicker({
-	timeFormat: "hh:mm tt"
+	timeFormat: "hh:mm tt",
+	numberOfMonths: 2
   });
 
   $('#course_session_count_input').hide();
