@@ -1,5 +1,5 @@
 GIT
-  remote: git@github.com:berkmancenter/devise_harvard_auth_proxy.git
+  remote: https://github.com/berkmancenter/devise_harvard_auth_proxy.git
   revision: acd78faf4c20367c4f4ac6aca06d27184d8b4805
   branch: deviseupdate
   specs:
