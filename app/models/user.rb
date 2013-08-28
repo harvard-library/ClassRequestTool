@@ -3,7 +3,7 @@ class User < ActiveRecord::Base
   # :token_authenticatable, :confirmable,
   # :lockable, :timeoutable and :omniauthable
   #devise :database_authenticatable, :registerable,
-  #       :recoverable, :rememberable, :trackable, :validatable#, :harvard_auth_proxy_authenticatable        
+  #       :recoverable, :rememberable, :trackable, :validatable, :harvard_auth_proxy_authenticatable        
   devise :harvard_auth_proxy_authenticatable     
     
   # Setup accessible (or protected) attributes for your model
@@ -74,6 +74,12 @@ class User < ActiveRecord::Base
     past = Course.find(:all, :conditions => ["contact_email = ? and timeframe is not NULL and timeframe < ?", self.email, DateTime.now], :order => 'timeframe DESC')
 
     return past
+  end
+  
+  def upcoming_repo_courses
+    upcoming_repo = Array.new
+    self.repositories[0].courses.collect{|course| !course.timeframe.nil? && course.timeframe >= DateTime.now ? upcoming_repo << course : ''}
+    return upcoming_repo
   end
 
 end

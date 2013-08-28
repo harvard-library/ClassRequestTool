@@ -2,7 +2,7 @@ namespace :crt do
   namespace :bootstrap do
     desc "Add the default admin"
     task :default_admin => :environment do
-      user = User.new(:email => 'admin@example.com')
+      user = User.new(:email => 'admin@example.com', :username => 'admin')
       if %w[development test dev local].include?(Rails.env)
         user.password = User.random_password(size = 8)
       else
@@ -10,7 +10,7 @@ namespace :crt do
       end
       user.admin = true
       user.save
-      puts "Admin email is: #{user.email}"
+      puts "Admin username is: #{user.username}"
       puts "Admin password is: #{user.password}"
     end
     
@@ -85,6 +85,16 @@ namespace :crt do
         )
       end
       puts "Successfully delivered homeless notices!"
+    end
+    
+    desc "Automatically close classes when date has been reached."
+    task :close_classes => :environment do
+      @courses = Course.find(:all, :conditions => ['status IS NOT "Closed" AND timeframe < ?', Time.now])
+      @courses.each do |course|
+        course.status = "Closed"
+        course.save
+      end
+      puts "Successfully changed couses statuses"
     end
     
     desc "Send emails that are queued up"

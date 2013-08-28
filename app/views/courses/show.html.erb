@@ -1,11 +1,11 @@
-<h1><%= @course.title %></h1>
+<h3><%= @course.title %></h3>
 <br />
 <div id="welcome-left">
 <% if (current_user.try(:patron?) && @course.timeframe.nil?) || (current_user.try(:staff?) || current_user.try(:admin?)) %>
 <p><%= button_to('Edit Class Info', edit_course_path(@course), :class => "action-edit", :method => :get) %></p>
 <% end %>
 
-	<h3>Course Information</h3>
+	<h4>Course Information</h4>
 	Library/Archive: <%= @course.repository.nil? ? "Not Sure - Help me Choose" : @course.repository.name %> <br />
 	Title: <%= @course.title unless @course.title.nil? %> <br />
 	Subject: <%= @course.subject unless @course.subject.nil? %> <br />
@@ -21,12 +21,12 @@
 	<% end %>
 	<br />
 	
-	<h3>Requester Information</h3>
+	<h4>Requester Information</h4>
 	Primary Contact Name: <%= @course.contact_first_name unless @course.contact_last_name.nil? %> <%= @course.contact_last_name unless @course.contact_last_name.nil? %> <br />
 	Primary Contact Email: <%= @course.contact_email unless @course.contact_email.nil? %> <br />
 	Primary Contact Phone: <%= @course.contact_phone unless @course.contact_phone.nil? %> <br />
 	
-	<h3>Staff Involvement</h3>
+	<h4>Staff Involvement</h4>
 	Primary Library/Archive Contact: 
 	<% unless @course.primary_contact.nil? %>
 	   <%= mail_to @course.primary_contact.email, "#{@course.primary_contact.first_name} #{@course.primary_contact.last_name}" %>
@@ -54,28 +54,38 @@
 	<% end %>
 	
 	
-	<h3>Scheduling</h3>
+	<h4>Scheduling</h4>
 	Class Frequency: <%= @course.course_sessions unless @course.course_sessions.nil? %> <br />
 	Number of Sessions: <%= @course.session_count unless @course.session_count.nil? %> <br />
 	
 	<h4>Date/Time of Class</h4>
 	<% if !@course.timeframe.nil? %>
-	  Class Date/Time: <%= @course.timeframe.strftime('%m/%d/%Y %I:%M %P') unless @course.timeframe.nil? %> <br />
-	<% elsif !@course.time_choice_1.nil? || !@course.time_choice_2.nil? || !@course.time_choice_3.nil? %>
-	  Choice 1: <%= @course.time_choice_1.strftime('%m/%d/%Y %I:%M %P') unless @course.time_choice_1.nil? %> <br />
-	  Choice 2: <%= @course.time_choice_2.strftime('%m/%d/%Y %I:%M %P') unless @course.time_choice_2.nil? %> <br />
-	  Choice 2: <%= @course.time_choice_3.strftime('%m/%d/%Y %I:%M %P') unless @course.time_choice_3.nil? %> <br />
+	  <h5>Approved Date/Time</h5>
+	  <%= !@course.course_sessions.nil? || @course.course_sessions != "Single Session" ? "Session 1 Date/Time:" : "Class Date/Time 1:" %> <%= @course.timeframe.strftime('%m/%d/%Y %I:%M %P') unless @course.timeframe.nil? %> <br />
+	  <%= !@course.course_sessions.nil? && @course.course_sessions != "Single Session" ? "Session 2 Date/Time:" : "Class Date/Time 2:" %> <%= @course.timeframe_2.strftime('%m/%d/%Y %I:%M %P') unless @course.timeframe_2.nil? %> <br />
+	  <%= !@course.course_sessions.nil? && @course.course_sessions != "Single Session" ? "Session 3 Date/Time:" : "Class Date/Time 3:" %> <%= @course.timeframe_3.strftime('%m/%d/%Y %I:%M %P') unless @course.timeframe_3.nil? %> <br />
+	  <% unless @course.timeframe_4.nil? %>
+	    <%= !@course.course_sessions.nil? && @course.course_sessions != "Single Session" ? "Session 4 Date/Time:" : "Class Date/Time 4:" %> <%= @course.timeframe_4.strftime('%m/%d/%Y %I:%M %P') unless @course.timeframe_4.nil? %> <br />
+	  <% end %>
+	<% elsif !@course.time_choice_1.nil? || !@course.time_choice_2.nil? || !@course.time_choice_3.nil? || !@course.time_choice_4.nil? %>
+	  <h5>Your Choices</h5>
+	  <%= !@course.course_sessions.nil? && @course.course_sessions != "Single Session" ? "Session 1:" : "Choice 1:" %> <%= @course.time_choice_1.strftime('%m/%d/%Y %I:%M %P') unless @course.time_choice_1.nil? %> <br />
+	  <%= !@course.course_sessions.nil? && @course.course_sessions != "Single Session" ? "Session 2:" : "Choice 2:" %> <%= @course.time_choice_2.strftime('%m/%d/%Y %I:%M %P') unless @course.time_choice_2.nil? %> <br />
+	  <%= !@course.course_sessions.nil? && @course.course_sessions != "Single Session" ? "Session 3:" : "Choice 3:" %> <%= @course.time_choice_3.strftime('%m/%d/%Y %I:%M %P') unless @course.time_choice_3.nil? %> <br />
+	  <% unless @course.time_choice_4.nil? %>
+	    <%= !@course.course_sessions.nil? && @course.course_sessions != "Single Session" ? "Session 4:" : "Choice 4:" %>  <%= @course.time_choice_4.strftime('%m/%d/%Y %I:%M %P') unless @course.time_choice_4.nil? %> <br />
+	  <% end %>
 	<% else %>
 	  No class dates selected.
 	<% end %>
-	
+	<br />
 	Class Duration: <%= @course.duration unless @course.duration.nil? %> hour(s) <br />
 	Room: <%= @course.room.name unless @course.room.nil? %> <br />
 	Comments: <%= @course.comments unless @course.comments.nil? %> <br />
 </div>
 <div id="welcome-right">	
     <% if current_user.try(:staff?) || current_user.try(:admin?) %>
-	  <h3>Admin Actions</h3>
+	  <h4>Admin Actions</h4>
 	  	Status: <%= @course.status %> <br />
 	    Staff Member(s) Assigned: 
 	    <% @course.users.each do |user| %>
@@ -94,7 +104,7 @@
 		
 		<%= render :partial => 'shared/forms/note', :locals => {:note => @note, :course => @course } %>
 	<% elsif current_user.try(:patron?)%>	
-  	  <h3>Additional Actions</h3>
+  	  <h4>Additional Actions</h4>
   		Status: <%= @course.status %> <br />
 	  <h4>Assessments</h4>
 	    <p>After your class we may send you an assessment form to learn about your experience and improve our service.</p>
