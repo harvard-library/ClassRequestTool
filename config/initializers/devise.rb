@@ -228,11 +228,13 @@ Devise.setup do |config|
   end
  
   config.authen_application = 'HLS_BCIS_LRRS_DEV'
-  config.pin_url = 'http://localhost:3001/pin/authenticate?__authen_application='
-  #config.pin_url = 'https://www.pin1.harvard.edu/pin/authenticate?__authen_application='
+  #config.pin_url = 'http://localhost:3000/pin/authenticate?__authen_application='
+  config.pin_url = 'https://www.pin1.harvard.edu/pin/authenticate?__authen_application='
   config.debug = true
   config.disable_token_authenticity_checks = true
-  config.post_logout_url = 'http://www.google.com/'
+  config.post_logout_url = '/'
+  #config.gpg_home = ''
+  config.gpg_path = '/usr/local/bin/gpg'
   config.creation_attributes = Proc.new do |user,user_info,authentication_info|
     user.email = user_info[:mail]
     #user.edupersonaffiliation = user_info[:edupersonaffiliation]
