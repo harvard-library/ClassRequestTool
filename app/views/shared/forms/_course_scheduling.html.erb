@@ -27,13 +27,19 @@ Final scheduling of a session is subject to both room and staff availability.
 
 <div id="form_full_width">
 <div id="form_date1">
-<%= f.input :time_choice_1, :label => "Choice 1: ", :as => :string, :hint => 'In MM/DD/YYYY HH:MM am/pm format', :input_html => { :size => 30, :value => @course.time_choice_1.nil? ? '' : @course.time_choice_1.strftime('%m/%d/%Y %I:%M %P') } %>
+<span id="multiple_label_1">Session 1:</span>
+<span id="single_label_1">Choice 1:</span>
+<%= f.input :time_choice_1, :label => false, :as => :string, :hint => 'In MM/DD/YYYY HH:MM am/pm format', :input_html => { :size => 30, :value => @course.time_choice_1.nil? ? '' : @course.time_choice_1.strftime('%m/%d/%Y %I:%M %P') } %>
 </div>
 <div id="form_date1">
-<%= f.input :time_choice_2, :label => "Choice 2: ", :as => :string, :hint => 'In MM/DD/YYYY HH:MM am/pm format', :input_html => { :size => 30, :value => @course.time_choice_2.nil? ? '' : @course.time_choice_2.strftime('%m/%d/%Y %I:%M %P') } %>
+<span id="multiple_label_2">Session 2:</span>
+<span id="single_label_2">Choice 2:</span>	
+<%= f.input :time_choice_2, :label => false, :as => :string, :hint => 'In MM/DD/YYYY HH:MM am/pm format', :input_html => { :size => 30, :value => @course.time_choice_2.nil? ? '' : @course.time_choice_2.strftime('%m/%d/%Y %I:%M %P') } %>
 </div>
 <div id="form_date1">
-<%= f.input :time_choice_3, :label => "Choice 3: ", :as => :string, :hint => 'In MM/DD/YYYY HH:MM am/pm format', :input_html => { :size => 30, :value => @course.time_choice_3.nil? ? '' : @course.time_choice_3.strftime('%m/%d/%Y %I:%M %P') } %>
+<span id="multiple_label_3">Session 3:</span>
+<span id="single_label_3">Choice 3:</span>	
+<%= f.input :time_choice_3, :label => false, :as => :string, :hint => 'In MM/DD/YYYY HH:MM am/pm format', :input_html => { :size => 30, :value => @course.time_choice_3.nil? ? '' : @course.time_choice_3.strftime('%m/%d/%Y %I:%M %P') } %>
 </div>
 <% if !@course.session_count.nil? && @course.session_count != "Single Session" %>
 <script type="text/javascript">
@@ -43,8 +49,9 @@ Final scheduling of a session is subject to both room and staff availability.
   $('#course_timeframe_4_input').show();
 </script>
 <% end %>
-<div id="form_date1">	
-<%= f.input :time_choice_4, :label => "Choice 4: ", :as => :string, :hint => 'In MM/DD/YYYY HH:MM am/pm format', :input_html => { :size => 30, :value => @course.time_choice_3.nil? ? '' : @course.time_choice_3.strftime('%m/%d/%Y %I:%M %P') } %>
+<div id="form_date1">
+<span id="multiple_label_4">Session 4:</span>
+<%= f.input :time_choice_4, :label => false, :as => :string, :hint => 'In MM/DD/YYYY HH:MM am/pm format', :input_html => { :size => 30, :value => @course.time_choice_3.nil? ? '' : @course.time_choice_3.strftime('%m/%d/%Y %I:%M %P') } %>
 </div>
 
 </div>

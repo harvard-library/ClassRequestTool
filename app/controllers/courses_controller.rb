@@ -130,9 +130,11 @@ class CoursesController < ApplicationController
     #params[:course][:pre_class_appt_choice_2] = DateTime.strptime(params[:course][:pre_class_appt_choice_2], '%m/%d/%Y %I:%M %P') unless params[:course][:pre_class_appt_choice_2].empty?
     #params[:course][:pre_class_appt_choice_3] = DateTime.strptime(params[:course][:pre_class_appt_choice_3], '%m/%d/%Y %I:%M %P') unless params[:course][:pre_class_appt_choice_3].empty?
     
-    if params[:course][:timeframe] < DateTime.now
-      params[:course][:status] = "Closed"
-    end 
+    unless params[:course][:timeframe].nil? || params[:course][:timeframe].empty?
+      if params[:course][:timeframe] < DateTime.now
+        params[:course][:status] = "Closed"
+      end 
+    end  
       
     respond_to do |format|
       if @course.update_attributes(params[:course])
