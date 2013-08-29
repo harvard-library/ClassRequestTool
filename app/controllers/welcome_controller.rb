@@ -1,7 +1,9 @@
 class WelcomeController < ApplicationController
   before_filter :authenticate_admin_or_staff!, :only => [:dashboard]
   
-  def index      
+  def index  
+    p "current user"
+    p current_user    
     @repositories = Repository.find(:all, :order => :name)
     @courses = Array.new
     @courses = Course.find(:all, :conditions => ["timeframe is not NULL and timeframe < ?", DateTime.now], :order => "timeframe DESC", :limit => 10)

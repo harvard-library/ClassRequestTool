@@ -232,7 +232,7 @@ Devise.setup do |config|
   config.pin_url = 'https://www.pin1.harvard.edu/pin/authenticate?__authen_application='
   config.debug = true
   config.disable_token_authenticity_checks = true
-  config.post_logout_url = '/'
+  config.post_logout_url = 'https://www.pin1.harvard.edu/pin/logout'
   #config.gpg_home = ''
   config.gpg_path = '/usr/local/bin/gpg'
   config.creation_attributes = Proc.new do |user,user_info,authentication_info|
