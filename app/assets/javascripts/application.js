@@ -129,21 +129,63 @@ $(document).ready(function(){
   $('#staff_actions_partial').show();
   $('#submit_course').hide();
 
-  $("#course-table").tablesorter();
-  $("#attributes-table").tablesorter();
-  $("#locations-table").tablesorter();
-  $("#repositories-table").tablesorter();
-  $("#rooms-table").tablesorter();
-  $("#users-table").tablesorter();
-  $("#involvement-table").tablesorter();
+  $("#course-table")
+    .tablesorter()
+	.tablesorterPager({container: $("#pager")})
+  ;
+  $("#attributes-table").tablesorter()
+    .tablesorter()
+	.tablesorterPager({container: $("#pager")})
+  ;
+  $("#locations-table").tablesorter()
+    .tablesorter()
+	.tablesorterPager({container: $("#pager")})
+  ;
+  $("#repositories-table").tablesorter()
+    .tablesorter()
+	.tablesorterPager({container: $("#pager")})
+  ;
+  $("#rooms-table").tablesorter()
+    .tablesorter()
+	.tablesorterPager({container: $("#pager")})
+  ;
+  $("#users-table").tablesorter()
+    .tablesorter()
+	.tablesorterPager({container: $("#pager")})
+  ;
+  $("#involvement-table").tablesorter()
+    .tablesorter()
+	.tablesorterPager({container: $("#pager")})
+  ;
 
-  $("#your-repos-table").tablesorter();
-  $("#your-unscheduled-table").tablesorter();
-  $("#your-upcoming-table").tablesorter();
-  $("#your-past-table").tablesorter();
-  $("#homeless-table").tablesorter();
-  $("#unassigned-table").tablesorter();
-  $("#roomless-table").tablesorter();
+  $("#your-repos-table").tablesorter()
+    .tablesorter()
+	.tablesorterPager({container: $("#pager")})
+  ;
+  $("#your-unscheduled-table").tablesorter()
+    .tablesorter()
+	.tablesorterPager({container: $("#pager")})
+  ;
+  $("#your-upcoming-table").tablesorter()
+    .tablesorter()
+	.tablesorterPager({container: $("#pager")})
+  ;
+  $("#your-past-table").tablesorter()
+    .tablesorter()
+	.tablesorterPager({container: $("#pager")})
+  ;
+  $("#homeless-table").tablesorter()
+    .tablesorter()
+	.tablesorterPager({container: $("#pager")})
+  ;
+  $("#unassigned-table").tablesorter()
+    .tablesorter()
+	.tablesorterPager({container: $("#pager")})
+  ;
+  $("#roomless-table").tablesorter()
+    .tablesorter()
+	.tablesorterPager({container: $("#pager")})
+  ;
 
 });
 jQuery(function(){
