@@ -59,10 +59,6 @@ html,body {
   }
 }
 
-.content {
-  
-}
-
 #welcome-left {
 	float: left;
 	width: 40%;
@@ -135,6 +131,5 @@ th {
 }
 
 .controls {
-	width: auto;
+	display: inline-block;
 }
-
