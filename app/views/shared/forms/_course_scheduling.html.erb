@@ -3,10 +3,8 @@
 <h4>Scheduling</h4>
 
 <div id="form_full_width">
-	<div style="">
 <%= f.input :course_sessions, :label => "Select One", :as => :radio, :collection => Course::COURSE_SESSIONS %>
 <%= f.input :session_count, :label => "Number of Sessions: ", :input_html => { :size => 1, :maxlength => 1 }, :hint => 'If more than four sessions, please indicate in a note below your request for a multi-session or reoccurring class (e.g. Wednesdays 2-4pm).' %>
-</div>
 </div>
 
 <div id="form_full_width">
