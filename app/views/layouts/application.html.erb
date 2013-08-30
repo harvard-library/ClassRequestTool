@@ -3,6 +3,7 @@
 <head>
   <title>Class Request Tool</title>
   <meta http-equiv="x-ua-compatible" content="IE=EmulateIE8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <%= stylesheet_link_tag    'application', :media => "all" %>
   <%= javascript_include_tag 'application' %>
   <%= csrf_meta_tags %>
@@ -13,6 +14,11 @@
 	<header class="navbar navbar-fixed-top">
 	  <nav class="navbar-inner">
 	    <div class="container">
+		  <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+		  </button>	
 	      <%= render :partial => 'shared/navigation' %>
 	    </div>
 	  </nav>

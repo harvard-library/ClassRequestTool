@@ -211,7 +211,42 @@
       <% end %>
   </div>
 </div>
+
 <div id="dash-wrap">
+  <div id="dash_widget">
+  <h4>Your Classes To Close</h4>
+  <% unless @your_classes_to_close.nil? || @your_classes_to_close.empty? %>	
+    <table id="your-upcoming-table" class="table table-condensed tablesorter">
+	  <thead>
+	  <tr>
+		<th>Name</th>
+		<th>Submission Date</th>
+		<th>Class Date</th>
+		<th></th>
+	  </tr>
+	  </thead>
+	  <tbody>
+    <% @your_classes_to_close.each do |course| %>	
+      	<tr>
+	  	  <td><%= link_to(course.title, course ) %></td>
+		  <td><%= course.created_at.strftime('%m/%d/%Y') %></td>
+		  <td><%= course.timeframe.strftime('%m/%d/%Y %I:%M %P') unless course.timeframe.nil? %></td>
+		  <td><%= link_to('Edit to Close', edit_course_path(course), :class => "action-edit") %><br />
+			  <%= link_to('Add Note', course_path(course), :class => "action-edit") %><br />
+          <% if current_user.try(:admin?) %>
+	   		 <%= link_to('Delete', course_path(course), :confirm => "Are you sure?", :method => :delete) %>
+      	  <% end %>
+		  </td>
+	    </tr>
+    <% end %>
+	  </tbody>
+	</table>
+	<%= will_paginate @your_classes_to_close, :param_name => 'your_classes_to_close' %>
+  <% else %>
+	None yet!
+  <% end %>
+  </div>
+
   <div id="dash_widget">  
   <h4><%= link_to("Your Closed Classes", "#", :id => 'collapsable') %></h4>
   <span id="your-past">
