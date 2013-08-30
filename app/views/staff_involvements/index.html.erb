@@ -27,9 +27,11 @@
 	    <% end %>
 	</tbody>	
 	</table>
-  
+	<br />
+	<%= render :partial => '/shared/tablesorter_pager' %>
+	<br />
+	<br />
   <% if current_user.try(:admin?) %>
     <%= link_to("Add New Staff Involvement", new_staff_involvement_path ) %>
   <% end %>
 </div>
-<%= will_paginate @staff_involvements %>

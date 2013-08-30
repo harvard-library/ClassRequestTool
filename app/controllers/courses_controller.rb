@@ -3,7 +3,7 @@ class CoursesController < ApplicationController
   before_filter :authenticate_user!, :except => [:take, :recent_show]
   
   def index
-    @courses_all = Course.paginate(:page => params[:all_page], :per_page => 10)
+    @courses_all = Course.all#paginate(:page => params[:all_page], :per_page => 3)
     @courses_mine_current = current_user.mine_current.paginate(:page => params[:mine_current_page], :per_page => 5)
     @courses_mine_past = current_user.mine_past.paginate(:page => params[:mine_past_page], :per_page => 5)
     @repositories = Repository.find(:all, :order => :name)
@@ -43,7 +43,7 @@ class CoursesController < ApplicationController
       params[:course][:status] = "Scheduled, Unclaimed"
     elsif !params[:course][:timeframe].blank? && (!params[:course][:user_ids][1].nil? && !params[:course][:user_ids][1].empty?)
       params[:course][:status] = "Scheduled, Claimed" 
-    elsif (params[:course][:timeframe].nil? || params[:course][:timeframe].blank?) && (!params[:course][:user_ids].nil? && !params[:course][:user_ids][1].empty?)
+    elsif (params[:course][:timeframe].nil? || params[:course][:timeframe].blank?) && (!params[:course][:user_ids].nil? || !params[:course][:user_ids][1].empty?)
       params[:course][:status] = "Claimed, Unscheduled"   
     end 
   

@@ -13,7 +13,6 @@
  *= require bootstrap-responsive.css 
  *= require bootstrap
  *= require jquery-tablesorter/theme.dark
- *= require jquery-tablesorter/addons/pager/jquery.tablesorter.pager
  *= require_tree .
  */
 
@@ -132,4 +131,9 @@ th {
 
 .controls {
 	display: inline-block;
+}
+
+.pager {
+	position: relative;
+	top: 0px;
 }

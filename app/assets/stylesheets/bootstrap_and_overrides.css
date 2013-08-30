@@ -1,13 +1,13 @@
 @import "bootstrap";
-body { padding-top: 190px; }
+body { padding-top: 210px; }
 @import "bootstrap-responsive";
 
 .span12 {
-  width: 100%;
+  width: 97%;
 }
 
 .container {
-  width: 75%;
+  width: 1080px;
 }
 
 .content {
@@ -39,7 +39,7 @@ body { padding-top: 190px; }
 }
 
 .navbar-inner .container {
-	width: 1020px;
+	width: 1130px;
 }
 
 .dropdown-menu .sub-menu {
