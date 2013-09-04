@@ -87,9 +87,16 @@
     <% if current_user.try(:staff?) || current_user.try(:admin?) %>
 	  <h4>Admin Actions</h4>
 	  	Status: <%= @course.status %> <br />
-	    Staff Member(s) Assigned: 
+		Primary Library/Archive Contact: 
+		<% unless @course.primary_contact.nil? %>
+		   <%= mail_to @course.primary_contact.email, "#{@course.primary_contact.first_name} #{@course.primary_contact.last_name}" %>
+		<% else %>
+		  None
+		<% end %>
+		<br />
+		Other Staff Assigned:
 	    <% @course.users.each do |user| %>
-	      <%= user.first_name %> <%= user.last_name %>, 
+		  <%= mail_to user.email, "#{user.first_name} #{user.last_name}" %>, 
 	    <% end %>
 		<h4>Assessments</h4>
 		<p>After your class we may send you an assessment form to learn about your experience and improve our service.</p>
