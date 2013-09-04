@@ -6,7 +6,7 @@
 <% end %>
 
 	<h4>Course Information</h4>
-	Library/Archive: <%= @course.repository.nil? ? "Not Sure - Help me Choose" : @course.repository.name %> <br />
+	Library/Archive: <span id="repository"><%= @course.repository.nil? ? "Not Sure - Help me Choose" : @course.repository.name %></span> <br />
 	Title: <span id="title"><%= @course.title unless @course.title.nil? %></span> <br />
 	Subject: <span id="subject"><%= @course.subject unless @course.subject.nil? %></span> <br />
 	Class Number: <span id="class"><%= @course.course_number unless @course.course_number.nil? %></span> <br />
