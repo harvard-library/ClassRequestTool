@@ -63,7 +63,7 @@ class User < ActiveRecord::Base
   
   def mine_current
     upcoming = Array.new
-    upcoming = Course.find(:all, :conditions => ["contact_email = ? and timeframe is NULL or timeframe >= ?", self.email, DateTime.now], :order => 'timeframe DESC')
+    upcoming = Course.find(:all, :conditions => ["contact_email = ? and (timeframe is NULL or timeframe >= ?)", self.email, DateTime.now], :order => 'timeframe DESC')
 
     return upcoming
   end

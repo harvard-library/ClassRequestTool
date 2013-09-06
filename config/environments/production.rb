@@ -54,6 +54,7 @@ ClassRequestTool::Application.configure do
   
   config.action_mailer.default_url_options = { :host => 'classrequest.dev.berkmancenter.org' }
   config.action_mailer.delivery_method = :sendmail
+  config.action_mailer.smtp_settings = { :enable_starttls_auto => false }
 
   # Enable threaded mode
   # config.threadsafe!
