@@ -61,7 +61,7 @@
 	<h4>Date/Time of Class</h4>
 	<% if !@course.timeframe.nil? %>
 	  <h5>Approved Date/Time</h5>
-	  <%= !@course.course_sessions.nil? || @course.course_sessions != "Single Session" ? "Session 1 Date/Time:" : "Class Date/Time 1:" %> <%= @course.timeframe.strftime('%m/%d/%Y %I:%M %P') unless @course.timeframe.nil? %> <br />
+	  <%= !@course.course_sessions.nil? && @course.course_sessions != "Single Session" ? "Session 1 Date/Time:" : "Class Date/Time 1:" %> <%= @course.timeframe.strftime('%m/%d/%Y %I:%M %P') unless @course.timeframe.nil? %> <br />
 	  <%= !@course.course_sessions.nil? && @course.course_sessions != "Single Session" ? "Session 2 Date/Time:" : "Class Date/Time 2:" %> <%= @course.timeframe_2.strftime('%m/%d/%Y %I:%M %P') unless @course.timeframe_2.nil? %> <br />
 	  <%= !@course.course_sessions.nil? && @course.course_sessions != "Single Session" ? "Session 3 Date/Time:" : "Class Date/Time 3:" %> <%= @course.timeframe_3.strftime('%m/%d/%Y %I:%M %P') unless @course.timeframe_3.nil? %> <br />
 	  <% unless @course.timeframe_4.nil? %>
