@@ -30,7 +30,8 @@ class Course < ActiveRecord::Base
       :reply_to => DEFAULT_MAILER_SENDER,
       :to => self.contact_email,
       :subject => "[ClassRequestTool] Class Request Successfully Submitted for #{self.title}",
-      :body => "Class Request Successfully Submitted for #{self.title}"
+      :body => "<p>Class Request Successfully Submitted for #{self.title}.</p> 
+      <p>You can review your request <a href='#{ROOT_URL}#{course_path(self)}'>here</a>.</p>"
     )
     # if repository is empty (homeless), send to all admins of tool 
     if self.repository.nil? || self.repository.blank?
