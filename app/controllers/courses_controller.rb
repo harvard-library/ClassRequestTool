@@ -150,7 +150,7 @@ class CoursesController < ApplicationController
         if staff_change == true
           @course.send_staff_change_email  
         end
-        if timeframe_change == true && params[:send_timeframe_email] == "1"
+        if params[:send_timeframe_email] == "1"
           @course.send_timeframe_change_email  
         end
         
