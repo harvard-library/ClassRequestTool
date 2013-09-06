@@ -106,7 +106,7 @@ class CoursesController < ApplicationController
     if (@course.users.nil? || @course.users.blank?) && (!params[:course][:user_ids][1].nil? && !params[:course][:user_ids][1].empty?)
       staff_change = true
     end
-    if (@course.timeframe.nil? || @course.timeframe.blank?) && (!params[:course][:timeframe].nil? && !params[:course][:timeframe].blank?)
+    if ((@course.timeframe.nil? || @course.timeframe.blank?) && (!params[:course][:timeframe].nil? && !params[:course][:timeframe].blank?)) || ((@course.timeframe_2.nil? || @course.timeframe_2.blank?) && (!params[:course][:timeframe_2].nil? && !params[:course][:timeframe_2].blank?)) || ((@course.timeframe_3.nil? || @course.timeframe_3.blank?) && (!params[:course][:timeframe_3].nil? && !params[:course][:timeframe_3].blank?)) || ((@course.timeframe_4.nil? || @course.timeframe_4.blank?) && (!params[:course][:timeframe_4].nil? && !params[:course][:timeframe_4].blank?))
       timeframe_change = true
     end
     
@@ -150,7 +150,7 @@ class CoursesController < ApplicationController
         if staff_change == true
           @course.send_staff_change_email  
         end
-        if timeframe_change == true && params[:send_timeframe_email] == "1"
+        if params[:send_timeframe_email] == "1"
           @course.send_timeframe_change_email  
         end
         
