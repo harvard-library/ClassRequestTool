@@ -10,7 +10,7 @@ class User < ActiveRecord::Base
   
   validates_uniqueness_of :username
   
-  has_and_belongs_to_many :courses, :order => "timeframe DESC"
+  has_and_belongs_to_many :courses, :order => "timeframe DESC, created_at DESC"
   has_and_belongs_to_many :repositories, :order => "name"
   has_many :notes
   
@@ -63,14 +63,14 @@ class User < ActiveRecord::Base
   
   def mine_current
     upcoming = Array.new
-    upcoming = Course.find(:all, :conditions => ["contact_email = ? and (timeframe is NULL or timeframe >= ?)", self.email, DateTime.now], :order => 'timeframe DESC')
+    upcoming = Course.find(:all, :conditions => ["contact_email = ? and (timeframe is NULL or timeframe >= ?)", self.email, DateTime.now], :order => 'timeframe DESC, created_at DESC')
 
     return upcoming
   end
   
   def mine_past
     past = Array.new
-    past = Course.find(:all, :conditions => ["contact_email = ? and timeframe is not NULL and timeframe < ?", self.email, DateTime.now], :order => 'timeframe DESC')
+    past = Course.find(:all, :conditions => ["contact_email = ? and timeframe is not NULL and timeframe < ?", self.email, DateTime.now], :order => 'timeframe DESC, created_at DESC')
 
     return past
   end

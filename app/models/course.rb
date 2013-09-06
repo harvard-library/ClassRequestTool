@@ -155,7 +155,7 @@ class Course < ActiveRecord::Base
   end  
   
   def self.homeless
-    Course.find(:all, :conditions => {:repository_id => nil}, :order => 'timeframe DESC')
+    Course.find(:all, :conditions => {:repository_id => nil}, :order => 'timeframe DESC, created_at DESC')
   end  
   
   def self.unscheduled_unclaimed
