@@ -10,7 +10,7 @@ class User < ActiveRecord::Base
   
   validates_uniqueness_of :username
   
-  has_and_belongs_to_many :courses, :order => 'timeframe DESC'
+  has_and_belongs_to_many :courses, :order => "timeframe DESC"
   has_and_belongs_to_many :repositories, :order => "name"
   has_many :notes
   
