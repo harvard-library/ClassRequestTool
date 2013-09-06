@@ -23,6 +23,9 @@ class Note < ActiveRecord::Base
     else
       users = ""
       self.course.users.collect{|u| users = u.email + ","}
+      unless self.course.primary_contact.nil?
+        users = users + self.course.primary_contact.email
+      end  
       Email.create(
         :from => DEFAULT_MAILER_SENDER,
         :reply_to => DEFAULT_MAILER_SENDER,
