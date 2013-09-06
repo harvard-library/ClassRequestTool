@@ -5,7 +5,6 @@
 
 	<p>A staff member will be in touch within 3 business days to schedule a pre-class meeting with you and to finalize arrangements for your class.</p>
 
-	<p>You may expect a reply from your selected repository within 72 hours.</p>
 	<% unless @course.repository.nil? %>
 	<p><%= link_to "Click here", repository_url(@course.repository.id), :target => "blank" %> for class policies to review or share with students.</p>
 	<% end %>
