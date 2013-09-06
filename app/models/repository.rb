@@ -3,7 +3,7 @@ class Repository < ActiveRecord::Base
   
   has_and_belongs_to_many :users, :order => "last_name"
   has_and_belongs_to_many :rooms
-  has_many :courses
+  has_many :courses, :order => "timeframe DESC"
   has_and_belongs_to_many :item_attributes
   has_and_belongs_to_many :staff_involvements
   
