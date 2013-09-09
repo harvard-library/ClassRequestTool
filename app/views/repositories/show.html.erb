@@ -36,6 +36,12 @@
 	<% end %>
 	<br />  
 	For more details on teaching at this Library/Archive <%= link_to "click here", @repository.landing_page, :target => "_blank" %>. <br /><br />
+	
+	<% unless @repository.class_policies.nil? || @repository.class_policies.blank? %>
+	Class Policies:
+	  <%= raw @repository.class_policies %> <br /><br />
+	<% end %>  
+	
 	<% unless @repository.calendar.nil? || @repository.calendar.blank? %>
 	  <%= link_to image_tag('calendar_icon.png')+"View Calendar", "#{@repository.calendar}", :onclick=>"window.open(this.href,'view_calendar', 'height=600, width=600');return false;" %>
 	<% else %>
