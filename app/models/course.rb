@@ -30,7 +30,8 @@ class Course < ActiveRecord::Base
       :reply_to => DEFAULT_MAILER_SENDER,
       :to => self.contact_email,
       :subject => "[ClassRequestTool] Class Request Successfully Submitted for #{self.title}",
-      :body => "Class Request Successfully Submitted for #{self.title}"
+      :body => "<p>Class Request Successfully Submitted for #{self.title}.</p> 
+      <p>You can review your request <a href='#{ROOT_URL}#{course_path(self)}'>here</a>.</p>"
     )
     # if repository is empty (homeless), send to all admins of tool 
     if self.repository.nil? || self.repository.blank?
@@ -119,8 +120,8 @@ class Course < ActiveRecord::Base
       :reply_to => DEFAULT_MAILER_SENDER,
       :to => self.contact_email,
       :subject => "Your class at #{self.repository.name} has been confirmed.",
-      :body => "<p>Title: <a href='#{ROOT_URL}#{course_path(self)}'>#{self.title}</a><br />Confirmed Date: #{self.timeframe}<br />Duration: #{self.duration}<br />Staff contact: <staffName>, <staffEmail></p>
-      <p>If you have any questions, please add a note to the <a href='#{ROOT_URL}#{course_path(self)}'>class detail</a>, or email the staff member responsible.</p>"
+      :body => "<p>Title: <a href='#{ROOT_URL}#{course_path(self)}'>#{self.title}</a><br />Confirmed Date: #{self.timeframe}<br />Duration: #{self.duration} hours<br />Staff contact:<a href='mail_to:#{self.primary_contact.email}'> #{self.primary_contact.first_name} #{self.primary_contact.last_name}</a></p>
+      <p>If you have any questions, please add a note to the <a href='#{ROOT_URL}#{course_path(self)}'>class detail</a>, or <a href='mail_to:#{self.primary_contact.email}'>email</a> the staff member responsible.</p>"
     ) 
   end
   
@@ -154,7 +155,7 @@ class Course < ActiveRecord::Base
   end  
   
   def self.homeless
-    Course.find(:all, :conditions => {:repository_id => nil}, :order => 'timeframe DESC')
+    Course.find(:all, :conditions => {:repository_id => nil}, :order => 'timeframe DESC, created_at DESC')
   end  
   
   def self.unscheduled_unclaimed

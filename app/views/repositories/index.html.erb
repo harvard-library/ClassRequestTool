@@ -21,9 +21,13 @@
 	    <% end %>
 	</tbody>	
 	</table>
-  
+    <br />
+    <%= render :partial => '/shared/tablesorter_pager' %>
+	<br />
+	<br />
   <% if current_user.try(:admin?) %>
     <%= link_to("Add New Library/Archive", new_repository_path ) %>
   <% end %>
+  
 </div>
-<%= will_paginate @repositories %>
+

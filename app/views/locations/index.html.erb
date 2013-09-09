@@ -21,9 +21,11 @@
 	    <% end %>
 	</tbody>	
 	</table>
-  
+	<br />
+	<%= render :partial => '/shared/tablesorter_pager' %>
+	<br />
+	<br />
   <% if current_user.try(:admin?) %>
     <%= link_to("Add New Location", new_location_path ) %>
   <% end %>
 </div>
-<%= will_paginate @locations %>

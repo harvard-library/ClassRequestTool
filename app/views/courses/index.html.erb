@@ -38,12 +38,16 @@
 	    <% end %>
 	</tbody>	
 	</table>
+	<br />
+	<%= render :partial => '/shared/tablesorter_pager' %>
+	<br />
+	<br />
   <% else %>
 	None yet!
   <% end %>
   
 </div>
-<%= will_paginate @courses_mine_current, :param_name => 'mine_current_page' %>
+
 
 <div>
   <h4>Past Classes</h4>	
@@ -74,11 +78,15 @@
 	    <% end %>
 	</tbody>	
 	</table>
+	<br />
+	<%= render :partial => '/shared/tablesorter_pager' %>
+	<br />
+	<br />
   <% else %>
 	None yet!
   <% end %>
 </div>
-<%= will_paginate @courses_mine_past, :param_name => 'mine_past_page' %>
+
 
 <% else %>
 <div>
@@ -110,7 +118,11 @@
 	    <% end %>
 	</tbody>	
 	</table>
-	<%= will_paginate @courses_all, :param_name => 'all_page' %>
+    <br />
+    <%= render :partial => '/shared/tablesorter_pager' %>
+	<br />
+	<br />
+	
   <% else %>
 	None yet!
   <% end %>

@@ -41,12 +41,15 @@ Final scheduling of a session is subject to both room and staff availability.
 <span id="single_label_3">Choice 3:</span>	
 <%= f.input :time_choice_3, :label => false, :as => :string, :hint => 'In MM/DD/YYYY HH:MM am/pm format', :input_html => { :size => 30, :value => @course.time_choice_3.nil? ? '' : @course.time_choice_3.strftime('%m/%d/%Y %I:%M %P') } %>
 </div>
-<% if !@course.session_count.nil? && @course.session_count != "Single Session" %>
+<% if !@course.course_sessions.nil? && @course.course_sessions != "Single Session" %>
 <script type="text/javascript">
-  $.ajax('#course_time_choice_4_input');
+$(document).ready(function(){
+  $('#multiple_label_4').show();
+  $('#course_time_choice_4_input').show();
   $('#course_timeframe_2_input').show();
   $('#course_timeframe_3_input').show();
   $('#course_timeframe_4_input').show();
+});  
 </script>
 <% end %>
 <div id="form_date1">
@@ -86,7 +89,7 @@ Final scheduling of a session is subject to both room and staff availability.
 <div id="form_full_width">
 <% unless @course.repository.nil? %>
   <br />
-  <%= f.input :item_attributes, :as => :check_boxes, :collection => @course.repository.item_attributes, :label => "Room Technology Availble: " %>
+  <%= f.input :item_attributes, :as => :check_boxes, :collection => @course.repository.item_attributes, :label => "Room Technology Available: " %>
 <% end %>
 <br />
 <%= f.input :comments, :label => "If you have any special room arrangements or further instructions regarding your class session, please enter them below: ", :input_html => { :rows => 5, :cols => 30 } %>

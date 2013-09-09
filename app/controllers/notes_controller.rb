@@ -18,6 +18,9 @@ class NotesController < ApplicationController
     respond_to do |format|
       if @note.save
         @note.new_note_email
+        if !@note.staff_comment
+          @note.new_patron_note_email
+        end
         format.html { redirect_to course_url(@note.course), notice: 'Note was successfully created.' }
         format.json { render json: @note, status: :created, note: @note }
       else

@@ -1,3 +1,5 @@
+include Rails.application.routes.url_helpers
+
 namespace :crt do
   namespace :bootstrap do
     desc "Add the default admin"
