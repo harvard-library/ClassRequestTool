@@ -1,5 +1,5 @@
 class Repository < ActiveRecord::Base
-  attr_accessible :name, :description, :class_limit, :can_edit, :room_ids, :user_ids, :item_attribute_ids, :calendar, :landing_page
+  attr_accessible :name, :description, :class_limit, :can_edit, :room_ids, :user_ids, :item_attribute_ids, :calendar, :landing_page, :class_policies
   
   has_and_belongs_to_many :users, :order => "last_name"
   has_and_belongs_to_many :rooms

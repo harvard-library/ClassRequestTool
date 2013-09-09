@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130824035811) do
+ActiveRecord::Schema.define(:version => 20130906192935) do
 
   create_table "assessments", :force => true do |t|
     t.text     "using_materials"
@@ -173,13 +173,14 @@ ActiveRecord::Schema.define(:version => 20130824035811) do
   create_table "repositories", :force => true do |t|
     t.string   "name"
     t.text     "description"
-    t.integer  "class_limit",  :default => 0
+    t.integer  "class_limit",    :default => 0
     t.integer  "user_id"
     t.boolean  "can_edit"
-    t.datetime "created_at",                  :null => false
-    t.datetime "updated_at",                  :null => false
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
     t.text     "calendar"
     t.string   "landing_page"
+    t.text     "class_policies"
   end
 
   add_index "repositories", ["can_edit"], :name => "index_repositories_on_can_edit"
