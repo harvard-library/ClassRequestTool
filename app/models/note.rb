@@ -48,4 +48,5 @@ class Note < ActiveRecord::Base
       :body => "<p>#{self.user.first_name} #{self.user.last_name} has added a note to one of your classes. Click on the title of the class to go to the details of that class.</p>
       <p>Title: <a href='#{ROOT_URL}#{course_path(self.course)}'>#{self.course.title}</a><br />Course Date: #{self.course.timeframe}<br />Comment: #{self.note_text}</p>"
     )
+  end  
 end
