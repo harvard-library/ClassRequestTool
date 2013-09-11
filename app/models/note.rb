@@ -37,8 +37,8 @@ class Note < ActiveRecord::Base
     end  
   end
   
-  def new_note_email
-    # if not is not staff only send to patron
+  def new_patron_note_email
+    # if note is not staff only send to patron
     User.all(:conditions => {:admin => true}).collect{|a| admins = a.email + ","}
     Email.create(
       :from => DEFAULT_MAILER_SENDER,
