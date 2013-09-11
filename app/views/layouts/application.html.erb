@@ -2,13 +2,25 @@
 <html>
 <head>
   <title>Class Request Tool</title>
-  <meta http-equiv="x-ua-compatible" content="IE=EmulateIE8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <%= stylesheet_link_tag    'application', :media => "all" %>
   <%= javascript_include_tag 'application' %>
   <%= javascript_include_tag  'jquery.tablesorter.pager' %>
   <%= csrf_meta_tags %>
   <%= yield :header_tags -%>
+
+  <!--[if IE]>
+  <script type="text/javascript">
+    document.createElement("article");
+    document.createElement("nav");
+    document.createElement("section");
+    document.createElement("header");
+    document.createElement("aside");
+    document.createElement("figure");
+    document.createElement("legend");
+    document.createElement("footer");
+    </script>
+  <![endif] -->
 </head>
 <body <%= yield :body %>>
   
