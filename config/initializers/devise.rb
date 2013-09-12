@@ -224,7 +224,9 @@ Devise.setup do |config|
   #   manager.default_strategies(:scope => :user).unshift :some_external_strategy
   # end
   config.warden do |manager|
-    manager.default_strategies(:scope => :user).unshift :harvard_auth_proxy_authenticatable
+    manager.default_strategies(:scope => :user).unshift :database_authenticatable
+    #manager.default_strategies(:scope => :user).unshift :harvard_auth_proxy_authenticatable
+    
   end
  
   config.authen_application = 'HLS_BCIS_LRRS_DEV'
