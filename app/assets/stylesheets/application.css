@@ -10,9 +10,9 @@
  *
  *= require_self
  *= require jquery.ui.all
+ *= require bootstrap-responsive.css 
  *= require bootstrap
  *= require jquery-tablesorter/theme.dark
- *= require jquery-tablesorter/addons/pager/jquery.tablesorter.pager
  *= require_tree .
  */
 
@@ -56,18 +56,6 @@ html,body {
     padding-left: 20px;
     padding-right: 20px;
   }
-}
-
-.content {
-  background-color: #eee;
-  padding: 20px;
-  margin: 0 -20px; /* negative indent the amount of the padding to maintain the grid system */
-  -webkit-border-radius: 0 0 6px 6px;
-  -moz-border-radius: 0 0 6px 6px;
-  border-radius: 0 0 6px 6px;
-  -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.15);
-  -moz-box-shadow: 0 1px 2px rgba(0,0,0,.15);
-  box-shadow: 0 1px 2px rgba(0,0,0,.15);
 }
 
 #welcome-left {
@@ -123,7 +111,7 @@ html,body {
 	padding-bottom: 10px;
 }
 #form_full_width {
-	width: 100%; 
+	width: 96%; 
 	float: left;
 	padding-bottom: 10px;
 }
@@ -142,6 +130,10 @@ th {
 }
 
 .controls {
-	width: auto;
+	display: inline-block;
 }
 
+.pager {
+	position: relative;
+	top: 0px;
+}

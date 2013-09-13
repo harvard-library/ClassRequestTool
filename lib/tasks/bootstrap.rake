@@ -1,3 +1,5 @@
+include Rails.application.routes.url_helpers
+
 namespace :crt do
   namespace :bootstrap do
     desc "Add the default admin"
@@ -87,15 +89,15 @@ namespace :crt do
       puts "Successfully delivered homeless notices!"
     end
     
-    desc "Automatically close classes when date has been reached."
-    task :close_classes => :environment do
-      @courses = Course.find(:all, :conditions => ['status IS NOT "Closed" AND timeframe < ?', Time.now])
-      @courses.each do |course|
-        course.status = "Closed"
-        course.save
-      end
-      puts "Successfully changed couses statuses"
-    end
+    # desc "Automatically close classes when date has been reached."
+    # task :close_classes => :environment do
+    #   @courses = Course.find(:all, :conditions => ['status IS NOT "Closed" AND timeframe < ?', Time.now])
+    #   @courses.each do |course|
+    #     course.status = "Closed"
+    #     course.save
+    #   end
+    #   puts "Successfully changed couses statuses"
+    # end
     
     desc "Send emails that are queued up"
     task :send_queued_emails => :environment do

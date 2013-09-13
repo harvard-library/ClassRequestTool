@@ -3,7 +3,7 @@ class CoursesController < ApplicationController
   before_filter :authenticate_user!, :except => [:take, :recent_show]
   
   def index
-    @courses_all = Course.paginate(:page => params[:all_page], :per_page => 10)
+    @courses_all = Course.all(:order => "timeframe DESC, created_at DESC")
     @courses_mine_current = current_user.mine_current.paginate(:page => params[:mine_current_page], :per_page => 5)
     @courses_mine_past = current_user.mine_past.paginate(:page => params[:mine_past_page], :per_page => 5)
     @repositories = Repository.find(:all, :order => :name)
@@ -106,7 +106,7 @@ class CoursesController < ApplicationController
     if (@course.users.nil? || @course.users.blank?) && (!params[:course][:user_ids][1].nil? && !params[:course][:user_ids][1].empty?)
       staff_change = true
     end
-    if (@course.timeframe.nil? || @course.timeframe.blank?) && (!params[:course][:timeframe].nil? && !params[:course][:timeframe].blank?)
+    if ((@course.timeframe.nil? || @course.timeframe.blank?) && (!params[:course][:timeframe].nil? && !params[:course][:timeframe].blank?)) || ((@course.timeframe_2.nil? || @course.timeframe_2.blank?) && (!params[:course][:timeframe_2].nil? && !params[:course][:timeframe_2].blank?)) || ((@course.timeframe_3.nil? || @course.timeframe_3.blank?) && (!params[:course][:timeframe_3].nil? && !params[:course][:timeframe_3].blank?)) || ((@course.timeframe_4.nil? || @course.timeframe_4.blank?) && (!params[:course][:timeframe_4].nil? && !params[:course][:timeframe_4].blank?))
       timeframe_change = true
     end
     
@@ -131,11 +131,12 @@ class CoursesController < ApplicationController
     #params[:course][:pre_class_appt_choice_2] = DateTime.strptime(params[:course][:pre_class_appt_choice_2], '%m/%d/%Y %I:%M %P') unless params[:course][:pre_class_appt_choice_2].empty?
     #params[:course][:pre_class_appt_choice_3] = DateTime.strptime(params[:course][:pre_class_appt_choice_3], '%m/%d/%Y %I:%M %P') unless params[:course][:pre_class_appt_choice_3].empty?
     
-    unless params[:course][:timeframe].nil? || params[:course][:timeframe].blank?
-      if params[:course][:timeframe] < DateTime.now
-        params[:course][:status] = "Closed"
-      end 
-    end  
+    # automatically close classes if date has approached
+    # unless params[:course][:timeframe].nil? || params[:course][:timeframe].blank?
+    #   if params[:course][:timeframe] < DateTime.now
+    #     params[:course][:status] = "Closed"
+    #   end 
+    # end  
       
     respond_to do |format|
       if @course.update_attributes(params[:course])
@@ -149,7 +150,7 @@ class CoursesController < ApplicationController
         if staff_change == true
           @course.send_staff_change_email  
         end
-        if timeframe_change == true && params[:send_timeframe_email] == "1"
+        if params[:send_timeframe_email] == "1"
           @course.send_timeframe_change_email  
         end
         
