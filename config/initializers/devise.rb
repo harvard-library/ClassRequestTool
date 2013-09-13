@@ -229,7 +229,7 @@ Devise.setup do |config|
     
   end
  
-  config.authen_application = 'HLS_BCIS_LRRS_DEV'
+  config.authen_application = 'HLS_BCIS_CRT_DEV' #'HLS_BCIS_LRRS_DEV'
   #config.pin_url = 'http://localhost:3000/pin/authenticate?__authen_application='
   config.pin_url = 'https://www.pin1.harvard.edu/pin/authenticate?__authen_application='
   config.debug = true
