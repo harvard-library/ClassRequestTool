@@ -19,4 +19,12 @@ class WelcomeController < ApplicationController
     @your_repo_courses = current_user.upcoming_repo_courses.paginate(:page => params[:your_repos_page], :per_page => 5)
     @your_classes_to_close = current_user.classes_to_close.paginate(:page => params[:your_classes_to_close], :per_page => 5)
   end
+  
+  def dashboard_items      
+    course_ids = params[:courses]
+    @title = params[:title]
+    unless course_ids.nil?
+      @courses = Course.find(course_ids)
+    end
+  end
 end

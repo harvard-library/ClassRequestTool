@@ -36,7 +36,7 @@
 	</tbody>	
 	</table>
 	<br />
-	<%= render :partial => '/shared/tablesorter_pager' %>
+	<%= render :partial => '/shared/tablesorter_pager', :locals => {:pager_id => "rooms-table" } %>
 	<br />
 	<br />
   <% if current_user.try(:admin?) %>

@@ -14,7 +14,10 @@
 //= require jquery_ujs
 //= require jquery-ui
 //= require jquery.ui.datepicker
-//= require jquery-tablesorter
+//= require jquery-tablesorter/jquery.metadata
+//= require jquery-tablesorter/jquery.tablesorter
+//= require jquery-tablesorter/jquery.tablesorter.widgets
+//= require jquery-tablesorter/addons/pager/jquery.tablesorter.pager
 //= require bootstrap
 //= require ckeditor/init
 //= require_tree .
@@ -129,62 +132,70 @@ $(document).ready(function(){
   $('#staff_actions_partial').show();
   $('#submit_course').hide();
 
-  $("#course-table")
+  $("#course-table-current")
     .tablesorter()
-	.tablesorterPager({container: $("#pager")})
+	.tablesorterPager({container: $("#pager-course-table-current")})
+  ;
+  $("#course-table-past")
+    .tablesorter()
+	.tablesorterPager({container: $("#pager-course-table-past")})
+  ;
+  $("#course-table-all")
+    .tablesorter()
+	.tablesorterPager({container: $("#pager-course-table-all")})
   ;
   $("#attributes-table").tablesorter()
     .tablesorter()
-	.tablesorterPager({container: $("#pager")})
+	.tablesorterPager({container: $("#pager-attributes-table")})
   ;
   $("#locations-table").tablesorter()
     .tablesorter()
-	.tablesorterPager({container: $("#pager")})
+	.tablesorterPager({container: $("#pager-locations-table")})
   ;
   $("#repositories-table").tablesorter()
     .tablesorter()
-	.tablesorterPager({container: $("#pager")})
+	.tablesorterPager({container: $("#pager-repositories-table")})
   ;
   $("#rooms-table").tablesorter()
     .tablesorter()
-	.tablesorterPager({container: $("#pager")})
+	.tablesorterPager({container: $("#pager-rooms-table")})
   ;
   $("#users-table").tablesorter()
     .tablesorter()
-	.tablesorterPager({container: $("#pager")})
+	.tablesorterPager({container: $("#pager-users-table")})
   ;
   $("#involvement-table").tablesorter()
     .tablesorter()
-	.tablesorterPager({container: $("#pager")})
+	.tablesorterPager({container: $("#pager-involvement-table")})
   ;
 
   $("#your-repos-table").tablesorter()
     .tablesorter()
-	.tablesorterPager({container: $("#pager")})
+	.tablesorterPager({container: $("#pager-your-repos-table")})
   ;
   $("#your-unscheduled-table").tablesorter()
     .tablesorter()
-	.tablesorterPager({container: $("#pager")})
+	.tablesorterPager({container: $("#pager-your_unscheduled-table")})
   ;
   $("#your-upcoming-table").tablesorter()
     .tablesorter()
-	.tablesorterPager({container: $("#pager")})
+	.tablesorterPager({container: $("#pager-your-upcoming-table")})
   ;
   $("#your-past-table").tablesorter()
     .tablesorter()
-	.tablesorterPager({container: $("#pager")})
+	.tablesorterPager({container: $("#pager-your-past-table")})
   ;
   $("#homeless-table").tablesorter()
     .tablesorter()
-	.tablesorterPager({container: $("#pager")})
+	.tablesorterPager({container: $("#pager-homeless-table")})
   ;
   $("#unassigned-table").tablesorter()
     .tablesorter()
-	.tablesorterPager({container: $("#pager")})
+	.tablesorterPager({container: $("#pager-unassigned-table")})
   ;
   $("#roomless-table").tablesorter()
     .tablesorter()
-	.tablesorterPager({container: $("#pager")})
+	.tablesorterPager({container: $("#pager-roomless-table")})
   ;
 
 });
