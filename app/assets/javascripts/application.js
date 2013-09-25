@@ -171,31 +171,31 @@ $(document).ready(function(){
 
   $("#your-repos-table").tablesorter()
     .tablesorter()
-	.tablesorterPager({container: $("#pager-your-repos-table")})
+	.tablesorterPager({container: $("#pager-your-repos-table"), size: 5, positionFixed: false})
   ;
   $("#your-unscheduled-table").tablesorter()
     .tablesorter()
-	.tablesorterPager({container: $("#pager-your_unscheduled-table")})
+	.tablesorterPager({container: $("#pager-your_unscheduled-table"), size: 5, positionFixed: false})
   ;
   $("#your-upcoming-table").tablesorter()
     .tablesorter()
-	.tablesorterPager({container: $("#pager-your-upcoming-table")})
+	.tablesorterPager({container: $("#pager-your-upcoming-table"), size: 5, positionFixed: false})
   ;
   $("#your-past-table").tablesorter()
     .tablesorter()
-	.tablesorterPager({container: $("#pager-your-past-table")})
+	.tablesorterPager({container: $("#pager-your-past-table"), size: 5, positionFixed: false})
   ;
   $("#homeless-table").tablesorter()
     .tablesorter()
-	.tablesorterPager({container: $("#pager-homeless-table")})
+	.tablesorterPager({container: $("#pager-homeless-table"), size: 5, positionFixed: false})
   ;
   $("#unassigned-table").tablesorter()
     .tablesorter()
-	.tablesorterPager({container: $("#pager-unassigned-table")})
+	.tablesorterPager({container: $("#pager-unassigned-table"), size: 5, positionFixed: false})
   ;
   $("#roomless-table").tablesorter()
     .tablesorter()
-	.tablesorterPager({container: $("#pager-roomless-table")})
+	.tablesorterPager({container: $("#pager-roomless-table"), size: 5, positionFixed: false})
   ;
 
 });
