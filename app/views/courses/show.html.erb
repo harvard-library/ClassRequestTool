@@ -16,8 +16,11 @@
 	<%  if @course.file.blank? && @course.external_syllabus.nil? %>
 	  None
 	<% else %>
-	  <span id="syllabus"><%= link_to "Syllabus", @course.file_url unless @course.file.blank? %> <br />
-	  <%= link_to @course.external_syllabus, @course.external_syllabus unless @course.external_syllabus.nil? %></span>
+	  <span id="syllabus"><%= link_to "Syllabus", @course.file_url unless @course.file.blank? %></span>
+	  <%  unless @course.external_syllabus.nil? %>
+	  <br />
+	    <span id="syllabus"><%= link_to @course.external_syllabus, @course.external_syllabus, :target => "blank" %></span>
+	  <% end %>
 	<% end %>
 	<br />
 	
