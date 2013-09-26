@@ -78,7 +78,7 @@
   <div id="dash_widget">
   <h4><%= link_to "Your Claimed, Unscheduled Classes", dashboard_items_welcome_index_path(:courses => @your_unscheduled, :title => "Your Claimed, Unscheduled Classes"), :target => "blank" %></h4>
   <% unless @your_unscheduled.nil? || @your_unscheduled.empty? %>	
-    <table id="your_unscheduled-table" class="table table-condensed tablesorter">
+    <table id="your-unscheduled-table" class="table table-condensed tablesorter">
 	  <thead>
 	  <tr>
 		<th>Name</th>
@@ -101,7 +101,7 @@
     <% end %>
 	  </tbody>
 	</table>
-	<%= render :partial => '/shared/tablesorter_pager', :locals => {:pager_id => "your_unscheduled-table" } %>
+	<%= render :partial => '/shared/tablesorter_pager', :locals => {:pager_id => "your-unscheduled-table" } %>
   <% else %>
 	None yet!
   <% end %>

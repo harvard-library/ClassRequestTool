@@ -175,7 +175,7 @@ $(document).ready(function(){
   ;
   $("#your-unscheduled-table").tablesorter()
     .tablesorter()
-	.tablesorterPager({container: $("#pager-your_unscheduled-table"), size: 5, positionFixed: false})
+	.tablesorterPager({container: $("#pager-your-unscheduled-table"), size: 5, positionFixed: false})
   ;
   $("#your-upcoming-table").tablesorter()
     .tablesorter()
