@@ -13,7 +13,10 @@
 <%= f.input :affiliation, :label => "Affiliation (if non-Harvard): " %>
 </div>
 <div id="form_col1">	
-<%= link_to "Current Syllabus", @course.file_url unless @course.file.blank? %><br />	
+<% unless @course.file.blank? %>	
+  <%= link_to "Current Syllabus", @course.file_url %><br />	
+  <%= f.input :remove_file, :as => :boolean, :label => "Delete Current Syllabus? " %>
+<% end %>  
 <%= f.input :file, :as => :file, :label => "Syllabus (Upload File): " %>
 </div>
 <div id="form_col2">
