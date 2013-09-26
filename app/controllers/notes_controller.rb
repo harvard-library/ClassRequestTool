@@ -11,6 +11,9 @@ class NotesController < ApplicationController
   
   def edit
     @note = Note.find(params[:id])
+    unless current_user.try(:staff?) || current_user.try(:admin?) || @note.course.contact_email == current_user.email
+       redirect_to('/') and return
+    end
   end
   
   def create
@@ -32,6 +35,9 @@ class NotesController < ApplicationController
   
   def update
     @note = Note.find(params[:id])
+    unless current_user.try(:staff?) || current_user.try(:admin?) || @note.course.contact_email == current_user.email
+       redirect_to('/') and return
+    end
 
     respond_to do |format|
       if @note.update_attributes(params[:note])
@@ -47,6 +53,9 @@ class NotesController < ApplicationController
   def destroy
     @note = Note.find(params[:id])
     @course = @note.course
+    unless current_user.try(:staff?) || current_user.try(:admin?) || @course.contact_email == current_user.email
+       redirect_to('/') and return
+    end
     @note.destroy
 
     respond_to do |format|
