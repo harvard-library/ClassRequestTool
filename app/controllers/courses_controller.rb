@@ -28,6 +28,9 @@ class CoursesController < ApplicationController
   
   def edit
     @course = Course.find(params[:id])
+    unless current_user.try(:staff?) || current_user.try(:admin?) || @course.contact_email == current_user.email
+       redirect_to('/') and return
+    end
     @staff_involvement = @course.staff_involvement.split(',')
   end
   
@@ -88,6 +91,9 @@ class CoursesController < ApplicationController
   
   def update
     @course = Course.find(params[:id])
+    unless current_user.try(:staff?) || current_user.try(:admin?) || @course.contact_email == current_user.email
+       redirect_to('/') and return
+    end
     
     unless params[:course][:repository_id].nil? || params[:course][:repository_id].blank?
       @repository = Repository.find(params[:course][:repository_id])
@@ -166,6 +172,9 @@ class CoursesController < ApplicationController
   
   def destroy
     @course = Course.find(params[:id])
+    unless current_user.try(:staff?) || current_user.try(:admin?) || @course.contact_email == current_user.email
+       redirect_to('/') and return
+    end
     @course.destroy
 
     respond_to do |format|
