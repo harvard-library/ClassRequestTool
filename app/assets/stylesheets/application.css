@@ -105,6 +105,12 @@ html,body {
 	padding-bottom: 10px;
 }
 
+#course_file {
+	width: 65%; 
+	float: left;
+	word-wrap: normal
+}
+
 #form_col2 {
 	width: 60%; 
 	float: left;
