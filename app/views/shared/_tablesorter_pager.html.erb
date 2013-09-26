@@ -2,7 +2,7 @@
 # include the pager for sorted tables with jquery tablesorter
 %>
 
-<div id="pager" class="pager">
+<div id="pager-<%= pager_id %>" class="pager" style="padding-bottom: none;">
     <%= form_tag do %>
 	  <%= image_tag "pager/first.png", :class => "first" %>
 	  <%= image_tag "pager/prev.png", :class => "prev" %>
@@ -11,7 +11,7 @@
 	  
 	  <%= image_tag "pager/next.png", :class => "next" %>
 	  <%= image_tag "pager/last.png", :class => "last" %>
-      Per Page: <%= select_tag "people", "<option selected='selected'>10</option><option>20</option><option>30</option><option>40</option>".html_safe, class: 'pagesize' %>
+      Per Page: <%= select_tag "people", "<option>5</option><option selected='selected'>10</option><option>20</option><option>30</option><option>40</option>".html_safe, class: 'pagesize' %>
     <% end %> 
 
 </div>
