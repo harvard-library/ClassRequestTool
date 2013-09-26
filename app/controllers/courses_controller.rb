@@ -11,6 +11,9 @@ class CoursesController < ApplicationController
   
   def show
     @course = Course.find(params[:id])
+    unless current_user.try(:staff?) || current_user.try(:admin?) || @course.contact_email == current_user.email
+       redirect_to('/') and return
+    end
     @note = Note.new
     @staff_only_notes = Note.find(:all, :conditions => {:course_id => @course.id, :staff_comment => true}, :order => "created_at DESC")
     @notes = Note.find(:all, :conditions => {:course_id => @course.id, :staff_comment => false}, :order => "created_at DESC")
@@ -185,6 +188,9 @@ class CoursesController < ApplicationController
   
   def summary
     @course = Course.find(params[:id])
+    unless current_user.try(:staff?) || current_user.try(:admin?) || @course.contact_email == current_user.email
+       redirect_to('/') and return
+    end
   end
   
   def recent_show
