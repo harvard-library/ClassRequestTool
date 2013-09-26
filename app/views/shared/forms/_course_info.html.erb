@@ -13,11 +13,14 @@
 <%= f.input :affiliation, :label => "Affiliation (if non-Harvard): " %>
 </div>
 <div id="form_col1">	
-<%= link_to "Current Syllabus", @course.file_url unless @course.file.blank? %><br />	
+<% unless @course.file.blank? %>	
+  <%= link_to "Current Syllabus", @course.file_url %><br />	
+  <%= f.input :remove_file, :as => :boolean, :label => "Delete Current Syllabus? " %>
+<% end %>  
 <%= f.input :file, :as => :file, :label => "Syllabus (Upload File): " %>
 </div>
 <div id="form_col2">
-<%= f.input :external_syllabus, :label => "OR Syllabus (Enter URL): " %>
+<%= f.input :external_syllabus, :label => "OR Syllabus (Enter URL): ", :input_html => { :value => @course.external_syllabus.nil? ? "http://" : @course.external_syllabus } %>
 </div>
 <div id="form_col1">
 <%= f.input :number_of_students, :label => "Number of Students: ", :hint => !@course.repository.nil? ? "Maximum class limit is #{@course.repository.class_limit unless @course.repository.nil?}. For larger groups/classes the staff will be in touch with possible options." : "For larger groups/classes the staff will be in touch with possible options." %>
