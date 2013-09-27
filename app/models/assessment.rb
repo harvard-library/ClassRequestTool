@@ -1,4 +1,6 @@
 class Assessment < ActiveRecord::Base
+  include ActionDispatch::Routing::UrlFor
+  include Rails.application.routes.url_helpers
   attr_accessible :using_materials, :involvement, :staff_experience, :staff_availability, :space, :request_materials, :digital_collections, :involve_again, :not_involve_again, :better_future, :request_course, :catalogs, :comments
   
   belongs_to :course
