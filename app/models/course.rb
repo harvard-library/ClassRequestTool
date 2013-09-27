@@ -159,14 +159,14 @@ class Course < ActiveRecord::Base
   end  
   
   def self.unscheduled_unclaimed
-    courses = Course.order('timeframe DESC')
+    courses = Course.order('timeframe DESC, created_at DESC')
     unscheduled_unclaimed = Array.new
     courses.collect{|course| (course.users.empty? && (course.timeframe.nil? || course.timeframe.blank?)) ? unscheduled_unclaimed << course : '' }
     return unscheduled_unclaimed
   end
   
   def self.scheduled_unclaimed
-    courses = Course.order('timeframe DESC')
+    courses = Course.order('timeframe DESC, created_at DESC')
     scheduled_unclaimed = Array.new
     courses.collect{|course| course.users.empty? && (!course.timeframe.nil? && !course.timeframe.blank?) ? scheduled_unclaimed << course : '' }
     return scheduled_unclaimed
