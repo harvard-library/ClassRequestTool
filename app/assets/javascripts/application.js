@@ -132,6 +132,10 @@ $(document).ready(function(){
   $('#staff_actions_partial').show();
   $('#submit_course').hide();
 
+  $("#course-table")
+    .tablesorter()
+  ;
+  
   $("#course-table-current")
     .tablesorter()
 	.tablesorterPager({container: $("#pager-course-table-current")})
