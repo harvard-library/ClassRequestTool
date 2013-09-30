@@ -12,7 +12,7 @@
 
 	<h4>Current Classes</h4>
   <% unless @courses_mine_current.empty? %>	
-    <table id="course-table" class="table table-condensed tablesorter">
+    <table id="course-table-current" class="table table-condensed tablesorter">
 	<thead>
 	  <tr>
 		<th>Name</th>
@@ -39,7 +39,7 @@
 	</tbody>	
 	</table>
 	<br />
-	<%= render :partial => '/shared/tablesorter_pager' %>
+	<%= render :partial => '/shared/tablesorter_pager', :locals => {:pager_id => "course-table-current" } %>
 	<br />
 	<br />
   <% else %>
@@ -52,7 +52,7 @@
 <div>
   <h4>Past Classes</h4>	
   <% unless @courses_mine_past.empty? %>	
-    <table id="course-table" class="table table-condensed tablesorter">
+    <table id="course-table-past" class="table table-condensed tablesorter">
 	<thead>
 	  <tr>
 		<th>Name</th>
@@ -79,7 +79,7 @@
 	</tbody>	
 	</table>
 	<br />
-	<%= render :partial => '/shared/tablesorter_pager' %>
+	<%= render :partial => '/shared/tablesorter_pager', :locals => {:pager_id => "course-table-past" } %>
 	<br />
 	<br />
   <% else %>
@@ -92,7 +92,7 @@
 <div>
   <h3>All Classes</h3>
   <% unless @courses_all.empty? %>	
-    <table id="course-table" class="table table-condensed tablesorter">
+    <table id="course-table-all" class="table table-condensed tablesorter">
 	<thead>
 	  <tr>
 		<th>Name</th>
@@ -119,7 +119,7 @@
 	</tbody>	
 	</table>
     <br />
-    <%= render :partial => '/shared/tablesorter_pager' %>
+    <%= render :partial => '/shared/tablesorter_pager', :locals => {:pager_id => "course-table-all" } %>
 	<br />
 	<br />
 	

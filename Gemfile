@@ -6,7 +6,7 @@ gem 'rails', '3.2.11'
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 gem 'therubyracer'
-gem 'devise'
+gem 'devise', '3.0.3'
 gem 'formtastic'
 gem 'will_paginate'
 gem 'pg'
