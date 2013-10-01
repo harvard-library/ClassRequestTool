@@ -1,7 +1,7 @@
 <div id="form_wrapper">
 <h4>Requester Information</h4>
 <div id="form_col1">	
-<% if current_user.try(:admin?) || current_user.try(:staff?) %>
+<% if current_user.try(:admin?) || current_user.try(:staff?) || current_user.try(:superadmin?) %>
   <%= f.input :contact_username, :label => "Primary Contact Username: " %>
 <% else %>  
   <%= f.hidden_field :contact_username, :value => current_user.username %>

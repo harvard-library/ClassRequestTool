@@ -1,7 +1,7 @@
 <h3><%= @course.title %></h3>
 <br />
 <div id="welcome-left">
-<% if (current_user.try(:patron?) && @course.timeframe.nil?) || (current_user.try(:staff?) || current_user.try(:admin?)) %>
+<% if (current_user.try(:patron?) && @course.timeframe.nil?) || (current_user.try(:staff?) || current_user.try(:admin?) || current_user.try(:superadmin?)) %>
 <p><%= button_to('Edit Class Info', edit_course_path(@course), :class => "action-edit", :method => :get) %></p>
 <% end %>
 
@@ -87,7 +87,7 @@
 	Comments: <%= @course.comments unless @course.comments.nil? %> <br />
 </div>
 <div id="welcome-right">	
-    <% if current_user.try(:staff?) || current_user.try(:admin?) %>
+    <% if current_user.try(:staff?) || current_user.try(:admin?) || current_user.try(:superadmin?) %>
 	  <h4>Admin Actions</h4>
 	  	Status: <%= @course.status %> <br />
 		Primary Library/Archive Contact: 

@@ -64,7 +64,7 @@ $(document).ready(function(){
 <%= f.input :duration, :label => "Class Duration (hours): ", :hint => '1 hour increments, maximum 3 hours', :input_html => { :size => 1, :maxlength => 4 } %>
 </div>
 
-<% if current_user.try(:admin?) || current_user.try(:staff?) %>
+<% if current_user.try(:admin?) || current_user.try(:staff?) || current_user.try(:superadmin?) %>
 <div id="form_full_width" class="yellow-box">
 <div id="form_date1">
 <%= f.input :timeframe, :label => "Actual Date/Time 1: ", :as => :string, :hint => 'In MM/DD/YYYY HH:MM am/pm format', :input_html => { :size => 30, :value => @course.timeframe.nil? ? '' : @course.timeframe.strftime('%m/%d/%Y %I:%M %P') } %>
@@ -94,10 +94,12 @@ $(document).ready(function(){
 <br />
 <%= f.input :comments, :label => "If you have any special room arrangements or further instructions regarding your class session, please enter them below: ", :input_html => { :rows => 5, :cols => 30 } %>
 </div>
-<% if current_user.try(:admin?) || current_user.try(:staff?) %>
+<% if current_user.try(:admin?) || current_user.try(:staff?) || current_user.try(:superadmin?) %>
 <div id="form_full_width" class="yellow-box">
 <%= f.input :room, :as => :select, :collection => Room.all, :label => "Room: " %>
-<%= f.input :status, :label => "Status: ", :as => :select, :collection => Course::STATUS %>	
+<% if current_user.try(:superadmin?) %>
+  <%= f.input :status, :label => "Status: ", :as => :select, :collection => Course::STATUS %>	
+<% end %>  
 <%= check_box_tag :send_assessment_email %> Close class and send assessment email to requester<br /><br />
 <%= check_box_tag :no_assessment_email %> Close class and do NOT send assessment email to requester<br /><br />
 </div>

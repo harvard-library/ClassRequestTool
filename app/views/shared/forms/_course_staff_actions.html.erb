@@ -1,4 +1,4 @@
-<% if current_user.try(:admin?) || current_user.try(:staff?) %>
+<% if current_user.try(:admin?) || current_user.try(:staff?) || current_user.try(:superadmin?) %>
   <h4>Staff Actions</h4>
 
   <% unless @course.repository.calendar.nil? && @course.repository.calendar.blank? %>
