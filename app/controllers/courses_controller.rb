@@ -146,11 +146,15 @@ class CoursesController < ApplicationController
     #     params[:course][:status] = "Closed"
     #   end 
     # end  
+    
+    if params[:send_assessment_email] == "1" || params[:no_assessment_email] == "1"
+      params[:course][:status] = "Closed"
+    end
       
     respond_to do |format|
       if @course.update_attributes(params[:course])
         @course.updated_request_email 
-        if params[:course][:status] == "Closed" && params[:send_email] == "1"
+        if params[:send_assessment_email] == "1" && (params[:no_assessment_email].nil? || params[:no_assessment_email] == "0")
           @course.send_assessment_email
         end
         if repo_change == true
