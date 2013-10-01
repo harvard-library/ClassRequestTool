@@ -28,7 +28,9 @@
 		  </td>
 		  <td>
 	      <% if current_user.try(:admin?) %>
-	   		<%= link_to('Edit', edit_room_path(room), :class => "action-edit") %> | <%= link_to('Delete', room_path(room), :confirm => "Are you sure?", :method => :delete) %>
+	   		<%= link_to('Edit', edit_room_path(room), :class => "action-edit") %>
+  	      <% elsif current_user.try(:superadmin?) %>
+  	   		<%= link_to('Edit', edit_room_path(room), :class => "action-edit") %> | <%= link_to('Delete', room_path(room), :confirm => "Are you sure?", :method => :delete) %>	
 	  	  <% end %>
 		  </td>
 	    </tr>
@@ -39,7 +41,7 @@
 	<%= render :partial => '/shared/tablesorter_pager', :locals => {:pager_id => "rooms-table" } %>
 	<br />
 	<br />
-  <% if current_user.try(:admin?) %>
+  <% if current_user.try(:admin?) || current_user.try(:superadmin?) %>
     <%= link_to("Add New Room", new_room_path ) %>
   <% end %>
 </div>

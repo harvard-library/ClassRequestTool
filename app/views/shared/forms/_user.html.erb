@@ -1,14 +1,18 @@
 <%= semantic_form_for(@user) do |f| %>
   <%= f.inputs do %>
-	<% if current_user.try(:admin?) %>
+	<% if current_user.try(:admin?) || current_user.try(:superadmin?) %>
 	  <%= f.input :first_name, :input_html => { :size => 30 } %>
 	  <%= f.input :last_name, :input_html => { :size => 30 } %>
 	  <%= f.input :username, :input_html => { :size => 30 } %>
 	  <%= f.input :email, :input_html => { :size => 30 } %>
 	<% end %>
 	<%= f.input :repositories, :as => :check_boxes, :label => "Associated Libraries/Archives: " %>
-	<% if @user != current_user || @user.admin? %>
+	<% if @user != current_user || current_user.try(:admin?) || current_user.try(:superadmin?) %>
 	  <span id='admin_box'>
+		  User Role:<br />
+		  <% if current_user.try(:superadmin?) %>
+		    <%= f.input :superadmin, :label => "Is Superadmin? " %> 
+		  <% end %>	
 		  <%= f.input :admin, :label => "Is Admin? " %> 
 		  <%= f.input :staff, :label => "Is Staff? " %>
 		  <%= f.input :patron, :label => "Is Patron? " %>

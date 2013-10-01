@@ -3,7 +3,7 @@
   <% notes.each do |note| %>
     <p>
 	  <%= note.note_text %> recorded by: <%= note.user.username unless note.user.nil? %>(<%= note.user.user_type unless note.user.nil? %>) on: <%= note.created_at.strftime('%m/%d/%Y %I:%M %P') %>
-	  <% if current_user.try(:staff?) || current_user.try(:admin?) %>
+	  <% if current_user.try(:staff?) || current_user.try(:admin?) || current_user.try(:superadmin?) %>
 	    <br />
         <%= link_to "Edit", edit_note_path(note.id) %> | <%= link_to('Delete', note_path(note), :confirm => "Are you sure?", :method => :delete) %>
 	  <% end %>	

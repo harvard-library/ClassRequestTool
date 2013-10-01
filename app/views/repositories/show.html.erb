@@ -48,7 +48,7 @@
 	  This Library/Archive does not have a publicly available calendar. Please submit your request with your preferred times and a staff member will get back to you.
 	<% end %>
 	
-    <% if current_user.try(:admin?) %>
+    <% if current_user.try(:admin?) || current_user.try(:superadmin?) %>
 	<br /><br />
 	  Staff Member(s) Assigned: 
 	  <ul>
@@ -77,7 +77,7 @@
     	  	  <td><%= link_to(course.title, course ) %></td>
     		  <td><%= course.timeframe.strftime('%m/%d/%Y %I:%M %P') unless course.timeframe.nil? %></td>
     		  <td><%= link_to('Edit', edit_course_path(course), :class => "action-edit") %></td>
-              <% if current_user.try(:admin?) %>
+              <% if current_user.try(:admin?) || current_user.try(:superadmin?) %>
     	   		<td> | <%= link_to('Delete', course_path(course), :confirm => "Are you sure?", :method => :delete) %></td>
         	  <% end %>
     	    </tr>

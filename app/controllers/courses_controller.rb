@@ -11,7 +11,7 @@ class CoursesController < ApplicationController
   
   def show
     @course = Course.find(params[:id])
-    unless current_user.try(:staff?) || current_user.try(:admin?) || @course.contact_email == current_user.email
+    unless current_user.try(:staff?) || current_user.try(:admin?) || current_user.try(:superadmin?) || @course.contact_email == current_user.email
        redirect_to('/') and return
     end
     @note = Note.new
@@ -31,7 +31,7 @@ class CoursesController < ApplicationController
   
   def edit
     @course = Course.find(params[:id])
-    unless current_user.try(:staff?) || current_user.try(:admin?) || @course.contact_email == current_user.email
+    unless current_user.try(:staff?) || current_user.try(:admin?) || current_user.try(:superadmin?) || @course.contact_email == current_user.email
        redirect_to('/') and return
     end
     @staff_involvement = @course.staff_involvement.split(',')
@@ -94,7 +94,7 @@ class CoursesController < ApplicationController
   
   def update
     @course = Course.find(params[:id])
-    unless current_user.try(:staff?) || current_user.try(:admin?) || @course.contact_email == current_user.email
+    unless current_user.try(:staff?) || current_user.try(:admin?) || current_user.try(:superadmin?) || @course.contact_email == current_user.email
        redirect_to('/') and return
     end
     
@@ -179,7 +179,7 @@ class CoursesController < ApplicationController
   
   def destroy
     @course = Course.find(params[:id])
-    unless current_user.try(:staff?) || current_user.try(:admin?) || @course.contact_email == current_user.email
+    unless current_user.try(:staff?) || current_user.try(:admin?) || current_user.try(:superadmin?) || @course.contact_email == current_user.email
        redirect_to('/') and return
     end
     @course.destroy
@@ -192,7 +192,7 @@ class CoursesController < ApplicationController
   
   def summary
     @course = Course.find(params[:id])
-    unless current_user.try(:staff?) || current_user.try(:admin?) || @course.contact_email == current_user.email
+    unless current_user.try(:staff?) || current_user.try(:admin?) || current_user.try(:superadmin?) || @course.contact_email == current_user.email
        redirect_to('/') and return
     end
   end

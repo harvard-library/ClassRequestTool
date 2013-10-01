@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130906192935) do
+ActiveRecord::Schema.define(:version => 20131001141651) do
 
   create_table "assessments", :force => true do |t|
     t.text     "using_materials"
@@ -241,6 +241,7 @@ ActiveRecord::Schema.define(:version => 20130906192935) do
     t.boolean  "staff",                                 :default => false
     t.boolean  "patron",                                :default => true
     t.string   "username",                              :default => "",    :null => false
+    t.boolean  "superadmin",                            :default => false
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

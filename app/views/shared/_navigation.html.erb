@@ -3,7 +3,7 @@
 <ul class="nav" role="navigation">
 	<li><%= link_to "Home", root_path %></li>
 
-  <% if current_user.try(:admin?) %>
+  <% if current_user.try(:superadmin?) || current_user.try(:admin?) %>
     <li><%= link_to "Dashboard", dashboard_welcome_index_url %></li>
 	<li><%= link_to "Classes", courses_path %></li>
 	<li class="dropdown"><a id="drop1" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">Admin Area <b class="caret"></b></a>
