@@ -41,7 +41,7 @@ Final scheduling of a session is subject to both room and staff availability.
 <span id="single_label_3">Choice 3:</span>	
 <%= f.input :time_choice_3, :label => false, :as => :string, :hint => 'In MM/DD/YYYY HH:MM am/pm format', :input_html => { :size => 30, :value => @course.time_choice_3.nil? ? '' : @course.time_choice_3.strftime('%m/%d/%Y %I:%M %P') } %>
 </div>
-<% if !@course.course_sessions.nil? && @course.course_sessions != "Single Session" %>
+<%if !@course.course_sessions.nil? && @course.course_sessions != "Single Session"%>
 <script type="text/javascript">
 $(document).ready(function(){
   $('#multiple_label_4').show();
