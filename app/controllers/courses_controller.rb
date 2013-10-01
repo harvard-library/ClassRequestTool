@@ -95,7 +95,7 @@ class CoursesController < ApplicationController
   def update
     @course = Course.find(params[:id])
     unless current_user.try(:staff?) || current_user.try(:admin?) || current_user.try(:superadmin?) || @course.contact_email == current_user.email
-       redirect_to('/') and return
+      redirect_to('/') and return
     end
     
     unless params[:course][:repository_id].nil? || params[:course][:repository_id].blank?
@@ -152,6 +152,11 @@ class CoursesController < ApplicationController
     end
       
     respond_to do |format|
+      if params[:schedule_future_class] == "1" && (!params[:course][:timeframe].nil? && params[:course][:timeframe] < DateTime.now) || (!params[:course][:timeframe2].nil? && params[:course][:timeframe2] < DateTime.now) || (!params[:course][:timeframe3].nil? && params[:course][:timeframe3] < DateTime.now) || (!params[:course][:timeframe4].nil? && params[:course][:timeframe4] < DateTime.now)
+          flash[:error] = "Please confirm scheduling class in the past."
+          format.html { render action: "edit" }
+          format.json { render json: @course.errors, status: :unprocessable_entity }
+      end  
       if @course.update_attributes(params[:course])
         @course.updated_request_email 
         if params[:send_assessment_email] == "1" && (params[:no_assessment_email].nil? || params[:no_assessment_email] == "0")
