@@ -72,3 +72,11 @@ body { padding-top: 210px; }
   top: 11px;
   left: -6px;
 }
+
+select {
+	width: auto;
+}
+
+input, .uneditable-input {
+	width: auto;
+}

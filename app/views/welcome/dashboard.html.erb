@@ -10,7 +10,7 @@
 
 <div id="dash-wrap">
   <div id="dash_widget">	
-      <h4>Upcoming Classes for Your Library/Archive</h4>
+      <h4><%= link_to "Upcoming Classes for Your Library/Archive", dashboard_items_welcome_index_path(:courses => @your_repo_courses, :title => "Upcoming Classes for Your Library/Archive"), :target => "blank" %></h4>
         <% unless @your_repo_courses.nil? || @your_repo_courses.empty? %>
       	<table id="your-repos-table" class="table table-condensed tablesorter">
       	  <tr>
@@ -32,14 +32,15 @@
       	    </tr>
             <% end %>
       	</table>
-  		<%= will_paginate @your_repo_courses, :param_name => 'your_repos_page' %>
+		<br />
+		<%= render :partial => '/shared/tablesorter_pager', :locals => {:pager_id => "your-repos-table" } %>
         <% else %>
       	None yet!
         <% end %>
   </div>
 
   <div id="dash_widget">	
-  <h4>Homeless Classes</h4>
+  <h4><%= link_to "Homeless Classes", dashboard_items_welcome_index_path(:courses => @homeless, :title => "Homeless Classes"), :target => "blank" %></h4>
   <% unless @homeless.nil? || @homeless.empty? %>
 	<table id="homeless-table" class="table table-condensed tablesorter">
 	<thead>	
@@ -67,7 +68,7 @@
       <% end %>
 	</tbody>
 	</table>
-	<%= will_paginate @homeless, :param_name => 'homeless_page' %>
+	<%= render :partial => '/shared/tablesorter_pager', :locals => {:pager_id => "homeless-table" } %>
   <% else %>
 	None yet!
   <% end %>
@@ -75,9 +76,9 @@
 </div>
 <div id="dash-wrap">
   <div id="dash_widget">
-  <h4>Your Claimed, Unscheduled Classes</h4>
+  <h4><%= link_to "Your Claimed, Unscheduled Classes", dashboard_items_welcome_index_path(:courses => @your_unscheduled, :title => "Your Claimed, Unscheduled Classes"), :target => "blank" %></h4>
   <% unless @your_unscheduled.nil? || @your_unscheduled.empty? %>	
-    <table id="your_unscheduled-table" class="table table-condensed tablesorter">
+    <table id="your-unscheduled-table" class="table table-condensed tablesorter">
 	  <thead>
 	  <tr>
 		<th>Name</th>
@@ -100,14 +101,14 @@
     <% end %>
 	  </tbody>
 	</table>
-	<%= will_paginate @your_unscheduled, :param_name => 'your_unscheduled_page' %>
+	<%= render :partial => '/shared/tablesorter_pager', :locals => {:pager_id => "your-unscheduled-table" } %>
   <% else %>
 	None yet!
   <% end %>
   </div>
 
   <div id="dash_widget">  
-  <h4>Unscheduled, Unclaimed Classes</h4>
+  <h4><%= link_to "Unscheduled, Unclaimed Classes", dashboard_items_welcome_index_path(:courses => @unscheduled_unclaimed, :title => "Unscheduled, Unclaimed Classes"), :target => "blank" %></h4>
     <% unless @unscheduled_unclaimed.nil? || @unscheduled_unclaimed.empty? %>
   	<table id="unassigned-table" class="table table-condensed tablesorter">
 	<thead>
@@ -135,7 +136,7 @@
         <% end %>
 	</tbody>	
   	</table>
-	<%= will_paginate @unscheduled_unclaimed, :param_name => 'unassigned_page' %>
+	<%= render :partial => '/shared/tablesorter_pager', :locals => {:pager_id => "unassigned-table" } %>
     <% else %>
   	None yet!
     <% end %>
@@ -143,7 +144,7 @@
 </div>
 <div id="dash-wrap">
   <div id="dash_widget">
-  <h4>Your Scheduled, Claimed Classes</h4>
+  <h4><%= link_to "Your Scheduled, Claimed Classes", dashboard_items_welcome_index_path(:courses => @your_upcoming, :title => "Your Scheduled, Claimed Classes"), :target => "blank" %></h4>
   <% unless @your_upcoming.nil? || @your_upcoming.empty? %>	
     <table id="your-upcoming-table" class="table table-condensed tablesorter">
 	  <thead>
@@ -170,14 +171,14 @@
     <% end %>
 	  </tbody>
 	</table>
-	<%= will_paginate @your_upcoming, :param_name => 'your_upcoming_page' %>
+	<%= render :partial => '/shared/tablesorter_pager', :locals => {:pager_id => "your-upcoming-table" } %>
   <% else %>
 	None yet!
   <% end %>
   </div>
 
   <div id="dash_widget">	
-    <h4>Scheduled, Unclaimed Classes</h4>
+    <h4><%= link_to "Scheduled, Unclaimed Classes", dashboard_items_welcome_index_path(:courses => @scheduled_unclaimed, :title => "Scheduled, Unclaimed Classes"), :target => "blank" %></h4>
       <% unless @scheduled_unclaimed.nil? || @scheduled_unclaimed.empty? %>
     	<table id="roomless-table" class="table table-condensed tablesorter">
 		<thead>
@@ -205,7 +206,7 @@
           <% end %>
 		</tbody>
     	</table>
-		<%= will_paginate @scheduled_unclaimed, :param_name => 'roomless_page' %>
+		<%= render :partial => '/shared/tablesorter_pager', :locals => {:pager_id => "roomless-table" } %>
       <% else %>
     	None yet!
       <% end %>
@@ -214,7 +215,7 @@
 
 <div id="dash-wrap">
   <div id="dash_widget">
-  <h4>Your Classes To Close</h4>
+  <h4><%= link_to "Your Classes To Close", dashboard_items_welcome_index_path(:courses => @your_classes_to_close, :title => "Your Classes To Close"), :target => "blank" %></h4>
   <% unless @your_classes_to_close.nil? || @your_classes_to_close.empty? %>	
     <table id="your-upcoming-table" class="table table-condensed tablesorter">
 	  <thead>
@@ -241,7 +242,7 @@
     <% end %>
 	  </tbody>
 	</table>
-	<%= will_paginate @your_classes_to_close, :param_name => 'your_classes_to_close' %>
+	<%= render :partial => '/shared/tablesorter_pager', :locals => {:pager_id => "your-upcoming-table" } %>
   <% else %>
 	None yet!
   <% end %>
@@ -276,7 +277,7 @@
       <% end %>
 	  </tbody>
   	</table>
-	<%= will_paginate @your_past, :param_name => 'your_past_page' %>
+	<%= render :partial => '/shared/tablesorter_pager', :locals => {:pager_id => "your-past-table" } %>
     <% else %>
   	None yet!
     <% end %>

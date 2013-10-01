@@ -8,9 +8,9 @@
 
 <div id="welcome-left">
   	<h4>Participating Special Collections Libraries/Archives</h4>
-	<p>
+	<p style="margin-bottom:0;">
 	<%= link_to "Not Sure - Help me Choose", new_course_path %><br /> 
-	<span style="font-size: 13px; margin-left:1em;"><sup>Select this option if you would like us to match your class with a library/archive.<br /></span>
+	<div style="font-size: 11px; margin-left:1em; margin-bottom:0.3em;">Select this option if you would like us to match your class with a library/archive.<br /></div>
 	<% @repositories.each do |repo| %>
 	  <%= link_to repo.name, repo %><br /> 
 	<% end %>

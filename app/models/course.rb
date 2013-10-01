@@ -1,7 +1,7 @@
 class Course < ActiveRecord::Base
   include ActionDispatch::Routing::UrlFor
   include Rails.application.routes.url_helpers
-  attr_accessible :room_id, :repository_id, :title, :subject, :course_number, :affiliation, :contact_username, :contact_first_name, :contact_last_name, :contact_email, :contact_phone, :pre_class_appt, :staff_involvement, :status, :file, :number_of_students, :timeframe, :timeframe_2, :timeframe_3, :timeframe_4, :user_ids, :external_syllabus, :time_choice_1, :time_choice_2, :time_choice_3, :time_choice_4, :duration, :comments, :course_sessions, :session_count, :item_attribute_ids, :goal, :instruction_session, :pre_class_appt_choice_1, :pre_class_appt_choice_2, :pre_class_appt_choice_3, :staff_involvement_ids, :primary_contact_id
+  attr_accessible :room_id, :repository_id, :title, :subject, :course_number, :affiliation, :contact_username, :contact_first_name, :contact_last_name, :contact_email, :contact_phone, :pre_class_appt, :staff_involvement, :status, :file, :remove_file, :number_of_students, :timeframe, :timeframe_2, :timeframe_3, :timeframe_4, :user_ids, :external_syllabus, :time_choice_1, :time_choice_2, :time_choice_3, :time_choice_4, :duration, :comments, :course_sessions, :session_count, :item_attribute_ids, :goal, :instruction_session, :pre_class_appt_choice_1, :pre_class_appt_choice_2, :pre_class_appt_choice_3, :staff_involvement_ids, :primary_contact_id
   
   has_and_belongs_to_many :users
   belongs_to :room
@@ -159,14 +159,14 @@ class Course < ActiveRecord::Base
   end  
   
   def self.unscheduled_unclaimed
-    courses = Course.order('timeframe DESC')
+    courses = Course.order('timeframe DESC, created_at DESC')
     unscheduled_unclaimed = Array.new
     courses.collect{|course| (course.users.empty? && (course.timeframe.nil? || course.timeframe.blank?)) ? unscheduled_unclaimed << course : '' }
     return unscheduled_unclaimed
   end
   
   def self.scheduled_unclaimed
-    courses = Course.order('timeframe DESC')
+    courses = Course.order('timeframe DESC, created_at DESC')
     scheduled_unclaimed = Array.new
     courses.collect{|course| course.users.empty? && (!course.timeframe.nil? && !course.timeframe.blank?) ? scheduled_unclaimed << course : '' }
     return scheduled_unclaimed
