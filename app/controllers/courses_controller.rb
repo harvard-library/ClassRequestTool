@@ -45,11 +45,11 @@ class CoursesController < ApplicationController
       params[:course][:status] = "Homeless"
     end  
     
-    if !params[:course][:timeframe].blank? && ((params[:course][:primary_contact_id].nil? && params[:course][:primary_contact_id].blank?) || (params[:course][:user_ids].nil? && params[:course][:user_ids][1].nil? && params[:course][:user_ids][1].empty?))
+    if !params[:course][:timeframe].blank? && ((params[:course][:primary_contact_id].nil? || params[:course][:primary_contact_id].blank?) || (params[:course][:user_ids].nil? || params[:course][:user_ids][1].nil? || params[:course][:user_ids][1].empty?))
       params[:course][:status] = "Scheduled, Unclaimed"
-    elsif !params[:course][:timeframe].blank? && ((!params[:course][:primary_contact_id].nil? && !params[:course][:primary_contact_id].blank?) || (!params[:course][:user_ids].nil? && !params[:course][:user_ids][1].nil? && !params[:course][:user_ids][1].empty?))
+    elsif !params[:course][:timeframe].blank? && ((!params[:course][:primary_contact_id].nil? || !params[:course][:primary_contact_id].blank?) || (!params[:course][:user_ids].nil? || !params[:course][:user_ids][1].nil? || !params[:course][:user_ids][1].empty?))
       params[:course][:status] = "Scheduled, Claimed" 
-    elsif (params[:course][:timeframe].nil? || params[:course][:timeframe].blank?) && ((!params[:course][:primary_contact_id].nil? && !params[:course][:primary_contact_id].blank?) || (!params[:course][:user_ids].nil? && !params[:course][:user_ids][1].nil? && !params[:course][:user_ids][1].empty?))
+    elsif (params[:course][:timeframe].nil? || params[:course][:timeframe].blank?) && ((!params[:course][:primary_contact_id].nil? || !params[:course][:primary_contact_id].blank?) || (!params[:course][:user_ids].nil? || !params[:course][:user_ids][1].nil? || !params[:course][:user_ids][1].empty?))
       params[:course][:status] = "Claimed, Unscheduled"   
     end 
   
@@ -119,11 +119,11 @@ class CoursesController < ApplicationController
       timeframe_change = true
     end
     
-    if !params[:course][:timeframe].blank? && ((params[:course][:primary_contact_id].nil? && params[:course][:primary_contact_id].blank?) || (params[:course][:user_ids].nil? && params[:course][:user_ids][1].nil? && params[:course][:user_ids][1].empty?))
+    if !params[:course][:timeframe].blank? && ((params[:course][:primary_contact_id].nil? || params[:course][:primary_contact_id].blank?) || (params[:course][:user_ids].nil? || params[:course][:user_ids][1].nil? || params[:course][:user_ids][1].empty?))
       params[:course][:status] = "Scheduled, Unclaimed"
-    elsif !params[:course][:timeframe].blank? && ((!params[:course][:primary_contact_id].nil? && !params[:course][:primary_contact_id].blank?) || (!params[:course][:user_ids].nil? && !params[:course][:user_ids][1].nil? && !params[:course][:user_ids][1].empty?))
+    elsif !params[:course][:timeframe].blank? && ((!params[:course][:primary_contact_id].nil? || !params[:course][:primary_contact_id].blank?) || (!params[:course][:user_ids].nil? || !params[:course][:user_ids][1].nil? || !params[:course][:user_ids][1].empty?))
       params[:course][:status] = "Scheduled, Claimed" 
-    elsif (params[:course][:timeframe].nil? || params[:course][:timeframe].blank?) && ((!params[:course][:primary_contact_id].nil? && !params[:course][:primary_contact_id].blank?) || (!params[:course][:user_ids].nil? && !params[:course][:user_ids][1].nil? && !params[:course][:user_ids][1].empty?))
+    elsif (params[:course][:timeframe].nil? || params[:course][:timeframe].blank?) && ((!params[:course][:primary_contact_id].nil? || !params[:course][:primary_contact_id].blank?) || (!params[:course][:user_ids].nil? || !params[:course][:user_ids][1].nil? || !params[:course][:user_ids][1].empty?))
       params[:course][:status] = "Claimed, Unscheduled"   
     end  
     
