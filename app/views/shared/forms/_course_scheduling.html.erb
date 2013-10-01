@@ -98,6 +98,8 @@ $(document).ready(function(){
 <div id="form_full_width" class="yellow-box">
 <%= f.input :room, :as => :select, :collection => Room.all, :label => "Room: " %>
 <%= f.input :status, :label => "Status: ", :as => :select, :collection => Course::STATUS %>	
+<%= check_box_tag :send_assessment_email %> Close class and send assessment email to requester<br /><br />
+<%= check_box_tag :no_assessment_email %> Close class and do NOT send assessment email to requester<br /><br />
 </div>
 <% end %>
 </div>

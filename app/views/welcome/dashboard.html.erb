@@ -248,8 +248,8 @@
   <% end %>
   </div>
 
-  <div id="dash_widget">  
-  <h4><%= link_to("Your Closed Classes", "#", :id => 'collapsable') %></h4>
+  <div id="dash_widget">
+  <h4><%= link_to "Your Closed Classes", dashboard_items_welcome_index_path(:courses => @your_past, :title => "Your Closed Classes"), :target => "blank" %></h4>
   <span id="your-past">
     <% unless @your_past.nil? || @your_past.empty? %>	
       <table id="your-past-table" class="table table-condensed tablesorter">

@@ -22,8 +22,7 @@
 //= require ckeditor/init
 //= require_tree .
 
-$(document).ready(function(){
-  $('#your-past').hide();	
+$(document).ready(function(){	
 	
   $('#course_time_choice_1').datetimepicker({
 	timeFormat: "hh:mm tt",
