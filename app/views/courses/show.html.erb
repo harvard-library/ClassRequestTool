@@ -82,7 +82,7 @@
 	  No class dates selected.
 	<% end %>
 	<br />
-	Class Duration: <%= @course.duration unless @course.duration.nil? %> hour(s) <br />
+	Class Duration: <span id="timeframe"><%= @course.duration unless @course.duration.nil? %></span> hour(s) <br />
 	Room: <%= @course.room.name unless @course.room.nil? %> <br />
 	Comments: <%= @course.comments unless @course.comments.nil? %> <br />
 </div>
