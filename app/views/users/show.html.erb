@@ -7,7 +7,7 @@
 <% if current_user.try(:admin?) %>
   <ul class="actions">
     <li><%= link_to('Edit', edit_user_path(@user), :class => "action-edit") %></li>
-    <% unless @user == current_user %>
+    <% if current_user.try(:superadmin?) %>
       <li><%= link_to('Delete', user_path(@user), :confirm => "Are you sure?", :method => :delete) %></li>
     <% end %>
   </ul>

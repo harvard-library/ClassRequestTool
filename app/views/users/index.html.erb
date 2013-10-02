@@ -8,10 +8,11 @@
 		<th>Last Name</th>
 		<th>Username</th>
 		<th>Email</th>
+		<th>Superadmin?</th>
 		<th>Admin?</th>
 		<th>Staff?</th>
 		<th>Patron?</th>
-	  <% if current_user.try(:admin?) %>
+	  <% if current_user.try(:admin?) || current_user.try(:superadmin?) %>
 	  <th>Actions</th>
   	  <% end %>
 	  </tr>
@@ -23,11 +24,14 @@
 		  <td><%= user.last_name %></td>
 		  <td><%= link_to(user.username, user ) %></td>
 	  	  <td><%= user.email %></td>
+		  <td><%= user.superadmin ? "Yes" : "No" %></td>
 		  <td><%= user.admin ? "Yes" : "No" %></td>
 		  <td><%= user.staff ? "Yes" : "No" %></td>
 		  <td><%= user.patron ? "Yes" : "No" %></td> 
 		  <% if current_user.try(:admin?) %>
-		    <td><%= link_to('Edit', edit_user_path(user), :class => "action-edit") %> | <%= link_to('Delete', user_path(user), :confirm => "Are you sure?", :method => :delete) %></td>
+		    <td><%= link_to('Edit', edit_user_path(user), :class => "action-edit") %></td>
+  		  <% elsif current_user.try(:superadmin?) %>
+  		    <td><%= link_to('Edit', edit_user_path(user), :class => "action-edit") %> | <%= link_to('Delete', user_path(user), :confirm => "Are you sure?", :method => :delete) %></td>	
 	  	  <% end %>
 	    </tr>
 	    <% end %>

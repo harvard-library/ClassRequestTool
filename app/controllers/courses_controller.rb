@@ -11,7 +11,7 @@ class CoursesController < ApplicationController
   
   def show
     @course = Course.find(params[:id])
-    unless current_user.try(:staff?) || current_user.try(:admin?) || @course.contact_email == current_user.email
+    unless current_user.try(:staff?) || current_user.try(:admin?) || current_user.try(:superadmin?) || @course.contact_email == current_user.email
        redirect_to('/') and return
     end
     @note = Note.new
@@ -31,7 +31,7 @@ class CoursesController < ApplicationController
   
   def edit
     @course = Course.find(params[:id])
-    unless current_user.try(:staff?) || current_user.try(:admin?) || @course.contact_email == current_user.email
+    unless current_user.try(:staff?) || current_user.try(:admin?) || current_user.try(:superadmin?) || @course.contact_email == current_user.email
        redirect_to('/') and return
     end
     @staff_involvement = @course.staff_involvement.split(',')
@@ -45,11 +45,11 @@ class CoursesController < ApplicationController
       params[:course][:status] = "Homeless"
     end  
     
-    if !params[:course][:timeframe].blank? && ((params[:course][:primary_contact_id].nil? && params[:course][:primary_contact_id].blank?) || (params[:course][:user_ids].nil? && params[:course][:user_ids][1].nil? && params[:course][:user_ids][1].empty?))
+    if !params[:course][:timeframe].blank? && ((params[:course][:primary_contact_id].nil? || params[:course][:primary_contact_id].blank?) || (params[:course][:user_ids].nil? || params[:course][:user_ids][1].nil? || params[:course][:user_ids][1].empty?))
       params[:course][:status] = "Scheduled, Unclaimed"
-    elsif !params[:course][:timeframe].blank? && ((!params[:course][:primary_contact_id].nil? && !params[:course][:primary_contact_id].blank?) || (!params[:course][:user_ids].nil? && !params[:course][:user_ids][1].nil? && !params[:course][:user_ids][1].empty?))
+    elsif !params[:course][:timeframe].blank? && ((!params[:course][:primary_contact_id].nil? || !params[:course][:primary_contact_id].blank?) || (!params[:course][:user_ids].nil? || !params[:course][:user_ids][1].nil? || !params[:course][:user_ids][1].empty?))
       params[:course][:status] = "Scheduled, Claimed" 
-    elsif (params[:course][:timeframe].nil? || params[:course][:timeframe].blank?) && ((!params[:course][:primary_contact_id].nil? && !params[:course][:primary_contact_id].blank?) || (!params[:course][:user_ids].nil? && !params[:course][:user_ids][1].nil? && !params[:course][:user_ids][1].empty?))
+    elsif (params[:course][:timeframe].nil? || params[:course][:timeframe].blank?) && ((!params[:course][:primary_contact_id].nil? || !params[:course][:primary_contact_id].blank?) || (!params[:course][:user_ids].nil? || !params[:course][:user_ids][1].nil? || !params[:course][:user_ids][1].empty?))
       params[:course][:status] = "Claimed, Unscheduled"   
     end 
   
@@ -94,8 +94,8 @@ class CoursesController < ApplicationController
   
   def update
     @course = Course.find(params[:id])
-    unless current_user.try(:staff?) || current_user.try(:admin?) || @course.contact_email == current_user.email
-       redirect_to('/') and return
+    unless current_user.try(:staff?) || current_user.try(:admin?) || current_user.try(:superadmin?) || @course.contact_email == current_user.email
+      redirect_to('/') and return
     end
     
     unless params[:course][:repository_id].nil? || params[:course][:repository_id].blank?
@@ -119,11 +119,11 @@ class CoursesController < ApplicationController
       timeframe_change = true
     end
     
-    if !params[:course][:timeframe].blank? && ((params[:course][:primary_contact_id].nil? && params[:course][:primary_contact_id].blank?) || (params[:course][:user_ids].nil? && params[:course][:user_ids][1].nil? && params[:course][:user_ids][1].empty?))
+    if !params[:course][:timeframe].blank? && ((params[:course][:primary_contact_id].nil? || params[:course][:primary_contact_id].blank?) || (params[:course][:user_ids].nil? || params[:course][:user_ids][1].nil? || params[:course][:user_ids][1].empty?))
       params[:course][:status] = "Scheduled, Unclaimed"
-    elsif !params[:course][:timeframe].blank? && ((!params[:course][:primary_contact_id].nil? && !params[:course][:primary_contact_id].blank?) || (!params[:course][:user_ids].nil? && !params[:course][:user_ids][1].nil? && !params[:course][:user_ids][1].empty?))
+    elsif !params[:course][:timeframe].blank? && ((!params[:course][:primary_contact_id].nil? || !params[:course][:primary_contact_id].blank?) || (!params[:course][:user_ids].nil? || !params[:course][:user_ids][1].nil? || !params[:course][:user_ids][1].empty?))
       params[:course][:status] = "Scheduled, Claimed" 
-    elsif (params[:course][:timeframe].nil? || params[:course][:timeframe].blank?) && ((!params[:course][:primary_contact_id].nil? && !params[:course][:primary_contact_id].blank?) || (!params[:course][:user_ids].nil? && !params[:course][:user_ids][1].nil? && !params[:course][:user_ids][1].empty?))
+    elsif (params[:course][:timeframe].nil? || params[:course][:timeframe].blank?) && ((!params[:course][:primary_contact_id].nil? || !params[:course][:primary_contact_id].blank?) || (!params[:course][:user_ids].nil? || !params[:course][:user_ids][1].nil? || !params[:course][:user_ids][1].empty?))
       params[:course][:status] = "Claimed, Unscheduled"   
     end  
     
@@ -146,11 +146,20 @@ class CoursesController < ApplicationController
     #     params[:course][:status] = "Closed"
     #   end 
     # end  
+    
+    if params[:send_assessment_email] == "1" || params[:no_assessment_email] == "1"
+      params[:course][:status] = "Closed"
+    end
       
     respond_to do |format|
+      if params[:schedule_future_class] == "1" && (!params[:course][:timeframe].nil? && params[:course][:timeframe] < DateTime.now) || (!params[:course][:timeframe2].nil? && params[:course][:timeframe2] < DateTime.now) || (!params[:course][:timeframe3].nil? && params[:course][:timeframe3] < DateTime.now) || (!params[:course][:timeframe4].nil? && params[:course][:timeframe4] < DateTime.now)
+          flash[:error] = "Please confirm scheduling class in the past."
+          format.html { render action: "edit" }
+          format.json { render json: @course.errors, status: :unprocessable_entity }
+      end  
       if @course.update_attributes(params[:course])
         @course.updated_request_email 
-        if params[:course][:status] == "Closed" && params[:send_email] == "1"
+        if params[:send_assessment_email] == "1" && (params[:no_assessment_email].nil? || params[:no_assessment_email] == "0")
           @course.send_assessment_email
         end
         if repo_change == true
@@ -175,7 +184,7 @@ class CoursesController < ApplicationController
   
   def destroy
     @course = Course.find(params[:id])
-    unless current_user.try(:staff?) || current_user.try(:admin?) || @course.contact_email == current_user.email
+    unless current_user.try(:staff?) || current_user.try(:admin?) || current_user.try(:superadmin?) || @course.contact_email == current_user.email
        redirect_to('/') and return
     end
     @course.destroy
@@ -188,7 +197,7 @@ class CoursesController < ApplicationController
   
   def summary
     @course = Course.find(params[:id])
-    unless current_user.try(:staff?) || current_user.try(:admin?) || @course.contact_email == current_user.email
+    unless current_user.try(:staff?) || current_user.try(:admin?) || current_user.try(:superadmin?) || @course.contact_email == current_user.email
        redirect_to('/') and return
     end
   end

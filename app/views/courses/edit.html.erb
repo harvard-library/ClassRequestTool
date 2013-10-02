@@ -21,7 +21,7 @@
 	<div id="form_col1">
 	  <h4><%= @course.repository.nil? ? "Not Sure - Help me Choose" : @course.repository.name %></h4>
 	</div>
-	<% if current_user.try(:admin?) || current_user.try(:staff?) %>
+	<% if current_user.try(:admin?) || current_user.try(:staff?) || current_user.try(:superadmin?) %>
 	  <div id="form_col2" class="yellow-box">	
 		 <%= f.input :repository_id, :as => :select, :collection => Repository.all, :label => "Assign Library/Archive: " %>
 	  </div>

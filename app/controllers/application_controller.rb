@@ -3,6 +3,12 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
   
   private 
+  def authenticate_superadmin!
+    if !current_user.try(:superadmin?)
+      redirect_to(root_url)
+    end  
+  end
+  
   def authenticate_admin!
     if !current_user.try(:admin?)
       redirect_to(root_url)
@@ -16,7 +22,7 @@ class ApplicationController < ActionController::Base
   end
   
   def authenticate_admin_or_staff!
-    if !current_user.try(:admin?) && !current_user.try(:staff?)
+    if !current_user.try(:superadmin?) && !current_user.try(:admin?) && !current_user.try(:staff?)
       redirect_to(root_url)
     end  
   end
