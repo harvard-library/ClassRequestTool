@@ -2,6 +2,20 @@ include Rails.application.routes.url_helpers
 
 namespace :crt do
   namespace :bootstrap do
+    desc "Add the default superadmin"
+    task :default_superadmin => :environment do
+      user = User.new(:email => 'superadmin@example.com')
+      if %w[development test dev local].include?(Rails.env)
+        user.password = User.random_password(size = 8)
+      else
+        user.password = User.random_password
+      end
+      user.superadmin = true
+      user.save
+      puts "Superadmin email is: #{user.email}"
+      puts "Superadmin password is: #{user.password}"
+    end
+    
     desc "Add the default admin"
     task :default_admin => :environment do
       user = User.new(:email => 'admin@example.com', :username => 'admin')
@@ -66,7 +80,7 @@ namespace :crt do
     end
     
     desc "run all tasks in bootstrap"
-    task :run_all => [:default_admin, :default_repos, :default_locations, :default_rooms, :default_staff_involvement, :default_attributes] do
+    task :run_all => [:default_admin, :default_repos, :default_locations, :default_rooms, :default_staff_involvement, :default_attributes, :default_superadmin] do
       puts "Created Admin account, Repos, Locations and Rooms!"
     end
   end

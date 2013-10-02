@@ -10,10 +10,11 @@ class UsersController < ApplicationController
   end
   
   def create
+    superadmin = params[:user][:superadmin]
     admin = params[:user][:admin]
     staff = params[:user][:staff]
     patron = params[:user][:patron]
-    params[:user] = params[:user].delete_if{|key, value| key == "admin" || key == "staff" || key == "patron" }
+    params[:user] = params[:user].delete_if{|key, value| key == "superadmin" || key == "admin" || key == "staff" || key == "patron" }
     @user = User.new(params[:user])
     @user.password = User.random_password
     admin == "1" ? @user.admin = true : @user.admin = false
@@ -37,7 +38,7 @@ class UsersController < ApplicationController
   def edit
     @user = User.find(params[:id])
     
-    unless current_user.try(:admin?) || @user.email == current_user.email
+    unless current_user.try(:admin?) || current_user.try(:superadmin?) || @user.email == current_user.email
        redirect_to('/') and return
     end
   end
@@ -45,7 +46,7 @@ class UsersController < ApplicationController
   def destroy
     @user = User.find(params[:id])
     
-    unless current_user.try(:admin?) || @user.email == current_user.email
+    unless current_user.try(:superadmin?) || @user.email == current_user.email
        redirect_to('/') and return
     end
     
@@ -60,13 +61,14 @@ class UsersController < ApplicationController
 
   def update
     @user = User.find(params[:id])
-    unless current_user.try(:admin?) || @user.email == current_user.email
+    unless current_user.try(:admin?) || current_user.try(:superadmin?) || @user.email == current_user.email
        redirect_to('/') and return
     end
+    superadmin = params[:user][:superadmin]
     admin = params[:user][:admin]
     staff = params[:user][:staff]
     patron = params[:user][:patron]
-    params[:user] = params[:user].delete_if{|key, value| key == "admin" || key == "staff" || key == "patron" }
+    params[:user] = params[:user].delete_if{|key, value| key == "superadmin" || key == "admin" || key == "staff" || key == "patron" }
     @user.attributes = params[:user]
     admin == "1" ? @user.admin = true : @user.admin = false
     staff == "1" ? @user.staff = true : @user.staff = false
