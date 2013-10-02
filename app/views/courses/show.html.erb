@@ -16,16 +16,16 @@
 	<%  if @course.file.blank? && @course.external_syllabus.nil? %>
 	  None
 	<% else %>
-	  <span id="syllabus"><%= link_to "Syllabus", @course.file_url unless @course.file.blank? %></span>
+	  <%= link_to "Syllabus", @course.file_url unless @course.file.blank? %>
 	  <%  unless @course.external_syllabus.nil? %>
 	  <br />
-	    <span id="syllabus"><%= link_to @course.external_syllabus, @course.external_syllabus, :target => "blank" %></span>
+	    <%= link_to @course.external_syllabus, @course.external_syllabus, :target => "blank" %>
 	  <% end %>
 	<% end %>
 	<br />
 	
 	<h4>Requester Information</h4>
-	Primary Contact Name: <%= @course.contact_first_name unless @course.contact_last_name.nil? %> <%= @course.contact_last_name unless @course.contact_last_name.nil? %> <br />
+	Primary Contact Name: <span id="staffContact"><%= @course.contact_first_name unless @course.contact_last_name.nil? %> <%= @course.contact_last_name unless @course.contact_last_name.nil? %></span> <br />
 	Primary Contact Email: <%= @course.contact_email unless @course.contact_email.nil? %> <br />
 	Primary Contact Phone: <%= @course.contact_phone unless @course.contact_phone.nil? %> <br />
 	
@@ -83,7 +83,7 @@
 	<% end %>
 	<br />
 	Class Duration: <span id="duration"><%= @course.duration unless @course.duration.nil? %></span> hour(s) <br />
-	Room: <%= @course.room.name unless @course.room.nil? %> <br />
+	Room: <span id="room"><%= @course.room.name unless @course.room.nil? %></span> <br />
 	Comments: <%= @course.comments unless @course.comments.nil? %> <br />
 </div>
 <div id="welcome-right">	
