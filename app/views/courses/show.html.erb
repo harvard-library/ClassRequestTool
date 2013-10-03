@@ -25,7 +25,7 @@
 	<br />
 	
 	<h4>Requester Information</h4>
-	Primary Contact Name: <span id="staffContact"><%= @course.contact_first_name unless @course.contact_last_name.nil? %> <%= @course.contact_last_name unless @course.contact_last_name.nil? %></span> <br />
+	Primary Contact Name:  <%= @course.contact_first_name unless @course.contact_first_name.nil? %> <%= @course.contact_last_name unless @course.contact_last_name.nil? %> <br />
 	Primary Contact Email: <%= @course.contact_email unless @course.contact_email.nil? %> <br />
 	Primary Contact Phone: <%= @course.contact_phone unless @course.contact_phone.nil? %> <br />
 	
@@ -92,7 +92,7 @@
 	  	Status: <%= @course.status %> <br />
 		Primary Library/Archive Contact: 
 		<% unless @course.primary_contact.nil? %>
-		   <%= mail_to @course.primary_contact.email, "#{@course.primary_contact.first_name} #{@course.primary_contact.last_name}" %>
+		   <span id="staffContact"><%= @course.primary_contact.first_name %> <%= @course.primary_contact.last_name unless @course.contact_last_name.nil? %></span> - <%= mail_to @course.primary_contact.email, "Send Email" %>
 		<% else %>
 		  None
 		<% end %>
