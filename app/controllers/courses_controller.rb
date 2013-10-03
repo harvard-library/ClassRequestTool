@@ -162,7 +162,7 @@ class CoursesController < ApplicationController
     end
       
     respond_to do |format|
-      if params[:schedule_future_class] == "1" && (!params[:course][:timeframe].nil? && params[:course][:timeframe] < DateTime.now) || (!params[:course][:timeframe2].nil? && params[:course][:timeframe2] < DateTime.now) || (!params[:course][:timeframe3].nil? && params[:course][:timeframe3] < DateTime.now) || (!params[:course][:timeframe4].nil? && params[:course][:timeframe4] < DateTime.now)
+      if params[:schedule_future_class] == "1" && (!params[:course][:timeframe].nil? && !params[:course][:timeframe].blank? && params[:course][:timeframe] < DateTime.now) || (!params[:course][:timeframe2].nil? && !params[:course][:timeframe2].blank? && params[:course][:timeframe2] < DateTime.now) || (!params[:course][:timeframe3].nil? && !params[:course][:timeframe3].blank? && params[:course][:timeframe3] < DateTime.now) || (!params[:course][:timeframe4].nil? && !params[:course][:timeframe4].blank? && params[:course][:timeframe4] < DateTime.now)
           flash[:error] = "Please confirm scheduling class in the past."
           format.html { render action: "edit" }
           format.json { render json: @course.errors, status: :unprocessable_entity }
