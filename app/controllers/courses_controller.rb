@@ -105,7 +105,6 @@ class CoursesController < ApplicationController
     
     unless params[:course][:repository_id].nil? || params[:course][:repository_id].blank?
       @repository = Repository.find(params[:course][:repository_id])
-      params[:course][:status] = "Unclaimed, Unscheduled"
     else
       params[:course][:status] = "Homeless"
     end
