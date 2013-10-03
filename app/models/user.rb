@@ -27,7 +27,9 @@ class User < ActiveRecord::Base
   end  
   
   def user_type
-    if self.admin == true
+    if self.superadmin == true
+      return "superadmin"
+    elsif self.admin == true
       return "admin"
     elsif self.staff == true
       return "staff"

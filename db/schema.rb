@@ -160,12 +160,12 @@ ActiveRecord::Schema.define(:version => 20131001141651) do
   add_index "locations", ["name"], :name => "index_locations_on_name"
 
   create_table "notes", :force => true do |t|
-    t.text     "note_text",                        :null => false
-    t.integer  "user_id",                          :null => false
-    t.integer  "course_id",                        :null => false
-    t.datetime "created_at",                       :null => false
-    t.datetime "updated_at",                       :null => false
-    t.boolean  "staff_comment", :default => false
+    t.text     "note_text",     :null => false
+    t.integer  "user_id",       :null => false
+    t.integer  "course_id",     :null => false
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+    t.boolean  "staff_comment"
   end
 
   add_index "notes", ["note_text"], :name => "index_notes_on_note_text"
