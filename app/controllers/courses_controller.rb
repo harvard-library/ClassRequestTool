@@ -40,18 +40,23 @@ class CoursesController < ApplicationController
   def create
     unless params[:course][:repository_id].nil? || params[:course][:repository_id].blank?
       @repository = Repository.find(params[:course][:repository_id])
-      params[:course][:status] = "Unclaimed, Unscheduled" 
     else
       params[:course][:status] = "Homeless"
     end  
     
-    if !params[:course][:timeframe].blank? && ((params[:course][:primary_contact_id].nil? || params[:course][:primary_contact_id].blank?) || (params[:course][:user_ids].nil? || params[:course][:user_ids][1].nil? || params[:course][:user_ids][1].empty?))
-      params[:course][:status] = "Scheduled, Unclaimed"
-    elsif !params[:course][:timeframe].blank? && ((!params[:course][:primary_contact_id].nil? || !params[:course][:primary_contact_id].blank?) || (!params[:course][:user_ids].nil? || !params[:course][:user_ids][1].nil? || !params[:course][:user_ids][1].empty?))
-      params[:course][:status] = "Scheduled, Claimed" 
-    elsif (params[:course][:timeframe].nil? || params[:course][:timeframe].blank?) && ((!params[:course][:primary_contact_id].nil? || !params[:course][:primary_contact_id].blank?) || (!params[:course][:user_ids].nil? || !params[:course][:user_ids][1].nil? || !params[:course][:user_ids][1].empty?))
-      params[:course][:status] = "Claimed, Unscheduled"   
-    end 
+    if params[:course][:timeframe].nil? || params[:course][:timeframe].blank?
+      if (params[:course][:primary_contact_id].nil? || params[:course][:primary_contact_id].blank?) && (params[:course][:user_ids].nil? || params[:course][:user_ids][1].nil? || params[:course][:user_ids][1].empty?)
+        params[:course][:status] = "Unclaimed, Unscheduled"
+      else
+        params[:course][:status] = "Claimed, Unscheduled"  
+      end
+    else
+      if (params[:course][:primary_contact_id].nil? || params[:course][:primary_contact_id].blank?) && (params[:course][:user_ids].nil? || params[:course][:user_ids][1].nil? || params[:course][:user_ids][1].empty?)
+        params[:course][:status] = "Scheduled, Unclaimed"
+      else
+        params[:course][:status] = "Scheduled, Claimed" 
+      end  
+    end  
   
     params[:course][:timeframe] = DateTime.strptime(params[:course][:timeframe], '%m/%d/%Y %I:%M %P') unless params[:course][:timeframe].nil? || params[:course][:timeframe].empty?
     params[:course][:timeframe_2] = DateTime.strptime(params[:course][:timeframe_2], '%m/%d/%Y %I:%M %P') unless params[:course][:timeframe_2].nil? || params[:course][:timeframe_2].empty?
@@ -119,13 +124,19 @@ class CoursesController < ApplicationController
       timeframe_change = true
     end
     
-    if !params[:course][:timeframe].blank? && ((params[:course][:primary_contact_id].nil? || params[:course][:primary_contact_id].blank?) || (params[:course][:user_ids].nil? || params[:course][:user_ids][1].nil? || params[:course][:user_ids][1].empty?))
-      params[:course][:status] = "Scheduled, Unclaimed"
-    elsif !params[:course][:timeframe].blank? && ((!params[:course][:primary_contact_id].nil? || !params[:course][:primary_contact_id].blank?) || (!params[:course][:user_ids].nil? || !params[:course][:user_ids][1].nil? || !params[:course][:user_ids][1].empty?))
-      params[:course][:status] = "Scheduled, Claimed" 
-    elsif (params[:course][:timeframe].nil? || params[:course][:timeframe].blank?) && ((!params[:course][:primary_contact_id].nil? || !params[:course][:primary_contact_id].blank?) || (!params[:course][:user_ids].nil? || !params[:course][:user_ids][1].nil? || !params[:course][:user_ids][1].empty?))
-      params[:course][:status] = "Claimed, Unscheduled"   
-    end  
+    if params[:course][:timeframe].nil? || params[:course][:timeframe].blank?
+      if (params[:course][:primary_contact_id].nil? || params[:course][:primary_contact_id].blank?) && (params[:course][:user_ids].nil? || params[:course][:user_ids][1].nil? || params[:course][:user_ids][1].empty?)
+        params[:course][:status] = "Unclaimed, Unscheduled"
+      else
+        params[:course][:status] = "Claimed, Unscheduled"  
+      end
+    else
+      if (params[:course][:primary_contact_id].nil? || params[:course][:primary_contact_id].blank?) && (params[:course][:user_ids].nil? || params[:course][:user_ids][1].nil? || params[:course][:user_ids][1].empty?)
+        params[:course][:status] = "Scheduled, Unclaimed"
+      else
+        params[:course][:status] = "Scheduled, Claimed" 
+      end  
+    end 
     
     params[:course][:timeframe] = DateTime.strptime(params[:course][:timeframe], '%m/%d/%Y %I:%M %P') unless params[:course][:timeframe].nil? || params[:course][:timeframe].empty?
     params[:course][:timeframe_2] = DateTime.strptime(params[:course][:timeframe_2], '%m/%d/%Y %I:%M %P') unless params[:course][:timeframe_2].nil? || params[:course][:timeframe_2].empty?
