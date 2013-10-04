@@ -28,7 +28,9 @@ class User < ActiveRecord::Base
   end  
   
   def user_type
-    if self.admin == true
+    if self.superadmin == true
+      return "superadmin"
+    elsif self.admin == true
       return "admin"
     elsif self.staff == true
       return "staff"
@@ -78,7 +80,9 @@ class User < ActiveRecord::Base
   
   def upcoming_repo_courses
     upcoming_repo = Array.new
-    self.repositories[0].courses.collect{|course| !course.timeframe.nil? && course.timeframe >= DateTime.now ? upcoming_repo << course : ''}
+    all_courses = Array.new
+    self.repositories.collect{|repo| all_courses << repo.courses}
+    all_courses.flatten.collect{|course| !course.timeframe.nil? && course.timeframe >= DateTime.now ? upcoming_repo << course : ''}
     return upcoming_repo
   end
   

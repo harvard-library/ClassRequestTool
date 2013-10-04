@@ -17,6 +17,7 @@ class UsersController < ApplicationController
     params[:user] = params[:user].delete_if{|key, value| key == "superadmin" || key == "admin" || key == "staff" || key == "patron" }
     @user = User.new(params[:user])
     @user.password = User.random_password
+    superadmin == "1" ? @user.superadmin = true : @user.superadmin = false
     admin == "1" ? @user.admin = true : @user.admin = false
     staff == "1" ? @user.staff = true : @user.staff = false
     patron == "1" ? @user.patron = true : @user.patron = false
@@ -70,6 +71,7 @@ class UsersController < ApplicationController
     patron = params[:user][:patron]
     params[:user] = params[:user].delete_if{|key, value| key == "superadmin" || key == "admin" || key == "staff" || key == "patron" }
     @user.attributes = params[:user]
+    superadmin == "1" ? @user.superadmin = true : @user.superadmin = false
     admin == "1" ? @user.admin = true : @user.admin = false
     staff == "1" ? @user.staff = true : @user.staff = false
     patron == "1" ? @user.patron = true : @user.patron = false
