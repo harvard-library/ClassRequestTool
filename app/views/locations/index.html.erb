@@ -14,7 +14,9 @@
 	  	  <td><%= location.name %></td>
 		  <td>
 	      <% if current_user.try(:admin?) %>
-	   		<%= link_to('Edit', edit_location_path(location), :class => "action-edit") %> | <%= link_to('Delete', location_path(location), :confirm => "Are you sure?", :method => :delete) %>
+	   		<%= link_to('Edit', edit_location_path(location), :class => "action-edit") %>
+  	      <% elsif current_user.try(:superadmin?) %>
+  	   		<%= link_to('Edit', edit_location_path(location), :class => "action-edit") %> | <%= link_to('Delete', location_path(location), :confirm => "Are you sure?", :method => :delete) %>	
 	  	  <% end %>
 		  </td>
 	    </tr>
@@ -25,7 +27,7 @@
 	<%= render :partial => '/shared/tablesorter_pager', :locals => {:pager_id => "locations-table" } %>
 	<br />
 	<br />
-  <% if current_user.try(:admin?) %>
+  <% if current_user.try(:admin?) || current_user.try(:superadmin?) %>
     <%= link_to("Add New Location", new_location_path ) %>
   <% end %>
 </div>
