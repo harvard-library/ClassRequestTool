@@ -25,6 +25,7 @@
 	<br />
 	
 	<h4>Requester Information</h4>
+	Primary Contact Username:  <span id="requestorUsername"><%= @course.contact_username unless @course.contact_username.nil? %></span> <br />
 	Primary Contact Name:  <span id="patronContact"><%= @course.contact_first_name unless @course.contact_first_name.nil? %> <%= @course.contact_last_name unless @course.contact_last_name.nil? %></span> <br />
 	Primary Contact Email: <%= @course.contact_email unless @course.contact_email.nil? %> <br />
 	Primary Contact Phone: <%= @course.contact_phone unless @course.contact_phone.nil? %> <br />
