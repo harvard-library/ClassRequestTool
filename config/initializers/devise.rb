@@ -235,10 +235,12 @@ Devise.setup do |config|
   config.debug = true
   config.disable_token_authenticity_checks = true
   config.post_logout_url = 'https://www.pin1.harvard.edu/pin/logout'
-  #config.gpg_home = ''
+  #config.gpg_home = '/web/numfar/rails3.2dev/docs/classrequest-dev/fakehome2'
   config.gpg_path = '/usr/local/bin/gpg'
   config.creation_attributes = Proc.new do |user,user_info,authentication_info|
     user.email = user_info[:mail]
+    user.password = user_info[:mail]
+    user.pinuser = true
     #user.edupersonaffiliation = user_info[:edupersonaffiliation]
     #user.guid = authentication_info[:user_id]
   end
