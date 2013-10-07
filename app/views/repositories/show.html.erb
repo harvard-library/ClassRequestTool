@@ -21,7 +21,7 @@
 	  None.
 	<% end %>
 	<br />
-	<% unless current_user.try(:patron?) %>
+	<% unless current_user.try(:patron?) || !user_signed_in? %>
 	  Available Rooms: 
 	  <% unless @repository.rooms.nil? || @repository.rooms.empty? %> 
 	  <ul>
