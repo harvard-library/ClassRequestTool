@@ -61,7 +61,7 @@ class User < ActiveRecord::Base
   def unscheduled_courses
     unscheduled = Array.new 
     self.courses.collect{|course| course.timeframe.nil? ? unscheduled << course : ''}
-    return unscheduled
+    return unscheduled.sort_by { |hsh| hsh[:created_at] }
   end
   
   def mine_current
@@ -83,13 +83,13 @@ class User < ActiveRecord::Base
     all_courses = Array.new
     self.repositories.collect{|repo| all_courses << repo.courses}
     all_courses.flatten.collect{|course| !course.timeframe.nil? && course.timeframe >= DateTime.now ? upcoming_repo << course : ''}
-    return upcoming_repo
+    return upcoming_repo.sort_by { |hsh| hsh[:timeframe] }
   end
   
   def classes_to_close
     to_close = Array.new
     self.courses.collect{|course| !course.timeframe.nil? && course.timeframe < DateTime.now ? to_close << course : ''}
-    return to_close
+    return to_close.sort_by { |hsh| hsh[:timeframe] }
   end
 
 end

@@ -155,11 +155,11 @@ class Course < ActiveRecord::Base
   end  
   
   def self.homeless
-    Course.find(:all, :conditions => {:repository_id => nil}, :order => 'timeframe DESC, created_at DESC')
+    Course.find(:all, :conditions => {:repository_id => nil}, :order => 'created_at ASC')
   end  
   
   def self.unscheduled_unclaimed
-    courses = Course.order('timeframe DESC, created_at DESC')
+    courses = Course.order('created_at ASC')
     unscheduled_unclaimed = Array.new
     courses.collect{|course| (course.users.empty? && (course.timeframe.nil? || course.timeframe.blank?)) ? unscheduled_unclaimed << course : '' }
     return unscheduled_unclaimed

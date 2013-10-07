@@ -148,7 +148,7 @@ DEPENDENCIES
   carrierwave
   ckeditor
   coffee-rails (~> 3.2.1)
-  devise
+  devise (= 3.0.3)
   devise_harvard_auth_proxy!
   formtastic
   formtastic-bootstrap

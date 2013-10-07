@@ -1,0 +1,12 @@
+<% if user_signed_in? %>
+  <h3>Welcome, <%= current_user.first_name %> <%= current_user.last_name %></h3>
+<% else %>
+  <h3>Welcome</h3>
+<% end %>
+
+<%= render :partial => 'shared/welcome_text' %>
+
+Please choose a method for login:
+<br /><br />
+<p><%= link_to "Sign In/Sign Up", new_user_session_path %> OR <%= link_to "Sign In with Harvard PIN", user_hauthproxy_sign_in_path %></p>
+
