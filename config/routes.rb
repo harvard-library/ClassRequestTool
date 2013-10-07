@@ -45,6 +45,7 @@ ClassRequestTool::Application.routes.draw do
     collection do
       get 'dashboard'
       get 'dashboard_items'
+      get 'login'
     end  
   end  
 

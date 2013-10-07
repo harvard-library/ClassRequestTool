@@ -172,10 +172,7 @@ $(document).ready(function(){
 	.tablesorterPager({container: $("#pager-involvement-table")})
   ;
 
-  $("#your-repos-table").tablesorter()
-    .tablesorter()
-	.tablesorterPager({container: $("#pager-your-repos-table"), size: 5, positionFixed: false})
-  ;
+  
   $("#your-unscheduled-table").tablesorter()
     .tablesorter()
 	.tablesorterPager({container: $("#pager-your-unscheduled-table"), size: 5, positionFixed: false})
@@ -199,6 +196,10 @@ $(document).ready(function(){
   $("#roomless-table").tablesorter()
     .tablesorter()
 	.tablesorterPager({container: $("#pager-roomless-table"), size: 5, positionFixed: false})
+  ;
+  $("#your-repo-courses-table").tablesorter()
+    .tablesorter()
+	.tablesorterPager({container: $("#pager-your-repo-courses-table"), size: 5, positionFixed: false})
   ;
 
 });
