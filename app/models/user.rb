@@ -60,7 +60,7 @@ class User < ActiveRecord::Base
   def unscheduled_courses
     unscheduled = Array.new 
     self.courses.collect{|course| course.timeframe.nil? ? unscheduled << course : ''}
-    return unscheduled
+    return unscheduled.sort_by { |hsh| hsh[:created_at] }
   end
   
   def mine_current
