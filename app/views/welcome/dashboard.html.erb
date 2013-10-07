@@ -10,30 +10,34 @@
 
 <div id="dash-wrap">
   <div id="dash_widget">	
-      <h4><%= link_to "Upcoming Classes for Your Library/Archive", dashboard_items_welcome_index_path(:courses => @your_repo_courses, :title => "Upcoming Classes for Your Library/Archive"), :target => "blank" %></h4>
-        <% unless @your_repo_courses.nil? || @your_repo_courses.empty? %>
-      	<table id="your-repos-table" class="table table-condensed tablesorter">
-      	  <tr>
-      		<th>Name</th>
-      		<th>Class Date</th>
-			<th>Status</th>
-      		<th></th>
+  <h4><%= link_to "Upcoming Classes for Your Library/Archive", dashboard_items_welcome_index_path(:courses => @your_repo_courses, :title => "Upcoming Classes for Your Library/Archive"), :target => "blank" %></h4>
+  <% unless @your_repo_courses.nil? || @your_repo_courses.empty? %>
+    <table id="your-repo-courses-table" class="table table-condensed tablesorter">
+      <thead>
+		<tr>
+      	  <th>Name</th>
+      	  <th>Class Date</th>
+		  <th>Status</th>
+      	  <th></th>
+      	</tr>
+	  </thead>
+	  <tbody>
+        <% @your_repo_courses.each do |course| %>	
+          <tr>
+      	    <td><%= link_to(course.title, course ) %></td>
+      		<td><%= course.timeframe.strftime('%m/%d/%Y %I:%M %P') unless course.timeframe.nil? %></td>
+			<td><%= course.status unless course.status.nil? %></td>
+      		<td><%= link_to('Edit', edit_course_path(course), :class => "action-edit") %>
+            <% if current_user.try(:admin?) || current_user.try(:superadmin?) %>
+      	   	  <br /><%= link_to('Delete', course_path(course), :confirm => "Are you sure?", :method => :delete) %>
+          	<% end %>
+		    </td>
       	  </tr>
-            <% @your_repo_courses.each do |course| %>	
-            	<tr>
-      	  	  <td><%= link_to(course.title, course ) %></td>
-      		  <td><%= course.timeframe.strftime('%m/%d/%Y %I:%M %P') unless course.timeframe.nil? %></td>
-			  <td><%= course.status unless course.status.nil? %></td>
-      		  <td><%= link_to('Edit', edit_course_path(course), :class => "action-edit") %>
-              <% if current_user.try(:admin?) || current_user.try(:superadmin?) %>
-      	   		<br /><%= link_to('Delete', course_path(course), :confirm => "Are you sure?", :method => :delete) %>
-          	  <% end %>
-			  </td>
-      	    </tr>
-            <% end %>
-      	</table>
+        <% end %>
+	  </tbody>	
+    </table>
 		<br />
-		<%= render :partial => '/shared/tablesorter_pager', :locals => {:pager_id => "your-repos-table" } %>
+		<%= render :partial => '/shared/tablesorter_pager', :locals => {:pager_id => "your-repo-courses-table" } %>
         <% else %>
       	None yet!
         <% end %>
