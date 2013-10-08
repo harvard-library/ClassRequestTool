@@ -120,8 +120,8 @@ class Course < ActiveRecord::Base
       :reply_to => DEFAULT_MAILER_SENDER,
       :to => self.contact_email,
       :subject => "Your class at #{self.repository.name} has been confirmed.",
-      :body => "<p>Title: <a href='#{ROOT_URL}#{course_path(self)}'>#{self.title}</a><br />Confirmed Date: #{self.timeframe}<br />Duration: #{self.duration} hours<br />Staff contact:<a href='mail_to:#{self.primary_contact.email}'> #{self.primary_contact.first_name} #{self.primary_contact.last_name}</a></p>
-      <p>If you have any questions, please add a note to the <a href='#{ROOT_URL}#{course_path(self)}'>class detail</a>, or <a href='mail_to:#{self.primary_contact.email}'>email</a> the staff member responsible.</p>"
+      :body => "<p>Title: <a href='#{ROOT_URL}#{course_path(self)}'>#{self.title}</a><br />Confirmed Date: #{self.timeframe}<br />Duration: #{self.duration} hours<br />Staff contact:<a href='mailto:#{self.primary_contact.email}'> #{self.primary_contact.first_name} #{self.primary_contact.last_name}</a></p>
+      <p>If you have any questions, please add a note to the <a href='#{ROOT_URL}#{course_path(self)}'>class detail</a>, or <a href='mailto:#{self.primary_contact.email}'>email</a> the staff member responsible.</p>"
     ) 
   end
   
@@ -159,7 +159,7 @@ class Course < ActiveRecord::Base
   end  
   
   def self.unscheduled_unclaimed
-    courses = Course.order('timeframe DESC, created_at DESC')
+    courses = Course.order('created_at ASC')
     unscheduled_unclaimed = Array.new
     courses.collect{|course| (course.users.empty? && (course.timeframe.nil? || course.timeframe.blank?)) ? unscheduled_unclaimed << course : '' }
     return unscheduled_unclaimed
