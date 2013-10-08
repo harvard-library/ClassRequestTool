@@ -58,18 +58,18 @@ class CoursesController < ApplicationController
       end  
     end  
   
-    params[:course][:timeframe] = DateTime.strptime(params[:course][:timeframe], '%m/%d/%Y %I:%M %P') unless params[:course][:timeframe].nil? || params[:course][:timeframe].empty?
-    params[:course][:timeframe_2] = DateTime.strptime(params[:course][:timeframe_2], '%m/%d/%Y %I:%M %P') unless params[:course][:timeframe_2].nil? || params[:course][:timeframe_2].empty?
-    params[:course][:timeframe_3] = DateTime.strptime(params[:course][:timeframe_3], '%m/%d/%Y %I:%M %P') unless params[:course][:timeframe_3].nil? || params[:course][:timeframe_3].empty?
-    params[:course][:timeframe_4] = DateTime.strptime(params[:course][:timeframe_4], '%m/%d/%Y %I:%M %P') unless params[:course][:timeframe_4].nil? || params[:course][:timeframe_4].empty?
-    params[:course][:pre_class_appt] = DateTime.strptime(params[:course][:pre_class_appt], '%m/%d/%Y %I:%M %P') unless params[:course][:pre_class_appt].nil? || params[:course][:pre_class_appt].empty?
-    params[:course][:time_choice_1] = DateTime.strptime(params[:course][:time_choice_1], '%m/%d/%Y %I:%M %P') unless params[:course][:time_choice_1].empty?
-    params[:course][:time_choice_2] = DateTime.strptime(params[:course][:time_choice_2], '%m/%d/%Y %I:%M %P') unless params[:course][:time_choice_2].empty?
-    params[:course][:time_choice_3] = DateTime.strptime(params[:course][:time_choice_3], '%m/%d/%Y %I:%M %P') unless params[:course][:time_choice_3].empty?
-    params[:course][:time_choice_4] = DateTime.strptime(params[:course][:time_choice_4], '%m/%d/%Y %I:%M %P') unless params[:course][:time_choice_4].empty?
-    #params[:course][:pre_class_appt_choice_1] = DateTime.strptime(params[:course][:pre_class_appt_choice_1], '%m/%d/%Y %I:%M %P') unless params[:course][:pre_class_appt_choice_1].empty?
-    #params[:course][:pre_class_appt_choice_2] = DateTime.strptime(params[:course][:pre_class_appt_choice_2], '%m/%d/%Y %I:%M %P') unless params[:course][:pre_class_appt_choice_2].empty?
-    #params[:course][:pre_class_appt_choice_3] = DateTime.strptime(params[:course][:pre_class_appt_choice_3], '%m/%d/%Y %I:%M %P') unless params[:course][:pre_class_appt_choice_3].empty?
+    params[:course][:timeframe] = DateTime.strptime(params[:course][:timeframe], '%m/%d/%Y %I:%M %P')+4.hours unless params[:course][:timeframe].nil? || params[:course][:timeframe].empty?
+    params[:course][:timeframe_2] = DateTime.strptime(params[:course][:timeframe_2], '%m/%d/%Y %I:%M %P')+4.hours unless params[:course][:timeframe_2].nil? || params[:course][:timeframe_2].empty?
+    params[:course][:timeframe_3] = DateTime.strptime(params[:course][:timeframe_3], '%m/%d/%Y %I:%M %P')+4.hours unless params[:course][:timeframe_3].nil? || params[:course][:timeframe_3].empty?
+    params[:course][:timeframe_4] = DateTime.strptime(params[:course][:timeframe_4], '%m/%d/%Y %I:%M %P')+4.hours unless params[:course][:timeframe_4].nil? || params[:course][:timeframe_4].empty?
+    params[:course][:pre_class_appt] = DateTime.strptime(params[:course][:pre_class_appt], '%m/%d/%Y %I:%M %P')+4.hours unless params[:course][:pre_class_appt].nil? || params[:course][:pre_class_appt].empty?
+    params[:course][:time_choice_1] = DateTime.strptime(params[:course][:time_choice_1], '%m/%d/%Y %I:%M %P')+4.hours unless params[:course][:time_choice_1].empty?
+    params[:course][:time_choice_2] = DateTime.strptime(params[:course][:time_choice_2], '%m/%d/%Y %I:%M %P')+4.hours unless params[:course][:time_choice_2].empty?
+    params[:course][:time_choice_3] = DateTime.strptime(params[:course][:time_choice_3], '%m/%d/%Y %I:%M %P')+4.hours unless params[:course][:time_choice_3].empty?
+    params[:course][:time_choice_4] = DateTime.strptime(params[:course][:time_choice_4], '%m/%d/%Y %I:%M %P')+4.hours unless params[:course][:time_choice_4].empty?
+    #params[:course][:pre_class_appt_choice_1] = DateTime.strptime(params[:course][:pre_class_appt_choice_1], '%m/%d/%Y %I:%M %P')+4.hours unless params[:course][:pre_class_appt_choice_1].empty?
+    #params[:course][:pre_class_appt_choice_2] = DateTime.strptime(params[:course][:pre_class_appt_choice_2], '%m/%d/%Y %I:%M %P')+4.hours unless params[:course][:pre_class_appt_choice_2].empty?
+    #params[:course][:pre_class_appt_choice_3] = DateTime.strptime(params[:course][:pre_class_appt_choice_3], '%m/%d/%Y %I:%M %P')+4.hours unless params[:course][:pre_class_appt_choice_3].empty?
     
     @course = Course.new(params[:course])
     
@@ -137,25 +137,26 @@ class CoursesController < ApplicationController
       end  
     end 
     
-    params[:course][:timeframe] = DateTime.strptime(params[:course][:timeframe], '%m/%d/%Y %I:%M %P') unless params[:course][:timeframe].nil? || params[:course][:timeframe].empty?
-    params[:course][:timeframe_2] = DateTime.strptime(params[:course][:timeframe_2], '%m/%d/%Y %I:%M %P') unless params[:course][:timeframe_2].nil? || params[:course][:timeframe_2].empty?
-    params[:course][:timeframe_3] = DateTime.strptime(params[:course][:timeframe_3], '%m/%d/%Y %I:%M %P') unless params[:course][:timeframe_3].nil? || params[:course][:timeframe_3].empty?
-    params[:course][:timeframe_4] = DateTime.strptime(params[:course][:timeframe_4], '%m/%d/%Y %I:%M %P') unless params[:course][:timeframe_4].nil? || params[:course][:timeframe_4].empty?
-    params[:course][:pre_class_appt] = DateTime.strptime(params[:course][:pre_class_appt], '%m/%d/%Y %I:%M %P') unless params[:course][:pre_class_appt].nil? || params[:course][:pre_class_appt].empty?
-    params[:course][:time_choice_1] = DateTime.strptime(params[:course][:time_choice_1], '%m/%d/%Y %I:%M %P') unless params[:course][:time_choice_1].empty?
-    params[:course][:time_choice_2] = DateTime.strptime(params[:course][:time_choice_2], '%m/%d/%Y %I:%M %P') unless params[:course][:time_choice_2].empty?
-    params[:course][:time_choice_3] = DateTime.strptime(params[:course][:time_choice_3], '%m/%d/%Y %I:%M %P') unless params[:course][:time_choice_3].empty?
-    params[:course][:time_choice_4] = DateTime.strptime(params[:course][:time_choice_4], '%m/%d/%Y %I:%M %P') unless params[:course][:time_choice_4].empty?
-    #params[:course][:pre_class_appt_choice_1] = DateTime.strptime(params[:course][:pre_class_appt_choice_1], '%m/%d/%Y %I:%M %P') unless params[:course][:pre_class_appt_choice_1].empty?
-    #params[:course][:pre_class_appt_choice_2] = DateTime.strptime(params[:course][:pre_class_appt_choice_2], '%m/%d/%Y %I:%M %P') unless params[:course][:pre_class_appt_choice_2].empty?
-    #params[:course][:pre_class_appt_choice_3] = DateTime.strptime(params[:course][:pre_class_appt_choice_3], '%m/%d/%Y %I:%M %P') unless params[:course][:pre_class_appt_choice_3].empty?
+    params[:course][:timeframe] = DateTime.strptime(params[:course][:timeframe], '%m/%d/%Y %I:%M %P')+4.hours unless params[:course][:timeframe].nil? || params[:course][:timeframe].empty?
+    params[:course][:timeframe_2] = DateTime.strptime(params[:course][:timeframe_2], '%m/%d/%Y %I:%M %P')+4.hours unless params[:course][:timeframe_2].nil? || params[:course][:timeframe_2].empty?
+    params[:course][:timeframe_3] = DateTime.strptime(params[:course][:timeframe_3], '%m/%d/%Y %I:%M %P')+4.hours unless params[:course][:timeframe_3].nil? || params[:course][:timeframe_3].empty?
+    params[:course][:timeframe_4] = DateTime.strptime(params[:course][:timeframe_4], '%m/%d/%Y %I:%M %P')+4.hours unless params[:course][:timeframe_4].nil? || params[:course][:timeframe_4].empty?
+    params[:course][:pre_class_appt] = DateTime.strptime(params[:course][:pre_class_appt], '%m/%d/%Y %I:%M %P')+4.hours unless params[:course][:pre_class_appt].nil? || params[:course][:pre_class_appt].empty?
+    params[:course][:time_choice_1] = DateTime.strptime(params[:course][:time_choice_1], '%m/%d/%Y %I:%M %P')+4.hours unless params[:course][:time_choice_1].empty?
+    params[:course][:time_choice_2] = DateTime.strptime(params[:course][:time_choice_2], '%m/%d/%Y %I:%M %P')+4.hours unless params[:course][:time_choice_2].empty?
+    params[:course][:time_choice_3] = DateTime.strptime(params[:course][:time_choice_3], '%m/%d/%Y %I:%M %P')+4.hours unless params[:course][:time_choice_3].empty?
+    params[:course][:time_choice_4] = DateTime.strptime(params[:course][:time_choice_4], '%m/%d/%Y %I:%M %P')+4.hours unless params[:course][:time_choice_4].empty?
+    #params[:course][:pre_class_appt_choice_1] = DateTime.strptime(params[:course][:pre_class_appt_choice_1], '%m/%d/%Y %I:%M %P')+4.hours unless params[:course][:pre_class_appt_choice_1].empty?
+    #params[:course][:pre_class_appt_choice_2] = DateTime.strptime(params[:course][:pre_class_appt_choice_2], '%m/%d/%Y %I:%M %P')+4.hours unless params[:course][:pre_class_appt_choice_2].empty?
+    #params[:course][:pre_class_appt_choice_3] = DateTime.strptime(params[:course][:pre_class_appt_choice_3], '%m/%d/%Y %I:%M %P')+4.hours unless params[:course][:pre_class_appt_choice_3].empty?
     
     # automatically close classes if date has approached
     # unless params[:course][:timeframe].nil? || params[:course][:timeframe].blank?
     #   if params[:course][:timeframe] < DateTime.now
     #     params[:course][:status] = "Closed"
     #   end 
-    # end  
+    # end 
+    
     
     if params[:send_assessment_email] == "1" || params[:no_assessment_email] == "1"
       params[:course][:status] = "Closed"
