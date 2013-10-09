@@ -99,6 +99,7 @@ $(document).ready(function(){
 <div id="form_full_width" class="yellow-box">
 <%= f.input :room, :as => :select, :collection => Room.all, :label => "Room: " %>
 <% if current_user.try(:superadmin?) %>
+  This is a failsafe, do not use unless something really weird happens (e.g. zombie attack).<br />
   <%= f.input :status, :label => "Status: ", :as => :select, :collection => Course::STATUS %>	
 <% end %>  
 <%= check_box_tag :send_assessment_email %> Close class and send assessment email to requester<br /><br />

@@ -23,7 +23,7 @@ class User < ActiveRecord::Base
   end
   
   def self.all_admins
-    self.find(:all, :conditions => {:admin => true})
+    self.find(:all, :conditions => {:admin => true, :superadmin => true})
   end  
   
   def user_type
