@@ -241,6 +241,8 @@ Devise.setup do |config|
     user.email = user_info[:mail]
     user.password = user_info[:mail]
     user.username = user_info[:mail]
+    user.first_name = user_info[:givenname]
+    user.last_name = user_info[:sn]
     user.pinuser = true
     #user.edupersonaffiliation = user_info[:edupersonaffiliation]
     #user.guid = authentication_info[:user_id]
