@@ -2,7 +2,7 @@ class UsersController < ApplicationController
   before_filter :authenticate_admin_or_staff!, :except => [:edit, :update]
   
   def index
-    @users = User.order('username').paginate(:page => params[:page], :per_page => 50)
+    @users = User.order('username')
   end
   
   def new
