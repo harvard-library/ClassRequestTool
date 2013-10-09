@@ -15,23 +15,30 @@
 	  </ul>	
 	</li>						  
 	<li><%= link_to "Edit Account", edit_user_registration_path %></li>
-	<li><%= link_to "Sign Out", destroy_user_session_path, :method => :delete %></li>
+	<% if current_user.try(:pinuser?) %>
+	  <li><%= link_to "Sign Out", user_hauthproxy_sign_out_path, :method => :delete %></li>	
+	<% else %> 
+	  <li><%= link_to "Sign Out", destroy_user_session_path, :method => :delete %></li>
+	<% end %>   
   <% elsif current_user.try(:staff?) %>
     <li><%= link_to "Dashboard", dashboard_welcome_index_url %></li>
 	<li><%= link_to "Classes", courses_path %></li>
 	<li><%= link_to "Users", users_path %></li>
 	<li><%= link_to "Edit Account", edit_user_registration_path %></li>
-	<li><%= link_to "Sign Out", destroy_user_session_path, :method => :delete %></li>
-  <% elsif current_user.try(:pinuser?) %>
-    <li><%= link_to "Request a Class", courses_path %></li>
-  	<li><%= link_to "My Classes", courses_path %></li>
-  	<li><%= link_to "Edit Account", edit_user_registration_path %></li>
-  	<li><%= link_to "Sign Out", user_hauthproxy_sign_out_path, :method => :delete %></li>	
+	<% if current_user.try(:pinuser?) %>
+	  <li><%= link_to "Sign Out", user_hauthproxy_sign_out_path, :method => :delete %></li>	
+	<% else %> 
+	  <li><%= link_to "Sign Out", destroy_user_session_path, :method => :delete %></li>
+	<% end %>
   <% elsif current_user.try(:patron?) %>
     <li><%= link_to "Request a Class", courses_path %></li>
 	<li><%= link_to "My Classes", courses_path %></li>
 	<li><%= link_to "Edit Account", edit_user_registration_path %></li>
-	<li><%= link_to "Sign Out", destroy_user_session_path, :method => :delete %></li>
+	<% if current_user.try(:pinuser?) %>
+	  <li><%= link_to "Sign Out", user_hauthproxy_sign_out_path, :method => :delete %></li>	
+	<% else %> 
+	  <li><%= link_to "Sign Out", destroy_user_session_path, :method => :delete %></li>
+	<% end %>
   <% else %>
     <li style="border:1px dashed black;"><%= link_to "Sign In/Sign Up", new_user_session_path %></li>
 	<li style="border:1px dashed black;"><%= link_to "Sign In with Harvard PIN", user_hauthproxy_sign_in_path %></li>
