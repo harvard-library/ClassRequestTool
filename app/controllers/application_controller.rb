@@ -3,9 +3,8 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
   
   private 
-  def authenticate_user!
+  def authenticate_login!
     if !user_signed_in?
-      flash[:error] = "You must login to continue."
       redirect_to(login_welcome_index_url)
     end  
   end
