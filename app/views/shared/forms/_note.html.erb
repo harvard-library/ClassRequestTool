@@ -5,5 +5,8 @@
   <% if current_user.try(:staff?) || current_user.try(:admin?) || current_user.try(:superadmin?) %>
     <%= f.input :staff_comment, :label => "Staff Note? ", :input_html => {:checked => "checked"} %>
   <% end %>
-  <%= f.actions %>
+<%= f.actions do %>
+  <%= f.action :submit, :as => :button, :label => 'Post Note' %>
+<% end %>
+  
 <% end %>

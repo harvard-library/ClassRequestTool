@@ -2,7 +2,7 @@
 <h4>Staff Involvement</h4>
 <div id="form_col1">
 <%= f.input :staff_involvements, :label => "Please select or suggest ways our staff can be of assistance for this class: ", :as => :check_boxes, :collection => @course.repository.nil? ? Repository.find(:first, :conditions => ("name like '%Houghton%'")).staff_involvements : @course.repository.staff_involvements %>
-<%= f.input :staff_involvement, :label => "Other Staff Involvement Requests: ", :input_html => { :rows => 5, :columns => 50 } %>
+<%= f.input :staff_involvement, :label => "Other Staff Involvement Requests: ", :input_html => { :rows => 5, :columns => 100 } %>
 </div>
 <% if current_user.try(:admin?) || current_user.try(:staff?) || current_user.try(:superadmin?) %>
   <div id="form_col2" class="yellow-box">	
