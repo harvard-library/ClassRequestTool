@@ -240,6 +240,7 @@ Devise.setup do |config|
   config.creation_attributes = Proc.new do |user,user_info,authentication_info|
     user.email = user_info[:mail]
     user.password = user_info[:mail]
+    user.username = user_info[:mail]
     user.pinuser = true
     #user.edupersonaffiliation = user_info[:edupersonaffiliation]
     #user.guid = authentication_info[:user_id]
