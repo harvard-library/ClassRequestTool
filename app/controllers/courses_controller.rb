@@ -1,4 +1,5 @@
 class CoursesController < ApplicationController
+  before_filter :authenticate_login!
   before_filter :authenticate_admin_or_staff!, :only => [:take]
   before_filter :authenticate_user!, :except => [:take, :recent_show]
   
