@@ -27,6 +27,12 @@ class ApplicationController < ActionController::Base
     end  
   end
   
+  def authenticate_admin_or_superadmin!
+    if !current_user.try(:superadmin?) && !current_user.try(:admin?)
+      redirect_to(root_url)
+    end  
+  end
+  
   def authenticate_admin_or_staff!
     if !current_user.try(:superadmin?) && !current_user.try(:admin?) && !current_user.try(:staff?)
       redirect_to(root_url)
