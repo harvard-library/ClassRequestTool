@@ -4,7 +4,7 @@ class LocationsController < ApplicationController
   before_filter :authenticate_admin_or_staff!
   
   def index
-    @locations = Location.paginate(:page => params[:page], :per_page => 10)
+    @locations = Location
   end  
   
   def new

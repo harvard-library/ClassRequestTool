@@ -4,7 +4,7 @@ class ItemAttributesController < ApplicationController
   before_filter :authenticate_admin_or_staff!
   
   def index
-    @attributes = ItemAttribute.order('name').paginate(:page => params[:page], :per_page => 50)
+    @attributes = ItemAttribute.order('name')
   end  
   
   def new

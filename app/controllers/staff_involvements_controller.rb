@@ -4,7 +4,7 @@ class StaffInvolvementsController < ApplicationController
   before_filter :authenticate_admin_or_staff!
   
   def index
-    @staff_involvements = StaffInvolvement.order('involvement_text').paginate(:page => params[:page], :per_page => 50)
+    @staff_involvements = StaffInvolvement.order('involvement_text')
   end  
   
   def new
