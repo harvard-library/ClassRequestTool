@@ -24,7 +24,8 @@ class User < ActiveRecord::Base
   end
   
   def self.all_admins
-    self.find(:all, :conditions => {:admin => true, :superadmin => true})
+    p self.find(:all, :conditions => ["admin = true or superadmin = true"])
+    self.find(:all, :conditions => ["admin = true or superadmin = true"])
   end  
   
   def user_type
@@ -66,9 +67,15 @@ class User < ActiveRecord::Base
   
   def mine_current
     upcoming = Array.new
-    upcoming = Course.find(:all, :conditions => ["contact_email = ? and (timeframe is NULL or timeframe >= ?)", self.email, DateTime.now], :order => 'timeframe DESC, created_at DESC')
-
-    return upcoming
+    upcoming_null = Array.new
+    upcoming_future = Array.new
+    upcoming_null = Course.find(:all, :conditions => ["contact_email = ? and timeframe is NULL", self.email], :order => 'timeframe DESC, created_at DESC')
+    upcoming_future = Course.find(:all, :conditions => ["contact_email = ? and timeframe >= NOW()", self.email], :order => 'timeframe DESC, created_at DESC')
+    upcoming_future = upcoming_future
+    upcoming_null = upcoming_null
+    upcoming << upcoming_future << upcoming_null
+    
+    return upcoming.flatten
   end
   
   def mine_past
