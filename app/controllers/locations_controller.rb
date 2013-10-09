@@ -1,5 +1,6 @@
 class LocationsController < ApplicationController
-  before_filter :authenticate_admin!, :except => [:index]
+  before_filter :authenticate_superadmin!, :only => [:destroy]
+  before_filter :authenticate_admin_or_superadmin!, :except => [:index]
   before_filter :authenticate_admin_or_staff!
   
   def index
