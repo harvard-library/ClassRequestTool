@@ -5,7 +5,6 @@ class ApplicationController < ActionController::Base
   private 
   def authenticate_login!
     if !user_signed_in?
-      flash[:error] = "You must login to continue."
       redirect_to(login_welcome_index_url)
     end  
   end
