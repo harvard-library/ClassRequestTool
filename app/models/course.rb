@@ -114,7 +114,7 @@ class Course < ActiveRecord::Base
   end
   
   def send_timeframe_change_email
-    # send email to requester
+    # figure out if there is a primary contact, if not send to first staff contact with email
     unless self.primary_contact.nil? || self.primary_contact.email.blank?
       email = primary_contact.email
       name = "#{self.primary_contact.first_name} #{self.primary_contact.last_name}"
@@ -129,12 +129,21 @@ class Course < ActiveRecord::Base
         end
       end    
     end  
+    
+    unless self.pre_class_appt.nil? || self.pre_class_appt.blank?
+      pre_class = "<p>Your pre-class planning appointment is scheduled for #{self.pre_class_appt} with #{name} at #{self.repository.name}.</p>"
+    else
+      pre_class = ""  
+    end  
+    
+    # send email to requester
     Email.create(
       :from => DEFAULT_MAILER_SENDER,
       :reply_to => DEFAULT_MAILER_SENDER,
       :to => self.contact_email,
       :subject => "Your class at #{self.repository.name} has been confirmed.",
       :body => "<p>Title: <a href='#{ROOT_URL}#{course_path(self)}'>#{self.title}</a><br />Confirmed Date: #{self.timeframe}<br />Duration: #{self.duration} hours<br />Staff contact:<a href='mailto:#{email}'> #{name}</a></p>
+      #{pre_class}
       <p>If you have any questions, please add a note to the <a href='#{ROOT_URL}#{course_path(self)}'>class detail</a>, or <a href='mailto:#{email}'>email</a> the staff member responsible.</p>"
     ) 
   end
