@@ -231,12 +231,12 @@ Devise.setup do |config|
  
   config.authen_application = 'HLS_BCIS_CRT_DEV' #'HLS_BCIS_LRRS_DEV'
   #config.pin_url = 'http://localhost:3000/pin/authenticate?__authen_application='
-  config.pin_url = 'https://www.pin1.harvard.edu/pin/authenticate?__authen_application='
+  #config.pin_url = 'https://www.pin1.harvard.edu/pin/authenticate?__authen_application='
   config.debug = true
-  config.disable_token_authenticity_checks = true
+  #config.disable_token_authenticity_checks = true
   config.post_logout_url = 'https://www.pin1.harvard.edu/pin/logout'
-  #config.gpg_home = '/web/numfar/rails3.2dev/docs/classrequest-dev/fakehome2'
-  config.gpg_path = '/usr/local/bin/gpg'
+  config.gpg_home = '/web/numfar/rails3.2dev/docs/classrequest-dev/fakehome2'
+  #config.gpg_path = '/usr/local/bin/gpg'
   config.creation_attributes = Proc.new do |user,user_info,authentication_info|
     user.email = user_info[:mail]
     user.password = user_info[:mail]
