@@ -115,13 +115,27 @@ class Course < ActiveRecord::Base
   
   def send_timeframe_change_email
     # send email to requester
+    unless self.primary_contact.nil? || self.primary_contact.email.blank?
+      email = primary_contact.email
+      name = "#{self.primary_contact.first_name} #{self.primary_contact.last_name}"
+    else
+      unless self.users.nil?
+        self.users.each do |user|
+          unless user.email.blank?
+            email = user.email
+            name = "#{user.first_name} #{user.last_name}"
+            break
+          end  
+        end
+      end    
+    end  
     Email.create(
       :from => DEFAULT_MAILER_SENDER,
       :reply_to => DEFAULT_MAILER_SENDER,
       :to => self.contact_email,
       :subject => "Your class at #{self.repository.name} has been confirmed.",
-      :body => "<p>Title: <a href='#{ROOT_URL}#{course_path(self)}'>#{self.title}</a><br />Confirmed Date: #{self.timeframe}<br />Duration: #{self.duration} hours<br />Staff contact:<a href='mailto:#{self.primary_contact.email}'> #{self.primary_contact.first_name} #{self.primary_contact.last_name}</a></p>
-      <p>If you have any questions, please add a note to the <a href='#{ROOT_URL}#{course_path(self)}'>class detail</a>, or <a href='mailto:#{self.primary_contact.email}'>email</a> the staff member responsible.</p>"
+      :body => "<p>Title: <a href='#{ROOT_URL}#{course_path(self)}'>#{self.title}</a><br />Confirmed Date: #{self.timeframe}<br />Duration: #{self.duration} hours<br />Staff contact:<a href='mailto:#{email}'> #{name}</a></p>
+      <p>If you have any questions, please add a note to the <a href='#{ROOT_URL}#{course_path(self)}'>class detail</a>, or <a href='mailto:#{email}'>email</a> the staff member responsible.</p>"
     ) 
   end
   

@@ -10,17 +10,24 @@ class UsersController < ApplicationController
   end
   
   def create
-    superadmin = params[:user][:superadmin]
-    admin = params[:user][:admin]
-    staff = params[:user][:staff]
-    patron = params[:user][:patron]
+    if params[:role] == "Superadmin"
+      superadmin = true
+    elsif params[:role] == "Admin"
+      admin = true
+    elsif params[:role] == "Staff"  
+      staff = true
+    elsif params[:role] == "Patron"  
+      patron = true
+    end
     params[:user] = params[:user].delete_if{|key, value| key == "superadmin" || key == "admin" || key == "staff" || key == "patron" }
     @user = User.new(params[:user])
     @user.password = User.random_password
-    superadmin == "1" ? @user.superadmin = true : @user.superadmin = false
-    admin == "1" ? @user.admin = true : @user.admin = false
-    staff == "1" ? @user.staff = true : @user.staff = false
-    patron == "1" ? @user.patron = true : @user.patron = false
+    
+    superadmin ? @user.superadmin = true : @user.superadmin = false
+    admin ? @user.admin = true : @user.admin = false
+    staff ? @user.staff = true : @user.staff = false
+    patron ? @user.patron = true : @user.patron = false
+    
     respond_to do|format|
       if @user.save
         flash[:notice] = 'Added that User'
@@ -65,16 +72,24 @@ class UsersController < ApplicationController
     unless current_user.try(:admin?) || current_user.try(:superadmin?) || @user.email == current_user.email
        redirect_to('/') and return
     end
-    superadmin = params[:user][:superadmin]
-    admin = params[:user][:admin]
-    staff = params[:user][:staff]
-    patron = params[:user][:patron]
+    if params[:role] == "Superadmin"
+      superadmin = true
+    elsif params[:role] == "Admin"
+      admin = true
+    elsif params[:role] == "Staff"  
+      staff = true
+    elsif params[:role] == "Patron"  
+      patron = true
+    end
+      
     params[:user] = params[:user].delete_if{|key, value| key == "superadmin" || key == "admin" || key == "staff" || key == "patron" }
     @user.attributes = params[:user]
-    superadmin == "1" ? @user.superadmin = true : @user.superadmin = false
-    admin == "1" ? @user.admin = true : @user.admin = false
-    staff == "1" ? @user.staff = true : @user.staff = false
-    patron == "1" ? @user.patron = true : @user.patron = false
+    
+    superadmin ? @user.superadmin = true : @user.superadmin = false
+    admin ? @user.admin = true : @user.admin = false
+    staff ? @user.staff = true : @user.staff = false
+    patron ? @user.patron = true : @user.patron = false
+    
     respond_to do|format|
       if @user.save
         flash[:notice] = %Q|#{@user} updated|
