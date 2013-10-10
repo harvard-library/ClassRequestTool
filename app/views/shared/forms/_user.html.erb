@@ -11,11 +11,11 @@
 	  <span id='admin_box'>
 		  User Role:<br />
 		  <% if current_user.try(:superadmin?) %>
-		    <%= f.input :superadmin, :label => "Is Superadmin? " %> 
-		  <% end %>	
-		  <%= f.input :admin, :label => "Is Admin? " %> 
-		  <%= f.input :staff, :label => "Is Staff? " %>
-		  <%= f.input :patron, :label => "Is Patron? " %>
+			<%= select_tag "role", "<option>Superadmin</option><option>Admin</option><option>Staff</option><option>Patron</option>".html_safe, prompt: "Choose one..." %>
+		  <% else %>	
+		  <%= select_tag "role", "<option>Admin</option><option>Staff</option><option>Patron</option>".html_safe, prompt: "Choose one..." %>
+		  <% end %>
+		  
 	  </span>
 	<% end %>
   <% end %>
