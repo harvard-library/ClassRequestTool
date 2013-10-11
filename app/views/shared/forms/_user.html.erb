@@ -11,9 +11,9 @@
 	  <span id='admin_box'>
 		  User Role:<br />
 		  <% if current_user.try(:superadmin?) %>
-			<%= select_tag "role", "<option>Superadmin</option><option>Admin</option><option>Staff</option><option>Patron</option>".html_safe, prompt: "Choose one..." %>
-		  <% else %>	
-		  <%= select_tag "role", "<option>Admin</option><option>Staff</option><option>Patron</option>".html_safe, prompt: "Choose one..." %>
+			<%= select_tag "role", options_for_select(@options_super, @selected) %>
+		  <% else %>
+		    <%= select_tag "role", options_for_select(@options, @selected) %>
 		  <% end %>
 		  
 	  </span>
