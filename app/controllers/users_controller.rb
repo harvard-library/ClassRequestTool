@@ -7,6 +7,9 @@ class UsersController < ApplicationController
   
   def new
     @user = User.new
+    
+    @options = ["Choose One...", "Admin", "Staff", "Patron"]
+    @options_super = ["Choose One...", "Superadmin", "Admin", "Staff", "Patron"]
   end
   
   def create
@@ -45,6 +48,17 @@ class UsersController < ApplicationController
 
   def edit
     @user = User.find(params[:id])
+    @options = ["Choose One...", "Admin", "Staff", "Patron"]
+    @options_super = ["Choose One...", "Superadmin", "Admin", "Staff", "Patron"]
+    if @user.superadmin == true
+      @selected = "Superadmin"
+    elsif @user.admin == true
+      @selected = "Admin"
+    elsif @user.staff == true
+      @selected = "Staff"
+    elsif @user.patron == true
+      @selected = "Patron"
+    end
     
     unless current_user.try(:admin?) || current_user.try(:superadmin?) || @user.email == current_user.email
        redirect_to('/') and return
