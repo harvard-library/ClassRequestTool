@@ -90,14 +90,18 @@ $(document).ready(function(){
 <div id="form_full_width">
 <% unless @course.repository.nil? %>
   <br />
-  <%= f.input :item_attributes, :as => :check_boxes, :collection => @course.repository.item_attributes, :label => "Room Technology Available: " %>
+  <%= f.input :item_attributes, :as => :check_boxes, :collection => @course.repository.item_attributes, :label => "Room Technology Available: " %> 
 <% end %>
 <br />
 <%= f.input :comments, :label => "If you have any special room arrangements or further instructions regarding your class session, please enter them below: ", :input_html => { :rows => 5, :cols => 30 } %>
 </div>
 <% if current_user.try(:admin?) || current_user.try(:staff?) || current_user.try(:superadmin?) %>
 <div id="form_full_width" class="yellow-box">
-<%= f.input :room, :as => :select, :collection => Room.all, :label => "Room: " %>
+<% unless @course.repository.nil? %>
+  <%= f.input :room, :as => :select, :collection => Hash[@course.repository.rooms.map{|r| ["#{r.name} (#{r.class_limit})",r.id]}], :label => "Room: " %>
+<% else %>
+  <%= f.input :room, :as => :select, :collection => Hash[Room.all.map{|r| ["#{r.name} (#{r.class_limit})",r.id]}], :label => "Room: " %>  
+<% end %>
 <% if current_user.try(:superadmin?) %>
   This is a failsafe, do not use unless something really weird happens (e.g. zombie attack).<br />
   <%= f.input :status, :label => "Status: ", :as => :select, :collection => Course::STATUS %>	
