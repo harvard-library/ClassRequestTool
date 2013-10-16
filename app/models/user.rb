@@ -24,7 +24,6 @@ class User < ActiveRecord::Base
   end
   
   def self.all_admins
-    p self.find(:all, :conditions => ["admin = true or superadmin = true"])
     self.find(:all, :conditions => ["admin = true or superadmin = true"])
   end  
   
