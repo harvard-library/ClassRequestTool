@@ -80,3 +80,7 @@ select {
 input, .uneditable-input {
 	width: auto;
 }
+
+textarea {
+  width: auto;
+}
