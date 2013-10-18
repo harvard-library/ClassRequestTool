@@ -11,7 +11,11 @@
 	  
 	  <%= image_tag "pager/next.png", :class => "next" %>
 	  <%= image_tag "pager/last.png", :class => "last" %>
-      Per Page: <%= select_tag "people", "<option>5</option><option selected='selected'>10</option><option>20</option><option>30</option><option>40</option>".html_safe, class: 'pagesize' %>
+	  <% if pager_id == "users-table"%>
+	    Per Page: <%= select_tag "people", "<option>5</option><option>10</option><option>20</option><option>30</option><option selected='selected'>40</option>".html_safe, class: 'pagesize' %>
+      <% else %>  
+		Per Page: <%= select_tag "people", "<option>5</option><option selected='selected'>10</option><option>20</option><option>30</option><option>40</option>".html_safe, class: 'pagesize' %>
+	  <% end %>	
     <% end %> 
 
 </div>
