@@ -165,7 +165,7 @@ $(document).ready(function(){
   ;
   $("#users-table").tablesorter()
     .tablesorter()
-	.tablesorterPager({container: $("#pager-users-table")})
+	.tablesorterPager({container: $("#pager-users-table"), size: 40})
   ;
   $("#involvement-table").tablesorter()
     .tablesorter()
