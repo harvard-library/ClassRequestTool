@@ -43,7 +43,7 @@ class CoursesController < ApplicationController
       @repository = Repository.find(params[:course][:repository_id])
     end
     
-    if !params[:course][:repository_id].nil? || !params[:course][:repository_id].blank?
+    if params[:course][:repository_id].nil? || params[:course][:repository_id].blank?
       params[:course][:status] = "Homeless"
     elsif params[:course][:timeframe].nil? || params[:course][:timeframe].blank?
       if (params[:course][:primary_contact_id].nil? || params[:course][:primary_contact_id].blank?) && (params[:course][:user_ids].nil? || params[:course][:user_ids][1].nil? || params[:course][:user_ids][1].empty?)
@@ -122,7 +122,7 @@ class CoursesController < ApplicationController
       timeframe_change = true
     end
     
-    if !params[:course][:repository_id].nil? || !params[:course][:repository_id].blank?
+    if params[:course][:repository_id].nil? || params[:course][:repository_id].blank?
       params[:course][:status] = "Homeless"
     elsif params[:course][:timeframe].nil? || params[:course][:timeframe].blank?
       if (params[:course][:primary_contact_id].nil? || params[:course][:primary_contact_id].blank?) && (params[:course][:user_ids].nil? || params[:course][:user_ids][1].nil? || params[:course][:user_ids][1].empty?)
