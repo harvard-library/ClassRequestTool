@@ -16,7 +16,7 @@ class Note < ActiveRecord::Base
         :reply_to => DEFAULT_MAILER_SENDER,
         :to => admins,
         :subject => "[ClassRequestTool] A comment has been added to a class!",
-        :body => "<p>#{self.user.username} has added a note to one of your classes. Click on the title of the class to go to the details of that class.</p>
+        :body => "<p>#{self.user.full_name} has added a note to one of your classes. Click on the title of the class to go to the details of that class.</p>
         <p>Title: <a href='#{ROOT_URL}#{course_path(self.course)}'>#{self.course.title}</a><br />Course Date: #{self.course.timeframe}<br />Comment: #{self.note_text}</p>"
       )
     # if assigned users is not empty, send to all users assigned to course selected
@@ -31,7 +31,7 @@ class Note < ActiveRecord::Base
         :reply_to => DEFAULT_MAILER_SENDER,
         :to => users,
         :subject => "[ClassRequestTool] A comment has been added to a class!",
-        :body => "<p>#{self.user.first_name} #{self.user.last_name} has added a note to one of your classes. Click on the title of the class to go to the details of that class.</p>
+        :body => "<p>#{self.user.full_name} has added a note to one of your classes. Click on the title of the class to go to the details of that class.</p>
         <p>Title: <a href='#{ROOT_URL}#{course_path(self.course)}'>#{self.course.title}</a><br />Course Date: #{self.course.timeframe}<br />Comment: #{self.note_text}</p>"
       )  
     end  
@@ -45,7 +45,7 @@ class Note < ActiveRecord::Base
       :reply_to => DEFAULT_MAILER_SENDER,
       :to => self.course.contact_email,
       :subject => "[ClassRequestTool] A comment has been added to your class!",
-      :body => "<p>#{self.user.first_name} #{self.user.last_name} has added a note to one of your classes. Click on the title of the class to go to the details of that class.</p>
+      :body => "<p>#{self.user.full_name} has added a note to one of your classes. Click on the title of the class to go to the details of that class.</p>
       <p>Title: <a href='#{ROOT_URL}#{course_path(self.course)}'>#{self.course.title}</a><br />Course Date: #{self.course.timeframe}<br />Comment: #{self.note_text}</p>"
     )
   end  
