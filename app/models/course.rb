@@ -178,20 +178,25 @@ class Course < ActiveRecord::Base
   end  
   
   def self.homeless
-    Course.find(:all, :conditions => {:repository_id => nil}, :order => 'timeframe DESC, created_at DESC')
+    #Course.find(:all, :conditions => {:repository_id => nil}, :order => 'timeframe DESC, created_at DESC')
+    Course.find(:all, :conditions => {:status => "Homeless"}, :order => 'timeframe DESC, created_at DESC')
   end  
   
   def self.unscheduled_unclaimed
-    courses = Course.order('created_at ASC')
-    unscheduled_unclaimed = Array.new
-    courses.collect{|course| (course.users.empty? && (course.timeframe.nil? || course.timeframe.blank?)) ? unscheduled_unclaimed << course : '' }
-    return unscheduled_unclaimed
+    # courses = Course.order('created_at ASC')
+    # unscheduled_unclaimed = Array.new
+    # courses.collect{|course| (course.users.empty? && (course.timeframe.nil? || course.timeframe.blank?)) ? unscheduled_unclaimed << course : '' }
+    # return unscheduled_unclaimed
+    
+    Course.find(:all, :conditions => {:status => "Unclaimed, Unscheduled"}, :order => 'timeframe DESC, created_at DESC')
   end
   
   def self.scheduled_unclaimed
-    courses = Course.order('timeframe DESC, created_at DESC')
-    scheduled_unclaimed = Array.new
-    courses.collect{|course| course.users.empty? && (!course.timeframe.nil? && !course.timeframe.blank?) ? scheduled_unclaimed << course : '' }
-    return scheduled_unclaimed
+    # courses = Course.order('timeframe DESC, created_at DESC')
+    # scheduled_unclaimed = Array.new
+    # courses.collect{|course| course.users.empty? && (!course.timeframe.nil? && !course.timeframe.blank?) ? scheduled_unclaimed << course : '' }
+    # return scheduled_unclaimed
+    
+    Course.find(:all, :conditions => {:status => "Scheduled, Unclaimed"}, :order => 'timeframe DESC, created_at DESC')
   end 
 end

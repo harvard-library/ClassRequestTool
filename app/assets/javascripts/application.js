@@ -201,6 +201,10 @@ $(document).ready(function(){
     .tablesorter()
 	.tablesorterPager({container: $("#pager-your-repo-courses-table"), size: 5, positionFixed: false})
   ;
+  $("#your-to-close-table").tablesorter()
+    .tablesorter()
+	.tablesorterPager({container: $("#pager-your-to-close-table"), size: 5, positionFixed: false})
+  ;
 
 });
 jQuery(function(){
