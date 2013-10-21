@@ -117,13 +117,13 @@ class Course < ActiveRecord::Base
     # figure out if there is a primary contact, if not send to first staff contact with email
     unless self.primary_contact.nil? || self.primary_contact.email.blank?
       email = primary_contact.email
-      name = "#{self.primary_contact.first_name} #{self.primary_contact.last_name}"
+      name = "#{self.primary_contact.full_name}"
     else
       unless self.users.nil?
         self.users.each do |user|
           unless user.email.blank?
             email = user.email
-            name = "#{user.first_name} #{user.last_name}"
+            name = "#{user.full_name}"
             break
           end  
         end
