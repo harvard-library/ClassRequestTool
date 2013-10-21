@@ -11,24 +11,27 @@ class Assessment < ActiveRecord::Base
     # if assigned users is empty, send to all admins of tool 
     if self.course.users.nil? || self.course.users.blank?
       admins = ""
-      User.all(:conditions => {:admin => true}).collect{|a| admins = a.email + ","}
+      User.all(:conditions => ["admin is true or superadmin is true"]).collect{|a| admins = a.email + ","}
       Email.create(
         :from => DEFAULT_MAILER_SENDER,
         :reply_to => DEFAULT_MAILER_SENDER,
         :to => admins,
-        :subject => "[ClassRequestTool] Class Assessment Received!",
-        :body => "<p>An assessment has been received for one of your classes. Great to see you are getting feedback on your hard work. See the details <a href='#{ROOT_URL}#{assessment_path(self)}'> here</a>.</p>"
+        :subject => "[ClassRequestTool] Class Assessment Received",
+        :body => "<p>Review the feedback for #{self.course.title} <a href='#{ROOT_URL}#{assessment_path(self)}'> here</a>.</p>"
       )
     # if assigned users is not empty, send to all users assigned to course selected
     else
       users = ""
       self.course.users.collect{|u| users = u.email + ","}
+      unless self.course.primary_contact.nil? || self.course.primary_contact.blank?
+        users = users + ", " + self.course.primary_contact.email
+      end  
       Email.create(
         :from => DEFAULT_MAILER_SENDER,
         :reply_to => DEFAULT_MAILER_SENDER,
         :to => users,
-        :subject => "[ClassRequestTool] Class Assessment Received!",
-        :body => "<p>An assessment has been received for one of your classes. Great to see you are getting feedback on your hard work. See the details <a href='#{ROOT_URL}#{assessment_path(self)}'> here</a>.</p>"
+        :subject => "[ClassRequestTool] Class Assessment Received",
+        :body => "<p>An assessment has been received for one of your classes. Review the feedback for #{self.course.title} <a href='#{ROOT_URL}#{assessment_path(self)}'> here</a>.</p>"
       )  
     end  
   end
