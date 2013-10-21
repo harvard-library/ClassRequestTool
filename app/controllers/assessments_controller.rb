@@ -1,5 +1,5 @@
 class AssessmentsController < ApplicationController
-  before_filter :authenticate_admin_or_staff!, :except => [:new, :create, :show]
+  before_filter :authenticate_admin_or_staff!, :except => [:new, :create]
   
   def index
     @assessments = Assessment.find(:all, :order => :name)
