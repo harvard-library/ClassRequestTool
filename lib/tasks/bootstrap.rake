@@ -89,19 +89,30 @@ namespace :crt do
     desc "Send email to admins when a class is still homeless after two days."
     task :send_homeless_notices => :environment do
       @courses = Course.find(:all, :conditions => ['repository_id IS NULL AND created_at <= ?', Time.now - 2.days])
+      admins = ""
+      User.all(:conditions => ["admin is true or superadmin is true"]).collect{|a| admins = a.email + ","}
       @courses.each do |course|
-        admins = ""
-        User.all(:conditions => {:admin => true}).collect{|a| admins = a.email + ","}
         Email.create(
           :from => DEFAULT_MAILER_SENDER,
           :reply_to => DEFAULT_MAILER_SENDER,
           :to => admins,
           :subject => "[ClassRequestTool] A Homeless class is languishing!",
-          :body => "<p>A homeless class request has been waiting for 2 days now in the Class Request Tool. A Library or Archive should claim it as soon as possible.</p></p> <p>See the details below.</p><p>If this is appropriate for your library or archive, <a href='#{ROOT_URL}#{edit_course_path(course.id)}'>edit the course</a> to reflect its new location.</p>"
+          :body => "<p>A homeless class request has been waiting 2 days for processing in the Class Request Tool. A Library or Archive should offer it a home as soon as possible.</p> 
+          <p>
+          Library/Archive: Not yet assigned<br />
+          <a href='#{ROOT_URL}#{edit_course_path(self)}'>#{self.title}</a><br />
+          Subject: #{self.subject}<br />
+          Class Number: #{self.course_number}<br />
+          Affiliation: #{self.affiliation}<br />
+          Number of Students: #{self.number_of_students}<br />
+          Syllabus: #{self.external_syllabus}<br />
+          </p>
+          <p>If this is appropriate for your library or archive, please <a href='#{ROOT_URL}#{edit_course_path(course.id)}'>edit the course</a> and assign it to your repository.</p>"
         )
       end
       puts "Successfully delivered homeless notices!"
     end
+    
     
     # desc "Automatically close classes when date has been reached."
     # task :close_classes => :environment do
