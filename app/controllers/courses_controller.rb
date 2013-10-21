@@ -43,7 +43,7 @@ class CoursesController < ApplicationController
       @repository = Repository.find(params[:course][:repository_id])
     end
     
-    if !params[:course][:repository_id].nil? || !params[:course][:repository_id].blank?
+    if params[:course][:repository_id].nil? || params[:course][:repository_id].blank?
       params[:course][:status] = "Homeless"
     elsif params[:course][:timeframe].nil? || params[:course][:timeframe].blank?
       if (params[:course][:primary_contact_id].nil? || params[:course][:primary_contact_id].blank?) && (params[:course][:user_ids].nil? || params[:course][:user_ids][1].nil? || params[:course][:user_ids][1].empty?)
@@ -122,7 +122,7 @@ class CoursesController < ApplicationController
       timeframe_change = true
     end
     
-    if !params[:course][:repository_id].nil? || !params[:course][:repository_id].blank?
+    if params[:course][:repository_id].nil? || params[:course][:repository_id].blank?
       params[:course][:status] = "Homeless"
     elsif params[:course][:timeframe].nil? || params[:course][:timeframe].blank?
       if (params[:course][:primary_contact_id].nil? || params[:course][:primary_contact_id].blank?) && (params[:course][:user_ids].nil? || params[:course][:user_ids][1].nil? || params[:course][:user_ids][1].empty?)
@@ -173,15 +173,27 @@ class CoursesController < ApplicationController
         @course.updated_request_email 
         if params[:send_assessment_email] == "1" && (params[:no_assessment_email].nil? || params[:no_assessment_email] == "0")
           @course.send_assessment_email
+          #add note to course that an email has been sent
+          note = Note.new(:note_text => "Assessment email sent.", :course_id => @course.id, :user_id => current_user.id)
+          note.save
         end
         if repo_change == true
           @course.send_repo_change_email
+          #add note to course that an email has been sent
+          note = Note.new(:note_text => "Library/Archive change email sent.", :course_id => @course.id, :user_id => current_user.id)
+          note.save
         end
         if staff_change == true
           @course.send_staff_change_email  
+          #add note to course that an email has been sent
+          note = Note.new(:note_text => "Staff change email sent.", :course_id => @course.id, :user_id => current_user.id)
+          note.save
         end
         if params[:send_timeframe_email] == "1"
           @course.send_timeframe_change_email  
+          #add note to course that an email has been sent
+          note = Note.new(:note_text => "Date/Time set/change email sent.", :course_id => @course.id, :user_id => current_user.id)
+          note.save
         end
         
         format.html { redirect_to course_url(@course), notice: 'Class was successfully updated.' }

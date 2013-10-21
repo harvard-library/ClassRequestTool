@@ -33,7 +33,7 @@
 	<h4>Staff Involvement</h4>
 	Primary Library/Archive Contact: 
 	<% unless @course.primary_contact.nil? %>
-	   <%= mail_to @course.primary_contact.email, "#{@course.primary_contact.first_name} #{@course.primary_contact.last_name}" %>
+	   <%= mail_to @course.primary_contact.email, "#{@course.primary_contact.full_name}" %>
 	<% else %>
 	  None
 	<% end %>
@@ -100,7 +100,7 @@
 		<br />
 		Other Staff Assigned:
 	    <% @course.users.each do |user| %>
-		  <%= mail_to user.email, "#{user.first_name} #{user.last_name}" %>, 
+		  <%= mail_to user.email, "#{user.full_name}" %>, 
 	    <% end %>
 		<h4>Assessments</h4>
 		<p>After your class we may send you an assessment form to learn about your experience and improve our service.</p>

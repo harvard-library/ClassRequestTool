@@ -117,13 +117,13 @@ class Course < ActiveRecord::Base
     # figure out if there is a primary contact, if not send to first staff contact with email
     unless self.primary_contact.nil? || self.primary_contact.email.blank?
       email = primary_contact.email
-      name = "#{self.primary_contact.first_name} #{self.primary_contact.last_name}"
+      name = "#{self.primary_contact.full_name}"
     else
       unless self.users.nil?
         self.users.each do |user|
           unless user.email.blank?
             email = user.email
-            name = "#{user.first_name} #{user.last_name}"
+            name = "#{user.full_name}"
             break
           end  
         end
@@ -178,20 +178,25 @@ class Course < ActiveRecord::Base
   end  
   
   def self.homeless
-    Course.find(:all, :conditions => {:repository_id => nil}, :order => 'timeframe DESC, created_at DESC')
+    #Course.find(:all, :conditions => {:repository_id => nil}, :order => 'timeframe DESC, created_at DESC')
+    Course.find(:all, :conditions => {:status => "Homeless"}, :order => 'timeframe DESC, created_at DESC')
   end  
   
   def self.unscheduled_unclaimed
-    courses = Course.order('created_at ASC')
-    unscheduled_unclaimed = Array.new
-    courses.collect{|course| (course.users.empty? && (course.timeframe.nil? || course.timeframe.blank?)) ? unscheduled_unclaimed << course : '' }
-    return unscheduled_unclaimed
+    # courses = Course.order('created_at ASC')
+    # unscheduled_unclaimed = Array.new
+    # courses.collect{|course| (course.users.empty? && (course.timeframe.nil? || course.timeframe.blank?)) ? unscheduled_unclaimed << course : '' }
+    # return unscheduled_unclaimed
+    
+    Course.find(:all, :conditions => {:status => "Unclaimed, Unscheduled"}, :order => 'timeframe DESC, created_at DESC')
   end
   
   def self.scheduled_unclaimed
-    courses = Course.order('timeframe DESC, created_at DESC')
-    scheduled_unclaimed = Array.new
-    courses.collect{|course| course.users.empty? && (!course.timeframe.nil? && !course.timeframe.blank?) ? scheduled_unclaimed << course : '' }
-    return scheduled_unclaimed
+    # courses = Course.order('timeframe DESC, created_at DESC')
+    # scheduled_unclaimed = Array.new
+    # courses.collect{|course| course.users.empty? && (!course.timeframe.nil? && !course.timeframe.blank?) ? scheduled_unclaimed << course : '' }
+    # return scheduled_unclaimed
+    
+    Course.find(:all, :conditions => {:status => "Scheduled, Unclaimed"}, :order => 'timeframe DESC, created_at DESC')
   end 
 end
