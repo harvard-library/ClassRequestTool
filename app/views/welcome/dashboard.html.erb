@@ -221,7 +221,7 @@
   <div id="dash_widget">
   <h4><%= link_to "Your Classes To Close", dashboard_items_welcome_index_path(:courses => @your_classes_to_close, :title => "Your Classes To Close"), :target => "blank" %></h4>
   <% unless @your_classes_to_close.nil? || @your_classes_to_close.empty? %>	
-    <table id="your-upcoming-table" class="table table-condensed tablesorter">
+    <table id="your-to-close-table" class="table table-condensed tablesorter">
 	  <thead>
 	  <tr>
 		<th>Name</th>
@@ -246,7 +246,7 @@
     <% end %>
 	  </tbody>
 	</table>
-	<%= render :partial => '/shared/tablesorter_pager', :locals => {:pager_id => "your-upcoming-table" } %>
+	<%= render :partial => '/shared/tablesorter_pager', :locals => {:pager_id => "your-to-close-table" } %>
   <% else %>
 	None yet!
   <% end %>

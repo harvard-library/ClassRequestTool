@@ -47,33 +47,34 @@ class User < ActiveRecord::Base
   
   def upcoming_courses
     upcoming = Array.new
-    self.courses.collect{|course| !course.timeframe.nil? && course.timeframe >= DateTime.now ? upcoming << course : ''}
+    #self.courses.collect{|course| !course.timeframe.nil? && course.timeframe >= DateTime.now ? upcoming << course : ''}
+    self.courses.collect{|course| course.status == "Scheduled, Claimed" ? upcoming << course : ''}
     return upcoming
   end
   
   def past_courses
     past = Array.new
-    self.courses.collect{|course| !course.timeframe.nil? && course.timeframe < DateTime.now ? past << course : ''}
+    #self.courses.collect{|course| !course.timeframe.nil? && course.timeframe < DateTime.now ? past << course : ''}
+    self.courses.collect{|course| course.status == "Closed" ? past << course : ''}
     return past
   end  
   
   def unscheduled_courses
     unscheduled = Array.new 
-    self.courses.collect{|course| course.timeframe.nil? ? unscheduled << course : ''}
+    #self.courses.collect{|course| course.timeframe.nil? ? unscheduled << course : ''}
+    self.courses.collect{|course| course.status == "Claimed, Unscheduled" ? unscheduled << course : ''}
     return unscheduled.sort_by { |hsh| hsh[:created_at] }
   end
   
   def mine_current
     upcoming = Array.new
     upcoming = Course.find(:all, :conditions => ["contact_email = ? and (timeframe is NULL or timeframe >= ?)", self.email, DateTime.now], :order => 'timeframe DESC, created_at DESC')
-
     return upcoming
   end
   
   def mine_past
     past = Array.new
     past = Course.find(:all, :conditions => ["contact_email = ? and timeframe is not NULL and timeframe < ?", self.email, DateTime.now], :order => 'timeframe DESC, created_at DESC')
-
     return past
   end
   
