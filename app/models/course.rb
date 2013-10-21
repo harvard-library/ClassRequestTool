@@ -30,87 +30,105 @@ class Course < ActiveRecord::Base
       :reply_to => DEFAULT_MAILER_SENDER,
       :to => self.contact_email,
       :subject => "[ClassRequestTool] Class Request Successfully Submitted for #{self.title}",
-      :body => "<p>Class Request Successfully Submitted for #{self.title}.</p> 
-      <p>You can review your request <a href='#{ROOT_URL}#{course_path(self)}'>here</a>.</p>"
+      :body => "<p>Your class request has been successfully submitted for #{self.title}.</p> 
+      <p>You may review your request <a href='#{ROOT_URL}#{course_path(self)}'>here</a> and update it with any new details or comments by leaving a note for staff.</p>
+      <p>Thank you for your request. We look forward to working with you.</p>"
     )
     # if repository is empty (homeless), send to all admins of tool 
     if self.repository.nil? || self.repository.blank?
       admins = ""
-      User.all(:conditions => {:admin => true}).collect{|a| admins = a.email + ","}
+      User.all(:conditions => ["admin is true or superadmin is true"]).collect{|a| admins = a.email + ","}
       Email.create(
         :from => DEFAULT_MAILER_SENDER,
         :reply_to => DEFAULT_MAILER_SENDER,
         :to => admins,
-        :subject => "[ClassRequestTool] New Homeless Class!",
-        :body => "<p>A new homeless class request has been received in the Class Request Tool!</p> <p>See the details below.</p>
-        <p>If this is appropriate for your library or archive, <a href='#{ROOT_URL}#{edit_course_path(self)}'>edit the course</a> to reflect its new location.</p>"
-      )
+        :subject => "[ClassRequestTool] A New Homeless Class  Request has been Received",
+        :body => "<p>A new homeless class request has been received in the Class Request Tool.</p> 
+        <p>
+        Library/Archive: Not yet assigned<br />
+        <a href='#{ROOT_URL}#{edit_course_path(self)}'>#{self.title}</a><br />
+        Subject: #{self.subject}<br />
+        Class Number: #{self.course_number}<br />
+        Affiliation: #{self.affiliation}<br />
+        Number of Students: #{self.number_of_students}<br />
+        Syllabus: #{self.external_syllabus}<br />
+        </p>
+        <p>If this class is appropriate for your library or archive, please, <a href='#{ROOT_URL}#{edit_course_path(self)}'>edit the course</a> and assign it to your repository.</p>"
+      ) 
+       
     # if repository is not empty, send to all users assigned to repository selected
     else
       users = ""
+      superadmins = ""
       self.repository.users.collect{|u| users = u.email + ","}
+      User.all(:conditions => {:superadmin => true}).collect{|s| superadmins = s.email + ","}
+      users = users + ", " + superadmins
       Email.create(
         :from => DEFAULT_MAILER_SENDER,
         :reply_to => DEFAULT_MAILER_SENDER,
         :to => users,
-        :subject => "[ClassRequestTool] New class for #{self.repository.name}",
-        :body => "<p>A new class request has been received for #{self.repository.name}, or a formerly homeless class has been assigned to #{self.repository.name}.</p> <p>See the details below.</p>
-        <p>If you wish to claim this course, or assign it to another staff member at #{self.repository.name}, <a href='#{ROOT_URL}#{edit_course_path(self)}'>edit the course</a> to assign staff.</p>"
-      )  
-    end  
-  end
-  
-  def updated_request_email
-    # if assigned users is empty, send to all admins of tool 
-    if self.users.nil? || self.users.blank?
-      admins = ""
-      User.all(:conditions => {:admin => true}).collect{|a| admins = a.email + ","}
-      Email.create(
-        :from => DEFAULT_MAILER_SENDER,
-        :reply_to => DEFAULT_MAILER_SENDER,
-        :to => admins,
-        :subject => "[ClassRequestTool] Unassigned Class Request Updated for #{self.title}",
-        :body => "Unassigned Class Request Has Been Updated for #{self.title}"
+        :subject => "[ClassRequestTool] A new class request has been received for #{self.repository.name}",
+        :body => "<p>
+        Library/Archive: #{self.respository.name}<br />
+        <a href='#{ROOT_URL}#{edit_course_path(self)}'>#{self.title}</a><br />
+        Subject: #{self.subject}<br />
+        Class Number: #{self.course_number}<br />
+        Affiliation: #{self.affiliation}<br />
+        Number of Students: #{self.number_of_students}<br />
+        Syllabus: #{self.external_syllabus}<br />
+        </p>
+        <p>If you wish to manage or confirm details, claim this class or assign it to another staff member at #{self.repository.name}, please <a href='#{ROOT_URL}#{edit_course_path(self)}'>edit the course</a>.</p>"
       )
-    # if assigned users is not empty, send to all users assigned to course selected
-    else
-      emails = ""
-      self.users.collect{|u| emails = u.email + ","}
-      Email.create(
-        :from => DEFAULT_MAILER_SENDER,
-        :reply_to => DEFAULT_MAILER_SENDER,
-        :to => emails,
-        :subject => "[ClassRequestTool] Class Request Updated for #{self.title}",
-        :body => "Class Request Successfully Updated for #{self.title}"
-      )  
     end  
   end
   
   def send_repo_change_email
     # send to all users of selected repository 
       users = ""
+      superadmins = ""
       self.repository.users.collect{|u| users = u.email + ","}
+      User.all(:conditions => {:superadmin => true}).collect{|s| superadmins = s.email + ","}
+      users = users + ", " + superadmins
       Email.create(
         :from => DEFAULT_MAILER_SENDER,
         :reply_to => DEFAULT_MAILER_SENDER,
         :to => users,
-        :subject => "[ClassRequestTool] New class for #{self.repository.name}!",
-        :body => "<p>A new class request has been received for #{self.repository.name}, or a formerly homeless class has been assigned to #{self.repository.name}.</p> <p>See the details below.</p>
-        <p>If you wish to claim this course, or assign it to another staff member at #{self.repository.name}, <a href='#{ROOT_URL}#{edit_course_path(self)}'>edit the course</a> to assign staff.</p>"
-      )   
+        :subject => "[ClassRequestTool] A Class has been Transferred to #{self.repository.name}",
+        :body => "<p>A class has been transferred to #{self.repository.name}. This may be a formerly Homeless class or a class another repository has suggested would be more appropriate for #{self.repository.name}.</p>
+        <p>
+        Library/Archive: #{self.respository.name}<br />
+        <a href='#{ROOT_URL}#{edit_course_path(self)}'>#{self.title}</a><br />
+        Subject: #{self.subject}<br />
+        Class Number: #{self.course_number}<br />
+        Affiliation: #{self.affiliation}<br />
+        Number of Students: #{self.number_of_students}<br />
+        Syllabus: #{self.external_syllabus}<br />
+        </p>
+        <p>If you wish to manage or confirm details, claim this class or assign it to another staff member at #{self.repository.name}, please <a href='#{ROOT_URL}#{edit_course_path(self)}'>edit the course</a>.</p>"
+      )    
   end
   
   def send_staff_change_email
     # send to assigned staff members
     emails = ""
-    self.users.collect{|u| emails = u.email + ","}
+    self.users.collect{|u| u == current_user? ? '' : emails = u.email + ","}
     Email.create(
       :from => DEFAULT_MAILER_SENDER,
       :reply_to => DEFAULT_MAILER_SENDER,
       :to => emails,
-      :subject => "[ClassRequestTool] You have been assigned a class!",
-      :body => "<p>Please <a href='#{ROOT_URL}#{edit_course_path(self)}'>confirm the class date and time</a> and if applicable, add the class to your room calendar or event management system (e.g. Aeon).</p>"
-    )   
+      :subject => "[ClassRequestTool] You have been assigned a class",
+      :body => "<p>You have been assigned to a class for #{self.repository.name}.</p>
+      <p>
+      Library/Archive: #{self.respository.name}<br />
+      <a href='#{ROOT_URL}#{edit_course_path(self)}'>#{self.title}</a><br />
+      Subject: #{self.subject}<br />
+      Class Number: #{self.course_number}<br />
+      Affiliation: #{self.affiliation}<br />
+      Number of Students: #{self.number_of_students}<br />
+      Syllabus: #{self.external_syllabus}<br />
+      </p>
+      <p>Please <a href='#{ROOT_URL}#{edit_course_path(self)}'>confirm the class date and time</a> and if applicable, add the class to your event management system (e.g. Aeon) and/or room calendar.</p>"
+    )  
   end
   
   def send_timeframe_change_email
@@ -131,7 +149,7 @@ class Course < ActiveRecord::Base
     end  
     
     unless self.pre_class_appt.nil? || self.pre_class_appt.blank?
-      pre_class = "<p>Your pre-class planning appointment is scheduled for #{self.pre_class_appt} with #{name} at #{self.repository.name}.</p>"
+      pre_class = "<p>Additionally, your pre-class planning appointment is scheduled for #{self.pre_class_appt} with #{name} at #{self.repository.name}.</p>"
     else
       pre_class = ""  
     end  
@@ -142,30 +160,37 @@ class Course < ActiveRecord::Base
       :reply_to => DEFAULT_MAILER_SENDER,
       :to => self.contact_email,
       :subject => "Your class at #{self.repository.name} has been confirmed.",
-      :body => "<p>Title: <a href='#{ROOT_URL}#{course_path(self)}'>#{self.title}</a><br />Confirmed Date: #{self.timeframe}<br />Duration: #{self.duration} hours<br />Staff contact:<a href='mailto:#{email}'> #{name}</a></p>
-      #{pre_class}
-      <p>If you have any questions, please add a note to the <a href='#{ROOT_URL}#{course_path(self)}'>class detail</a>, or <a href='mailto:#{email}'>email</a> the staff member responsible.</p>"
+      :body => "<p>Thank you for submitting your request for a class session at #{self.repository.name}. The request has been reviewed and confirmed.</p>
+      <p>Title: <a href='#{ROOT_URL}#{course_path(self)}'>#{self.title}</a><br />
+      Confirmed Date: #{self.timeframe}<br />
+      Duration: #{self.duration} hours<br />
+      Staff contact:<a href='mailto:#{email}'> #{name}</a>
+      </p>
+      <p>If you have any questions or additional details to share, please add a note to the <a href='#{ROOT_URL}#{course_path(self)}'>class request</a>.</p>
+      <p>#{pre_class}</p>"
     ) 
   end
   
-  def send_assessment_email
-    # send email to staff
-    users = ""
-    self.users.collect{|u| users = u.email + ","}
-    Email.create(
-      :from => DEFAULT_MAILER_SENDER,
-      :reply_to => DEFAULT_MAILER_SENDER,
-      :to => users,
-      :subject => "[ClassRequestTool] Class Request Closed for #{self.title}",
-      :body => "Class Request Closed for #{self.title}."
-    ) 
+  def send_assessment_email 
     # send email to requester
     Email.create(
       :from => DEFAULT_MAILER_SENDER,
       :reply_to => DEFAULT_MAILER_SENDER,
       :to => self.contact_email,
-      :subject => "Please assess your recent class at #{self.repository.name}",
-      :body => "<p>Your class session at #{self.repository.name} was recently completed. Please take a minute to help us improve instruction by filling out <a href='#{ROOT_URL}#{new_assessment_path(:course_id => self.id)}'> a short assessment about your experience</a>.</p>"
+      :subject => "[ClassRequestTool] Please Assess your Recent Class at #{self.repository.name}",
+      :body => "<p>Your class session</p>
+      <p>
+      Library/Archive: #{self.respository.name}<br />
+      <a href='#{ROOT_URL}#{edit_course_path(self)}'>#{self.title}</a><br />
+      Subject: #{self.subject}<br />
+      Class Number: #{self.course_number}<br />
+      Affiliation: #{self.affiliation}<br />
+      Number of Students: #{self.number_of_students}<br />
+      Syllabus: #{self.external_syllabus}<br />
+      </p>
+      <p>was recently completed.</p>
+      <p>If you would consider taking five minutes to help us improve our services by filling out <a href='#{ROOT_URL}#{new_assessment_path(:course_id => self.id)}'> a short assessment about your experience, we would greatly appreciate it.</a></p>
+      <p>Thank you for utilizing #{self.respository.name} in your course. We hope to work with you again soon.</p>"
     )
   end
   

@@ -169,8 +169,12 @@ class CoursesController < ApplicationController
           format.html { render action: "edit" }
           format.json { render json: @course.errors, status: :unprocessable_entity }
       end  
+      if params[:course][:status] == "Closed"
+        #add note to course that course is closed
+        note = Note.new(:note_text => "Class has been marked as closed.", :course_id => @course.id, :user_id => current_user.id)
+        note.save
+      end  
       if @course.update_attributes(params[:course])
-        @course.updated_request_email 
         if params[:send_assessment_email] == "1" && (params[:no_assessment_email].nil? || params[:no_assessment_email] == "0")
           @course.send_assessment_email
           #add note to course that an email has been sent
