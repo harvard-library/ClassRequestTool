@@ -100,7 +100,7 @@ namespace :crt do
           :body => "<p>A homeless class request has been waiting 2 days for processing in the Class Request Tool. A Library or Archive should offer it a home as soon as possible.</p> 
           <p>
           Library/Archive: Not yet assigned<br />
-          <a href='#{ROOT_URL}#{edit_course_path(course)}'>#{course.title}</a><br />
+          <a href='#{ROOT_URL}#{edit_course_path(course.id)}'>#{course.title}</a><br />
           Subject: #{course.subject}<br />
           Class Number: #{course.course_number}<br />
           Affiliation: #{course.affiliation}<br />
