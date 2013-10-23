@@ -18,7 +18,7 @@ class Note < ActiveRecord::Base
         :subject => "[ClassRequestTool] A Comment has been Added to a Class",
         :body => "<p>#{self.user.full_name} (#{note.user.user_type}) has added a note to one of your classes.</p>
         <p>
-        Library/Archive: #{self.respository.name}<br />
+        Library/Archive: #{self.repository.name}<br />
         <a href='#{ROOT_URL}#{edit_course_path(self)}'>#{self.title}</a><br />
         Subject: #{self.subject}<br />
         Class Number: #{self.course_number}<br />
@@ -42,7 +42,7 @@ class Note < ActiveRecord::Base
         :subject => "[ClassRequestTool] A Comment has been Added to a Class",
         :body => "<p>#{self.user.full_name} (#{note.user.user_type}) has added a note to one of your classes.</p>
         <p>
-        Library/Archive: #{self.respository.name}<br />
+        Library/Archive: #{self.repository.name}<br />
         <a href='#{ROOT_URL}#{edit_course_path(self)}'>#{self.title}</a><br />
         Subject: #{self.subject}<br />
         Class Number: #{self.course_number}<br />
@@ -64,7 +64,7 @@ class Note < ActiveRecord::Base
       :subject => "[ClassRequestTool] A Comment has been Added to a Class",
       :body => "<p>#{self.user.full_name} (#{note.user.user_type}) has added a note to one of your classes.</p>
         <p>
-        Library/Archive: #{self.respository.name}<br />
+        Library/Archive: #{self.repository.name}<br />
         <a href='#{ROOT_URL}#{edit_course_path(self)}'>#{self.title}</a><br />
         Subject: #{self.subject}<br />
         Class Number: #{self.course_number}<br />
