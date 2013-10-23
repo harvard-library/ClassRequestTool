@@ -69,7 +69,7 @@ class Course < ActiveRecord::Base
         :to => users,
         :subject => "[ClassRequestTool] A new class request has been received for #{self.repository.name}",
         :body => "<p>
-        Library/Archive: #{self.respository.name}<br />
+        Library/Archive: #{self.repository.name}<br />
         <a href='#{ROOT_URL}#{edit_course_path(self)}'>#{self.title}</a><br />
         Subject: #{self.subject}<br />
         Class Number: #{self.course_number}<br />
@@ -96,7 +96,7 @@ class Course < ActiveRecord::Base
         :subject => "[ClassRequestTool] A Class has been Transferred to #{self.repository.name}",
         :body => "<p>A class has been transferred to #{self.repository.name}. This may be a formerly Homeless class or a class another repository has suggested would be more appropriate for #{self.repository.name}.</p>
         <p>
-        Library/Archive: #{self.respository.name}<br />
+        Library/Archive: #{self.repository.name}<br />
         <a href='#{ROOT_URL}#{edit_course_path(self)}'>#{self.title}</a><br />
         Subject: #{self.subject}<br />
         Class Number: #{self.course_number}<br />
@@ -119,7 +119,7 @@ class Course < ActiveRecord::Base
       :subject => "[ClassRequestTool] You have been assigned a class",
       :body => "<p>You have been assigned to a class for #{self.repository.name}.</p>
       <p>
-      Library/Archive: #{self.respository.name}<br />
+      Library/Archive: #{self.repository.name}<br />
       <a href='#{ROOT_URL}#{edit_course_path(self)}'>#{self.title}</a><br />
       Subject: #{self.subject}<br />
       Class Number: #{self.course_number}<br />
@@ -180,7 +180,7 @@ class Course < ActiveRecord::Base
       :subject => "[ClassRequestTool] Please Assess your Recent Class at #{self.repository.name}",
       :body => "<p>Your class session</p>
       <p>
-      Library/Archive: #{self.respository.name}<br />
+      Library/Archive: #{self.repository.name}<br />
       <a href='#{ROOT_URL}#{edit_course_path(self)}'>#{self.title}</a><br />
       Subject: #{self.subject}<br />
       Class Number: #{self.course_number}<br />
@@ -190,7 +190,7 @@ class Course < ActiveRecord::Base
       </p>
       <p>was recently completed.</p>
       <p>If you would consider taking five minutes to help us improve our services by filling out <a href='#{ROOT_URL}#{new_assessment_path(:course_id => self.id)}'> a short assessment about your experience, we would greatly appreciate it.</a></p>
-      <p>Thank you for utilizing #{self.respository.name} in your course. We hope to work with you again soon.</p>"
+      <p>Thank you for utilizing #{self.repository.name} in your course. We hope to work with you again soon.</p>"
     )
   end
   

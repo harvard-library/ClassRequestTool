@@ -81,10 +81,16 @@ class CoursesController < ApplicationController
       #     format.html { render action: "new" }
       #     format.json { render json: @course.errors, status: :unprocessable_entity }
       #   end 
-      # end   
-        
+      # end  
+      if params[:schedule_future_class] == "1" && (!params[:course][:timeframe].nil? && !params[:course][:timeframe].blank? && params[:course][:timeframe] < DateTime.now) || (!params[:course][:timeframe2].nil? && !params[:course][:timeframe2].blank? && params[:course][:timeframe2] < DateTime.now) || (!params[:course][:timeframe3].nil? && !params[:course][:timeframe3].blank? && params[:course][:timeframe3] < DateTime.now) || (!params[:course][:timeframe4].nil? && !params[:course][:timeframe4].blank? && params[:course][:timeframe4] < DateTime.now)
+        flash[:error] = "Please confirm scheduling class in the past."
+        format.html { render action: "new" }
+        format.json { render json: @course.errors, status: :unprocessable_entity }
+      end 
       if @course.save
-        @course.new_request_email
+        if !params[:schedule_future_class].nil? || params[:schedule_future_class] == "0"
+          @course.new_request_email
+        end  
         if user_signed_in?
           format.html { redirect_to summary_course_url(@course), notice: 'Class was successfully created.' }
         else
