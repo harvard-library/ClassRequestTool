@@ -50,6 +50,7 @@ class User < ActiveRecord::Base
     upcoming = Array.new
     #self.courses.collect{|course| !course.timeframe.nil? && course.timeframe >= DateTime.now ? upcoming << course : ''}
     self.courses.collect{|course| course.status == "Scheduled, Claimed" ? upcoming << course : ''}
+    Course.all(:conditions => {:primary_contact_id => self.id, :status => "Scheduled, Claimed"})
     return upcoming
   end
   
