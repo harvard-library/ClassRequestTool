@@ -90,22 +90,37 @@ $(document).ready(function(){
 	
   $('#course_timeframe').datetimepicker({
 	timeFormat: "hh:mm tt",
+	stepMinute: 15,
+	hourMin: 8,
+	hourMax: 19,
 	numberOfMonths: 2
   });
   $('#course_timeframe_2').datetimepicker({
 	timeFormat: "hh:mm tt",
+	stepMinute: 15,
+	hourMin: 8,
+	hourMax: 19,
 	numberOfMonths: 2
   });
   $('#course_timeframe_3').datetimepicker({
 	timeFormat: "hh:mm tt",
+	stepMinute: 15,
+	hourMin: 8,
+	hourMax: 19,
 	numberOfMonths: 2
   });
   $('#course_timeframe_4').datetimepicker({
 	timeFormat: "hh:mm tt",
+	stepMinute: 15,
+	hourMin: 8,
+	hourMax: 19,
 	numberOfMonths: 2
   });
   $('#course_pre_class_appt').datetimepicker({
 	timeFormat: "hh:mm tt",
+	stepMinute: 15,
+	hourMin: 8,
+	hourMax: 19,
 	numberOfMonths: 2
   });
 
