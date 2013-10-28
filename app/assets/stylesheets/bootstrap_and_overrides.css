@@ -1,6 +1,4 @@
-@import "bootstrap";
 body { padding-top: 210px; }
-@import "bootstrap-responsive";
 
 .span12 {
   width: 97%;
