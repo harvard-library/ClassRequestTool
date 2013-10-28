@@ -10,7 +10,7 @@ class Note < ActiveRecord::Base
     # if assigned users is empty, send to all admins of tool 
     if self.course.users.nil? || self.course.users.blank?
       admins = ""
-      User.all(:conditions => ["admin is true or superadmin is true"]).collect{|a| a == current_user? ? '' : admins = a.email + ","}
+      User.all(:conditions => ["admin is true or superadmin is true"]).collect{|a| a == current_user ? '' : admins = a.email + ","}
       Email.create(
         :from => DEFAULT_MAILER_SENDER,
         :reply_to => DEFAULT_MAILER_SENDER,
@@ -31,7 +31,7 @@ class Note < ActiveRecord::Base
     # if assigned users is not empty, send to all users assigned to course selected
     else
       users = ""
-      self.course.users.collect{|u| u == current_user? ? '' : emails = u.email + ","}
+      self.course.users.collect{|u| u == current_user ? '' : emails = u.email + ","}
       unless self.course.primary_contact.nil? || self.course.primary_contact == current_user
         users = users + ", " + self.course.primary_contact.email
       end  

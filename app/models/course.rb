@@ -111,7 +111,7 @@ class Course < ActiveRecord::Base
   def send_staff_change_email
     # send to assigned staff members
     emails = ""
-    self.users.collect{|u| u == current_user? ? '' : emails = u.email + ","}
+    self.users.collect{|u| u == current_user ? '' : emails = u.email + ","}
     Email.create(
       :from => DEFAULT_MAILER_SENDER,
       :reply_to => DEFAULT_MAILER_SENDER,
