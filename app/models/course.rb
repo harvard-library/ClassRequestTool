@@ -112,6 +112,9 @@ class Course < ActiveRecord::Base
     # send to assigned staff members
     emails = ""
     self.users.collect{|u| u == current_user ? '' : emails = u.email + ","}
+    unless self.primary_contact.nil? || self.primary_contact.blank?
+      emails = emails + ", " + self.primary_contact.email
+    end  
     Email.create(
       :from => DEFAULT_MAILER_SENDER,
       :reply_to => DEFAULT_MAILER_SENDER,
