@@ -8,7 +8,7 @@ class Note < ActiveRecord::Base
   
   def new_note_email
     # if assigned users is empty, send to all admins of tool 
-    if self.course.users.nil? || self.course.users.blank?
+    if self.course.primary_contact.nil? || self.course.primary_contact.blank? || self.course.users.nil? || self.course.users.blank?
       admins = ""
       User.all(:conditions => ["admin is true or superadmin is true"]).collect{|a| a == current_user ? '' : admins = a.email + ","}
       Email.create(
