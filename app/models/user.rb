@@ -50,22 +50,25 @@ class User < ActiveRecord::Base
     upcoming = Array.new
     #self.courses.collect{|course| !course.timeframe.nil? && course.timeframe >= DateTime.now ? upcoming << course : ''}
     self.courses.collect{|course| course.status == "Scheduled, Claimed" ? upcoming << course : ''}
-    Course.all(:conditions => {:primary_contact_id => self.id, :status => "Scheduled, Claimed"})
-    return upcoming
+    upcoming << Course.all(:conditions => {:primary_contact_id => self.id, :status => "Scheduled, Claimed"})
+    return upcoming.flatten
   end
   
   def past_courses
     past = Array.new
     #self.courses.collect{|course| !course.timeframe.nil? && course.timeframe < DateTime.now ? past << course : ''}
     self.courses.collect{|course| course.status == "Closed" ? past << course : ''}
-    return past
+    past << Course.all(:conditions => {:primary_contact_id => self.id, :status => "Closed"})
+    
+    return past.flatten
   end  
   
   def unscheduled_courses
     unscheduled = Array.new 
     #self.courses.collect{|course| course.timeframe.nil? ? unscheduled << course : ''}
     self.courses.collect{|course| course.status == "Claimed, Unscheduled" ? unscheduled << course : ''}
-    return unscheduled.sort_by { |hsh| hsh[:created_at] }
+    unscheduled << Course.all(:conditions => {:primary_contact_id => self.id, :status => "Claimed, Unscheduled"})
+    return unscheduled.flatten.sort_by { |hsh| hsh[:created_at] }
   end
   
   def mine_current
