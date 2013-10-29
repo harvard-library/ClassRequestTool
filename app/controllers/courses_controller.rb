@@ -156,7 +156,7 @@ class CoursesController < ApplicationController
     if (@course.repository.nil? || @course.repository.blank?) && (!params[:course][:repository_id].nil? && !params[:course][:repository_id].blank?)
       repo_change = true
     end
-    if (@course.users.nil? || @course.users.blank?) && ((!params[:course][:primary_contact_id].nil? && !params[:course][:primary_contact_id].blank?) || (!params[:course][:user_ids].nil? && !params[:course][:user_ids][1].nil? && !params[:course][:user_ids][1].empty?))
+    if ((@course.primary_contact.nil? || @course.primary_contact.blank?) && (!params[:course][:primary_contact_id].nil? && !params[:course][:primary_contact_id].blank?)) || ((@course.users.nil? || @course.users.blank?) && (!params[:course][:user_ids].nil? && !params[:course][:user_ids][1].nil? && !params[:course][:user_ids][1].empty?))
       staff_change = true
     end
     if ((@course.timeframe.nil? || @course.timeframe.blank?) && (!params[:course][:timeframe].nil? && !params[:course][:timeframe].blank?)) || ((@course.timeframe_2.nil? || @course.timeframe_2.blank?) && (!params[:course][:timeframe_2].nil? && !params[:course][:timeframe_2].blank?)) || ((@course.timeframe_3.nil? || @course.timeframe_3.blank?) && (!params[:course][:timeframe_3].nil? && !params[:course][:timeframe_3].blank?)) || ((@course.timeframe_4.nil? || @course.timeframe_4.blank?) && (!params[:course][:timeframe_4].nil? && !params[:course][:timeframe_4].blank?))
