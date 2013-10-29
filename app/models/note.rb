@@ -6,7 +6,7 @@ class Note < ActiveRecord::Base
   belongs_to :user
   belongs_to :course
   
-  def new_note_email
+  def new_note_email(current_user)
     # if assigned users is empty, send to all admins of tool 
     if self.course.primary_contact.nil? || self.course.primary_contact.blank? || self.course.users.nil? || self.course.users.blank?
       admins = ""
@@ -16,15 +16,15 @@ class Note < ActiveRecord::Base
         :reply_to => DEFAULT_MAILER_SENDER,
         :to => admins,
         :subject => "[ClassRequestTool] A Comment has been Added to a Class",
-        :body => "<p>#{self.user.full_name} (#{note.user.user_type}) has added a note to one of your classes.</p>
+        :body => "<p>#{self.user.full_name} (#{self.user.user_type}) has added a note to one of your classes.</p>
         <p>
-        Library/Archive: #{self.repository.name}<br />
-        <a href='#{ROOT_URL}#{edit_course_path(self)}'>#{self.title}</a><br />
-        Subject: #{self.subject}<br />
-        Class Number: #{self.course_number}<br />
-        Affiliation: #{self.affiliation}<br />
-        Number of Students: #{self.number_of_students}<br />
-        Syllabus: #{self.external_syllabus}<br />
+        Library/Archive: #{self.course.repository.name}<br />
+        <a href='#{ROOT_URL}#{edit_course_path(self.course)}'>#{self.course.title}</a><br />
+        Subject: #{self.course.subject}<br />
+        Class Number: #{self.course.course_number}<br />
+        Affiliation: #{self.course.affiliation}<br />
+        Number of Students: #{self.course.number_of_students}<br />
+        Syllabus: #{self.course.external_syllabus}<br />
         </p>
         <p>Comment: #{self.note_text}</p>"
       )
@@ -42,13 +42,13 @@ class Note < ActiveRecord::Base
         :subject => "[ClassRequestTool] A Comment has been Added to a Class",
         :body => "<p>#{self.user.full_name} (#{note.user.user_type}) has added a note to one of your classes.</p>
         <p>
-        Library/Archive: #{self.repository.name}<br />
-        <a href='#{ROOT_URL}#{edit_course_path(self)}'>#{self.title}</a><br />
-        Subject: #{self.subject}<br />
-        Class Number: #{self.course_number}<br />
-        Affiliation: #{self.affiliation}<br />
-        Number of Students: #{self.number_of_students}<br />
-        Syllabus: #{self.external_syllabus}<br />
+        Library/Archive: #{self.course.repository.name}<br />
+        <a href='#{ROOT_URL}#{edit_course_path(self.course)}'>#{self.course.title}</a><br />
+        Subject: #{self.course.subject}<br />
+        Class Number: #{self.course.course_number}<br />
+        Affiliation: #{self.course.affiliation}<br />
+        Number of Students: #{self.course.number_of_students}<br />
+        Syllabus: #{self.course.external_syllabus}<br />
         </p>
         <p>Comment: #{self.note_text}</p>"
       )  
@@ -63,16 +63,16 @@ class Note < ActiveRecord::Base
       :to => self.course.contact_email,
       :subject => "[ClassRequestTool] A Comment has been Added to a Class",
       :body => "<p>#{self.user.full_name} (#{note.user.user_type}) has added a note to one of your classes.</p>
-        <p>
-        Library/Archive: #{self.repository.name}<br />
-        <a href='#{ROOT_URL}#{edit_course_path(self)}'>#{self.title}</a><br />
-        Subject: #{self.subject}<br />
-        Class Number: #{self.course_number}<br />
-        Affiliation: #{self.affiliation}<br />
-        Number of Students: #{self.number_of_students}<br />
-        Syllabus: #{self.external_syllabus}<br />
-        </p>
-        <p>Comment: #{self.note_text}</p>"
+      <p>
+      Library/Archive: #{self.course.repository.name}<br />
+      <a href='#{ROOT_URL}#{edit_course_path(self.course)}'>#{self.course.title}</a><br />
+      Subject: #{self.course.subject}<br />
+      Class Number: #{self.course.course_number}<br />
+      Affiliation: #{self.course.affiliation}<br />
+      Number of Students: #{self.course.number_of_students}<br />
+      Syllabus: #{self.course.external_syllabus}<br />
+      </p>
+      <p>Comment: #{self.note_text}</p>"
     )
   end  
 end
