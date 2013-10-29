@@ -59,48 +59,48 @@ class CoursesController < ApplicationController
       end  
     end  
     
-    begin DateTime.strptime(params[:course][:timeframe], '%m/%d/%Y %I:%M %P')+5.hours
-      params[:course][:timeframe] = DateTime.strptime(params[:course][:timeframe], '%m/%d/%Y %I:%M %P')+5.hours unless params[:course][:timeframe].nil? || params[:course][:timeframe].empty?
+    begin Time.zone.parse(params[:course][:timeframe]).utc.to_datetime
+      params[:course][:timeframe] = Time.zone.parse(params[:course][:timeframe]).utc.to_datetime unless params[:course][:timeframe].nil? || params[:course][:timeframe].empty?
     rescue
       params[:course][:timeframe] = nil
     end  
-    begin DateTime.strptime(params[:course][:timeframe_2], '%m/%d/%Y %I:%M %P')+5.hours
-      params[:course][:timeframe_2] = DateTime.strptime(params[:course][:timeframe_2], '%m/%d/%Y %I:%M %P')+5.hours unless params[:course][:timeframe_2].nil? || params[:course][:timeframe_2].empty?
+    begin Time.zone.parse(params[:course][:timeframe_2]).utc.to_datetime
+      params[:course][:timeframe_2] = Time.zone.parse(params[:course][:timeframe_2]).utc.to_datetime unless params[:course][:timeframe_2].nil? || params[:course][:timeframe_2].empty?
     rescue
       params[:course][:timeframe_2] = nil
     end 
-    begin DateTime.strptime(params[:course][:timeframe_3], '%m/%d/%Y %I:%M %P')+5.hours
-      params[:course][:timeframe_3] = DateTime.strptime(params[:course][:timeframe_3], '%m/%d/%Y %I:%M %P')+5.hours unless params[:course][:timeframe_3].nil? || params[:course][:timeframe_3].empty?
+    begin Time.zone.parse(params[:course][:timeframe_3]).utc.to_datetime
+      params[:course][:timeframe_3] = Time.zone.parse(params[:course][:timeframe_3]).utc.to_datetime unless params[:course][:timeframe_3].nil? || params[:course][:timeframe_3].empty?
     rescue
       params[:course][:timeframe_3] = nil
     end    
-    begin DateTime.strptime(params[:course][:timeframe_4], '%m/%d/%Y %I:%M %P')+5.hours
-      params[:course][:timeframe_4] = DateTime.strptime(params[:course][:timeframe_4], '%m/%d/%Y %I:%M %P')+5.hours unless params[:course][:timeframe_4].nil? || params[:course][:timeframe_4].empty?
+    begin Time.zone.parse(params[:course][:timeframe_4]).utc.to_datetime
+      params[:course][:timeframe_4] = Time.zone.parse(params[:course][:timeframe_4]).utc.to_datetime unless params[:course][:timeframe_4].nil? || params[:course][:timeframe_4].empty?
     rescue
       params[:course][:timeframe_4] = nil
     end  
-    begin DateTime.strptime(params[:course][:pre_class_appt], '%m/%d/%Y %I:%M %P')+5.hours
-      params[:course][:pre_class_appt] = DateTime.strptime(params[:course][:pre_class_appt], '%m/%d/%Y %I:%M %P')+5.hours unless params[:course][:pre_class_appt].nil? || params[:course][:pre_class_appt].empty?
+    begin Time.zone.parse(params[:course][:pre_class_appt]).utc.to_datetime
+      params[:course][:pre_class_appt] = Time.zone.parse(params[:course][:pre_class_appt]).utc.to_datetime unless params[:course][:pre_class_appt].nil? || params[:course][:pre_class_appt].empty?
     rescue
       params[:course][:pre_class_appt] = nil
     end    
-    begin DateTime.strptime(params[:course][:time_choice_1], '%m/%d/%Y %I:%M %P')+5.hours
-      params[:course][:time_choice_1] = DateTime.strptime(params[:course][:time_choice_1], '%m/%d/%Y %I:%M %P')+5.hours unless params[:course][:time_choice_1].empty?
+    begin Time.zone.parse(params[:course][:time_choice_1]).utc.to_datetime
+      params[:course][:time_choice_1] = Time.zone.parse(params[:course][:time_choice_1]).utc.to_datetime unless params[:course][:time_choice_1].empty?
     rescue
       params[:course][:time_choice_1] = nil
     end   
-    begin DateTime.strptime(params[:course][:time_choice_2], '%m/%d/%Y %I:%M %P')+5.hours
-      params[:course][:time_choice_2] = DateTime.strptime(params[:course][:time_choice_2], '%m/%d/%Y %I:%M %P')+5.hours unless params[:course][:time_choice_2].empty?
+    begin Time.zone.parse(params[:course][:time_choice_2]).utc.to_datetime
+      params[:course][:time_choice_2] = Time.zone.parse(params[:course][:time_choice_2]).utc.to_datetime unless params[:course][:time_choice_2].empty?
     rescue
       params[:course][:time_choice_2] = nil
     end   
-    begin DateTime.strptime(params[:course][:time_choice_3], '%m/%d/%Y %I:%M %P')+5.hours
-      params[:course][:time_choice_3] = DateTime.strptime(params[:course][:time_choice_3], '%m/%d/%Y %I:%M %P')+5.hours unless params[:course][:time_choice_3].empty?
+    begin Time.zone.parse(params[:course][:time_choice_3]).utc.to_datetime
+      params[:course][:time_choice_3] = Time.zone.parse(params[:course][:time_choice_3]).utc.to_datetime unless params[:course][:time_choice_3].empty?
     rescue
       params[:course][:time_choice_3] = nil
     end  
-    begin DateTime.strptime(params[:course][:time_choice_4], '%m/%d/%Y %I:%M %P')+5.hours
-      params[:course][:time_choice_4] = DateTime.strptime(params[:course][:time_choice_4], '%m/%d/%Y %I:%M %P')+5.hours unless params[:course][:time_choice_4].empty?
+    begin Time.zone.parse(params[:course][:time_choice_4]).utc.to_datetime
+      params[:course][:time_choice_4] = Time.zone.parse(params[:course][:time_choice_4]).utc.to_datetime unless params[:course][:time_choice_4].empty?
     rescue
       params[:course][:time_choice_4] = nil
     end 
@@ -115,7 +115,7 @@ class CoursesController < ApplicationController
       #     format.json { render json: @course.errors, status: :unprocessable_entity }
       #   end 
       # end  
-      if params[:schedule_future_class] == "1" && (!params[:course][:timeframe].nil? && !params[:course][:timeframe].blank? && params[:course][:timeframe] < DateTime.now) || (!params[:course][:timeframe2].nil? && !params[:course][:timeframe2].blank? && params[:course][:timeframe2] < DateTime.now) || (!params[:course][:timeframe3].nil? && !params[:course][:timeframe3].blank? && params[:course][:timeframe3] < DateTime.now) || (!params[:course][:timeframe4].nil? && !params[:course][:timeframe4].blank? && params[:course][:timeframe4] < DateTime.now)
+      if params[:schedule_future_class] == "1" && (!params[:course][:timeframe].nil? && !params[:course][:timeframe].blank? && params[:course][:timeframe] < DateTime.now) || (!params[:course][:timeframe_2].nil? && !params[:course][:timeframe_2].blank? && params[:course][:timeframe_2] < DateTime.now) || (!params[:course][:timeframe_3].nil? && !params[:course][:timeframe_3].blank? && params[:course][:timeframe_3] < DateTime.now) || (!params[:course][:timeframe_4].nil? && !params[:course][:timeframe_4].blank? && params[:course][:timeframe_4] < DateTime.now)
         flash[:error] = "Please confirm scheduling class in the past."
         format.html { render action: "new" }
         format.json { render json: @course.errors, status: :unprocessable_entity }
@@ -175,50 +175,50 @@ class CoursesController < ApplicationController
       else
         params[:course][:status] = "Scheduled, Claimed" 
       end  
-    end 
+    end
     
-    begin DateTime.strptime(params[:course][:timeframe], '%m/%d/%Y %I:%M %P')+5.hours
-      params[:course][:timeframe] = DateTime.strptime(params[:course][:timeframe], '%m/%d/%Y %I:%M %P')+5.hours unless params[:course][:timeframe].nil? || params[:course][:timeframe].empty?
+    begin Time.zone.parse(params[:course][:timeframe]).utc.to_datetime
+      params[:course][:timeframe] = Time.zone.parse(params[:course][:timeframe]).utc.to_datetime unless params[:course][:timeframe].nil? || params[:course][:timeframe].empty?
     rescue
       params[:course][:timeframe] = nil
     end  
-    begin DateTime.strptime(params[:course][:timeframe_2], '%m/%d/%Y %I:%M %P')+5.hours
-      params[:course][:timeframe_2] = DateTime.strptime(params[:course][:timeframe_2], '%m/%d/%Y %I:%M %P')+5.hours unless params[:course][:timeframe_2].nil? || params[:course][:timeframe_2].empty?
+    begin Time.zone.parse(params[:course][:timeframe_2]).utc.to_datetime
+      params[:course][:timeframe_2] = Time.zone.parse(params[:course][:timeframe_2]).utc.to_datetime unless params[:course][:timeframe_2].nil? || params[:course][:timeframe_2].empty?
     rescue
       params[:course][:timeframe_2] = nil
     end 
-    begin DateTime.strptime(params[:course][:timeframe_3], '%m/%d/%Y %I:%M %P')+5.hours
-      params[:course][:timeframe_3] = DateTime.strptime(params[:course][:timeframe_3], '%m/%d/%Y %I:%M %P')+5.hours unless params[:course][:timeframe_3].nil? || params[:course][:timeframe_3].empty?
+    begin Time.zone.parse(params[:course][:timeframe_3]).utc.to_datetime
+      params[:course][:timeframe_3] = Time.zone.parse(params[:course][:timeframe_3]).utc.to_datetime unless params[:course][:timeframe_3].nil? || params[:course][:timeframe_3].empty?
     rescue
       params[:course][:timeframe_3] = nil
     end    
-    begin DateTime.strptime(params[:course][:timeframe_4], '%m/%d/%Y %I:%M %P')+5.hours
-      params[:course][:timeframe_4] = DateTime.strptime(params[:course][:timeframe_4], '%m/%d/%Y %I:%M %P')+5.hours unless params[:course][:timeframe_4].nil? || params[:course][:timeframe_4].empty?
+    begin Time.zone.parse(params[:course][:timeframe_4]).utc.to_datetime
+      params[:course][:timeframe_4] = Time.zone.parse(params[:course][:timeframe_4]).utc.to_datetime unless params[:course][:timeframe_4].nil? || params[:course][:timeframe_4].empty?
     rescue
       params[:course][:timeframe_4] = nil
     end  
-    begin DateTime.strptime(params[:course][:pre_class_appt], '%m/%d/%Y %I:%M %P')+5.hours
-      params[:course][:pre_class_appt] = DateTime.strptime(params[:course][:pre_class_appt], '%m/%d/%Y %I:%M %P')+5.hours unless params[:course][:pre_class_appt].nil? || params[:course][:pre_class_appt].empty?
+    begin Time.zone.parse(params[:course][:pre_class_appt]).utc.to_datetime
+      params[:course][:pre_class_appt] = Time.zone.parse(params[:course][:pre_class_appt]).utc.to_datetime unless params[:course][:pre_class_appt].nil? || params[:course][:pre_class_appt].empty?
     rescue
       params[:course][:pre_class_appt] = nil
     end    
-    begin DateTime.strptime(params[:course][:time_choice_1], '%m/%d/%Y %I:%M %P')+5.hours
-      params[:course][:time_choice_1] = DateTime.strptime(params[:course][:time_choice_1], '%m/%d/%Y %I:%M %P')+5.hours unless params[:course][:time_choice_1].empty?
+    begin Time.zone.parse(params[:course][:time_choice_1]).utc.to_datetime
+      params[:course][:time_choice_1] = Time.zone.parse(params[:course][:time_choice_1]).utc.to_datetime unless params[:course][:time_choice_1].empty?
     rescue
       params[:course][:time_choice_1] = nil
     end   
-    begin DateTime.strptime(params[:course][:time_choice_2], '%m/%d/%Y %I:%M %P')+5.hours
-      params[:course][:time_choice_2] = DateTime.strptime(params[:course][:time_choice_2], '%m/%d/%Y %I:%M %P')+5.hours unless params[:course][:time_choice_2].empty?
+    begin Time.zone.parse(params[:course][:time_choice_2]).utc.to_datetime
+      params[:course][:time_choice_2] = Time.zone.parse(params[:course][:time_choice_2]).utc.to_datetime unless params[:course][:time_choice_2].empty?
     rescue
       params[:course][:time_choice_2] = nil
     end   
-    begin DateTime.strptime(params[:course][:time_choice_3], '%m/%d/%Y %I:%M %P')+5.hours
-      params[:course][:time_choice_3] = DateTime.strptime(params[:course][:time_choice_3], '%m/%d/%Y %I:%M %P')+5.hours unless params[:course][:time_choice_3].empty?
+    begin Time.zone.parse(params[:course][:time_choice_3]).utc.to_datetime
+      params[:course][:time_choice_3] = Time.zone.parse(params[:course][:time_choice_3]).utc.to_datetime unless params[:course][:time_choice_3].empty?
     rescue
       params[:course][:time_choice_3] = nil
     end  
-    begin DateTime.strptime(params[:course][:time_choice_4], '%m/%d/%Y %I:%M %P')+5.hours
-      params[:course][:time_choice_4] = DateTime.strptime(params[:course][:time_choice_4], '%m/%d/%Y %I:%M %P')+5.hours unless params[:course][:time_choice_4].empty?
+    begin Time.zone.parse(params[:course][:time_choice_4]).utc.to_datetime
+      params[:course][:time_choice_4] = Time.zone.parse(params[:course][:time_choice_4]).utc.to_datetime unless params[:course][:time_choice_4].empty?
     rescue
       params[:course][:time_choice_4] = nil
     end 
@@ -234,9 +234,9 @@ class CoursesController < ApplicationController
     if params[:send_assessment_email] == "1" || params[:no_assessment_email] == "1"
       params[:course][:status] = "Closed"
     end
-      
+    
     respond_to do |format|
-      if params[:schedule_future_class] == "1" && (!params[:course][:timeframe].nil? && !params[:course][:timeframe].blank? && params[:course][:timeframe] < DateTime.now) || (!params[:course][:timeframe2].nil? && !params[:course][:timeframe2].blank? && params[:course][:timeframe2] < DateTime.now) || (!params[:course][:timeframe3].nil? && !params[:course][:timeframe3].blank? && params[:course][:timeframe3] < DateTime.now) || (!params[:course][:timeframe4].nil? && !params[:course][:timeframe4].blank? && params[:course][:timeframe4] < DateTime.now)
+      if params[:schedule_future_class] == "1" && (!params[:course][:timeframe].nil? && !params[:course][:timeframe].blank? && params[:course][:timeframe] < DateTime.now) || (!params[:course][:timeframe_2].nil? && !params[:course][:timeframe_2].blank? && params[:course][:timeframe_2] < DateTime.now) || (!params[:course][:timeframe_3].nil? && !params[:course][:timeframe_3].blank? && params[:course][:timeframe_3] < DateTime.now) || (!params[:course][:timeframe_4].nil? && !params[:course][:timeframe_4].blank? && params[:course][:timeframe_4] < DateTime.now)
           flash[:error] = "Please confirm scheduling class in the past."
           format.html { render action: "edit" }
           format.json { render json: @course.errors, status: :unprocessable_entity }
