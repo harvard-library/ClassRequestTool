@@ -25,6 +25,7 @@
 $(document).ready(function(){	
 	
   $('#course_time_choice_1').datetimepicker({
+	dateFormat: 'yy-mm-dd',
 	timeFormat: "hh:mm tt",
 	stepMinute: 15,
 	hourMin: 9,
@@ -34,6 +35,7 @@ $(document).ready(function(){
 	numberOfMonths: 2
   });
   $('#course_time_choice_2').datetimepicker({
+	dateFormat: 'yy-mm-dd',
 	timeFormat: "hh:mm tt",
 	stepMinute: 15,
 	hourMin: 9,
@@ -43,6 +45,7 @@ $(document).ready(function(){
 	numberOfMonths: 2
   });
   $('#course_time_choice_3').datetimepicker({
+	dateFormat: 'yy-mm-dd',
 	timeFormat: "hh:mm tt",
 	stepMinute: 15,
 	hourMin: 9,
@@ -52,6 +55,7 @@ $(document).ready(function(){
 	numberOfMonths: 2
   });
   $('#course_time_choice_4').datetimepicker({
+	dateFormat: 'yy-mm-dd',
 	timeFormat: "hh:mm tt",
 	stepMinute: 15,
 	hourMin: 9,
@@ -61,6 +65,7 @@ $(document).ready(function(){
 	numberOfMonths: 2
   });
   $('#course_pre_class_appt_choice_1').datetimepicker({
+	dateFormat: 'yy-mm-dd',
 	timeFormat: "hh:mm tt",
 	stepMinute: 15,
 	hourMin: 9,
@@ -70,6 +75,7 @@ $(document).ready(function(){
 	numberOfMonths: 2
   });
   $('#course_pre_class_appt_choice_2').datetimepicker({
+	dateFormat: 'yy-mm-dd',  
 	timeFormat: "hh:mm tt",
 	stepMinute: 15,
 	hourMin: 9,
@@ -79,6 +85,7 @@ $(document).ready(function(){
 	numberOfMonths: 2
   });
   $('#course_pre_class_appt_choice_3').datetimepicker({
+	dateFormat: 'yy-mm-dd',  
 	timeFormat: "hh:mm tt",
 	stepMinute: 15,
 	hourMin: 9,
@@ -89,6 +96,7 @@ $(document).ready(function(){
   });
 	
   $('#course_timeframe').datetimepicker({
+	dateFormat: 'yy-mm-dd',
 	timeFormat: "hh:mm tt",
 	stepMinute: 15,
 	hourMin: 8,
@@ -96,6 +104,7 @@ $(document).ready(function(){
 	numberOfMonths: 2
   });
   $('#course_timeframe_2').datetimepicker({
+	dateFormat: 'yy-mm-dd',
 	timeFormat: "hh:mm tt",
 	stepMinute: 15,
 	hourMin: 8,
@@ -103,6 +112,7 @@ $(document).ready(function(){
 	numberOfMonths: 2
   });
   $('#course_timeframe_3').datetimepicker({
+	dateFormat: 'yy-mm-dd',
 	timeFormat: "hh:mm tt",
 	stepMinute: 15,
 	hourMin: 8,
@@ -110,6 +120,7 @@ $(document).ready(function(){
 	numberOfMonths: 2
   });
   $('#course_timeframe_4').datetimepicker({
+	dateFormat: 'yy-mm-dd',
 	timeFormat: "hh:mm tt",
 	stepMinute: 15,
 	hourMin: 8,
@@ -117,6 +128,7 @@ $(document).ready(function(){
 	numberOfMonths: 2
   });
   $('#course_pre_class_appt').datetimepicker({
+	dateFormat: 'yy-mm-dd',
 	timeFormat: "hh:mm tt",
 	stepMinute: 15,
 	hourMin: 8,
