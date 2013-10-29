@@ -108,7 +108,7 @@ class Course < ActiveRecord::Base
       )    
   end
   
-  def send_staff_change_email
+  def send_staff_change_email(current_user)
     # send to assigned staff members
     emails = ""
     self.users.collect{|u| u == current_user ? '' : emails = u.email + ","}

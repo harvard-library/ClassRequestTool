@@ -20,7 +20,7 @@ class NotesController < ApplicationController
     @note = Note.new(params[:note])
     respond_to do |format|
       if @note.save
-        @note.new_note_email
+        @note.new_note_email(current_user)
         unless @note.staff_comment
           @note.new_patron_note_email
         end

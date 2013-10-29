@@ -260,7 +260,7 @@ class CoursesController < ApplicationController
           note.save
         end
         if staff_change == true
-          @course.send_staff_change_email  
+          @course.send_staff_change_email(current_user) 
           #add note to course that an email has been sent
           note = Note.new(:note_text => "Staff change email sent.", :course_id => @course.id, :user_id => current_user.id)
           note.save
