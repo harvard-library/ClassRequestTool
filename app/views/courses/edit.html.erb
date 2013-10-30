@@ -25,6 +25,8 @@
 	  <div id="form_col2" class="yellow-box">	
 		 <%= f.input :repository_id, :as => :select, :collection => Repository.all, :label => "Assign Library/Archive: " %>
 	  </div>
+	<% else %>
+	  <%= f.hidden_field :repository_id, :value => @course.repository.id %>  
 	<% end %>
 	</div>
 		<span id="requester_info"><%= render :partial => 'shared/forms/course_requester_info', :locals=>{:f=>f} %></span>
