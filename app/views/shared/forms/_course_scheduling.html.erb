@@ -112,8 +112,6 @@ $(document).ready(function(){
   This is a failsafe, do not use unless something really weird happens (e.g. zombie attack).<br />
   <%= f.input :status, :label => "Status: ", :as => :select, :collection => Course::STATUS %>	
 <% end %>  
-<%= check_box_tag :send_assessment_email %> Close class and send assessment email to requester<br /><br />
-<%= check_box_tag :no_assessment_email %> Close class and do NOT send assessment email to requester<br /><br />
 </div>
 <% end %>
 </div>

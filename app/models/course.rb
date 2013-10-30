@@ -7,9 +7,9 @@ class Course < ActiveRecord::Base
   belongs_to :room
   belongs_to :repository
   belongs_to :room
-  has_many :notes
+  has_many :notes, :dependent => :destroy
   has_and_belongs_to_many :item_attributes
-  has_many :assessments
+  has_many :assessments, :dependent => :destroy
   has_and_belongs_to_many :staff_involvements
   
   
