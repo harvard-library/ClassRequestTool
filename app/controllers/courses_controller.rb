@@ -41,23 +41,7 @@ class CoursesController < ApplicationController
   def create
     unless params[:course][:repository_id].nil? || params[:course][:repository_id].blank?
       @repository = Repository.find(params[:course][:repository_id])
-    end
-    
-    if params[:course][:repository_id].nil? || params[:course][:repository_id].blank?
-      params[:course][:status] = "Homeless"
-    elsif params[:course][:timeframe].nil? || params[:course][:timeframe].blank?
-      if (params[:course][:primary_contact_id].nil? || params[:course][:primary_contact_id].blank?) && (params[:course][:user_ids].nil? || params[:course][:user_ids][1].nil? || params[:course][:user_ids][1].empty?)
-        params[:course][:status] = "Unclaimed, Unscheduled"
-      else
-        params[:course][:status] = "Claimed, Unscheduled"  
-      end
-    else
-      if (params[:course][:primary_contact_id].nil? || params[:course][:primary_contact_id].blank?) && (params[:course][:user_ids].nil? || params[:course][:user_ids][1].nil? || params[:course][:user_ids][1].empty?)
-        params[:course][:status] = "Scheduled, Unclaimed"
-      else
-        params[:course][:status] = "Scheduled, Claimed" 
-      end  
-    end  
+    end 
     
     begin Time.zone.parse(params[:course][:timeframe]).utc.to_datetime
       params[:course][:timeframe] = Time.zone.parse(params[:course][:timeframe]).utc.to_datetime unless params[:course][:timeframe].nil? || params[:course][:timeframe].empty?
@@ -105,16 +89,25 @@ class CoursesController < ApplicationController
       params[:course][:time_choice_4] = nil
     end 
     
+    if params[:course][:repository_id].nil? || params[:course][:repository_id].blank?
+      params[:course][:status] = "Homeless"
+    elsif params[:course][:timeframe].nil? || params[:course][:timeframe].blank?
+      if (params[:course][:primary_contact_id].nil? || params[:course][:primary_contact_id].blank?) && (params[:course][:user_ids].nil? || params[:course][:user_ids][1].nil? || params[:course][:user_ids][1].empty?)
+        params[:course][:status] = "Unclaimed, Unscheduled"
+      else
+        params[:course][:status] = "Claimed, Unscheduled"  
+      end
+    else
+      if (params[:course][:primary_contact_id].nil? || params[:course][:primary_contact_id].blank?) && (params[:course][:user_ids].nil? || params[:course][:user_ids][1].nil? || params[:course][:user_ids][1].empty?)
+        params[:course][:status] = "Scheduled, Unclaimed"
+      else
+        params[:course][:status] = "Scheduled, Claimed" 
+      end  
+    end 
+    
     @course = Course.new(params[:course])
     
     respond_to do |format|
-      # if !@repository.nil? && !@course.number_of_students.nil?
-      #   if @course.number_of_students > @repository.class_limit
-      #     flash[:error] = "Please enter number of students below the repository maximum."
-      #     format.html { render action: "new" }
-      #     format.json { render json: @course.errors, status: :unprocessable_entity }
-      #   end 
-      # end  
       if params[:schedule_future_class] == "1"
         if (!params[:course][:timeframe].nil? && !params[:course][:timeframe].blank? && params[:course][:timeframe] < DateTime.now) || (!params[:course][:timeframe_2].nil? && !params[:course][:timeframe_2].blank? && params[:course][:timeframe_2] < DateTime.now) || (!params[:course][:timeframe_3].nil? && !params[:course][:timeframe_3].blank? && params[:course][:timeframe_3] < DateTime.now) || (!params[:course][:timeframe_4].nil? && !params[:course][:timeframe_4].blank? && params[:course][:timeframe_4] < DateTime.now)
           flash[:error] = "Please confirm scheduling class in the past."
@@ -188,22 +181,6 @@ class CoursesController < ApplicationController
         timeframe_change = true
       end
     
-      if params[:course][:repository_id].nil? || params[:course][:repository_id].blank?
-        params[:course][:status] = "Homeless"
-      elsif params[:course][:timeframe].nil? || params[:course][:timeframe].blank?
-        if (params[:course][:primary_contact_id].nil? || params[:course][:primary_contact_id].blank?) && (params[:course][:user_ids].nil? || params[:course][:user_ids][1].nil? || params[:course][:user_ids][1].empty?)
-          params[:course][:status] = "Unclaimed, Unscheduled"
-        else
-          params[:course][:status] = "Claimed, Unscheduled"  
-        end
-      else
-        if (params[:course][:primary_contact_id].nil? || params[:course][:primary_contact_id].blank?) && (params[:course][:user_ids].nil? || params[:course][:user_ids][1].nil? || params[:course][:user_ids][1].empty?)
-          params[:course][:status] = "Scheduled, Unclaimed"
-        else
-          params[:course][:status] = "Scheduled, Claimed" 
-        end  
-      end
-    
       begin Time.zone.parse(params[:course][:timeframe]).utc.to_datetime
         params[:course][:timeframe] = Time.zone.parse(params[:course][:timeframe]).utc.to_datetime unless params[:course][:timeframe].nil? || params[:course][:timeframe].empty?
       rescue
@@ -249,6 +226,22 @@ class CoursesController < ApplicationController
       rescue
         params[:course][:time_choice_4] = nil
       end 
+      
+      if params[:course][:repository_id].nil? || params[:course][:repository_id].blank?
+        params[:course][:status] = "Homeless"
+      elsif params[:course][:timeframe].nil? || params[:course][:timeframe].blank?
+        if (params[:course][:primary_contact_id].nil? || params[:course][:primary_contact_id].blank?) && (params[:course][:user_ids].nil? || params[:course][:user_ids][1].nil? || params[:course][:user_ids][1].empty?)
+          params[:course][:status] = "Unclaimed, Unscheduled"
+        else
+          params[:course][:status] = "Claimed, Unscheduled"  
+        end
+      else
+        if (params[:course][:primary_contact_id].nil? || params[:course][:primary_contact_id].blank?) && (params[:course][:user_ids].nil? || params[:course][:user_ids][1].nil? || params[:course][:user_ids][1].empty?)
+          params[:course][:status] = "Scheduled, Unclaimed"
+        else
+          params[:course][:status] = "Scheduled, Claimed" 
+        end  
+      end
 
       respond_to do |format|
         if params[:schedule_future_class] == "1"
