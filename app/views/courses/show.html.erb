@@ -114,6 +114,19 @@
   		<%= render :partial => 'notes/staff_only_notes', :locals => {:notes => @staff_only_notes } %>
 		
 		<%= render :partial => 'shared/forms/note', :locals => {:note => @note, :course => @course } %>
+		
+	  <div class="yellow-box">
+		<h4>When class is complete, make selection below to close class:</h4>  
+	    <%= semantic_form_for(@course, :html => {:multipart => true}) do |f| %>
+	  	  <%= f.inputs do %>
+		    <%= check_box_tag :send_assessment_email %> Close class and send assessment email to requester<br /><br />
+		    <%= check_box_tag :no_assessment_email %> Close class and do NOT send assessment email to requester<br /><br />
+		  <% end %>	
+	  	  <%= f.actions do %>
+	  	    <%= f.action :submit, :as => :button, :label => 'Update Request ' %>
+	  	  <% end %>
+	    <% end %>	
+	  </div>
 	<% elsif current_user.try(:patron?)%>	
   	  <h4>Additional Actions</h4>
   		Status: <%= @course.status %> <br />
