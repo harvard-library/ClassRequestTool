@@ -27,6 +27,7 @@ $(document).ready(function(){
   $('#course_time_choice_1').datetimepicker({
 	dateFormat: 'yy-mm-dd',
 	timeFormat: "hh:mm tt",
+	buttonImage: "/assets/calendar_icon.png",
 	stepMinute: 15,
 	hourMin: 9,
 	hourMax: 17,

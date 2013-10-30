@@ -40,7 +40,7 @@ class Note < ActiveRecord::Base
         :reply_to => DEFAULT_MAILER_SENDER,
         :to => users,
         :subject => "[ClassRequestTool] A Comment has been Added to a Class",
-        :body => "<p>#{self.user.full_name} (#{note.user.user_type}) has added a note to one of your classes.</p>
+        :body => "<p>#{self.user.full_name} (#{self.user.user_type}) has added a note to one of your classes.</p>
         <p>
         Library/Archive: #{self.course.repository.name}<br />
         <a href='#{ROOT_URL}#{edit_course_path(self.course)}'>#{self.course.title}</a><br />
@@ -62,7 +62,7 @@ class Note < ActiveRecord::Base
       :reply_to => DEFAULT_MAILER_SENDER,
       :to => self.course.contact_email,
       :subject => "[ClassRequestTool] A Comment has been Added to a Class",
-      :body => "<p>#{self.user.full_name} (#{note.user.user_type}) has added a note to one of your classes.</p>
+      :body => "<p>#{self.user.full_name} (#{self.user.user_type}) has added a note to one of your classes.</p>
       <p>
       Library/Archive: #{self.course.repository.name}<br />
       <a href='#{ROOT_URL}#{edit_course_path(self.course)}'>#{self.course.title}</a><br />
