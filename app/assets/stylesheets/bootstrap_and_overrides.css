@@ -83,6 +83,10 @@ input, .uneditable-input {
 	width: auto;
 }
 
+input[readonly] {
+   cursor: pointer;
+}
+
 textarea {
   width: 200;
 }
