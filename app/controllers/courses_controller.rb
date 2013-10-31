@@ -116,7 +116,7 @@ class CoursesController < ApplicationController
         end
       end  
       if @course.save
-        if !params[:schedule_future_class].nil? || params[:schedule_future_class] == "0"
+        if params[:schedule_future_class].nil? || params[:schedule_future_class] == "0"
           @course.new_request_email
         end  
         if user_signed_in?
@@ -171,7 +171,7 @@ class CoursesController < ApplicationController
       staff_change = false
       timeframe_change = false
     
-      if (@course.repository.nil? || @course.repository.blank?) && (!params[:course][:repository_id].nil? && !params[:course][:repository_id].blank?)
+      if @course.repository != @repository #(@course.repository.nil? || @course.repository.blank?) && (!params[:course][:repository_id].nil? && !params[:course][:repository_id].blank?)
         repo_change = true
       end
       if ((@course.primary_contact.nil? || @course.primary_contact.blank?) && (!params[:course][:primary_contact_id].nil? && !params[:course][:primary_contact_id].blank?)) || ((@course.users.nil? || @course.users.blank?) && (!params[:course][:user_ids].nil? && !params[:course][:user_ids][1].nil? && !params[:course][:user_ids][1].empty?))
