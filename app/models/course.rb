@@ -112,7 +112,7 @@ class Course < ActiveRecord::Base
     # send to assigned staff members
     emails = ""
     self.users.collect{|u| u == current_user ? '' : emails = u.email + ","}
-    unless self.primary_contact.nil? || self.primary_contact.blank?
+    unless self.primary_contact.nil? || self.primary_contact.blank? || self.primary_contact == current_user
       emails = emails + ", " + self.primary_contact.email
     end  
     Email.create(
