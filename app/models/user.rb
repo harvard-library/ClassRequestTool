@@ -93,7 +93,7 @@ class User < ActiveRecord::Base
   
   def classes_to_close
     to_close = Array.new
-    self.courses.collect{|course| !course.timeframe.nil? && course.timeframe < DateTime.now ? to_close << course : ''}
+    self.courses.collect{|course| !course.timeframe.nil? && course.timeframe < DateTime.now && course.status != "Closed" ? to_close << course : ''}
     return to_close.sort_by { |hsh| hsh[:timeframe] }
   end
 
