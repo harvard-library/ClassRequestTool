@@ -21,7 +21,7 @@ class NotesController < ApplicationController
     respond_to do |format|
       if @note.save
         @note.new_note_email(current_user)
-        unless @note.staff_comment
+        unless @note.staff_comment || @note.course.contact_email == current_user.email
           @note.new_patron_note_email
         end
         format.html { redirect_to course_url(@note.course), notice: 'Note was successfully created.' }
