@@ -11,6 +11,7 @@ class Note < ActiveRecord::Base
     if self.course.primary_contact.nil? || self.course.primary_contact.blank? || self.course.users.nil? || self.course.users.blank?
       admins = ""
       User.all(:conditions => ["admin is true or superadmin is true"]).collect{|a| a == current_user ? '' : admins = a.email + ","}
+      repository = self.course.repository.nil? ? 'Not yet assigned' : self.course.repository.name
       Email.create(
         :from => DEFAULT_MAILER_SENDER,
         :reply_to => DEFAULT_MAILER_SENDER,
@@ -18,7 +19,7 @@ class Note < ActiveRecord::Base
         :subject => "[ClassRequestTool] A Comment has been Added to a Class",
         :body => "<p>#{self.user.full_name} (#{self.user.user_type}) has added a note to one of your classes.</p>
         <p>
-        Library/Archive: #{self.course.repository.name}<br />
+        Library/Archive: #{repository}<br />
         <a href='#{ROOT_URL}#{edit_course_path(self.course)}'>#{self.course.title}</a><br />
         Subject: #{self.course.subject}<br />
         Course Number: #{self.course.course_number}<br />
@@ -35,6 +36,7 @@ class Note < ActiveRecord::Base
       unless self.course.primary_contact.nil? || self.course.primary_contact == current_user
         users = users + ", " + self.course.primary_contact.email
       end  
+      repository = self.course.repository.nil? ? 'Not yet assigned' : self.course.repository.name
       Email.create(
         :from => DEFAULT_MAILER_SENDER,
         :reply_to => DEFAULT_MAILER_SENDER,
@@ -42,7 +44,7 @@ class Note < ActiveRecord::Base
         :subject => "[ClassRequestTool] A Comment has been Added to a Class",
         :body => "<p>#{self.user.full_name} (#{self.user.user_type}) has added a note to one of your classes.</p>
         <p>
-        Library/Archive: #{self.course.repository.name}<br />
+        Library/Archive: #{repository}<br />
         <a href='#{ROOT_URL}#{edit_course_path(self.course)}'>#{self.course.title}</a><br />
         Subject: #{self.course.subject}<br />
         Course Number: #{self.course.course_number}<br />
@@ -57,6 +59,7 @@ class Note < ActiveRecord::Base
   
   def new_patron_note_email
     # if note is not staff only send to patron
+    repository = self.course.repository.nil? ? 'Not yet assigned' : self.course.repository.name
     Email.create(
       :from => DEFAULT_MAILER_SENDER,
       :reply_to => DEFAULT_MAILER_SENDER,
@@ -64,7 +67,7 @@ class Note < ActiveRecord::Base
       :subject => "[ClassRequestTool] A Comment has been Added to a Class",
       :body => "<p>#{self.user.full_name} (#{self.user.user_type}) has added a note to one of your classes.</p>
       <p>
-      Library/Archive: #{self.course.repository.name}<br />
+      Library/Archive: #{repository}<br />
       <a href='#{ROOT_URL}#{edit_course_path(self.course)}'>#{self.course.title}</a><br />
       Subject: #{self.course.subject}<br />
       Course Number: #{self.course.course_number}<br />
