@@ -21,7 +21,7 @@ class Note < ActiveRecord::Base
         Library/Archive: #{self.course.repository.name}<br />
         <a href='#{ROOT_URL}#{edit_course_path(self.course)}'>#{self.course.title}</a><br />
         Subject: #{self.course.subject}<br />
-        Class Number: #{self.course.course_number}<br />
+        Course Number: #{self.course.course_number}<br />
         Affiliation: #{self.course.affiliation}<br />
         Number of Students: #{self.course.number_of_students}<br />
         Syllabus: #{self.course.external_syllabus}<br />
@@ -45,7 +45,7 @@ class Note < ActiveRecord::Base
         Library/Archive: #{self.course.repository.name}<br />
         <a href='#{ROOT_URL}#{edit_course_path(self.course)}'>#{self.course.title}</a><br />
         Subject: #{self.course.subject}<br />
-        Class Number: #{self.course.course_number}<br />
+        Course Number: #{self.course.course_number}<br />
         Affiliation: #{self.course.affiliation}<br />
         Number of Students: #{self.course.number_of_students}<br />
         Syllabus: #{self.course.external_syllabus}<br />
@@ -67,7 +67,7 @@ class Note < ActiveRecord::Base
       Library/Archive: #{self.course.repository.name}<br />
       <a href='#{ROOT_URL}#{edit_course_path(self.course)}'>#{self.course.title}</a><br />
       Subject: #{self.course.subject}<br />
-      Class Number: #{self.course.course_number}<br />
+      Course Number: #{self.course.course_number}<br />
       Affiliation: #{self.course.affiliation}<br />
       Number of Students: #{self.course.number_of_students}<br />
       Syllabus: #{self.course.external_syllabus}<br />

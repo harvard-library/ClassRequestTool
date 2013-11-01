@@ -48,7 +48,7 @@ class Course < ActiveRecord::Base
         Library/Archive: Not yet assigned<br />
         <a href='#{ROOT_URL}#{edit_course_path(self)}'>#{self.title}</a><br />
         Subject: #{self.subject}<br />
-        Class Number: #{self.course_number}<br />
+        Course Number: #{self.course_number}<br />
         Affiliation: #{self.affiliation}<br />
         Number of Students: #{self.number_of_students}<br />
         Syllabus: #{self.external_syllabus}<br />
@@ -72,7 +72,7 @@ class Course < ActiveRecord::Base
         Library/Archive: #{self.repository.name}<br />
         <a href='#{ROOT_URL}#{edit_course_path(self)}'>#{self.title}</a><br />
         Subject: #{self.subject}<br />
-        Class Number: #{self.course_number}<br />
+        Course Number: #{self.course_number}<br />
         Affiliation: #{self.affiliation}<br />
         Number of Students: #{self.number_of_students}<br />
         Syllabus: #{self.external_syllabus}<br />
@@ -99,7 +99,7 @@ class Course < ActiveRecord::Base
         Library/Archive: #{self.repository.name}<br />
         <a href='#{ROOT_URL}#{edit_course_path(self)}'>#{self.title}</a><br />
         Subject: #{self.subject}<br />
-        Class Number: #{self.course_number}<br />
+        Course Number: #{self.course_number}<br />
         Affiliation: #{self.affiliation}<br />
         Number of Students: #{self.number_of_students}<br />
         Syllabus: #{self.external_syllabus}<br />
@@ -125,7 +125,7 @@ class Course < ActiveRecord::Base
       Library/Archive: #{self.repository.name}<br />
       <a href='#{ROOT_URL}#{edit_course_path(self)}'>#{self.title}</a><br />
       Subject: #{self.subject}<br />
-      Class Number: #{self.course_number}<br />
+      Course Number: #{self.course_number}<br />
       Affiliation: #{self.affiliation}<br />
       Number of Students: #{self.number_of_students}<br />
       Syllabus: #{self.external_syllabus}<br />
@@ -186,7 +186,7 @@ class Course < ActiveRecord::Base
       Library/Archive: #{self.repository.name}<br />
       <a href='#{ROOT_URL}#{edit_course_path(self)}'>#{self.title}</a><br />
       Subject: #{self.subject}<br />
-      Class Number: #{self.course_number}<br />
+      Course Number: #{self.course_number}<br />
       Affiliation: #{self.affiliation}<br />
       Number of Students: #{self.number_of_students}<br />
       Syllabus: #{self.external_syllabus}<br />
