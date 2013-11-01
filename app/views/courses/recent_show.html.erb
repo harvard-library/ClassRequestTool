@@ -5,6 +5,6 @@
 	Library/Archive: <%= @course.repository.nil? ? "Not Sure - Help me Choose" : @course.repository.name %> <br />
 	Title: <%= @course.title unless @course.title.nil? %> <br />
 	Subject: <%= @course.subject unless @course.subject.nil? %> <br />
-	Class Number: <%= @course.course_number unless @course.course_number.nil? %> <br />
+	Course Number: <%= @course.course_number unless @course.course_number.nil? %> <br />
 	Date of Class: <%= @course.timeframe.strftime('%m/%d/%Y') unless @course.timeframe.nil? %>
 </div>
