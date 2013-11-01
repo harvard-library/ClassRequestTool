@@ -102,7 +102,7 @@ namespace :crt do
           Library/Archive: Not yet assigned<br />
           <a href='#{ROOT_URL}#{edit_course_path(course.id)}'>#{course.title}</a><br />
           Subject: #{course.subject}<br />
-          Class Number: #{course.course_number}<br />
+          Course Number: #{course.course_number}<br />
           Affiliation: #{course.affiliation}<br />
           Number of Students: #{course.number_of_students}<br />
           Syllabus: #{course.external_syllabus}<br />

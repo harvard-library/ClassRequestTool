@@ -48,7 +48,6 @@ class User < ActiveRecord::Base
   
   def upcoming_courses
     upcoming = Array.new
-    #self.courses.collect{|course| !course.timeframe.nil? && course.timeframe >= DateTime.now ? upcoming << course : ''}
     self.courses.collect{|course| course.status == "Scheduled, Claimed" ? upcoming << course : ''}
     upcoming << Course.all(:conditions => {:primary_contact_id => self.id, :status => "Scheduled, Claimed"})
     return upcoming.flatten
@@ -56,7 +55,6 @@ class User < ActiveRecord::Base
   
   def past_courses
     past = Array.new
-    #self.courses.collect{|course| !course.timeframe.nil? && course.timeframe < DateTime.now ? past << course : ''}
     self.courses.collect{|course| course.status == "Closed" ? past << course : ''}
     past << Course.all(:conditions => {:primary_contact_id => self.id, :status => "Closed"})
     
@@ -65,7 +63,6 @@ class User < ActiveRecord::Base
   
   def unscheduled_courses
     unscheduled = Array.new 
-    #self.courses.collect{|course| course.timeframe.nil? ? unscheduled << course : ''}
     self.courses.collect{|course| course.status == "Claimed, Unscheduled" ? unscheduled << course : ''}
     unscheduled << Course.all(:conditions => {:primary_contact_id => self.id, :status => "Claimed, Unscheduled"})
     return unscheduled.flatten.sort_by { |hsh| hsh[:created_at] }
@@ -94,7 +91,8 @@ class User < ActiveRecord::Base
   def classes_to_close
     to_close = Array.new
     self.courses.collect{|course| !course.timeframe.nil? && course.timeframe < DateTime.now && course.status != "Closed" ? to_close << course : ''}
-    return to_close.sort_by { |hsh| hsh[:timeframe] }
+    to_close << Course.all.collect{|c| !course.timeframe.nil? && course.timeframe < DateTime.now && course.status != "Closed" && course.primary_contact_id => self.id ? to_close << course : ''}
+    return to_close.flatten.sort_by { |hsh| hsh[:timeframe] }
   end
 
 end
