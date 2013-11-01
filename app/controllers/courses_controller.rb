@@ -116,7 +116,7 @@ class CoursesController < ApplicationController
         end
       end  
       if @course.save
-        if params[:schedule_future_class].nil? || params[:schedule_future_class] == "0"
+        if params[:schedule_future_class].nil? || params[:schedule_future_class] == "1"
           @course.new_request_email
         end  
         if user_signed_in?
