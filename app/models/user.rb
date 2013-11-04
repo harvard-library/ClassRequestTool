@@ -89,9 +89,10 @@ class User < ActiveRecord::Base
   end
   
   def classes_to_close
+    p "IN HERE"
     to_close = Array.new
     self.courses.collect{|course| !course.timeframe.nil? && course.timeframe < DateTime.now && course.status != "Closed" ? to_close << course : ''}
-    to_close << Course.all(:conditions => ["timeframe is not null and timeframe < ? and status = 'Closed' and primary_contact_id = ?", DateTime.now, self.id])
+    to_close << Course.all(:conditions => ["timeframe is not null and timeframe < ? and status != 'Closed' and primary_contact_id = ?", DateTime.now, self.id])
     return to_close.flatten.sort_by { |hsh| hsh[:timeframe] }
   end
 
