@@ -8,7 +8,7 @@ class Note < ActiveRecord::Base
   
   def new_note_email(current_user)
     # if assigned users is empty, send to all admins of tool 
-    if self.course.primary_contact.nil? || self.course.primary_contact.blank? || self.course.users.nil? || self.course.users.blank?
+    if (self.course.primary_contact.nil? || self.course.primary_contact.blank?) && (self.course.users.nil? || self.course.users.blank?)
       admins = ""
       User.all(:conditions => ["admin is true or superadmin is true"]).collect{|a| a == current_user ? '' : admins = a.email + ","}
       repository = self.course.repository.nil? ? 'Not yet assigned' : self.course.repository.name
@@ -31,16 +31,16 @@ class Note < ActiveRecord::Base
       )
     # if assigned users is not empty, send to all users assigned to course selected
     else
-      users = ""
-      self.course.users.collect{|u| u == current_user ? '' : emails = u.email + ","}
+      emails = ""
+      self.course.users.collect{|u| u == current_user ? '' : emails = emails + u.email + ","}
       unless self.course.primary_contact.nil? || self.course.primary_contact == current_user
-        users = users + ", " + self.course.primary_contact.email
-      end  
+        emails = emails + ", " + self.course.primary_contact.email
+      end 
       repository = self.course.repository.nil? ? 'Not yet assigned' : self.course.repository.name
       Email.create(
         :from => DEFAULT_MAILER_SENDER,
         :reply_to => DEFAULT_MAILER_SENDER,
-        :to => users,
+        :to => emails,
         :subject => "[ClassRequestTool] A Comment has been Added to a Class",
         :body => "<p>#{self.user.full_name} (#{self.user.user_type}) has added a note to one of your classes.</p>
         <p>
