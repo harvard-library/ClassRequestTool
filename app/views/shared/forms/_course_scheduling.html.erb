@@ -107,11 +107,12 @@ $(document).ready(function(){
 	<p>Be sure to review your information and make any edits before submitting your request.</p>
 	<p>Please note that some of the information you provide may be used to promote the variety of classes being offered at special collections libraries and archives at Harvard.</p>
 </div>	
-<div id="form_full_width" class="yellow-box">
 <% if current_user.try(:superadmin?) %>
-  This is a failsafe, do not use unless something really weird happens (e.g. zombie attack).<br />
-  <%= f.input :status, :label => "Status: ", :as => :select, :collection => Course::STATUS %>	
+  <div id="form_full_width" class="yellow-box">
+    This is a failsafe, do not use unless something really weird happens (e.g. zombie attack).<br />
+    <%= f.input :status, :label => "Status: ", :as => :select, :collection => Course::STATUS %>	
+  </div>	
 <% end %>  
-</div>
+
 <% end %>
 </div>
