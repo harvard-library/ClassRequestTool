@@ -89,13 +89,12 @@ namespace :crt do
     desc "Send email to admins when a class is still homeless after two days."
     task :send_homeless_notices => :environment do
       @courses = Course.find(:all, :conditions => ['repository_id IS NULL AND created_at <= ?', Time.now - 2.days])
-      admins = ""
-      User.all(:conditions => ["admin is true or superadmin is true"]).collect{|a| admins = admins + a.email + ","}
+      admins = User.all(:conditions => ["admin is true or superadmin is true"]).collect{|a| a.email}
       @courses.each do |course|
         Email.create(
           :from => DEFAULT_MAILER_SENDER,
           :reply_to => DEFAULT_MAILER_SENDER,
-          :to => admins,
+          :to => admins.join(", "),
           :subject => "[ClassRequestTool] A Homeless class is languishing!",
           :body => "<p>A homeless class request has been waiting 2 days for processing in the Class Request Tool. A Library or Archive should offer it a home as soon as possible.</p> 
           <p>
