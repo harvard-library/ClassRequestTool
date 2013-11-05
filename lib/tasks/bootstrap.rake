@@ -90,7 +90,7 @@ namespace :crt do
     task :send_homeless_notices => :environment do
       @courses = Course.find(:all, :conditions => ['repository_id IS NULL AND created_at <= ?', Time.now - 2.days])
       admins = ""
-      User.all(:conditions => ["admin is true or superadmin is true"]).collect{|a| admins = a.email + ","}
+      User.all(:conditions => ["admin is true or superadmin is true"]).collect{|a| admins = admins + a.email + ","}
       @courses.each do |course|
         Email.create(
           :from => DEFAULT_MAILER_SENDER,
