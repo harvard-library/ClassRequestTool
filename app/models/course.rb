@@ -36,12 +36,11 @@ class Course < ActiveRecord::Base
     )
     # if repository is empty (homeless), send to all admins of tool 
     if self.repository.nil? || self.repository.blank?
-      admins = ""
-      User.all(:conditions => ["admin is true or superadmin is true"]).collect{|a| admins = a.email + ","}
+      admins = User.all(:conditions => ["admin is true or superadmin is true"]).collect{|a| a.email}
       Email.create(
         :from => DEFAULT_MAILER_SENDER,
         :reply_to => DEFAULT_MAILER_SENDER,
-        :to => admins,
+        :to => admins.join(", "),
         :subject => "[ClassRequestTool] A New Homeless Class Request has been Received",
         :body => "<p>A new homeless class request has been received in the Class Request Tool.</p> 
         <p>
@@ -58,16 +57,15 @@ class Course < ActiveRecord::Base
        
     # if repository is not empty, send to all users assigned to repository selected
     else
-      users = ""
-      superadmins = ""
-      self.repository.users.collect{|u| users = u.email + ","}
-      User.all(:conditions => {:superadmin => true}).collect{|s| superadmins = s.email + ","}
-      users = users + ", " + superadmins
+      users = self.repository.users.collect{|u| u.email}
+      superadmins = User.all(:conditions => {:superadmin => true}).collect{|s| s.email}
+      users << superadmins
+      users.flatten!
       repository = self.repository.nil? ? 'Not yet assigned' : self.repository.name
       Email.create(
         :from => DEFAULT_MAILER_SENDER,
         :reply_to => DEFAULT_MAILER_SENDER,
-        :to => users,
+        :to => users.join(", "),
         :subject => "[ClassRequestTool] A new class request has been received for #{repository}",
         :body => "<p>
         Library/Archive: #{repository}<br />
@@ -85,16 +83,15 @@ class Course < ActiveRecord::Base
   
   def send_repo_change_email
     # send to all users of selected repository 
-      users = ""
-      superadmins = ""
-      self.repository.users.collect{|u| users = u.email + ","}
-      User.all(:conditions => {:superadmin => true}).collect{|s| superadmins = s.email + ","}
-      users = users + ", " + superadmins
+      users = self.repository.users.collect{|u| u.email}
+      superadmins = User.all(:conditions => {:superadmin => true}).collect{|s| s.email}
+      users << superadmins
+      users.flatten!
       repository = self.repository.nil? ? 'Not yet assigned' : self.repository.name
       Email.create(
         :from => DEFAULT_MAILER_SENDER,
         :reply_to => DEFAULT_MAILER_SENDER,
-        :to => users,
+        :to => users.join(", "),
         :subject => "[ClassRequestTool] A Class has been Transferred to #{repository}",
         :body => "<p>A class has been transferred to #{repository}. This may be a formerly Homeless class or a class another repository has suggested would be more appropriate for #{repository}.</p>
         <p>
@@ -112,16 +109,15 @@ class Course < ActiveRecord::Base
   
   def send_staff_change_email(current_user)
     # send to assigned staff members
-    emails = ""
-    self.users.collect{|u| u == current_user ? '' : emails = u.email + ","}
+    emails = self.users.collect{|u| u == current_user ? '' : u.email}
     unless self.primary_contact.nil? || self.primary_contact.blank? || self.primary_contact == current_user
-      emails = emails + ", " + self.primary_contact.email
+      emails << self.primary_contact.email
     end 
     repository = self.repository.nil? ? 'Not yet assigned' : self.repository.name
     Email.create(
       :from => DEFAULT_MAILER_SENDER,
       :reply_to => DEFAULT_MAILER_SENDER,
-      :to => emails,
+      :to => emails.join(", "),
       :subject => "[ClassRequestTool] You have been assigned a class",
       :body => "<p>You have been assigned to a class for #{repository}.</p>
       <p>
