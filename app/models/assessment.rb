@@ -10,26 +10,24 @@ class Assessment < ActiveRecord::Base
   def new_assessment_email
     # if assigned users is empty, send to all admins of tool 
     if self.course.primary_contact.nil? || self.course.primary_contact.blank? || self.course.users.nil? || self.course.users.blank?
-      admins = ""
-      User.all(:conditions => ["admin is true or superadmin is true"]).collect{|a| admins = a.email + ","}
+      admins = User.all(:conditions => ["admin is true or superadmin is true"]).collect{|a| a.email + ","}
       Email.create(
         :from => DEFAULT_MAILER_SENDER,
         :reply_to => DEFAULT_MAILER_SENDER,
-        :to => admins,
+        :to => admins.join(", "),
         :subject => "[ClassRequestTool] Class Assessment Received",
         :body => "<p>Review the feedback for #{self.course.title} <a href='#{ROOT_URL}#{assessment_path(self)}'> here</a>.</p>"
       )
     # if assigned users is not empty, send to all users assigned to course selected
     else
-      users = ""
-      self.course.users.collect{|u| users = u.email + ","}
+      users = self.course.users.collect{|u| u.email + ","}
       unless self.course.primary_contact.nil? || self.course.primary_contact.blank?
-        users = users + ", " + self.course.primary_contact.email
+        users << self.course.primary_contact.email
       end  
       Email.create(
         :from => DEFAULT_MAILER_SENDER,
         :reply_to => DEFAULT_MAILER_SENDER,
-        :to => users,
+        :to => users.join(", "),
         :subject => "[ClassRequestTool] Class Assessment Received",
         :body => "<p>An assessment has been received for one of your classes. Review the feedback for #{self.course.title} <a href='#{ROOT_URL}#{assessment_path(self)}'> here</a>.</p>"
       )  
