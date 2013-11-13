@@ -1,4 +1,4 @@
-<%= semantic_form_for(note) do |f| %>
+<%= semantic_form_for(@note) do |f| %>
   <%= f.input :note_text, :label => "Add a New Note: ", :input_html => { :rows => 5, :columns => 250 } %>
   <%= f.hidden_field :course_id, :value => course.id %>
   <%= f.hidden_field :user_id, :value => current_user.id %>
