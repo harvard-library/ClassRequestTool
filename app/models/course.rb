@@ -149,13 +149,13 @@ class Course < ActiveRecord::Base
         end
       end    
     end  
-    
+    repository = self.repository.nil? ? 'Not yet assigned' : self.repository.name
     unless self.pre_class_appt.nil? || self.pre_class_appt.blank?
       pre_class = "<p>Additionally, your pre-class planning appointment is scheduled for #{self.pre_class_appt} with #{name} at #{repository}.</p>"
     else
       pre_class = ""  
     end  
-    repository = self.repository.nil? ? 'Not yet assigned' : self.repository.name
+    
     # send email to requester
     Email.create(
       :from => DEFAULT_MAILER_SENDER,
