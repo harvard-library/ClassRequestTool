@@ -11,6 +11,7 @@ class NotesController < ApplicationController
   
   def edit
     @note = Note.find(params[:id])
+    @course = @note.course
     unless current_user.try(:staff?) || current_user.try(:admin?) || current_user.try(:superadmin?) || @note.course.contact_email == current_user.email
        redirect_to('/') and return
     end
