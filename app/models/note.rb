@@ -19,7 +19,7 @@ class Note < ActiveRecord::Base
         :body => "<p>#{self.user.full_name} (#{self.user.user_type}) has added a note to one of your classes.</p>
         <p>
         Library/Archive: #{repository}<br />
-        <a href='#{ROOT_URL}#{edit_course_path(self.course)}'>#{self.course.title}</a><br />
+        <a href='#{ROOT_URL}#{course_path(self.course)}'>#{self.course.title}</a><br />
         Subject: #{self.course.subject}<br />
         Course Number: #{self.course.course_number}<br />
         Affiliation: #{self.course.affiliation}<br />
@@ -43,7 +43,7 @@ class Note < ActiveRecord::Base
         :body => "<p>#{self.user.full_name} (#{self.user.user_type}) has added a note to one of your classes.</p>
         <p>
         Library/Archive: #{repository}<br />
-        <a href='#{ROOT_URL}#{edit_course_path(self.course)}'>#{self.course.title}</a><br />
+        <a href='#{ROOT_URL}#{course_path(self.course)}'>#{self.course.title}</a><br />
         Subject: #{self.course.subject}<br />
         Course Number: #{self.course.course_number}<br />
         Affiliation: #{self.course.affiliation}<br />
@@ -66,7 +66,7 @@ class Note < ActiveRecord::Base
       :body => "<p>#{self.user.full_name} (#{self.user.user_type}) has added a note to one of your classes.</p>
       <p>
       Library/Archive: #{repository}<br />
-      <a href='#{ROOT_URL}#{edit_course_path(self.course)}'>#{self.course.title}</a><br />
+      <a href='#{ROOT_URL}#{course_path(self.course)}'>#{self.course.title}</a><br />
       Subject: #{self.course.subject}<br />
       Course Number: #{self.course.course_number}<br />
       Affiliation: #{self.course.affiliation}<br />
