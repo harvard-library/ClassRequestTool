@@ -45,7 +45,7 @@ class Course < ActiveRecord::Base
         :body => "<p>A new homeless class request has been received in the Class Request Tool.</p> 
         <p>
         Library/Archive: Not yet assigned<br />
-        <a href='#{ROOT_URL}#{edit_course_path(self)}'>#{self.title}</a><br />
+        <a href='#{ROOT_URL}#{course_path(self)}'>#{self.title}</a><br />
         Subject: #{self.subject}<br />
         Course Number: #{self.course_number}<br />
         Affiliation: #{self.affiliation}<br />
@@ -69,7 +69,7 @@ class Course < ActiveRecord::Base
         :subject => "[ClassRequestTool] A new class request has been received for #{repository}",
         :body => "<p>
         Library/Archive: #{repository}<br />
-        <a href='#{ROOT_URL}#{edit_course_path(self)}'>#{self.title}</a><br />
+        <a href='#{ROOT_URL}#{course_path(self)}'>#{self.title}</a><br />
         Subject: #{self.subject}<br />
         Course Number: #{self.course_number}<br />
         Affiliation: #{self.affiliation}<br />
@@ -96,7 +96,7 @@ class Course < ActiveRecord::Base
         :body => "<p>A class has been transferred to #{repository}. This may be a formerly Homeless class or a class another repository has suggested would be more appropriate for #{repository}.</p>
         <p>
         Library/Archive: #{repository}<br />
-        <a href='#{ROOT_URL}#{edit_course_path(self)}'>#{self.title}</a><br />
+        <a href='#{ROOT_URL}#{course_path(self)}'>#{self.title}</a><br />
         Subject: #{self.subject}<br />
         Course Number: #{self.course_number}<br />
         Affiliation: #{self.affiliation}<br />
@@ -122,7 +122,7 @@ class Course < ActiveRecord::Base
       :body => "<p>You have been assigned to a class for #{repository}.</p>
       <p>
       Library/Archive: #{repository}<br />
-      <a href='#{ROOT_URL}#{edit_course_path(self)}'>#{self.title}</a><br />
+      <a href='#{ROOT_URL}#{course_path(self)}'>#{self.title}</a><br />
       Subject: #{self.subject}<br />
       Course Number: #{self.course_number}<br />
       Affiliation: #{self.affiliation}<br />
@@ -184,7 +184,7 @@ class Course < ActiveRecord::Base
       :body => "<p>Your class session</p>
       <p>
       Library/Archive: #{repository}<br />
-      <a href='#{ROOT_URL}#{edit_course_path(self)}'>#{self.title}</a><br />
+      <a href='#{ROOT_URL}#{course_path(self)}'>#{self.title}</a><br />
       Subject: #{self.subject}<br />
       Course Number: #{self.course_number}<br />
       Affiliation: #{self.affiliation}<br />

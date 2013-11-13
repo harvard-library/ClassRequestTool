@@ -23,6 +23,7 @@
 	  <% end %>
 	<% end %>
 	<br />
+	Goal for Class Session: <%= @course.goal unless @course.goal.nil? %><br />
 	
 	<h4>Requester Information</h4>
 	Primary Contact Username:  <span id="requestorUsername"><%= @course.contact_username unless @course.contact_username.nil? %></span> <br />
