@@ -13,8 +13,8 @@ class Note < ActiveRecord::Base
       
       unless self.course.repository.nil?
         admins = Array.new
-        admins << self.course.repository.users
-        admins << User.all(:conditions => {:superadmin => true})
+        admins << self.course.repository.users.collect{|a| a == current_user ? '' : a.email}
+        admins << User.all(:conditions => {:superadmin => true}).collect{|a| a == current_user ? '' : a.email}
         admins.flatten!
       else
         admins = User.all(:conditions => ["admin is true or superadmin is true"]).collect{|a| a == current_user ? '' : a.email}  
