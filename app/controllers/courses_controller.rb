@@ -1,7 +1,7 @@
 class CoursesController < ApplicationController
-  before_filter :authenticate_login!
+  before_filter :authenticate_login!, :except => [:recent_show]
   before_filter :authenticate_admin_or_staff!, :only => [:take]
-  before_filter :authenticate_user!, :except => [:take, :recent_show]
+  #before_filter :authenticate_user!, :except => [:take, :recent_show]
   
   def index
     @courses_all = Course.all(:order => "timeframe DESC, created_at DESC")
