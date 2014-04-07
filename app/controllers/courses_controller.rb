@@ -1,3 +1,5 @@
+require 'csv'
+
 class CoursesController < ApplicationController
   before_filter :authenticate_login!, :except => [:recent_show]
   before_filter :authenticate_admin_or_staff!, :only => [:take]
@@ -8,6 +10,7 @@ class CoursesController < ApplicationController
     @courses_mine_current = current_user.mine_current
     @courses_mine_past = current_user.mine_past
     @repositories = Repository.find(:all, :order => :name)
+    @csv = params[:csv]
   end  
   
   def show
@@ -345,5 +348,32 @@ class CoursesController < ApplicationController
       format.html { redirect_to dashboard_welcome_index_url, notice: 'Class was successfully claimed.' }
     end  
   end
+  
+  def export
+    @courses = Course.all(:order => "timeframe DESC, created_at DESC")
+    CSV.open("#{Rails.root}/public/uploads/courses.csv", "w") do |csv|
+      csv << ["title", "subject", "course number", "affiliation", "contact first name", "contact last name", "contact username", "contact email", "contact phone", "pre class appt", "timeframe", "repository", "room", "staff involvement", "number of students", "status", "file", "external syllabus", "duration", "comments", "course sessions", "session count", "goal", "instruction session", "date submitted"]
+      @courses.each do |course|
+        row = Array.new
+        row << [course.title, course.subject, course.course_number, course.affiliation, course.contact_first_name, course.contact_last_name, course.contact_username, course.contact_email, course.contact_phone, course.pre_class_appt, course.timeframe] 
+        unless course.repository.nil?
+          row << [course.repository.name]
+        else 
+          row << ["None"]
+        end
+        unless course.room.nil?
+          row << [course.room.name]
+        else
+          row << ["None"]
+        end
+        row << [course.staff_involvement, course.number_of_students, course.status, course.file, course.external_syllabus, course.duration, course.comments, course.course_sessions, course.session_count, course.goal, course.instruction_session, course.created_at]
+        row.flatten!
+        csv << row
+      end
+    end
+    flash[:notice] = 'Exported!'
+    @csv = true
+    redirect_to courses_path(:csv => @csv)
+  end  
    
 end
