@@ -95,6 +95,12 @@
 <% else %>
 <div>
   <h3>All Classes</h3>
+  
+  <% unless @csv.nil? %>
+	<h4><%= link_to "Download CSV", "/uploads/courses.csv" %></h4>
+  <% else %>
+    <h4><%= link_to('Export Courses to CSV', export_courses_path) %></h4>	  
+  <% end %>
   <% unless @courses_all.empty? %>	
     <table id="course-table-all" class="table table-condensed tablesorter">
 	<thead>

@@ -22,6 +22,7 @@ ClassRequestTool::Application.routes.draw do
     end 
     collection do
       get 'repo_select'
+      get 'export'
     end 
   end  
 
