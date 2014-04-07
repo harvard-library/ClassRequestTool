@@ -60,6 +60,9 @@ GEM
       orm_adapter (~> 0.1)
       railties (>= 3.2.6, < 5)
       warden (~> 1.2.3)
+    dotenv (0.10.0)
+    dotenv-rails (0.10.0)
+      dotenv (= 0.10.0)
     erubis (2.7.0)
     execjs (2.0.0)
     formtastic (2.2.1)
@@ -150,6 +153,7 @@ DEPENDENCIES
   coffee-rails (~> 3.2.1)
   devise (= 3.0.3)
   devise_harvard_auth_proxy!
+  dotenv-rails (~> 0.10.0)
   formtastic
   formtastic-bootstrap
   jquery-rails (~> 2.3.0)

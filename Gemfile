@@ -2,9 +2,7 @@ source 'https://rubygems.org'
 
 gem 'rails', '3.2.11'
 
-# Bundle edge Rails instead:
-# gem 'rails', :git => 'git://github.com/rails/rails.git'
-
+gem 'dotenv-rails', '~> 0.10.0'
 gem 'therubyracer'
 gem 'devise', '3.0.3'
 gem 'formtastic'
