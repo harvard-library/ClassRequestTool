@@ -9,6 +9,9 @@
 
 ```
 SECRET_TOKEN=30+charstringofrandomnessgottenfromrakesecretmaybe #Only needed in RAILS_ENV=production
+ROOT_URL=my.crt.host.com
+DEFAULT_MAILER_SENDER=email.address.for.mails@my.crt.host.com
+EMAIL_BATCH_LIMIT=100
 ```
 
 ## License
