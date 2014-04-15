@@ -1,6 +1,6 @@
 body { padding-top: 0px; }
 
-.span12 {
+.col-md-12 {
   width: 97%;
 }
 
@@ -22,9 +22,15 @@ body { padding-top: 0px; }
 
 .navbar-fixed-top {
   position: relative;
+  margin-bottom: 0;
+  box-shadow: 0 1px 3px rgba(0,0,0,.25);
 }
 
-.navbar-inner {
+body > nav.navbar {
+  background-color: #F8EAD8;
+}
+
+nav.navbar {
   background-color: #f8ead8; /* fallback color, place your own */
 
   /* Gradients for modern browsers, replace as you see fit */
@@ -40,8 +46,15 @@ body { padding-top: 0px; }
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f8ead8', endColorstr='#f8ead8', GradientType=0);
 }
 
-.navbar-inner .container {
-	width: 1130px;
+nav.navbar > .container {
+  padding:0;
+  .navbar-header {
+    width:100%;
+    img {
+      padding:0;
+      margin:0 auto;
+    }
+  }
 }
 
 .dropdown-menu .sub-menu {

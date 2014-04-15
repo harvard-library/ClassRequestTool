@@ -10,14 +10,13 @@
  *
  *= require_self
  *= require jquery.ui.all
- *= require bootstrap-responsive.css 
- *= require bootstrap
  *= require jquery-tablesorter/theme.dark
  *= require_tree .
  */
 
  @charset "utf-8";
-
+ @import "bootstrap";
+ @import "bootstrap_and_overrides";
 html,body {
   height: 100%;
   /* The html and body elements cannot have any padding or margin. */
@@ -43,9 +42,9 @@ html,body {
 }
 
 #feedback {
-  float: right; 
-  border:1px dashed black; 
-  padding: 5px;	
+  float: right;
+  border:1px dashed black;
+  padding: 5px;
 }
 
 /* Lastly, apply responsive CSS fixes as necessary */
@@ -66,7 +65,7 @@ html,body {
 #welcome-right {
 	float: right;
 	width: 50%;
-	
+
 }
 
 #welcome-middle {
@@ -81,15 +80,15 @@ html,body {
 }
 
 #dash_widget {
-	width: 44%; 
+	width: 44%;
 	float: left;
 	padding-right: 50px;
 	padding-bottom: 10px;
 }
 
 .yellow-box {
-	border: 1px solid #df7e0a; 
-	padding: 10px; 
+	border: 1px solid #df7e0a;
+	padding: 10px;
 	background-color: #f7ec9b;
 }
 
@@ -99,39 +98,39 @@ html,body {
 }
 
 #form_col1 {
-	width: 30%; 
+	width: 30%;
 	float: left;
 	padding-right: 50px;
 	padding-bottom: 10px;
 }
 
 #course_file {
-	width: 65%; 
+	width: 65%;
 	float: left;
 	word-wrap: normal
 }
 
 #form_col2 {
-	width: 60%; 
+	width: 60%;
 	float: left;
 	padding-bottom: 10px;
 }
 #form_full_width {
-	width: 96%; 
+	width: 96%;
 	float: left;
 	padding-bottom: 10px;
 }
 
 #form_date1 {
-	width: 20%; 
+	width: 20%;
 	float: left;
 	padding-right: 30px;
 	padding-bottom: 10px;
 }
 
-th { 
-    background-image: url(../img/small.gif);     
-    cursor: pointer; 
+th {
+    background-image: url(../img/small.gif);
+    cursor: pointer;
     font-weight: bold;
 }
 

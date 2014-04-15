@@ -12,8 +12,7 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require jquery-ui
-//= require jquery.ui.datepicker
+//= require jquery.ui.all
 //= require jquery-tablesorter/jquery.metadata
 //= require jquery-tablesorter/jquery.tablesorter
 //= require jquery-tablesorter/jquery.tablesorter.widgets
@@ -22,8 +21,8 @@
 //= require ckeditor/init
 //= require_tree .
 
-$(document).ready(function(){	
-	
+$(document).ready(function(){
+
   $('#course_time_choice_1').datetimepicker({
 	dateFormat: 'yy-mm-dd',
 	timeFormat: "hh:mm tt",
@@ -76,7 +75,7 @@ $(document).ready(function(){
 	numberOfMonths: 2
   });
   $('#course_pre_class_appt_choice_2').datetimepicker({
-	dateFormat: 'yy-mm-dd',  
+	dateFormat: 'yy-mm-dd',
 	timeFormat: "hh:mm tt",
 	stepMinute: 15,
 	hourMin: 9,
@@ -86,7 +85,7 @@ $(document).ready(function(){
 	numberOfMonths: 2
   });
   $('#course_pre_class_appt_choice_3').datetimepicker({
-	dateFormat: 'yy-mm-dd',  
+	dateFormat: 'yy-mm-dd',
 	timeFormat: "hh:mm tt",
 	stepMinute: 15,
 	hourMin: 9,
@@ -95,7 +94,7 @@ $(document).ready(function(){
 	minDate: 3,
 	numberOfMonths: 2
   });
-	
+
   $('#course_timeframe').datetimepicker({
 	dateFormat: 'yy-mm-dd',
 	timeFormat: "hh:mm tt",
@@ -162,7 +161,7 @@ $(document).ready(function(){
   $("#course-table")
     .tablesorter()
   ;
-  
+
   $("#course-table-current")
     .tablesorter()
 	.tablesorterPager({container: $("#pager-course-table-current")})
@@ -200,7 +199,7 @@ $(document).ready(function(){
 	.tablesorterPager({container: $("#pager-involvement-table")})
   ;
 
-  
+
   $("#your-unscheduled-table").tablesorter()
     .tablesorter()
 	.tablesorterPager({container: $("#pager-your-unscheduled-table"), size: 5, positionFixed: false})
@@ -242,7 +241,7 @@ jQuery(function(){
 
   $('#your-past-header').click(function() {
 	$('#your-past').show();
-  });	
+  });
 
   $('#course_course_sessions_single_session').change(function() {
 	$('#course_session_count_input').hide();
@@ -367,4 +366,3 @@ jQuery(function(){
 	$('#submit_course').show();
    });
 });
-
