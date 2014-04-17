@@ -8,7 +8,8 @@
 4. Create a .env file for your environment. Currently, the following variables are needed to run Class Request Tool:
 
 ```
-SECRET_TOKEN=30+charstringofrandomnessgottenfromrakesecretmaybe #Only needed in RAILS_ENV=production
+SECRET_TOKEN=ThirtyPlusCharStringOfRandomnessGottenFromRakeSecretMaybe # Only needed in RAILS_ENV=production
+DEVISE_SECRET_KEY=anotherThirtyPluscharStringOfRandomness              # Also only needed in production
 ROOT_URL=my.crt.host.com
 DEFAULT_MAILER_SENDER=email.address.for.mails@my.crt.host.com
 EMAIL_BATCH_LIMIT=100
