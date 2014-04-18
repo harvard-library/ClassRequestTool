@@ -33,12 +33,12 @@ Final scheduling of a session is subject to both room and staff availability.
 </div>
 <div id="form_date1">
 <span id="multiple_label_2">Session 2:</span>
-<span id="single_label_2">Choice 2:</span>	
+<span id="single_label_2">Choice 2:</span>
 <%= f.input :time_choice_2, :label => false, :as => :string, :hint => 'In YYYY-MM-DD HH:MM am/pm format', :input_html => { :size => 30, :value => @course.time_choice_2.nil? ? 'click to select date/time' : @course.time_choice_2.strftime('%Y-%m-%d %I:%M %P'), :readonly => true } %>
 </div>
 <div id="form_date1">
 <span id="multiple_label_3">Session 3:</span>
-<span id="single_label_3">Choice 3:</span>	
+<span id="single_label_3">Choice 3:</span>
 <%= f.input :time_choice_3, :label => false, :as => :string, :hint => 'In YYYY-MM-DD HH:MM am/pm format', :input_html => { :size => 30, :value => @course.time_choice_3.nil? ? 'click to select date/time' : @course.time_choice_3.strftime('%Y-%m-%d %I:%M %P'), :readonly => true } %>
 </div>
 <% if !@course.course_sessions.nil? && @course.course_sessions != "Single Session" %>
@@ -49,7 +49,7 @@ $(document).ready(function(){
   $('#course_timeframe_2_input').show();
   $('#course_timeframe_3_input').show();
   $('#course_timeframe_4_input').show();
-});  
+});
 </script>
 <% end %>
 <div id="form_date1">
@@ -60,7 +60,7 @@ $(document).ready(function(){
 </div>
 
 <div id="form_full_width">
-  <p>To request class visits outside of regular hours, please add your timing preferences in the note section below.</p>	
+  <p>To request class visits outside of regular hours, please add your timing preferences in the note section below.</p>
   <%= f.input :duration, :label => "Class Duration (hours): ", :hint => '1 hour increments, maximum 3 hours', :input_html => { :size => 1, :maxlength => 4 } %>
 </div>
 
@@ -83,36 +83,36 @@ $(document).ready(function(){
     <%= f.input :pre_class_appt, :label => "Actual Pre-Class Appointment Date/Time (if necessary): ", :as => :string, :hint => 'In YYYY-MM-DD HH:MM am/pm format', :input_html => { :size => 30, :value => @course.pre_class_appt.nil? ? 'click to select date/time' : @course.pre_class_appt.strftime('%Y-%m-%d %I:%M %P'), :readonly => true } %>
     <%= check_box_tag :send_timeframe_email %> Check to send email notification of confirmed or changed class date/time and (if applicable) scheduled pre-class appointment to requester.<br /><br />
   </div>
-</div>	
+</div>
 <% end %>
 
 <div id="form_full_width">
 <% unless @course.repository.nil? %>
   <br />
-  <%= f.input :item_attributes, :as => :check_boxes, :collection => @course.repository.item_attributes, :label => "Room Technology Available: " %> 
+  <%= f.input :item_attributes, :as => :check_boxes, :collection => @course.repository.item_attributes, :label => "Room Technology Available: " %>
 <% end %>
 <br />
-<%= f.input :comments, :label => "If you have any special room arrangements or further instructions regarding your class session, please enter them below: ", :input_html => { :rows => 5, :cols => 30 } %>
+<%= f.input :comments, :label => "If you have any special arrangements (including any accessibility concerns) or further instructions regarding your class session, please enter them below: ", :input_html => { :rows => 5, :cols => 30 } %>
 </div>
 <% if current_user.try(:admin?) || current_user.try(:staff?) || current_user.try(:superadmin?) %>
 <div id="form_full_width" class="yellow-box">
 <% unless @course.repository.nil? %>
   <%= f.input :room, :as => :select, :collection => Hash[@course.repository.rooms.map{|r| ["#{r.name} (#{r.class_limit})",r.id]}], :label => "Room: " %>
 <% else %>
-  <%= f.input :room, :as => :select, :collection => Hash[Room.all.map{|r| ["#{r.name} (#{r.class_limit})",r.id]}], :label => "Room: " %>  
+  <%= f.input :room, :as => :select, :collection => Hash[Room.all.map{|r| ["#{r.name} (#{r.class_limit})",r.id]}], :label => "Room: " %>
 <% end %>
 </div>
 <div id="form_full_width">
 	<br />
 	<p>Be sure to review your information and make any edits before submitting your request.</p>
 	<p>Please note that some of the information you provide may be used to promote the variety of classes being offered at special collections libraries and archives at Harvard.</p>
-</div>	
+</div>
 <% if current_user.try(:superadmin?) %>
   <div id="form_full_width" class="yellow-box">
     This is a failsafe, do not use unless something really weird happens (e.g. zombie attack).<br />
-    <%= f.input :status, :label => "Status: ", :as => :select, :collection => Course::STATUS %>	
-  </div>	
-<% end %>  
+    <%= f.input :status, :label => "Status: ", :as => :select, :collection => Course::STATUS %>
+  </div>
+<% end %>
 
 <% end %>
 </div>
