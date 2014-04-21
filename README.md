@@ -21,7 +21,6 @@ The Class Request Tool (CRT) is a class reservation system that lets instructors
 ### General
 * Ruby 1.9.3+ (2.x preferred)
 * Bundler
-* PostgreSQL 9.x
 * A webserver capable of interfacing with Rails applications.  Ideally, Apache or Nginx with mod_passenger
 * Linux/OSX.  Windows will probably work fine, but we don't test on Windows as of now.
 
@@ -46,6 +45,13 @@ The Class Request Tool (CRT) is a class reservation system that lets instructors
   ```
 6. Set up cron jobs to run various tasks, detailed in [lib/tasks/bootstrap.rb](lib/tasks/bootstrap.rb)
 
-## License
+## Contributors
+
+* Dave Mayo: http://github.com/pobocks
+* Anita Patel: http://github.com/apatel
+
+## License and Copyright
 
 This application is licensed under the GPL, version 3.
+
+2011 President and Fellows of Harvard College

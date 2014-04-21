@@ -15,7 +15,7 @@ namespace :crt do
       puts "Superadmin email is: #{user.email}"
       puts "Superadmin password is: #{user.password}"
     end
-    
+
     desc "Add the default admin"
     task :default_admin => :environment do
       user = User.new(:email => 'admin@example.com', :username => 'admin')
@@ -29,7 +29,7 @@ namespace :crt do
       puts "Admin username is: #{user.username}"
       puts "Admin password is: #{user.password}"
     end
-    
+
     desc "Add the default repositories"
     task :default_repos => :environment do
       ['Fine Arts', 'Houghton', 'Theatre Collection', 'Woodberry Poetry Room', 'Harvard Film Archives', 'Maps', 'Music', 'Rubel Asiatic Research Collection', 'Tozzer', 'Yenching'].each do |repo|
@@ -38,7 +38,7 @@ namespace :crt do
       end
       puts "Repos Added!"
     end
-    
+
     desc "Add the default locations"
     task :default_locations => :environment do
       ['Widener', 'Houghton', 'Pusey', 'Cabot', 'Law School', 'Lamont', 'Music', 'Map', 'Tozzer', 'Film', 'Fine Arts'].each do |location|
@@ -47,7 +47,7 @@ namespace :crt do
       end
       puts "Locations Added!"
     end
-    
+
     desc "Add the default rooms"
     task :default_rooms => :environment do
       locations = Location.all.collect!{|x| x.id }
@@ -57,7 +57,7 @@ namespace :crt do
       end
       puts "Rooms Added!"
     end
-    
+
     desc "Add the default staff involvement"
     task :default_staff_involvement => :environment do
       repospitories = Repository.all.collect!{|x| x.id }
@@ -67,7 +67,7 @@ namespace :crt do
       end
       puts "Staff Involvements Added!"
     end
-    
+
     desc "Add the default attributes"
     task :default_attributes => :environment do
       repospitories = Repository.all.collect!{|x| x.id }
@@ -78,25 +78,25 @@ namespace :crt do
       end
       puts "Item Attributes Added!"
     end
-    
+
     desc "run all tasks in bootstrap"
     task :run_all => [:default_admin, :default_repos, :default_locations, :default_rooms, :default_staff_involvement, :default_attributes, :default_superadmin] do
       puts "Created Admin account, Repos, Locations and Rooms!"
     end
   end
-  
+
   namespace :cron_task do
     desc "Send email to admins when a class is still homeless after two days."
     task :send_homeless_notices => :environment do
       @courses = Course.find(:all, :conditions => ['repository_id IS NULL AND created_at <= ?', Time.now - 2.days])
-      admins = User.all(:conditions => ["admin is true or superadmin is true"]).collect{|a| a.email}
+      admins = User.where('admin = ? OR superadmin = ?', true, true).collect{|a| a.email + ","}
       @courses.each do |course|
         Email.create(
           :from => DEFAULT_MAILER_SENDER,
           :reply_to => DEFAULT_MAILER_SENDER,
           :to => admins.join(", "),
           :subject => "[ClassRequestTool] A Homeless class is languishing!",
-          :body => "<p>A homeless class request has been waiting 2 days for processing in the Class Request Tool. A Library or Archive should offer it a home as soon as possible.</p> 
+          :body => "<p>A homeless class request has been waiting 2 days for processing in the Class Request Tool. A Library or Archive should offer it a home as soon as possible.</p>
           <p>
           Library/Archive: Not yet assigned<br />
           <a href='#{ROOT_URL}#{edit_course_path(course.id)}'>#{course.title}</a><br />
@@ -111,8 +111,8 @@ namespace :crt do
       end
       puts "Successfully delivered homeless notices!"
     end
-    
-    
+
+
     # desc "Automatically close classes when date has been reached."
     # task :close_classes => :environment do
     #   @courses = Course.find(:all, :conditions => ['status IS NOT "Closed" AND timeframe < ?', Time.now])
@@ -122,7 +122,7 @@ namespace :crt do
     #   end
     #   puts "Successfully changed couses statuses"
     # end
-    
+
     desc "Send emails that are queued up"
     task :send_queued_emails => :environment do
       emails = Email.to_send
@@ -138,14 +138,14 @@ namespace :crt do
           email.to_send = false
           email.save
         end
-      end  
-      puts "Successfully sent queued emails!" 
+      end
+      puts "Successfully sent queued emails!"
     end
-    
+
     desc "run all tasks in cron_task"
     task :run_all => [:send_homeless_notices, :send_queued_emails] do
       puts "Sent all notices!"
     end
-    
+
   end
 end

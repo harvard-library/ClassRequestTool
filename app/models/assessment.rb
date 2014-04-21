@@ -10,7 +10,7 @@ class Assessment < ActiveRecord::Base
   def new_assessment_email
     # if assigned users is empty, send to all admins of tool 
     if (self.course.primary_contact.nil? || self.course.primary_contact.blank?) && (self.course.users.nil? || self.course.users.blank?)
-      admins = User.all(:conditions => ["admin is true or superadmin is true"]).collect{|a| a.email + ","}
+      admins = User.where('superadmin = ? OR admin = ?', true, true).collect{|a| a.email + ","}
       Email.create(
         :from => DEFAULT_MAILER_SENDER,
         :reply_to => DEFAULT_MAILER_SENDER,

@@ -2,23 +2,23 @@ class Note < ActiveRecord::Base
   include ActionDispatch::Routing::UrlFor
   include Rails.application.routes.url_helpers
   attr_accessible :note_text, :user_id, :course_id, :staff_comment
-  
+
   belongs_to :user
   belongs_to :course
-  
+
   def new_note_email(current_user)
-    # if assigned users is empty, send to all admins of tool 
+    # if assigned users is empty, send to all admins of tool
     if (self.course.primary_contact.nil? || self.course.primary_contact.blank?) && (self.course.users.nil? || self.course.users.blank?)
       repository = self.course.repository.nil? ? 'Not yet assigned' : self.course.repository.name
-      
+
       unless self.course.repository.nil?
         admins = Array.new
         admins << self.course.repository.users.collect{|a| a == current_user ? '' : a.email}
         admins << User.all(:conditions => {:superadmin => true}).collect{|a| a == current_user ? '' : a.email}
         admins.flatten!
       else
-        admins = User.all(:conditions => ["admin is true or superadmin is true"]).collect{|a| a == current_user ? '' : a.email}  
-      end    
+        admins = User.where('admin = ? OR superadmin = ?', true, true).collect{|a| a.email + ","}
+      end
       Email.create(
         :from => DEFAULT_MAILER_SENDER,
         :reply_to => DEFAULT_MAILER_SENDER,
@@ -41,7 +41,7 @@ class Note < ActiveRecord::Base
       emails = self.course.users.collect{|u| u == current_user ? '' : u.email}
       unless self.course.primary_contact.nil? || self.course.primary_contact == current_user
         emails << self.course.primary_contact.email
-      end 
+      end
       repository = self.course.repository.nil? ? 'Not yet assigned' : self.course.repository.name
       Email.create(
         :from => DEFAULT_MAILER_SENDER,
@@ -59,10 +59,10 @@ class Note < ActiveRecord::Base
         Syllabus: #{self.course.external_syllabus}<br />
         </p>
         <p>Comment: #{self.note_text}</p>"
-      )  
-    end  
+      )
+    end
   end
-  
+
   def new_patron_note_email
     # if note is not staff only send to patron
     repository = self.course.repository.nil? ? 'Not yet assigned' : self.course.repository.name
@@ -83,5 +83,5 @@ class Note < ActiveRecord::Base
       </p>
       <p>Comment: #{self.note_text}</p>"
     )
-  end  
+  end
 end
