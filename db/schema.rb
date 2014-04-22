@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131105141943) do
+ActiveRecord::Schema.define(:version => 20140422132146) do
 
   create_table "assessments", :force => true do |t|
     t.text     "using_materials"
@@ -126,7 +126,7 @@ ActiveRecord::Schema.define(:version => 20131105141943) do
     t.string   "subject"
     t.text     "body"
     t.date     "date_sent"
-    t.boolean  "message_sent", :default => false
+    t.boolean  "message_sent", :default => false, :null => false
     t.datetime "created_at",                      :null => false
     t.datetime "updated_at",                      :null => false
   end
@@ -160,12 +160,12 @@ ActiveRecord::Schema.define(:version => 20131105141943) do
   add_index "locations", ["name"], :name => "index_locations_on_name"
 
   create_table "notes", :force => true do |t|
-    t.text     "note_text",     :null => false
-    t.integer  "user_id",       :null => false
-    t.integer  "course_id",     :null => false
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
-    t.boolean  "staff_comment"
+    t.text     "note_text",                        :null => false
+    t.integer  "user_id",                          :null => false
+    t.integer  "course_id",                        :null => false
+    t.datetime "created_at",                       :null => false
+    t.datetime "updated_at",                       :null => false
+    t.boolean  "staff_comment", :default => false, :null => false
   end
 
   add_index "notes", ["note_text"], :name => "index_notes_on_note_text"
@@ -175,9 +175,9 @@ ActiveRecord::Schema.define(:version => 20131105141943) do
     t.text     "description"
     t.integer  "class_limit",    :default => 0
     t.integer  "user_id"
-    t.boolean  "can_edit"
-    t.datetime "created_at",                    :null => false
-    t.datetime "updated_at",                    :null => false
+    t.boolean  "can_edit",       :default => false, :null => false
+    t.datetime "created_at",                        :null => false
+    t.datetime "updated_at",                        :null => false
     t.text     "calendar"
     t.string   "landing_page"
     t.text     "class_policies"
@@ -233,16 +233,16 @@ ActiveRecord::Schema.define(:version => 20131105141943) do
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
-    t.boolean  "admin",                                 :default => false
+    t.boolean  "admin",                                 :default => false, :null => false
     t.datetime "created_at",                                               :null => false
     t.datetime "updated_at",                                               :null => false
     t.string   "first_name",             :limit => 100
     t.string   "last_name",              :limit => 100
-    t.boolean  "staff",                                 :default => false
-    t.boolean  "patron",                                :default => true
+    t.boolean  "staff",                                 :default => false, :null => false
+    t.boolean  "patron",                                :default => true,  :null => false
     t.string   "username",                              :default => "",    :null => false
-    t.boolean  "superadmin",                            :default => false
-    t.boolean  "pinuser",                               :default => false
+    t.boolean  "superadmin",                            :default => false, :null => false
+    t.boolean  "pinuser",                               :default => false, :null => false
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
