@@ -24,5 +24,16 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
 end
 
+group :test, :development do
+  gem 'stepford'
+end
+
+group :test do
+  gem 'factory_girl_rails'
+  gem 'cucumber-rails', :require => false
+  gem 'database_cleaner'
+  gem 'schema_to_scaffold'
+end
+	
 gem 'jquery-rails', '~> 3.1.0'
 gem 'jquery-ui-rails', '~> 4.2.0'
