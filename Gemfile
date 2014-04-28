@@ -34,6 +34,13 @@ group :test do
   gem 'database_cleaner'
   gem 'schema_to_scaffold'
 end
-	
+
+group :development do
+  gem 'capistrano',        '~> 3.1.0'
+  gem 'capistrano-rails',  '~> 1.0.0'
+  gem 'capistrano-rvm',    '~> 0.1.1'
+  gem 'capistrano-bundler','~> 1.1.2'
+end
+
 gem 'jquery-rails', '~> 3.1.0'
 gem 'jquery-ui-rails', '~> 4.2.0'

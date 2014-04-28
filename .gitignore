@@ -20,3 +20,12 @@
 config/database.yml
 
 public/uploads/*
+
+# capistrano stuff to ignore
+config/deploy.rb
+config/deploy/*.rb
+
+# various editor/config files
+\#*
+.#*
+*.swp
