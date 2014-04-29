@@ -20,7 +20,9 @@ ClassRequestTool::Application.configure do
 
   # Generate digests for assets URLs
   config.assets.digest = true
-
+  
+  config.assets.expire_after 2.weeks
+  
   # Defaults to nil and saved in location specified by config.assets.prefix
   # config.assets.manifest = YOUR_PATH
 
@@ -52,7 +54,7 @@ ClassRequestTool::Application.configure do
   # Disable delivery errors, bad email addresses will be ignored
   # config.action_mailer.raise_delivery_errors = false
   
-  config.action_mailer.default_url_options = { :host => 'classrequest.dev.berkmancenter.org' }
+  config.action_mailer.default_url_options = { :host => 'crtqa.lib.harvard.edu' }
   config.action_mailer.delivery_method = :test
 
   # Enable threaded mode
