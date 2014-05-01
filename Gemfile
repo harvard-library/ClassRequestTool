@@ -13,7 +13,7 @@ gem 'bootstrap-sass'
 gem 'formtastic-bootstrap'
 gem 'jquery-tablesorter'
 gem 'ckeditor'
-#gem 'devise_harvard_auth_proxy', :git => 'https://github.com/berkmancenter/devise_harvard_auth_proxy.git', :branch => 'deviseupdate'
+gem 'devise_harvard_auth_proxy', :git => 'https://github.com/harvard-library/devise_harvard_auth_proxy.git', :branch => 'test'
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -40,6 +40,7 @@ group :development do
   gem 'capistrano-rails',  '~> 1.0.0'
   gem 'capistrano-rvm',    '~> 0.1.1'
   gem 'capistrano-bundler','~> 1.1.2'
+  gem 'pry'
 end
 
 gem 'jquery-rails', '~> 3.1.0'
