@@ -235,7 +235,7 @@ DEPENDENCIES
   jquery-tablesorter
   jquery-ui-rails (~> 4.2.0)
   pg
-  postgres_ext
+  postgres_ext (~> 1.0.0)
   rails (= 3.2.18)
   sass-rails (~> 3.2.3)
   schema_to_scaffold

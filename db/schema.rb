@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140422132146) do
+ActiveRecord::Schema.define(:version => 20140507174512) do
 
   create_table "assessments", :force => true do |t|
     t.text     "using_materials"
@@ -57,10 +57,6 @@ ActiveRecord::Schema.define(:version => 20140422132146) do
     t.datetime "pre_class_appt_choice_2"
     t.datetime "pre_class_appt_choice_3"
     t.datetime "timeframe"
-    t.datetime "time_choice_1"
-    t.datetime "time_choice_2"
-    t.datetime "time_choice_3"
-    t.datetime "time_choice_4"
     t.integer  "repository_id"
     t.integer  "room_id"
     t.text     "staff_involvement"
@@ -83,6 +79,7 @@ ActiveRecord::Schema.define(:version => 20140422132146) do
     t.datetime "timeframe_2"
     t.datetime "timeframe_3"
     t.datetime "timeframe_4"
+    t.datetime "requested_dates",                                        :array => true
   end
 
   add_index "courses", ["affiliation"], :name => "index_courses_on_affiliation"
