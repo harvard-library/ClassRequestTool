@@ -14,7 +14,7 @@
 
 <h3>Edit Class</h3>
 
-<div id="info-left">	
+<div id="info-left">
   <%= semantic_form_for(@course, :html => {:multipart => true}) do |f| %>
 	<%= f.inputs do %>
 	<div id="form_wrapper">
@@ -22,11 +22,11 @@
 	  <h4><%= @course.repository.nil? ? "Not Sure - Help me Choose" : @course.repository.name %></h4>
 	</div>
 	<% if current_user.try(:admin?) || current_user.try(:staff?) || current_user.try(:superadmin?) %>
-	  <div id="form_col2" class="yellow-box">	
+	  <div id="form_col2" class="yellow-box">
 		 <%= f.input :repository_id, :as => :select, :collection => Repository.all, :label => "Assign Library/Archive: " %>
 	  </div>
 	<% else %>
-	  <%= f.hidden_field :repository_id, :value => @course.repository.id %>  
+	  <%= f.hidden_field :repository_id, :value => @course.repository_id %>
 	<% end %>
 	</div>
 		<span id="requester_info"><%= render :partial => 'shared/forms/course_requester_info', :locals=>{:f=>f} %></span>
@@ -38,5 +38,5 @@
 	<%= f.actions do %>
 	  <%= f.action :submit, :as => :button, :label => 'Update Request ' %>
 	<% end %>
-  <% end %>	
+  <% end %>
 </div>

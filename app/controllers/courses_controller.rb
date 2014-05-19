@@ -4,15 +4,42 @@ class CoursesController < ApplicationController
   before_filter :authenticate_login!, :except => [:recent_show]
   before_filter :authenticate_admin_or_staff!, :only => [:take]
   #before_filter :authenticate_user!, :except => [:take, :recent_show]
-  
+  before_filter :process_datetimes, :only => [:create, :update]
+
+  # Processes all datetime fields that map directly to AR columns
+  # NOTE: Anything NOT mapping to a datetime column needs to be handled
+  #   separately
+  def process_datetimes
+    dt_cols = Course.columns.select {|c| c.type == :datetime}
+    dt_cols.each do |col|
+      if params[:course].include? col.name && !params[:course][col.name].blank?
+        unless col.array
+          begin
+            params[:course][col.name] = Time.zone.parse(params[:course][col.name]).utc.to_datetime
+          rescue
+            params[:course][col.name] = nil
+          end
+        else
+          params[:course][col.name] = params[:course][col.name].map do |date|
+            begin
+              Time.zone.parse(date).utc.to_datetime
+            rescue
+              nil
+            end
+          end.reject(&:nil?)
+        end
+      end
+    end
+  end
+
   def index
     @courses_all = Course.all(:order => "timeframe DESC, created_at DESC")
     @courses_mine_current = current_user.mine_current
     @courses_mine_past = current_user.mine_past
     @repositories = Repository.find(:all, :order => :name)
     @csv = params[:csv]
-  end  
-  
+  end
+
   def show
     @course = Course.find(params[:id])
     unless current_user.try(:staff?) || current_user.try(:admin?) || current_user.try(:superadmin?) || @course.contact_email == current_user.email
@@ -22,17 +49,17 @@ class CoursesController < ApplicationController
     @staff_only_notes = Note.find(:all, :conditions => {:course_id => @course.id, :staff_comment => true}, :order => "created_at DESC")
     @notes = Note.find(:all, :conditions => {:course_id => @course.id, :staff_comment => false}, :order => "created_at DESC")
   end
-  
+
   def new
-    unless params[:repository].nil? || params[:repository].blank?
+    unless params[:repository].blank?
       @course = Course.new(:repository_id => Repository.find(params[:repository]).id)
       @repository = Repository.find(params[:repository])
     else
-      @course = Course.new  
-    end  
+      @course = Course.new
+    end
     @uploader = FileUploader.new
   end
-  
+
   def edit
     @course = Course.find(params[:id])
     unless current_user.try(:staff?) || current_user.try(:admin?) || current_user.try(:superadmin?) || @course.contact_email == current_user.email
@@ -40,76 +67,30 @@ class CoursesController < ApplicationController
     end
     @staff_involvement = @course.staff_involvement.split(',')
   end
-  
+
   def create
-    unless params[:course][:repository_id].nil? || params[:course][:repository_id].blank?
+    unless params[:course][:repository_id].blank?
       @repository = Repository.find(params[:course][:repository_id])
-    end 
-    
-    begin Time.zone.parse(params[:course][:timeframe]).utc.to_datetime
-      params[:course][:timeframe] = Time.zone.parse(params[:course][:timeframe]).utc.to_datetime unless params[:course][:timeframe].nil? || params[:course][:timeframe].empty?
-    rescue
-      params[:course][:timeframe] = nil
-    end  
-    begin Time.zone.parse(params[:course][:timeframe_2]).utc.to_datetime
-      params[:course][:timeframe_2] = Time.zone.parse(params[:course][:timeframe_2]).utc.to_datetime unless params[:course][:timeframe_2].nil? || params[:course][:timeframe_2].empty?
-    rescue
-      params[:course][:timeframe_2] = nil
-    end 
-    begin Time.zone.parse(params[:course][:timeframe_3]).utc.to_datetime
-      params[:course][:timeframe_3] = Time.zone.parse(params[:course][:timeframe_3]).utc.to_datetime unless params[:course][:timeframe_3].nil? || params[:course][:timeframe_3].empty?
-    rescue
-      params[:course][:timeframe_3] = nil
-    end    
-    begin Time.zone.parse(params[:course][:timeframe_4]).utc.to_datetime
-      params[:course][:timeframe_4] = Time.zone.parse(params[:course][:timeframe_4]).utc.to_datetime unless params[:course][:timeframe_4].nil? || params[:course][:timeframe_4].empty?
-    rescue
-      params[:course][:timeframe_4] = nil
-    end  
-    begin Time.zone.parse(params[:course][:pre_class_appt]).utc.to_datetime
-      params[:course][:pre_class_appt] = Time.zone.parse(params[:course][:pre_class_appt]).utc.to_datetime unless params[:course][:pre_class_appt].nil? || params[:course][:pre_class_appt].empty?
-    rescue
-      params[:course][:pre_class_appt] = nil
-    end    
-    begin Time.zone.parse(params[:course][:time_choice_1]).utc.to_datetime
-      params[:course][:time_choice_1] = Time.zone.parse(params[:course][:time_choice_1]).utc.to_datetime unless params[:course][:time_choice_1].empty?
-    rescue
-      params[:course][:time_choice_1] = nil
-    end   
-    begin Time.zone.parse(params[:course][:time_choice_2]).utc.to_datetime
-      params[:course][:time_choice_2] = Time.zone.parse(params[:course][:time_choice_2]).utc.to_datetime unless params[:course][:time_choice_2].empty?
-    rescue
-      params[:course][:time_choice_2] = nil
-    end   
-    begin Time.zone.parse(params[:course][:time_choice_3]).utc.to_datetime
-      params[:course][:time_choice_3] = Time.zone.parse(params[:course][:time_choice_3]).utc.to_datetime unless params[:course][:time_choice_3].empty?
-    rescue
-      params[:course][:time_choice_3] = nil
-    end  
-    begin Time.zone.parse(params[:course][:time_choice_4]).utc.to_datetime
-      params[:course][:time_choice_4] = Time.zone.parse(params[:course][:time_choice_4]).utc.to_datetime unless params[:course][:time_choice_4].empty?
-    rescue
-      params[:course][:time_choice_4] = nil
-    end 
-    
-    if params[:course][:repository_id].nil? || params[:course][:repository_id].blank?
+    end
+
+    if params[:course][:repository_id].blank?
       params[:course][:status] = "Homeless"
-    elsif params[:course][:timeframe].nil? || params[:course][:timeframe].blank?
-      if (params[:course][:primary_contact_id].nil? || params[:course][:primary_contact_id].blank?) && (params[:course][:user_ids].nil? || params[:course][:user_ids][1].nil? || params[:course][:user_ids][1].empty?)
+    elsif params[:course][:timeframe].blank?
+      if (params[:course][:primary_contact_id].blank?) && (params[:course][:user_ids].nil? || params[:course][:user_ids][1].nil? || params[:course][:user_ids][1].empty?)
         params[:course][:status] = "Unclaimed, Unscheduled"
       else
-        params[:course][:status] = "Claimed, Unscheduled"  
+        params[:course][:status] = "Claimed, Unscheduled"
       end
     else
-      if (params[:course][:primary_contact_id].nil? || params[:course][:primary_contact_id].blank?) && (params[:course][:user_ids].nil? || params[:course][:user_ids][1].nil? || params[:course][:user_ids][1].empty?)
+      if (params[:course][:primary_contact_id].blank?) && (params[:course][:user_ids].nil? || params[:course][:user_ids][1].nil? || params[:course][:user_ids][1].empty?)
         params[:course][:status] = "Scheduled, Unclaimed"
       else
-        params[:course][:status] = "Scheduled, Claimed" 
-      end  
-    end 
-    
+        params[:course][:status] = "Scheduled, Claimed"
+      end
+    end
+
     @course = Course.new(params[:course])
-    
+
     respond_to do |format|
       if params[:schedule_future_class] == "1"
         if (!params[:course][:timeframe].nil? && !params[:course][:timeframe].blank? && params[:course][:timeframe] < DateTime.now) || (!params[:course][:timeframe_2].nil? && !params[:course][:timeframe_2].blank? && params[:course][:timeframe_2] < DateTime.now) || (!params[:course][:timeframe_3].nil? && !params[:course][:timeframe_3].blank? && params[:course][:timeframe_3] < DateTime.now) || (!params[:course][:timeframe_4].nil? && !params[:course][:timeframe_4].blank? && params[:course][:timeframe_4] < DateTime.now)
@@ -117,46 +98,46 @@ class CoursesController < ApplicationController
           format.html { render action: "new" }
           format.json { render json: @course.errors, status: :unprocessable_entity }
         end
-      end  
+      end
       if @course.save
         if current_user.try(:patron?) || params[:schedule_future_class] == "1"
           @course.new_request_email
-        end  
+        end
         if user_signed_in?
           format.html { redirect_to summary_course_url(@course), notice: 'Class was successfully created.' }
         else
           format.html { redirect_to summary_course_url(:id => @course.id), notice: 'Class was successfully submitted for approval.' }
-        end    
+        end
       else
         flash[:error] = "Please correct the errors in the form."
         format.html { render action: "new" }
         format.json { render json: @course.errors, status: :unprocessable_entity }
-      end  
+      end
     end
   end
-  
+
   def update
     @course = Course.find(params[:id])
     unless current_user.try(:staff?) || current_user.try(:admin?) || current_user.try(:superadmin?) || @course.contact_email == current_user.email
       redirect_to('/') and return
     end
-    
+
     if params[:send_assessment_email] == "1" || params[:no_assessment_email] == "1"
       @course.status = "Closed"
-      
-      respond_to do |format|  
+
+      respond_to do |format|
         if @course.save
           #add note to course that course is closed
           note = Note.new(:note_text => "Class has been marked as closed.", :course_id => @course.id, :user_id => current_user.id)
           note.save
-          
+
           if params[:send_assessment_email] == "1" && (params[:no_assessment_email].nil? || params[:no_assessment_email] == "0")
             @course.send_assessment_email
             #add note to course that an email has been sent
             note = Note.new(:note_text => "Assessment email sent.", :course_id => @course.id, :user_id => current_user.id)
             note.save
           end
-        
+
           format.html { redirect_to course_url(@course), notice: 'Class was successfully closed.' }
           format.json { head :no_content }
         else
@@ -166,84 +147,38 @@ class CoursesController < ApplicationController
         end
       end
     else
-      unless params[:course][:repository_id].nil? || params[:course][:repository_id].blank?
+      unless params[:course][:repository_id].blank?
         @repository = Repository.find(params[:course][:repository_id])
       end
-    
+
       repo_change = false
       staff_change = false
       timeframe_change = false
-    
+
       if @course.repository != @repository #(@course.repository.nil? || @course.repository.blank?) && (!params[:course][:repository_id].nil? && !params[:course][:repository_id].blank?)
         repo_change = true
       end
       if ((@course.primary_contact.nil? || @course.primary_contact.blank?) && (!params[:course][:primary_contact_id].nil? && !params[:course][:primary_contact_id].blank?)) || ((@course.users.nil? || @course.users.blank?) && (!params[:course][:user_ids].nil? && !params[:course][:user_ids][1].nil? && !params[:course][:user_ids][1].empty?))
         staff_change = true
       end
-      if ((@course.timeframe.nil? || @course.timeframe.blank?) && (!params[:course][:timeframe].nil? && !params[:course][:timeframe].blank?)) || ((@course.timeframe_2.nil? || @course.timeframe_2.blank?) && (!params[:course][:timeframe_2].nil? && !params[:course][:timeframe_2].blank?)) || ((@course.timeframe_3.nil? || @course.timeframe_3.blank?) && (!params[:course][:timeframe_3].nil? && !params[:course][:timeframe_3].blank?)) || ((@course.timeframe_4.nil? || @course.timeframe_4.blank?) && (!params[:course][:timeframe_4].nil? && !params[:course][:timeframe_4].blank?))
+      if (@course.timeframe.blank? && (!params[:course][:timeframe].nil? && !params[:course][:timeframe].blank?)) || ((@course.timeframe_2.nil? || @course.timeframe_2.blank?) && (!params[:course][:timeframe_2].nil? && !params[:course][:timeframe_2].blank?)) || ((@course.timeframe_3.nil? || @course.timeframe_3.blank?) && (!params[:course][:timeframe_3].nil? && !params[:course][:timeframe_3].blank?)) || ((@course.timeframe_4.nil? || @course.timeframe_4.blank?) && (!params[:course][:timeframe_4].nil? && !params[:course][:timeframe_4].blank?))
         timeframe_change = true
       end
-    
-      begin Time.zone.parse(params[:course][:timeframe]).utc.to_datetime
-        params[:course][:timeframe] = Time.zone.parse(params[:course][:timeframe]).utc.to_datetime unless params[:course][:timeframe].nil? || params[:course][:timeframe].empty?
-      rescue
-        params[:course][:timeframe] = nil
-      end  
-      begin Time.zone.parse(params[:course][:timeframe_2]).utc.to_datetime
-        params[:course][:timeframe_2] = Time.zone.parse(params[:course][:timeframe_2]).utc.to_datetime unless params[:course][:timeframe_2].nil? || params[:course][:timeframe_2].empty?
-      rescue
-        params[:course][:timeframe_2] = nil
-      end 
-      begin Time.zone.parse(params[:course][:timeframe_3]).utc.to_datetime
-        params[:course][:timeframe_3] = Time.zone.parse(params[:course][:timeframe_3]).utc.to_datetime unless params[:course][:timeframe_3].nil? || params[:course][:timeframe_3].empty?
-      rescue
-        params[:course][:timeframe_3] = nil
-      end    
-      begin Time.zone.parse(params[:course][:timeframe_4]).utc.to_datetime
-        params[:course][:timeframe_4] = Time.zone.parse(params[:course][:timeframe_4]).utc.to_datetime unless params[:course][:timeframe_4].nil? || params[:course][:timeframe_4].empty?
-      rescue
-        params[:course][:timeframe_4] = nil
-      end  
-      begin Time.zone.parse(params[:course][:pre_class_appt]).utc.to_datetime
-        params[:course][:pre_class_appt] = Time.zone.parse(params[:course][:pre_class_appt]).utc.to_datetime unless params[:course][:pre_class_appt].nil? || params[:course][:pre_class_appt].empty?
-      rescue
-        params[:course][:pre_class_appt] = nil
-      end    
-      begin Time.zone.parse(params[:course][:time_choice_1]).utc.to_datetime
-        params[:course][:time_choice_1] = Time.zone.parse(params[:course][:time_choice_1]).utc.to_datetime unless params[:course][:time_choice_1].empty?
-      rescue
-        params[:course][:time_choice_1] = nil
-      end   
-      begin Time.zone.parse(params[:course][:time_choice_2]).utc.to_datetime
-        params[:course][:time_choice_2] = Time.zone.parse(params[:course][:time_choice_2]).utc.to_datetime unless params[:course][:time_choice_2].empty?
-      rescue
-        params[:course][:time_choice_2] = nil
-      end   
-      begin Time.zone.parse(params[:course][:time_choice_3]).utc.to_datetime
-        params[:course][:time_choice_3] = Time.zone.parse(params[:course][:time_choice_3]).utc.to_datetime unless params[:course][:time_choice_3].empty?
-      rescue
-        params[:course][:time_choice_3] = nil
-      end  
-      begin Time.zone.parse(params[:course][:time_choice_4]).utc.to_datetime
-        params[:course][:time_choice_4] = Time.zone.parse(params[:course][:time_choice_4]).utc.to_datetime unless params[:course][:time_choice_4].empty?
-      rescue
-        params[:course][:time_choice_4] = nil
-      end 
-      
-      if params[:course][:repository_id].nil? || params[:course][:repository_id].blank?
+
+      if params[:course][:repository_id].blank?
         params[:course][:status] = "Homeless"
-      elsif params[:course][:timeframe].nil? || params[:course][:timeframe].blank?
-        if (params[:course][:primary_contact_id].nil? || params[:course][:primary_contact_id].blank?) && (params[:course][:user_ids].nil? || params[:course][:user_ids][1].nil? || params[:course][:user_ids][1].empty?)
+      elsif params[:course][:timeframe].blank?
+        if (params[:course][:primary_contact_id].blank?) && (params[:course][:user_ids].nil? || params[:course][:user_ids][1].nil? || params[:course][:user_ids][1].empty?)
           params[:course][:status] = "Unclaimed, Unscheduled"
         else
-          params[:course][:status] = "Claimed, Unscheduled"  
+          params[:course][:status] = "Claimed, Unscheduled"
         end
       else
-        if (params[:course][:primary_contact_id].nil? || params[:course][:primary_contact_id].blank?) && (params[:course][:user_ids].nil? || params[:course][:user_ids][1].nil? || params[:course][:user_ids][1].empty?)
+        if (params[:course][:primary_contact_id].blank?) && (params[:course][:user_ids].nil? || params[:course][:user_ids][1].nil? || params[:course][:user_ids][1].empty?)
           params[:course][:status] = "Scheduled, Unclaimed"
         else
-          params[:course][:status] = "Scheduled, Claimed" 
-        end  
+          params[:course][:status] = "Scheduled, Claimed"
+        end
       end
 
       respond_to do |format|
@@ -253,12 +188,12 @@ class CoursesController < ApplicationController
             format.html { render action: "edit" }
             format.json { render json: @course.errors, status: :unprocessable_entity }
           end
-        end  
+        end
         if params[:course][:status] == "Closed"
           #add note to course that course is closed
           note = Note.new(:note_text => "Class has been marked as closed.", :course_id => @course.id, :user_id => current_user.id)
           note.save
-        end  
+        end
         if @course.update_attributes(params[:course])
           if params[:send_assessment_email] == "1" && (params[:no_assessment_email].nil? || params[:no_assessment_email] == "0")
             @course.send_assessment_email
@@ -276,22 +211,22 @@ class CoursesController < ApplicationController
               #add note to course that an repo changed to null
               note = Note.new(:note_text => "Library/Archive changed to none.", :course_id => @course.id, :user_id => current_user.id)
               note.save
-            end    
-            
+            end
+
           end
           if staff_change == true
-            @course.send_staff_change_email(current_user) 
+            @course.send_staff_change_email(current_user)
             #add note to course that an email has been sent
             note = Note.new(:note_text => "Staff change email sent.", :course_id => @course.id, :user_id => current_user.id)
             note.save
           end
           if params[:send_timeframe_email] == "1"
-            @course.send_timeframe_change_email  
+            @course.send_timeframe_change_email
             #add note to course that an email has been sent
             note = Note.new(:note_text => "Date/Time set/change email sent.", :course_id => @course.id, :user_id => current_user.id)
             note.save
           end
-        
+
           format.html { redirect_to course_url(@course), notice: 'Class was successfully updated.' }
           format.json { head :no_content }
         else
@@ -300,9 +235,9 @@ class CoursesController < ApplicationController
           format.json { render json: @course.errors, status: :unprocessable_entity }
         end
       end
-    end  
+    end
   end
-  
+
   def destroy
     @course = Course.find(params[:id])
     unless current_user.try(:staff?) || current_user.try(:admin?) || current_user.try(:superadmin?) || @course.contact_email == current_user.email
@@ -315,18 +250,18 @@ class CoursesController < ApplicationController
       format.json { head :no_content }
     end
   end
-  
+
   def summary
     @course = Course.find(params[:id])
     unless current_user.try(:staff?) || current_user.try(:admin?) || current_user.try(:superadmin?) || @course.contact_email == current_user.email
        redirect_to('/') and return
     end
   end
-  
+
   def recent_show
     @course = Course.find(params[:id])
   end
-  
+
   def repo_select
     unless params[:repo] == ""
       @repository = Repository.find(params[:repo])
@@ -336,29 +271,29 @@ class CoursesController < ApplicationController
     #render :partial => "shared/forms/course_staff_involvement"
     redirect_to new_course_path(:repository => @repository)
   end
-  
+
   def take
     @course = Course.find(params[:id])
     @course.users << current_user
     if @course.repository.nil?
       @course.repository = current_user.repositories[0]
     end
-    @course.save  
+    @course.save
     respond_to do |format|
       format.html { redirect_to dashboard_welcome_index_url, notice: 'Class was successfully claimed.' }
-    end  
+    end
   end
-  
+
   def export
     @courses = Course.all(:order => "timeframe DESC, created_at DESC")
     CSV.open("#{Rails.root}/public/uploads/courses.csv", "w") do |csv|
       csv << ["title", "subject", "course number", "affiliation", "contact first name", "contact last name", "contact username", "contact email", "contact phone", "pre class appt", "timeframe", "repository", "room", "staff involvement", "number of students", "status", "file", "external syllabus", "duration", "comments", "course sessions", "session count", "goal", "instruction session", "date submitted"]
       @courses.each do |course|
         row = Array.new
-        row << [course.title, course.subject, course.course_number, course.affiliation, course.contact_first_name, course.contact_last_name, course.contact_username, course.contact_email, course.contact_phone, course.pre_class_appt, course.timeframe] 
+        row << [course.title, course.subject, course.course_number, course.affiliation, course.contact_first_name, course.contact_last_name, course.contact_username, course.contact_email, course.contact_phone, course.pre_class_appt, course.timeframe]
         unless course.repository.nil?
           row << [course.repository.name]
-        else 
+        else
           row << ["None"]
         end
         unless course.room.nil?
@@ -374,6 +309,6 @@ class CoursesController < ApplicationController
     flash[:notice] = 'Exported!'
     @csv = true
     redirect_to courses_path(:csv => @csv)
-  end  
-   
+  end
+
 end
