@@ -93,7 +93,10 @@ class CoursesController < ApplicationController
 
     respond_to do |format|
       if params[:schedule_future_class] == "1"
-        if (!params[:course][:timeframe].nil? && !params[:course][:timeframe].blank? && params[:course][:timeframe] < DateTime.now) || (!params[:course][:timeframe_2].nil? && !params[:course][:timeframe_2].blank? && params[:course][:timeframe_2] < DateTime.now) || (!params[:course][:timeframe_3].nil? && !params[:course][:timeframe_3].blank? && params[:course][:timeframe_3] < DateTime.now) || (!params[:course][:timeframe_4].nil? && !params[:course][:timeframe_4].blank? && params[:course][:timeframe_4] < DateTime.now)
+        if (!params[:course][:timeframe].blank? && params[:course][:timeframe] < DateTime.now) ||
+            (!params[:course][:timeframe_2].blank? && params[:course][:timeframe_2] < DateTime.now) ||
+            (!params[:course][:timeframe_3].blank? && params[:course][:timeframe_3] < DateTime.now) ||
+            (!params[:course][:timeframe_4].blank? && params[:course][:timeframe_4] < DateTime.now)
           flash[:error] = "Please confirm scheduling class in the past."
           format.html { render action: "new" }
           format.json { render json: @course.errors, status: :unprocessable_entity }
@@ -155,26 +158,32 @@ class CoursesController < ApplicationController
       staff_change = false
       timeframe_change = false
 
-      if @course.repository != @repository #(@course.repository.nil? || @course.repository.blank?) && (!params[:course][:repository_id].nil? && !params[:course][:repository_id].blank?)
+      if @course.repository != @repository
         repo_change = true
       end
-      if ((@course.primary_contact.nil? || @course.primary_contact.blank?) && (!params[:course][:primary_contact_id].nil? && !params[:course][:primary_contact_id].blank?)) || ((@course.users.nil? || @course.users.blank?) && (!params[:course][:user_ids].nil? && !params[:course][:user_ids][1].nil? && !params[:course][:user_ids][1].empty?))
+      if (@course.primary_contact.blank? && !params[:course][:primary_contact_id].blank?) ||
+          (@course.users.blank? && !params[:course][:user_ids].blank? && !params[:course][:user_ids][1].blank?)
         staff_change = true
       end
-      if (@course.timeframe.blank? && (!params[:course][:timeframe].nil? && !params[:course][:timeframe].blank?)) || ((@course.timeframe_2.nil? || @course.timeframe_2.blank?) && (!params[:course][:timeframe_2].nil? && !params[:course][:timeframe_2].blank?)) || ((@course.timeframe_3.nil? || @course.timeframe_3.blank?) && (!params[:course][:timeframe_3].nil? && !params[:course][:timeframe_3].blank?)) || ((@course.timeframe_4.nil? || @course.timeframe_4.blank?) && (!params[:course][:timeframe_4].nil? && !params[:course][:timeframe_4].blank?))
+      if (@course.timeframe.blank? && !params[:course][:timeframe].blank?) ||
+          (@course.timeframe_2.blank? && !params[:course][:timeframe_2].blank?) ||
+          (@course.timeframe_3.blank? && !params[:course][:timeframe_3].blank?) ||
+          (@course.timeframe_4.blank? && !params[:course][:timeframe_4].blank?)
         timeframe_change = true
       end
 
       if params[:course][:repository_id].blank?
         params[:course][:status] = "Homeless"
       elsif params[:course][:timeframe].blank?
-        if (params[:course][:primary_contact_id].blank?) && (params[:course][:user_ids].nil? || params[:course][:user_ids][1].nil? || params[:course][:user_ids][1].empty?)
+        if (params[:course][:primary_contact_id].blank?) &&
+            (params[:course][:user_ids].blank? || params[:course][:user_ids][1].blank?)
           params[:course][:status] = "Unclaimed, Unscheduled"
         else
           params[:course][:status] = "Claimed, Unscheduled"
         end
       else
-        if (params[:course][:primary_contact_id].blank?) && (params[:course][:user_ids].nil? || params[:course][:user_ids][1].nil? || params[:course][:user_ids][1].empty?)
+        if (params[:course][:primary_contact_id].blank?) &&
+            (params[:course][:user_ids].blank? || params[:course][:user_ids][1].blank?)
           params[:course][:status] = "Scheduled, Unclaimed"
         else
           params[:course][:status] = "Scheduled, Claimed"
@@ -183,7 +192,10 @@ class CoursesController < ApplicationController
 
       respond_to do |format|
         if params[:schedule_future_class] == "1"
-          if (!params[:course][:timeframe].nil? && !params[:course][:timeframe].blank? && params[:course][:timeframe] < DateTime.now) || (!params[:course][:timeframe_2].nil? && !params[:course][:timeframe_2].blank? && params[:course][:timeframe_2] < DateTime.now) || (!params[:course][:timeframe_3].nil? && !params[:course][:timeframe_3].blank? && params[:course][:timeframe_3] < DateTime.now) || (!params[:course][:timeframe_4].nil? && !params[:course][:timeframe_4].blank? && params[:course][:timeframe_4] < DateTime.now)
+          if (!params[:course][:timeframe].blank? && params[:course][:timeframe] < DateTime.now) ||
+              (!params[:course][:timeframe_2].blank? && params[:course][:timeframe_2] < DateTime.now) ||
+              (!params[:course][:timeframe_3].blank? && params[:course][:timeframe_3] < DateTime.now) ||
+              (!params[:course][:timeframe_4].blank? && params[:course][:timeframe_4] < DateTime.now)
             flash[:error] = "Please confirm scheduling class in the past."
             format.html { render action: "edit" }
             format.json { render json: @course.errors, status: :unprocessable_entity }
@@ -202,7 +214,7 @@ class CoursesController < ApplicationController
             note.save
           end
           if repo_change == true
-            unless @course.repository.nil? || @course.repository.blank?
+            unless @course.repository.blank?
               @course.send_repo_change_email
               #add note to course that an email has been sent
               note = Note.new(:note_text => "Library/Archive change email sent.", :course_id => @course.id, :user_id => current_user.id)
