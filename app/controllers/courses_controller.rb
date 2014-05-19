@@ -34,10 +34,13 @@ class CoursesController < ApplicationController
   end
 
   def index
-    @courses_all = Course.all(:order => "timeframe DESC, created_at DESC")
+    @courses_all = Course.select('courses.*, MAX(actual_date) AS maxdate').
+      joins('LEFT OUTER JOIN sections ON sections.course_id = courses.id').
+      group('courses.id').
+      order('maxdate DESC NULLS LAST')
     @courses_mine_current = current_user.mine_current
     @courses_mine_past = current_user.mine_past
-    @repositories = Repository.find(:all, :order => :name)
+    @repositories = Repository.order('name ASC')
     @csv = params[:csv]
   end
 
