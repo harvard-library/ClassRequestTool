@@ -13,7 +13,7 @@ gem 'bootstrap-sass'
 gem 'formtastic-bootstrap'
 gem 'jquery-tablesorter'
 gem 'ckeditor'
-gem 'devise_harvard_auth_proxy', :git => 'https://github.com/berkmancenter/devise_harvard_auth_proxy.git', :branch => 'deviseupdate'
+gem 'devise_harvard_auth_proxy', :git => 'https://github.com/berkmancenter/devise_harvard_auth_proxy.git', :ref => '2a58ea07a8'
 #gem 'devise_harvard_auth_proxy'
 
 # Gems used only for assets and not required
