@@ -235,44 +235,24 @@ Devise.setup do |config|
   # end
   config.warden do |manager|
     manager.default_strategies(:scope => :user).unshift :database_authenticatable
-    #manager.default_strategies(:scope => :user).unshift :harvard_auth_proxy_authenticatable
-    
   end
- 
-  config.authen_application = 'HLS_BCIS_CRT_DEV' #'HLS_BCIS_LRRS_DEV'
-  #config.pin_url = 'http://localhost:3000/pin/authenticate?__authen_application='
-  #config.pin_url = 'https://www.pin1.harvard.edu/pin/authenticate?__authen_application='
-  config.debug = true
-  #config.disable_token_authenticity_checks = true
-  config.post_logout_url = 'https://www.pin1.harvard.edu/pin/logout'
-  config.gpg_home = '/web/numfar/rails3.2dev/docs/classrequest-dev/fakehome2'
-  #config.gpg_path = '/usr/local/bin/gpg'
-  config.creation_attributes = Proc.new do |user,user_info,authentication_info|
-    user.email = user_info[:mail]
-    user.password = user_info[:mail]
-    user.username = authentication_info[:user_id]
-    user.first_name = user_info[:givenname]
-    user.last_name = user_info[:sn]
-    user.pinuser = true
-    #user.edupersonaffiliation = user_info[:edupersonaffiliation]
-    #user.guid = authentication_info[:user_id]
+
+  # Only if devise_harvard_auth_proxy is installed
+  if Rails.const_defined?("DeviseHarvardAuthProxy") && DeviseHarvardAuthProxy.is_a?(Module)
+    config.authen_application = ENV['AUTHEN_APPLICATION'] || 'HLS_BCIS_CRT_DEV' #'HLS_BCIS_LRRS_DEV'
+    config.gpg_home = ENV['GPG_HOME'] || '/web/numfar/rails3.2dev/docs/classrequest-dev/fakehome2'
+    config.gpg_path = ENV['GPG_PATH'] if ENV['GPG_PATH']
+    config.debug = true
+    config.post_logout_url = 'https://www.pin1.harvard.edu/pin/logout'
+    config.creation_attributes = Proc.new do |user,user_info,authentication_info|
+      user.email = user_info[:mail]
+      user.password = user_info[:mail]
+      user.username = authentication_info[:user_id]
+      user.first_name = user_info[:givenname]
+      user.last_name = user_info[:sn]
+      user.pinuser = true
+    end
   end
-  
-  # config.warden do |manager|
-  #   manager.default_strategies(:scope => :user).unshift :harvard_auth_proxy_authenticatable
-  # end
-  # 
-  # config.authen_application = 'HLS_BCIS_LRRS_DEV'
-  # #  config.pin_url = 'http://localhost:3001/pin/authenticate?__authen_application='
-  # config.debug = true
-  # #config.disable_token_authenticity_checks = true
-  # config.gpg_home = '/web/numfar/rails3dev2/docs/inscriptio-auth-dev/fakehome' 
-  # config.post_logout_url = 'http://cyber.law.harvard.edu/'
-  # config.creation_attributes = Proc.new do |user,user_info,authentication_info|
-  #   user.email = user_info[:mail]
-  #   # user.edupersonaffiliation = user_info[:edupersonaffiliation]
-  #   # user.guid = authentication_info[:user_id]
-  # end
 
   # ==> Mountable engine configurations
   # When using Devise inside an engine, let's call it `MyEngine`, and this engine
