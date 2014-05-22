@@ -29,17 +29,17 @@ Final scheduling of a session is subject to both room and staff availability.
 <div id="form_date1">
 <span id="multiple_label_1">Session 1:</span>
 <span id="single_label_1">Choice 1:</span>
-<%= f.input :time_choice_1, :label => false, :as => :string, :hint => 'In YYYY-MM-DD HH:MM am/pm format', :input_html => { :size => 30, :value => @course.time_choice_1.nil? ? 'click to select date/time' : @course.time_choice_1.strftime('%Y-%m-%d %I:%M %P'), :readonly => true } %>
+<%= f.input :time_choice_1, :label => false, :as => :string, :hint => 'In YYYY-MM-DD HH:MM am/pm format', :input_html => { :size => 30, :placeholder => 'click to select date/time', :value => @course.time_choice_1.nil? ? nil : @course.time_choice_1.strftime('%Y-%m-%d %I:%M %P'), :readonly => true } %>
 </div>
 <div id="form_date1">
 <span id="multiple_label_2">Session 2:</span>
 <span id="single_label_2">Choice 2:</span>
-<%= f.input :time_choice_2, :label => false, :as => :string, :hint => 'In YYYY-MM-DD HH:MM am/pm format', :input_html => { :size => 30, :value => @course.time_choice_2.nil? ? 'click to select date/time' : @course.time_choice_2.strftime('%Y-%m-%d %I:%M %P'), :readonly => true } %>
+<%= f.input :time_choice_2, :label => false, :as => :string, :hint => 'In YYYY-MM-DD HH:MM am/pm format', :input_html => { :size => 30, :placeholder => 'click to select date/time', :value => @course.time_choice_2.nil? ? nil : @course.time_choice_2.strftime('%Y-%m-%d %I:%M %P'), :readonly => true } %>
 </div>
 <div id="form_date1">
 <span id="multiple_label_3">Session 3:</span>
 <span id="single_label_3">Choice 3:</span>
-<%= f.input :time_choice_3, :label => false, :as => :string, :hint => 'In YYYY-MM-DD HH:MM am/pm format', :input_html => { :size => 30, :value => @course.time_choice_3.nil? ? 'click to select date/time' : @course.time_choice_3.strftime('%Y-%m-%d %I:%M %P'), :readonly => true } %>
+<%= f.input :time_choice_3, :label => false, :as => :string, :hint => 'In YYYY-MM-DD HH:MM am/pm format', :input_html => { :size => 30, :placeholder => 'click to select date/time', :value => @course.time_choice_3.nil? ? nil : @course.time_choice_3.strftime('%Y-%m-%d %I:%M %P'), :readonly => true } %>
 </div>
 <% if !@course.course_sessions.nil? && @course.course_sessions != "Single Session" %>
 <script type="text/javascript">
@@ -54,7 +54,7 @@ $(document).ready(function(){
 <% end %>
 <div id="form_date1">
 <span id="multiple_label_4">Session 4:</span>
-<%= f.input :time_choice_4, :label => false, :as => :string, :hint => 'In YYYY-MM-DD HH:MM am/pm format', :input_html => { :size => 30, :value => @course.time_choice_3.nil? ? 'click to select date/time' : @course.time_choice_3.strftime('%Y-%m-%d %I:%M %P'), :readonly => true } %>
+<%= f.input :time_choice_4, :label => false, :as => :string, :hint => 'In YYYY-MM-DD HH:MM am/pm format', :input_html => { :size => 30, :placeholder => 'click to select date/time', :value => @course.time_choice_3.nil? ? nil : @course.time_choice_3.strftime('%Y-%m-%d %I:%M %P'), :readonly => true } %>
 </div>
 
 </div>
@@ -67,16 +67,16 @@ $(document).ready(function(){
 <% if current_user.try(:admin?) || current_user.try(:staff?) || current_user.try(:superadmin?) %>
 <div id="form_full_width" class="yellow-box">
   <div id="form_date1">
-    <%= f.input :timeframe, :label => "Actual Date/Time 1: ", :as => :string, :hint => 'In YYYY-MM-DD HH:MM am/pm format', :input_html => { :size => 30, :value => @course.timeframe.nil? ? 'click to select date/time' : @course.timeframe.strftime('%Y-%m-%d %I:%M %P'), :readonly => true } %>
+    <%= f.input :timeframe, :label => "Actual Date/Time 1: ", :as => :string, :hint => 'In YYYY-MM-DD HH:MM am/pm format', :input_html => { :size => 30, :placeholder => 'click to select date/time', :value => @course.timeframe.nil? ? nil : @course.timeframe.strftime('%Y-%m-%d %I:%M %P'), :readonly => true } %>
   </div>
   <div id="form_date1">
-    <%= f.input :timeframe_2, :label => "Actual Date/Time 2: ", :as => :string, :hint => 'In YYYY-MM-DD HH:MM am/pm format', :input_html => { :size => 30, :value => @course.timeframe_2.nil? ? 'click to select date/time' : @course.timeframe_2.strftime('%Y-%m-%d %I:%M %P'), :readonly => true } %>
+    <%= f.input :timeframe_2, :label => "Actual Date/Time 2: ", :as => :string, :hint => 'In YYYY-MM-DD HH:MM am/pm format', :input_html => { :size => 30, :placeholder => 'click to select date/time', :value => @course.timeframe_2.nil? ? nil : @course.timeframe_2.strftime('%Y-%m-%d %I:%M %P'), :readonly => true } %>
   </div>
   <div id="form_date1">
-    <%= f.input :timeframe_3, :label => "Actual Date/Time 3: ", :as => :string, :hint => 'In YYYY-MM-DD HH:MM am/pm format', :input_html => { :size => 30, :value => @course.timeframe_3.nil? ? 'click to select date/time' : @course.timeframe_3.strftime('%Y-%m-%d %I:%M %P'), :readonly => true } %>
+    <%= f.input :timeframe_3, :label => "Actual Date/Time 3: ", :as => :string, :hint => 'In YYYY-MM-DD HH:MM am/pm format', :input_html => { :size => 30, :placeholder => 'click to select date/time', :value => @course.timeframe_3.nil? ? nil : @course.timeframe_3.strftime('%Y-%m-%d %I:%M %P'), :readonly => true } %>
   </div>
   <div id="form_date1">
-    <%= f.input :timeframe_4, :label => "Actual Date/Time 4: ", :as => :string, :hint => 'In YYYY-MM-DD HH:MM am/pm format', :input_html => { :size => 30, :value => @course.timeframe_4.nil? ? 'click to select date/time' : @course.timeframe_4.strftime('%Y-%m-%d %I:%M %P'), :readonly => true } %>
+    <%= f.input :timeframe_4, :label => "Actual Date/Time 4: ", :as => :string, :hint => 'In YYYY-MM-DD HH:MM am/pm format', :input_html => { :size => 30, :placeholder => 'click to select date/time', :value => @course.timeframe_4.nil? ? nil : @course.timeframe_4.strftime('%Y-%m-%d %I:%M %P'), :readonly => true } %>
   </div>
   <div id="form_full_width">
     <%= check_box_tag :schedule_future_class, value = "1", checked = true %> Uncheck to schedule past class(es)<br /><br />

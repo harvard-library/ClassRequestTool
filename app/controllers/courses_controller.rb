@@ -17,7 +17,7 @@ class CoursesController < ApplicationController
           begin
             params[:course][col.name] = Time.zone.parse(params[:course][col.name]).utc.to_datetime
           rescue
-            params[:course][col.name] = nil
+            params[:course].delete(col.name)
           end
         else
           params[:course][col.name] = params[:course][col.name].map do |date|
@@ -27,6 +27,7 @@ class CoursesController < ApplicationController
               nil
             end
           end.reject(&:nil?)
+          params[:course].delete(col.name) if params[:course][col.name].blank?
         end
       end
     end
