@@ -2,7 +2,15 @@ class Course < ActiveRecord::Base
   include ActionDispatch::Routing::UrlFor
   include Rails.application.routes.url_helpers
 
-  attr_accessible :room_id, :repository_id, :title, :subject, :course_number, :affiliation, :contact_username, :contact_first_name, :contact_last_name, :contact_email, :contact_phone, :pre_class_appt, :staff_involvement, :status, :file, :remove_file, :number_of_students, :timeframe, :timeframe_2, :timeframe_3, :timeframe_4, :user_ids, :external_syllabus, :time_choice_1, :time_choice_2, :time_choice_3, :time_choice_4, :duration, :comments, :course_sessions, :session_count, :item_attribute_ids, :goal, :instruction_session, :pre_class_appt_choice_1, :pre_class_appt_choice_2, :pre_class_appt_choice_3, :staff_involvement_ids, :primary_contact_id
+  attr_accessible( :room_id, :repository_id, :user_ids, :item_attribute_ids, :primary_contact_id, :staff_involvement_ids, # associations
+                   :title, :subject, :course_number, :affiliation, :number_of_students,:course_sessions, :session_count,  #values
+                   :comments,  :staff_involvement, :instruction_session, :goal,
+                   :contact_username, :contact_first_name, :contact_last_name, :contact_email, :contact_phone, #contact info
+                   :status, :file, :remove_file, :external_syllabus, #syllabus
+                   :pre_class_appt, :timeframe, :timeframe_2, :timeframe_3, :timeframe_4, :duration, #concrete schedule vals
+                   :time_choice_1, :time_choice_2, :time_choice_3, :time_choice_4, # tentative schedule vals
+                   :pre_class_appt_choice_1, :pre_class_appt_choice_2, :pre_class_appt_choice_3 #unused
+                   )
 
   has_and_belongs_to_many :users
   belongs_to :room
@@ -12,7 +20,7 @@ class Course < ActiveRecord::Base
   has_and_belongs_to_many :item_attributes
   has_many :assessments, :dependent => :destroy
   has_and_belongs_to_many :staff_involvements
-
+  belongs_to :primary_contact, :class_name => 'User'
 
   validates_presence_of :title, :message => "can't be empty"
   validates_presence_of :contact_first_name, :contact_last_name
@@ -25,6 +33,7 @@ class Course < ActiveRecord::Base
   STATUS = ['Scheduled, Unclaimed', 'Scheduled, Claimed', 'Claimed, Unscheduled', 'Unclaimed, Unscheduled', 'Homeless', 'Closed']
   validates_inclusion_of :course_sessions, :in => COURSE_SESSIONS
   validates_inclusion_of :status, :in => STATUS
+
 
   def new_request_email
     # send email to requester
@@ -200,34 +209,15 @@ class Course < ActiveRecord::Base
     )
   end
 
-  def primary_contact
-    unless self.primary_contact_id.nil?
-      User.find(self.primary_contact_id)
-    else
-      return nil
-    end
-  end
-
   def self.homeless
-    #Course.find(:all, :conditions => {:repository_id => nil}, :order => 'timeframe DESC, created_at DESC')
-    Course.find(:all, :conditions => {:status => "Homeless"}, :order => 'timeframe DESC, created_at DESC')
+    Course.where(:status => 'Homeless').order('timeframe DESC, created_at DESC')
   end
 
   def self.unscheduled_unclaimed
-    # courses = Course.order('created_at ASC')
-    # unscheduled_unclaimed = Array.new
-    # courses.collect{|course| (course.users.empty? && (course.timeframe.nil? || course.timeframe.blank?)) ? unscheduled_unclaimed << course : '' }
-    # return unscheduled_unclaimed
-
-    Course.find(:all, :conditions => {:status => "Unclaimed, Unscheduled"}, :order => 'timeframe DESC, created_at DESC')
+    Course.where(:status => 'Unclaimed, Unscheduled').order('timeframe DESC, created_at DESC')
   end
 
   def self.scheduled_unclaimed
-    # courses = Course.order('timeframe DESC, created_at DESC')
-    # scheduled_unclaimed = Array.new
-    # courses.collect{|course| course.users.empty? && (!course.timeframe.nil? && !course.timeframe.blank?) ? scheduled_unclaimed << course : '' }
-    # return scheduled_unclaimed
-
-    Course.find(:all, :conditions => {:status => "Scheduled, Unclaimed"}, :order => 'timeframe DESC, created_at DESC')
+    Course.where(:status => 'Scheduled, Unclaimed').order('timeframe DESC, created_at DESC')
   end
 end
