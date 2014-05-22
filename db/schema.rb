@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140422132146) do
+ActiveRecord::Schema.define(:version => 20140522153635) do
 
   create_table "assessments", :force => true do |t|
     t.text     "using_materials"
@@ -215,7 +215,6 @@ ActiveRecord::Schema.define(:version => 20140422132146) do
 
   create_table "staff_involvements", :force => true do |t|
     t.string   "involvement_text"
-    t.integer  "repository_id"
     t.datetime "created_at",       :null => false
     t.datetime "updated_at",       :null => false
   end
