@@ -34,10 +34,7 @@ class CoursesController < ApplicationController
   end
 
   def index
-    @courses_all = Course.select('courses.*, MAX(actual_date) AS maxdate').
-      joins('LEFT OUTER JOIN sections ON sections.course_id = courses.id').
-      group('courses.id').
-      order('maxdate DESC NULLS LAST')
+    @courses_all = Course.ordered_by_last_section.all #.all required due to AR inelegance (count drops the select off of ordered_by_last_section)
     @courses_mine_current = current_user.mine_current
     @courses_mine_past = current_user.mine_past
     @repositories = Repository.order('name ASC')
@@ -50,8 +47,9 @@ class CoursesController < ApplicationController
        redirect_to('/') and return
     end
     @note = Note.new
-    @staff_only_notes = Note.find(:all, :conditions => {:course_id => @course.id, :staff_comment => true}, :order => "created_at DESC")
-    @notes = Note.find(:all, :conditions => {:course_id => @course.id, :staff_comment => false}, :order => "created_at DESC")
+    notes = Note.where(:course_id => @course.id).order("created_at DESC").group_by(&:staff_comment)
+    @staff_only_notes = notes[true]
+    @notes = notes[false]
   end
 
   def new
@@ -169,10 +167,7 @@ class CoursesController < ApplicationController
           (@course.users.blank? && !params[:course][:user_ids].blank? && !params[:course][:user_ids][1].blank?)
         staff_change = true
       end
-      if (@course.timeframe.blank? && !params[:course][:timeframe].blank?) ||
-          (@course.timeframe_2.blank? && !params[:course][:timeframe_2].blank?) ||
-          (@course.timeframe_3.blank? && !params[:course][:timeframe_3].blank?) ||
-          (@course.timeframe_4.blank? && !params[:course][:timeframe_4].blank?)
+      if not @course.sections.map(&:actual_date).reject(&:nil?).blank?
         timeframe_change = true
       end
 
@@ -300,13 +295,15 @@ class CoursesController < ApplicationController
     end
   end
 
+  # FIX THIS, BROKEN (timeframes 2-4 not handled)
+  # All I did was make sure it didn't error out, but it needs rewriting.
   def export
-    @courses = Course.all(:order => "timeframe DESC, created_at DESC")
+    @courses = Course.order_by_last_section
     CSV.open("#{Rails.root}/public/uploads/courses.csv", "w") do |csv|
-      csv << ["title", "subject", "course number", "affiliation", "contact first name", "contact last name", "contact username", "contact email", "contact phone", "pre class appt", "timeframe", "repository", "room", "staff involvement", "number of students", "status", "file", "external syllabus", "duration", "comments", "course sessions", "session count", "goal", "instruction session", "date submitted"]
+      csv << ["title", "subject", "course number", "affiliation", "contact first name", "contact last name", "contact username", "contact email", "contact phone", "pre class appt", "timeframe", "repository", "room", "staff involvement", "number of students", "status", "file", "external syllabus", "duration", "comments", "session count", "goal", "instruction session", "date submitted"]
       @courses.each do |course|
         row = Array.new
-        row << [course.title, course.subject, course.course_number, course.affiliation, course.contact_first_name, course.contact_last_name, course.contact_username, course.contact_email, course.contact_phone, course.pre_class_appt, course.timeframe]
+        row << [course.title, course.subject, course.course_number, course.affiliation, course.contact_first_name, course.contact_last_name, course.contact_username, course.contact_email, course.contact_phone, course.pre_class_appt, course.sections.first.try(:actual_date)]
         unless course.repository.nil?
           row << [course.repository.name]
         else
@@ -317,7 +314,7 @@ class CoursesController < ApplicationController
         else
           row << ["None"]
         end
-        row << [course.staff_involvement, course.number_of_students, course.status, course.file, course.external_syllabus, course.duration, course.comments, course.course_sessions, course.session_count, course.goal, course.instruction_session, course.created_at]
+        row << [course.staff_involvement, course.number_of_students, course.status, course.file, course.external_syllabus, course.duration, course.comments, course.session_count, course.goal, course.instruction_session, course.created_at]
         row.flatten!
         csv << row
       end

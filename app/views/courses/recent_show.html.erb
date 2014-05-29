@@ -1,4 +1,4 @@
-<h3><%= @course.title %></h3>	
+<h3><%= @course.title %></h3>
 
 <div>
 	<h4>Class Information</h4>
@@ -6,5 +6,5 @@
 	Title: <%= @course.title unless @course.title.nil? %> <br />
 	Subject: <%= @course.subject unless @course.subject.nil? %> <br />
 	Course Number: <%= @course.course_number unless @course.course_number.nil? %> <br />
-	Date of Class: <%= @course.timeframe.strftime('%m/%d/%Y') unless @course.timeframe.nil? %>
+	Date of Class: <%= @course.sections.first.try(:actual_date).try(:strftime, '%m/%d/%Y') unless @course.sections.first.try(:actual_date).nil? %>
 </div>

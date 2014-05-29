@@ -10,7 +10,7 @@
 <div>
 	Description: <%= raw @repository.description unless @repository.description.nil? %> <br />
 	Class Limit: <%= @repository.class_limit unless @repository.class_limit.nil? %> <br />
-	Technology Available: 
+	Technology Available:
 	<% unless @repository.item_attributes.nil? || @repository.item_attributes.empty? %>
 	<ul>
 	  <% @repository.item_attributes.each do |attribute| %>
@@ -22,8 +22,8 @@
 	<% end %>
 	<br />
 	<% unless current_user.try(:patron?) || !user_signed_in? %>
-	  Available Rooms: 
-	  <% unless @repository.rooms.nil? || @repository.rooms.empty? %> 
+	  Available Rooms:
+	  <% unless @repository.rooms.nil? || @repository.rooms.empty? %>
 	  <ul>
 	    <% @repository.rooms.each do |room| %>
 	      <li><%= room.name %></li>
@@ -34,23 +34,23 @@
 	  <% end %>
 	  <br />
 	<% end %>
-	<br />  
+	<br />
 	For more details on teaching at this Library/Archive <%= link_to "click here", @repository.landing_page, :target => "_blank" %>. <br /><br />
-	
+
 	<% unless @repository.class_policies.nil? || @repository.class_policies.blank? %>
 	Class Policies:
 	  <%= raw @repository.class_policies %> <br /><br />
-	<% end %>  
-	
+	<% end %>
+
 	<% unless @repository.calendar.nil? || @repository.calendar.blank? %>
 	  <%= link_to image_tag('calendar_icon.png')+"View Calendar", "#{@repository.calendar}", :onclick=>"window.open(this.href,'view_calendar', 'height=600, width=600');return false;" %>
 	<% else %>
 	  This Library/Archive does not have a publicly available calendar. Please submit your request with your preferred times and a staff member will get back to you.
 	<% end %>
-	
+
     <% if current_user.try(:admin?) || current_user.try(:superadmin?) %>
 	<br /><br />
-	  Staff Member(s) Assigned: 
+	  Staff Member(s) Assigned:
 	  <ul>
 	  <% @repository.users.each do |user| %>
 	    <li><%= user.first_name %> <%= user.last_name %></li>
@@ -72,10 +72,10 @@
     		<th>Class Date</th>
     		<th></th>
     	  </tr>
-          <% @repository.courses.each do |course| %>	
+          <% @repository.courses.ordered_by_last_section.each do |course| %>
           	<tr>
     	  	  <td><%= link_to(course.title, course ) %></td>
-    		  <td><%= course.timeframe.strftime('%m/%d/%Y %I:%M %P') unless course.timeframe.nil? %></td>
+    		  <td><%= course.sections.first.try(:actual_date).try(:strftime, '%m/%d/%Y %I:%M %P') unless course.sections.first.try(:actual_date).nil? %></td>
     		  <td><%= link_to('Edit', edit_course_path(course), :class => "action-edit") %></td>
               <% if current_user.try(:admin?) || current_user.try(:superadmin?) %>
     	   		<td> | <%= link_to('Delete', course_path(course), :confirm => "Are you sure?", :method => :delete) %></td>
@@ -86,8 +86,8 @@
       <% else %>
     	None yet!
       <% end %>
-</div>	
+</div>
 
-<% end %>  
+<% end %>
 <br />
 <p>Return <%= link_to "home", root_url %> to view another library/archive.</p>

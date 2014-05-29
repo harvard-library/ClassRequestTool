@@ -3,12 +3,11 @@ class WelcomeController < ApplicationController
 
   def index
     @repositories = Repository.order(:name)
-    @courses = Course.select('courses.*, MAX(actual_date) AS maxdate').
-      joins('LEFT OUTER JOIN sections ON sections.course_id = courses.id').
+    @courses = Course.
       where(:status => 'Closed').
-      group('courses.id').
       having("MAX(actual_date) IS NOT NULL AND MAX(actual_date) < ?", DateTime.now).
-      order('maxdate DESC NULLS LAST').limit(10)
+      limit(10).
+      ordered_by_last_section
   end
 
   def dashboard

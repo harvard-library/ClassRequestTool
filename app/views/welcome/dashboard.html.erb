@@ -9,7 +9,7 @@
 <h3>Dashboard</h3>
 
 <div id="dash-wrap">
-  <div id="dash_widget">	
+  <div id="dash_widget">
   <h4><%= link_to "Upcoming Classes for Your Library/Archive", dashboard_items_welcome_index_path(:courses => @your_repo_courses, :title => "Upcoming Classes for Your Library/Archive"), :target => "blank" %></h4>
   <% unless @your_repo_courses.nil? || @your_repo_courses.empty? %>
     <table id="your-repo-courses-table" class="table table-condensed tablesorter">
@@ -22,10 +22,10 @@
       	</tr>
 	  </thead>
 	  <tbody>
-        <% @your_repo_courses.each do |course| %>	
+        <% @your_repo_courses.each do |course| %>
           <tr>
       	    <td><%= link_to(course.title, course ) %></td>
-      		<td><%= course.timeframe.strftime('%m/%d/%Y %I:%M %P') unless course.timeframe.nil? %></td>
+      		<td><%= course.sections.first.try(:actual_date).try(:strftime, '%m/%d/%Y %I:%M %P') unless course.sections.first.try(:actual_date).nil? %></td>
 			<td><%= course.status unless course.status.nil? %></td>
       		<td><%= link_to('Edit', edit_course_path(course), :class => "action-edit") %>
             <% if current_user.try(:admin?) || current_user.try(:superadmin?) %>
@@ -34,7 +34,7 @@
 		    </td>
       	  </tr>
         <% end %>
-	  </tbody>	
+	  </tbody>
     </table>
 		<br />
 		<%= render :partial => '/shared/tablesorter_pager', :locals => {:pager_id => "your-repo-courses-table" } %>
@@ -43,11 +43,11 @@
         <% end %>
   </div>
 
-  <div id="dash_widget">	
+  <div id="dash_widget">
   <h4><%= link_to "Homeless Classes", dashboard_items_welcome_index_path(:courses => @homeless, :title => "Homeless Classes"), :target => "blank" %></h4>
   <% unless @homeless.nil? || @homeless.empty? %>
 	<table id="homeless-table" class="table table-condensed tablesorter">
-	<thead>	
+	<thead>
 	  <tr>
 		<th>Name</th>
 		<th>Submission Date</th>
@@ -56,11 +56,11 @@
 	  </tr>
 	</thead>
 	<tbody>
-      <% @homeless.each do |course| %>	
+      <% @homeless.each do |course| %>
       	<tr>
 	  	  <td><%= link_to(course.title, course ) %></td>
 		  <td><%= course.created_at.strftime('%m/%d/%Y') %></td>
-		  <td><%= course.timeframe.strftime('%m/%d/%Y %I:%M %P') unless course.timeframe.nil? %></td>
+		  <td><%= course.sections.first.try(:actual_date).try(:strftime, '%m/%d/%Y %I:%M %P') unless course.sections.first.try(:actual_date).nil? %></td>
 		  <td><%= link_to('Edit', edit_course_path(course), :class => "action-edit") %><br />
 			  <%= link_to('Add Note', course_path(course), :class => "action-edit") %><br />
           <% if current_user.try(:admin?) || current_user.try(:superadmin?) %>
@@ -80,7 +80,7 @@
 <div id="dash-wrap">
   <div id="dash_widget">
   <h4><%= link_to "Your Claimed, Unscheduled Classes", dashboard_items_welcome_index_path(:courses => @your_unscheduled, :title => "Your Claimed, Unscheduled Classes"), :target => "blank" %></h4>
-  <% unless @your_unscheduled.nil? || @your_unscheduled.empty? %>	
+  <% unless @your_unscheduled.nil? || @your_unscheduled.empty? %>
     <table id="your-unscheduled-table" class="table table-condensed tablesorter">
 	  <thead>
 	  <tr>
@@ -90,7 +90,7 @@
 	  </tr>
 	  </thead>
 	  <tbody>
-    <% @your_unscheduled.each do |course| %>	
+    <% @your_unscheduled.each do |course| %>
       	<tr>
 	  	  <td><%= link_to(course.title, course ) %></td>
 		  <td><%= course.created_at.strftime('%m/%d/%Y') %></td>
@@ -110,7 +110,7 @@
   <% end %>
   </div>
 
-  <div id="dash_widget">  
+  <div id="dash_widget">
   <h4><%= link_to "Unscheduled, Unclaimed Classes", dashboard_items_welcome_index_path(:courses => @unscheduled_unclaimed, :title => "Unscheduled, Unclaimed Classes"), :target => "blank" %></h4>
     <% unless @unscheduled_unclaimed.nil? || @unscheduled_unclaimed.empty? %>
   	<table id="unassigned-table" class="table table-condensed tablesorter">
@@ -121,13 +121,13 @@
   		<th>Class Date</th>
   		<th></th>
   	  </tr>
-    </thead> 
+    </thead>
 	<tbody>
-        <% @unscheduled_unclaimed.each do |course| %>	
+        <% @unscheduled_unclaimed.each do |course| %>
         	<tr>
   	  	  <td><%= link_to(course.title, course ) %></td>
 		  <td><%= course.created_at.strftime('%m/%d/%Y') %></td>
-  		  <td><%= course.timeframe.strftime('%m/%d/%Y %I:%M %P') unless course.timeframe.nil? %></td>
+  		  <td><%= course.sections.first.try(:actual_date).try(:strftime, '%m/%d/%Y %I:%M %P') unless course.sections.first.try(:actual_date).nil? %></td>
   		  <td><%= link_to('Edit', edit_course_path(course), :class => "action-edit") %><br />
 			  <%= link_to('Add Note', course_path(course), :class => "action-edit") %><br />
           <% if current_user.try(:admin?) || current_user.try(:superadmin?) %>
@@ -136,7 +136,7 @@
 		  </td>
   	    </tr>
         <% end %>
-	</tbody>	
+	</tbody>
   	</table>
 	<%= render :partial => '/shared/tablesorter_pager', :locals => {:pager_id => "unassigned-table" } %>
     <% else %>
@@ -147,7 +147,7 @@
 <div id="dash-wrap">
   <div id="dash_widget">
   <h4><%= link_to "Your Scheduled, Claimed Classes", dashboard_items_welcome_index_path(:courses => @your_upcoming, :title => "Your Scheduled, Claimed Classes"), :target => "blank" %></h4>
-  <% unless @your_upcoming.nil? || @your_upcoming.empty? %>	
+  <% unless @your_upcoming.nil? || @your_upcoming.empty? %>
     <table id="your-upcoming-table" class="table table-condensed tablesorter">
 	  <thead>
 	  <tr>
@@ -158,11 +158,11 @@
 	  </tr>
 	  </thead>
 	  <tbody>
-    <% @your_upcoming.each do |course| %>	
+    <% @your_upcoming.each do |course| %>
       	<tr>
 	  	  <td><%= link_to(course.title, course ) %></td>
 		  <td><%= course.created_at.strftime('%m/%d/%Y') %></td>
-		  <td><%= course.timeframe.strftime('%m/%d/%Y %I:%M %P') unless course.timeframe.nil? %></td>
+		  <td><%= course.sections.first.try(:actual_date).try(:strftime, '%m/%d/%Y %I:%M %P') unless course.sections.first.try(:actual_date).nil? %></td>
 		  <td><%= link_to('Edit', edit_course_path(course), :class => "action-edit") %><br />
 			  <%= link_to('Add Note', course_path(course), :class => "action-edit") %><br />
           <% if current_user.try(:admin?) || current_user.try(:superadmin?) %>
@@ -179,7 +179,7 @@
   <% end %>
   </div>
 
-  <div id="dash_widget">	
+  <div id="dash_widget">
     <h4><%= link_to "Scheduled, Unclaimed Classes", dashboard_items_welcome_index_path(:courses => @scheduled_unclaimed, :title => "Scheduled, Unclaimed Classes"), :target => "blank" %></h4>
       <% unless @scheduled_unclaimed.nil? || @scheduled_unclaimed.empty? %>
     	<table id="roomless-table" class="table table-condensed tablesorter">
@@ -192,11 +192,11 @@
     	  </tr>
 		</thead>
 		<tbody>
-          <% @scheduled_unclaimed.each do |course| %>	
+          <% @scheduled_unclaimed.each do |course| %>
           	<tr>
     	  	  <td><%= link_to(course.title, course ) %></td>
 			  <td><%= course.created_at.strftime('%m/%d/%Y') %></td>
-    		  <td><%= course.timeframe.strftime('%m/%d/%Y %I:%M %P') unless course.timeframe.nil? %></td>
+    		  <td><%= course.sections.first.try(:actual_date).try(:strftime, '%m/%d/%Y %I:%M %P') unless course.sections.first.try(:actual_date).nil? %></td>
     		  <td><%= link_to('Edit', edit_course_path(course), :class => "action-edit") %><br />
 				  <%= link_to('Add Note', course_path(course), :class => "action-edit") %><br />
               <% if current_user.try(:admin?) || current_user.try(:superadmin?) %>
@@ -217,7 +217,7 @@
 <div id="dash-wrap">
   <div id="dash_widget">
   <h4><%= link_to "Your Classes To Close", dashboard_items_welcome_index_path(:courses => @your_classes_to_close, :title => "Your Classes To Close"), :target => "blank" %></h4>
-  <% unless @your_classes_to_close.nil? || @your_classes_to_close.empty? %>	
+  <% unless @your_classes_to_close.nil? || @your_classes_to_close.empty? %>
     <table id="your-to-close-table" class="table table-condensed tablesorter">
 	  <thead>
 	  <tr>
@@ -228,11 +228,11 @@
 	  </tr>
 	  </thead>
 	  <tbody>
-    <% @your_classes_to_close.each do |course| %>	
+    <% @your_classes_to_close.each do |course| %>
       	<tr>
 	  	  <td><%= link_to(course.title, course ) %></td>
 		  <td><%= course.created_at.strftime('%m/%d/%Y') %></td>
-		  <td><%= course.timeframe.strftime('%m/%d/%Y %I:%M %P') unless course.timeframe.nil? %></td>
+		  <td><%= course.sections.first.try(:actual_date).try(:strftime, '%m/%d/%Y %I:%M %P') unless course.sections.first.try(:actual_date).nil? %></td>
 		  <td><%= link_to('Edit to Close', course_path(course), :class => "action-edit") %><br />
 			  <%= link_to('Add Note', course_path(course), :class => "action-edit") %><br />
           <% if current_user.try(:admin?) || current_user.try(:superadmin?) %>
@@ -252,7 +252,7 @@
   <div id="dash_widget">
   <h4><%= link_to "Your Closed Classes", dashboard_items_welcome_index_path(:courses => @your_past, :title => "Your Closed Classes"), :target => "blank" %></h4>
   <span id="your-past">
-    <% unless @your_past.nil? || @your_past.empty? %>	
+    <% unless @your_past.nil? || @your_past.empty? %>
       <table id="your-past-table" class="table table-condensed tablesorter">
 	  <thead>
   	  <tr>
@@ -263,11 +263,11 @@
   	  </tr>
       </thead>
 	  <tbody>
-      <% @your_past.each do |course| %>	
+      <% @your_past.each do |course| %>
         <tr>
   	  	  <td><%= link_to(course.title, course ) %></td>
 		  <td><%= course.created_at.strftime('%m/%d/%Y') %></td>
-  		  <td><%= course.timeframe.strftime('%m/%d/%Y %I:%M %P') unless course.timeframe.nil? %></td>
+  		  <td><%= course.sections.first.try(:actual_date).try(:strftime, '%m/%d/%Y %I:%M %P') unless course.sections.first.try(:actual_date).nil? %></td>
   		  <td><%= link_to('Edit', edit_course_path(course), :class => "action-edit") %><br />
 			  <%= link_to('Add Note', course_path(course), :class => "action-edit") %><br />
           <% if current_user.try(:admin?) || current_user.try(:superadmin?) %>

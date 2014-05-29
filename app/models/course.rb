@@ -36,6 +36,42 @@ class Course < ActiveRecord::Base
   validates_inclusion_of :course_sessions, :in => COURSE_SESSIONS
   validates_inclusion_of :status, :in => STATUS
 
+  # Note: DO NOT replace MAX(actual_date) with alias, .count will error out
+  #
+  # Also Note: Subselect here is essentially just to hide
+  #            the .group() clause from AR, so that .count doesn't return a hash
+  #            Gross as hell, but better than having to remember when it's safe
+  #            to call .count, and when you need to call .count.count
+  #
+  # Generally, this clause should be the last one applied to a relation being realized;
+  #    in the case of .having() clauses which use MAX(actual_date), it MUST be the last applied
+  #    or an error will be thrown, because actual_date doesn't exist in the final relation/select
+  #    .limit is affected for performance reasons.
+  def self.ordered_by_last_section
+    inner_scope = joins('LEFT OUTER JOIN sections ON sections.course_id = courses.id').
+      group('courses.id').order('MAX(actual_date) DESC NULLS LAST, courses.created_at DESC')
+    self.unscoped do
+      from(inner_scope.as(table_name))
+    end
+  end
+
+  def self.homeless
+    where(:status => 'Homeless').ordered_by_last_section
+  end
+
+  def self.unscheduled_unclaimed
+    where(:status => 'Unclaimed, Unscheduled').ordered_by_last_section
+  end
+
+  def self.scheduled_unclaimed
+    where(:status => 'Scheduled, Unclaimed').ordered_by_last_section
+  end
+
+  # Returns an array of sessions, ordered by session number
+  def sessions
+    sesh = sections.group_by(&:session)
+    sesh.keys.sort.reduce([]) {|result, key| result << sesh[key];result}
+  end
 
   def new_request_email
     # send email to requester
@@ -178,7 +214,7 @@ class Course < ActiveRecord::Base
       :subject => "Your class at #{repository} has been confirmed.",
       :body => "<p>Thank you for submitting your request for a class session at #{repository}. The request has been reviewed and confirmed.</p>
       <p>Title: <a href='#{ROOT_URL}#{course_path(self)}'>#{self.title}</a><br />
-      Confirmed Date: #{self.timeframe}<br />
+      Confirmed Date: #{self.sections.first.try(:actual_date)}<br />
       Duration: #{self.duration} hours<br />
       Staff contact:<a href='mailto:#{email}'> #{name}</a>
       </p>
@@ -211,15 +247,4 @@ class Course < ActiveRecord::Base
     )
   end
 
-  def self.homeless
-    Course.where(:status => 'Homeless').order('timeframe DESC, created_at DESC')
-  end
-
-  def self.unscheduled_unclaimed
-    Course.where(:status => 'Unclaimed, Unscheduled').order('timeframe DESC, created_at DESC')
-  end
-
-  def self.scheduled_unclaimed
-    Course.where(:status => 'Scheduled, Unclaimed').order('timeframe DESC, created_at DESC')
-  end
 end

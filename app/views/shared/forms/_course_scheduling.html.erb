@@ -3,11 +3,6 @@
 <h4>Scheduling</h4>
 
 <div id="form_full_width">
-<%= f.input :course_sessions, :label => "Select One", :as => :radio, :collection => Course::COURSE_SESSIONS %>
-<%= f.input :session_count, :label => "Number of Sessions: ", :input_html => { :size => 1, :maxlength => 1 }, :hint => 'If more than four sessions, please indicate in a note below your request for a multi-session or reoccurring class (e.g. Wednesdays 2-4pm).' %>
-</div>
-
-<div id="form_full_width">
 <h4>Date/Time of Class</h4>
 <span id="multiple">Please enter your preferred date and time for each session. Second choices and back-up times/days may be indicated in the notes field below. If your only options for scheduling fall outside normal business hours, please use the note field to detail your availability.
 </span>
@@ -41,22 +36,6 @@ Final scheduling of a session is subject to both room and staff availability.
 <span id="single_label_3">Choice 3:</span>
 <%= f.input :time_choice_3, :label => false, :as => :string, :hint => 'In YYYY-MM-DD HH:MM am/pm format', :input_html => { :size => 30, :placeholder => 'click to select date/time', :value => @course.time_choice_3.nil? ? nil : @course.time_choice_3.strftime('%Y-%m-%d %I:%M %P'), :readonly => true } %>
 </div>
-<% if !@course.course_sessions.nil? && @course.course_sessions != "Single Session" %>
-<script type="text/javascript">
-$(document).ready(function(){
-  $('#multiple_label_4').show();
-  $('#course_time_choice_4_input').show();
-  $('#course_timeframe_2_input').show();
-  $('#course_timeframe_3_input').show();
-  $('#course_timeframe_4_input').show();
-});
-</script>
-<% end %>
-<div id="form_date1">
-<span id="multiple_label_4">Session 4:</span>
-<%= f.input :time_choice_4, :label => false, :as => :string, :hint => 'In YYYY-MM-DD HH:MM am/pm format', :input_html => { :size => 30, :placeholder => 'click to select date/time', :value => @course.time_choice_3.nil? ? nil : @course.time_choice_3.strftime('%Y-%m-%d %I:%M %P'), :readonly => true } %>
-</div>
-
 </div>
 
 <div id="form_full_width">
