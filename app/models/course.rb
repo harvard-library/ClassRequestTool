@@ -2,8 +2,8 @@ class Course < ActiveRecord::Base
   include ActionDispatch::Routing::UrlFor
   include Rails.application.routes.url_helpers
 
-  attr_accessible( :room_id, :repository_id, :user_ids, :item_attribute_ids, :primary_contact_id, :staff_involvement_ids, # associations
-                   :title, :subject, :course_number, :affiliation, :number_of_students,:course_sessions, :session_count,  #values
+  attr_accessible( :room_id, :repository_id, :user_ids, :item_attribute_ids, :primary_contact_id, :staff_involvement_ids, :sections_attributes, # associations
+                   :title, :subject, :course_number, :affiliation, :number_of_students, :session_count,  #values
                    :comments,  :staff_involvement, :instruction_session, :goal,
                    :contact_username, :contact_first_name, :contact_last_name, :contact_email, :contact_phone, #contact info
                    :status, :file, :remove_file, :external_syllabus, #syllabus
@@ -31,9 +31,7 @@ class Course < ActiveRecord::Base
 
   mount_uploader :file, FileUploader
 
-  COURSE_SESSIONS = ['Single Session', 'Multiple Sessions, Same Materials', 'Multiple Sessions, Different Materials']
   STATUS = ['Scheduled, Unclaimed', 'Scheduled, Claimed', 'Claimed, Unscheduled', 'Unclaimed, Unscheduled', 'Homeless', 'Closed']
-  validates_inclusion_of :course_sessions, :in => COURSE_SESSIONS
   validates_inclusion_of :status, :in => STATUS
 
   # Note: DO NOT replace MAX(actual_date) with alias, .count will error out

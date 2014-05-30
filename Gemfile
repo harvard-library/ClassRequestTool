@@ -41,6 +41,8 @@ group :development do
   gem 'capistrano-rails',  '~> 1.0.0'
   gem 'capistrano-rvm',    '~> 0.1.1'
   gem 'capistrano-bundler','~> 1.1.2'
+  gem 'pry-rails'
+  gem 'pry-remote'
 end
 
 gem 'jquery-rails', '~> 3.1.0'

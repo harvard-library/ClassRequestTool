@@ -31,6 +31,22 @@ class CoursesController < ApplicationController
         end
       end
     end
+    # Speaking of which, handled nested sessions
+    if !params[:course][:sections_attributes].blank?
+      sections = params[:course][:sections_attributes]
+      sections.each_pair do |k, v|
+        binding.remote_pry
+        v[:requested_dates].map! do |date|
+          begin
+            Time.zone.parse(date).utc.to_datetime
+          rescue
+            nil
+          end
+        end
+        v[:requested_dates].reject!(&:blank?)
+      end
+    end
+    binding.remote_pry
   end
 
   def index
@@ -60,6 +76,7 @@ class CoursesController < ApplicationController
       @course = Course.new
     end
     @uploader = FileUploader.new
+    @course.sections << (0..3).map {Section.new(:course => @course)}
   end
 
   def edit
@@ -77,7 +94,7 @@ class CoursesController < ApplicationController
 
     if params[:course][:repository_id].blank?
       params[:course][:status] = "Homeless"
-    elsif params[:course][:timeframe].blank?
+    elsif params[:course][:sections].blank?
       if (params[:course][:primary_contact_id].blank?) && (params[:course][:user_ids].nil? || params[:course][:user_ids][1].nil? || params[:course][:user_ids][1].empty?)
         params[:course][:status] = "Unclaimed, Unscheduled"
       else
