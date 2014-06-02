@@ -12,11 +12,11 @@
 <div id="form_col2">
 <%= f.input :affiliation, :label => "Affiliation: " %>
 </div>
-<div id="form_col1">	
-<% unless @course.file.blank? %>	
-  <%= link_to "Current Syllabus", @course.file_url %><br />	
+<div id="form_col1">
+<% unless @course.file.blank? %>
+  <%= link_to "Current Syllabus", @course.file_url %><br />
   <%= f.input :remove_file, :as => :boolean, :label => "Delete Current Syllabus? " %>
-<% end %>  
+<% end %>
 <%= f.input :file, :as => :file, :label => "Syllabus (Upload File): " %>
 </div>
 <div id="form_col2">
@@ -25,7 +25,7 @@
 <div id="form_col1">
 <%= f.input :number_of_students, :label => "Number of Students: ", :hint => !@course.repository.nil? ? "Maximum class limit is #{@course.repository.class_limit unless @course.repository.nil?}. For larger groups/classes the staff will be in touch with possible options." : "For larger groups/classes the staff will be in touch with possible options." %>
 </div>
-<div id="form_full_width">
+<div class="form_full_width">
 <%= f.input :goal, :label => "What is your goal for this class session? ", :input_html => { :rows => 5, :columns => 100 } %>
 </div>
 </div>

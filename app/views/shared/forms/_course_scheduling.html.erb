@@ -2,7 +2,7 @@
 
 <h4>Scheduling</h4>
 
-<div id="form_full_width">
+<div class="form_full_width">
 <h4>Date/Time of Class</h4>
 <span id="multiple">Please enter your preferred date and time for each session. Second choices and back-up times/days may be indicated in the notes field below. If your only options for scheduling fall outside normal business hours, please use the note field to detail your availability.
 </span>
@@ -12,7 +12,7 @@
 Final scheduling of a session is subject to both room and staff availability.
 </div>
 
-<div id="form_full_width">
+<div class="form_full_width">
 <% if (@course.repository.nil? || @course.repository.blank?) || (@course.repository.calendar.nil? || @course.repository.calendar.blank?) %>
   This Library/Archive does not have a publicly available calendar. Please submit your request with your preferred times and a staff member will get back to you.
 <% else %>
@@ -20,31 +20,37 @@ Final scheduling of a session is subject to both room and staff availability.
 <% end %>
 </div>
 
-<div id="form_full_width">
+<div class="form_full_width">
   <% sect_num = 1 %>
   <%= f.semantic_fields_for :sections do |f| %>
-    <h1>Section <%= sect_num %></h1>
-    <% sect_num += 1 %>
-    <% (0..2).each do |i| %>
-      <% # Note: Use of f.object_name is kind of a hack, but Formtastic doesn't support arrays by default %>
-      <%= f.input :requested_dates, :as => :datetime_picker, :input_html => {:id => f.object_name.gsub(/[\[\]]+/, '_') + "requested_dates_#{i}", :name => f.object_name + "[requested_dates][]"} %>
-    <% end %>
+    <h4>Session <%= sect_num %></h4>
+
+    <div class="form_full_width">
+      <%= f.input :session, :as => :hidden, :value => sect_num %>
+      <% sect_num += 1 %>
+      <% (0..2).each do |i| %>
+        <div class="form_date">
+          <% # Note: Use of f.object_name is kind of a hack, but Formtastic doesn't support arrays by default %>
+          <%= f.input :requested_dates, :as => :datetime_picker, :label => "#{(i+1).ordinalize} choice", :hint => "In YYYY-MM-DD HH:MM(am|pm) format", :input_html => {:id => f.object_name.gsub(/[\[\]]+/, '_') + "requested_dates_#{i}", :name => f.object_name + "[requested_dates][]", :placeholder => "Click to select date/time"} %>
+        </div>
+      <% end %>
+    </div>
   <% end %>
 </div>
 
-<div id="form_full_width">
+<div class="form_full_width">
   <p>To request class visits outside of regular hours, please add your timing preferences in the note section below.</p>
   <%= f.input :duration, :label => "Class Duration (hours): ", :hint => '1 hour increments, maximum 3 hours', :input_html => { :size => 1, :maxlength => 4 } %>
 </div>
 
 
-<div id="form_full_width">
+<div class="form_full_width">
 	<br />
 	<p>Be sure to review your information and make any edits before submitting your request.</p>
 	<p>Please note that some of the information you provide may be used to promote the variety of classes being offered at special collections libraries and archives at Harvard.</p>
 </div>
 <% if current_user.try(:superadmin?) %>
-  <div id="form_full_width" class="yellow-box">
+  <div class="form_full_width" class="yellow-box">
     This is a failsafe, do not use unless something really weird happens (e.g. zombie attack).<br />
     <%= f.input :status, :label => "Status: ", :as => :select, :collection => Course::STATUS %>
   </div>

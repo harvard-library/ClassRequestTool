@@ -35,7 +35,6 @@ class CoursesController < ApplicationController
     if !params[:course][:sections_attributes].blank?
       sections = params[:course][:sections_attributes]
       sections.each_pair do |k, v|
-        binding.remote_pry
         v[:requested_dates].map! do |date|
           begin
             Time.zone.parse(date).utc.to_datetime
@@ -46,7 +45,6 @@ class CoursesController < ApplicationController
         v[:requested_dates].reject!(&:blank?)
       end
     end
-    binding.remote_pry
   end
 
   def index
