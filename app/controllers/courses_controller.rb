@@ -31,7 +31,7 @@ class CoursesController < ApplicationController
         end
       end
     end
-    # Speaking of which, handled nested sessions
+    # Speaking of which, handle nested sessions
     if !params[:course][:sections_attributes].blank?
       sections = params[:course][:sections_attributes]
       sections.each_pair do |k, v|

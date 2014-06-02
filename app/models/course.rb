@@ -44,6 +44,10 @@ class Course < ActiveRecord::Base
   #    in the case of .having() clauses which use MAX(actual_date), it MUST be the last applied
   #    or an error will be thrown, because actual_date doesn't exist in the final relation/select
   #    .limit is affected for performance reasons.
+  # e.g.
+  #    You should prefer Course.limit(10).ordered_by_last_section to Course.ordered_by_last_section
+  # and
+  #    Courses.ordered_by_last_section.having('ANY_SQL_REFERENCING(actual_date)') will throw an exception
   def self.ordered_by_last_section
     inner_scope = joins('LEFT OUTER JOIN sections ON sections.course_id = courses.id').
       group('courses.id').order('MAX(actual_date) DESC NULLS LAST, courses.created_at DESC')
