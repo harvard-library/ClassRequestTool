@@ -1,4 +1,4 @@
-<div id="form_wrapper">
+<div class="form_wrapper">
 
 <h4>Scheduling</h4>
 
@@ -31,7 +31,7 @@ Final scheduling of a session is subject to both room and staff availability.
       <% (0..2).each do |i| %>
         <div class="form_date">
           <% # Note: Use of f.object_name is kind of a hack, but Formtastic doesn't support arrays by default %>
-          <%= f.input :requested_dates, :as => :datetime_picker, :label => "#{(i+1).ordinalize} choice", :hint => "In YYYY-MM-DD HH:MM(am|pm) format", :input_html => {:id => f.object_name.gsub(/[\[\]]+/, '_') + "requested_dates_#{i}", :name => f.object_name + "[requested_dates][]", :placeholder => "Click to select date/time"} %>
+          <%= f.input :requested_dates, :as => :datetime_picker, :label => "#{(i+1).ordinalize} choice", :hint => "In YYYY-MM-DD HH:MM(am|pm) format", :wrapper_html => { :id => f.object_name.gsub(/[\[\]]+/, '_') + "requested_dates_#{i}_input"}, :input_html => {:id => f.object_name.gsub(/[\[\]]+/, '_') + "requested_dates_#{i}", :name => f.object_name + "[requested_dates][]", :placeholder => "Click to select date/time"} %>
         </div>
       <% end %>
     </div>

@@ -1,22 +1,22 @@
-<div id="form_wrapper">
+<div class="form_wrapper">
 <h4>Staff Involvement</h4>
-<div id="form_col1">
+<div class="form_col1">
 <%= f.input :staff_involvements, :label => "Please select or suggest ways our staff can be of assistance for this class: ", :as => :check_boxes, :collection => @course.repository.nil? ? Repository.find(:first, :conditions => ("name like '%Houghton%'")).staff_involvements : @course.repository.staff_involvements %>
 <%= f.input :staff_involvement, :label => "Other Staff Involvement Requests: ", :input_html => { :rows => 5, :columns => 100 } %>
 </div>
 <% if current_user.try(:admin?) || current_user.try(:staff?) || current_user.try(:superadmin?) %>
-  <div id="form_col2" class="yellow-box">	
+  <div class="form_col2 yellow-box">
 	<% if @course.repository.nil? %>
-	  <%= f.input :primary_contact_id, :as => :select, :collection => User.all_admins, :label => "Assign Primary Contact: " %>  
-	  <%= f.input :users, :as => :check_boxes, :collection => User.all_admins, :label => "Assign Staff: " %>  
-	<% else %>  
+	  <%= f.input :primary_contact_id, :as => :select, :collection => User.all_admins, :label => "Assign Primary Contact: " %>
+	  <%= f.input :users, :as => :check_boxes, :collection => User.all_admins, :label => "Assign Staff: " %>
+	<% else %>
 	  <%= f.input :primary_contact_id, :as => :select, :collection => @course.repository.users, :label => "Assign Primary Contact: " %>
 	  <% unless @course.primary_contact_id.nil? %>
         <%= f.input :users, :as => :check_boxes, :collection => @course.repository.users.where(['user_id != ?', @course.primary_contact_id]), :label => "Assign Staff: " %>
 	  <% else %>
 	    <%= f.input :users, :as => :check_boxes, :collection => @course.repository.users, :label => "Assign Staff: " %>
-      <% end %>			
-	<% end %>  
+      <% end %>
+	<% end %>
   </div>
 <% end %>
 </div>
