@@ -28,10 +28,17 @@ Final scheduling of a session is subject to both room and staff availability.
     <div class="form_full_width">
       <%= f.input :session, :as => :hidden, :value => sect_num %>
       <% sect_num += 1 %>
-      <% (0..2).each do |i| %>
+      <% (0..1).each do |i| %>
         <div class="form_date">
           <% # Note: Use of f.object_name is kind of a hack, but Formtastic doesn't support arrays by default %>
-          <%= f.input :requested_dates, :as => :datetime_picker, :label => "#{(i+1).ordinalize} choice", :hint => "In YYYY-MM-DD HH:MM(am|pm) format", :wrapper_html => { :id => f.object_name.gsub(/[\[\]]+/, '_') + "requested_dates_#{i}_input"}, :input_html => {:id => f.object_name.gsub(/[\[\]]+/, '_') + "requested_dates_#{i}", :name => f.object_name + "[requested_dates][]", :placeholder => "Click to select date/time"} %>
+          <%= f.input :requested_dates,
+                      :as => :datetime_picker,
+                      :label => "#{(i+1).ordinalize} choice",
+                      :hint => "In YYYY-MM-DD HH:MM(am|pm) format",
+                        :wrapper_html => { :id => f.object_name.gsub(/[\[\]]+/, '_') + "requested_dates_#{i}_input"},
+                        :input_html => {:id => f.object_name.gsub(/[\[\]]+/, '_') + "requested_dates_#{i}",
+                                        :name => f.object_name + "[requested_dates][]",
+                                        :placeholder => "Click to select date/time"} %>
         </div>
       <% end %>
     </div>
@@ -49,11 +56,4 @@ Final scheduling of a session is subject to both room and staff availability.
 	<p>Be sure to review your information and make any edits before submitting your request.</p>
 	<p>Please note that some of the information you provide may be used to promote the variety of classes being offered at special collections libraries and archives at Harvard.</p>
 </div>
-<% if current_user.try(:superadmin?) %>
-  <div class="form_full_width" class="yellow-box">
-    This is a failsafe, do not use unless something really weird happens (e.g. zombie attack).<br />
-    <%= f.input :status, :label => "Status: ", :as => :select, :collection => Course::STATUS %>
-  </div>
-<% end %>
-
 </div>
