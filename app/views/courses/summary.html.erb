@@ -43,25 +43,25 @@
 	<% end %>
 	</ul>
 	<%= @course.staff_involvement unless @course.staff_involvement.nil? || @course.staff_involvement.blank? %>
-
+  <% sections = @course.sections.order("session ASC") %>
 	<h4>Scheduling</h4>
-  <% c_sessions = (@course.sections.group_by(&:session).count <= 1 ? "Single Session" : "Multiple Sessions, Same Materials") %>
+  <% c_sessions = (sections.group_by(&:session).count <= 1 ? "Single Session" : "Multiple Sessions, Same Materials") %>
 	<%= c_sessions unless c_sessions.nil? %> <br />
 	Number of Sessions: <%= @course.session_count unless @course.session_count.nil? %> <br />
 
 	<h4>Date/Time of Class</h4>
-<% if !@course.sections.map(&:actual_date).reject(&:nil?).blank? %>
+<% if !sections.map(&:actual_date).reject(&:nil?).blank? %>
 	<h5>Approved Date/Times</h5>
   <ul>
-    <% @course.sections.each do |s| %>
+    <% sections.each do |s| %>
       <li><%= s.actual_date.try(:strftime, '%m/%d/%Y %I:%M %P') %></li>
 	  <% end %>
   </ul>
-<% elsif !@course.sections.map(&:requested_dates).reject(&:nil?).blank?  %>
+<% elsif !sections.map(&:requested_dates).reject(&:nil?).blank?  %>
   <h5>Requested times</h5>
   <ul>
-    <% @course.sections.each.with_index(1) do |s, i| %>
-      <li><%== "Section #{i}: <ul><li>" + (s.requested_dates ? s.requested_dates.map(&:to_s).join('</li><li>') : '') + '</li></ul>' %></li>
+    <% sections.each do |s| %>
+      <li><%== "Section #{s.session}: <ul><li>" + (s.requested_dates ? s.requested_dates.map(&:to_s).join('</li><li>') : '') + '</li></ul>' %></li>
     <% end %>
   </ul>
 <% end %>

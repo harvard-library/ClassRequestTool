@@ -106,6 +106,9 @@ class CoursesController < ApplicationController
       end
     end
 
+    # strip out empty sections
+    params[:course][:sections_attributes].delete_if{|k,v| v[:requested_dates].reject(&:nil?).blank?}
+
     @course = Course.new(params[:course])
 
     respond_to do |format|
