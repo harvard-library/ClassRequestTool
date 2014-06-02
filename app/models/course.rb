@@ -15,7 +15,6 @@ class Course < ActiveRecord::Base
   has_and_belongs_to_many :users
   belongs_to :room
   belongs_to :repository
-  belongs_to :room
   has_many :sections, :dependent => :destroy
   accepts_nested_attributes_for :sections
   has_many :notes, :dependent => :destroy
