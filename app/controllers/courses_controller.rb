@@ -92,7 +92,7 @@ class CoursesController < ApplicationController
 
     if params[:course][:repository_id].blank?
       params[:course][:status] = "Homeless"
-    elsif params[:course][:sections].blank?
+    elsif params[:course][:sections_attributes].blank?
       if (params[:course][:primary_contact_id].blank?) && (params[:course][:user_ids].nil? || params[:course][:user_ids][1].nil? || params[:course][:user_ids][1].empty?)
         params[:course][:status] = "Unclaimed, Unscheduled"
       else
@@ -113,10 +113,7 @@ class CoursesController < ApplicationController
 
     respond_to do |format|
       if params[:schedule_future_class] == "1"
-        if (!params[:course][:timeframe].blank? && params[:course][:timeframe] < DateTime.now) ||
-            (!params[:course][:timeframe_2].blank? && params[:course][:timeframe_2] < DateTime.now) ||
-            (!params[:course][:timeframe_3].blank? && params[:course][:timeframe_3] < DateTime.now) ||
-            (!params[:course][:timeframe_4].blank? && params[:course][:timeframe_4] < DateTime.now)
+        unless params[:course][:sections_attributes].select {|s| !s[:actual_date].blank? && s[:actual_date] < DateTime.now}.blank?
           flash[:error] = "Please confirm scheduling class in the past."
           format.html { render action: "new" }
           format.json { render json: @course.errors, status: :unprocessable_entity }
@@ -191,7 +188,7 @@ class CoursesController < ApplicationController
 
       if params[:course][:repository_id].blank?
         params[:course][:status] = "Homeless"
-      elsif params[:course][:timeframe].blank?
+      elsif params[:course][:sections_attributes].first.try(:actual_date).blank?
         if (params[:course][:primary_contact_id].blank?) &&
             (params[:course][:user_ids].blank? || params[:course][:user_ids][1].blank?)
           params[:course][:status] = "Unclaimed, Unscheduled"
@@ -209,10 +206,7 @@ class CoursesController < ApplicationController
 
       respond_to do |format|
         if params[:schedule_future_class] == "1"
-          if (!params[:course][:timeframe].blank? && params[:course][:timeframe] < DateTime.now) ||
-              (!params[:course][:timeframe_2].blank? && params[:course][:timeframe_2] < DateTime.now) ||
-              (!params[:course][:timeframe_3].blank? && params[:course][:timeframe_3] < DateTime.now) ||
-              (!params[:course][:timeframe_4].blank? && params[:course][:timeframe_4] < DateTime.now)
+          unless params[:course][:sections_attributes].select {|s| !s[:actual_date].blank? && s[:actual_date] < DateTime.now}.blank?
             flash[:error] = "Please confirm scheduling class in the past."
             format.html { render action: "edit" }
             format.json { render json: @course.errors, status: :unprocessable_entity }
