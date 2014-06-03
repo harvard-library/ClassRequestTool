@@ -16,7 +16,7 @@ class User < ActiveRecord::Base
   has_many :notes
 
   def to_s
-    self.full_name
+    full_name
   end
 
   def full_name
@@ -24,7 +24,7 @@ class User < ActiveRecord::Base
   end
 
   def self.all_admins
-    self.find(:all, :conditions => ["admin = true or superadmin = true"])
+    where("admin = true OR superadmin = true")
   end
 
   def user_type

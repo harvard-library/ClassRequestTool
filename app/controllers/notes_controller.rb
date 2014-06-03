@@ -1,14 +1,14 @@
 class NotesController < ApplicationController
   before_filter :authenticate_admin_or_staff!, :only => [:destroy, :update]
-  
+
   def index
-    @notes = Note.find(:all, :order => :created_at)
-  end  
-  
+    @notes = Note.order('created_at ASC')
+  end
+
   def new
     @note = Note.new
   end
-  
+
   def edit
     @note = Note.find(params[:id])
     @course = @note.course
@@ -16,7 +16,7 @@ class NotesController < ApplicationController
        redirect_to('/') and return
     end
   end
-  
+
   def create
     @note = Note.new(params[:note])
     respond_to do |format|
@@ -33,7 +33,7 @@ class NotesController < ApplicationController
       end
     end
   end
-  
+
   def update
     @note = Note.find(params[:id])
     unless current_user.try(:staff?) || current_user.try(:admin?) || current_user.try(:superadmin?) || @note.course.contact_email == current_user.email
@@ -50,7 +50,7 @@ class NotesController < ApplicationController
       end
     end
   end
-  
+
   def destroy
     @note = Note.find(params[:id])
     @course = @note.course

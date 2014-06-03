@@ -88,7 +88,7 @@ namespace :crt do
   namespace :cron_task do
     desc "Send email to admins when a class is still homeless after two days."
     task :send_homeless_notices => :environment do
-      @courses = Course.find(:all, :conditions => ['repository_id IS NULL AND created_at <= ?', Time.now - 2.days])
+      @courses = Course.where("repository_id IS NULL AND created_at <= ?", Time.now - 2.days)
       admins = User.where('admin = ? OR superadmin = ?', true, true).collect{|a| a.email + ","}
       @courses.each do |course|
         Email.create(
@@ -111,17 +111,6 @@ namespace :crt do
       end
       puts "Successfully delivered homeless notices!"
     end
-
-
-    # desc "Automatically close classes when date has been reached."
-    # task :close_classes => :environment do
-    #   @courses = Course.find(:all, :conditions => ['status IS NOT "Closed" AND timeframe < ?', Time.now])
-    #   @courses.each do |course|
-    #     course.status = "Closed"
-    #     course.save
-    #   end
-    #   puts "Successfully changed couses statuses"
-    # end
 
     desc "Send emails that are queued up"
     task :send_queued_emails => :environment do
