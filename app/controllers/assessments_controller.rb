@@ -1,23 +1,26 @@
 class AssessmentsController < ApplicationController
   before_filter :authenticate_admin_or_staff!, :except => [:new, :create]
-  
+
   def index
-    @assessments = Assessment.find(:all, :order => :name)
-  end 
-  
+    @assessments = Assessment.order('name ASC')
+  end
+
   def show
     @assessment = Assessment.find(params[:id])
+    @repository_name = (@assessment.course.try(:repository).try(:name) ? @assessment.course.repository.name : 'our Library/Archive')
   end
-  
+
   def new
     @assessment = Assessment.new
     @course = Course.find(params[:course_id])
+    @repository_name = (@course.try(:repository).try(:name) ? @course.repository.name : 'our Library/Archive')
   end
-  
+
   def edit
     @assessment = Assessment.find(params[:id])
+    @repository_name = (@assessment.course.try(:repository).try(:name) ? @assessment.course.try(:repository).try(:name) : 'our Library/Archive')
   end
-  
+
   def create
     params[:assessment][:involvement] = params[:assessment][:involvement].reject{ |e| e.empty? }.join(", ")
     @assessment = Assessment.new(params[:assessment])
@@ -33,11 +36,11 @@ class AssessmentsController < ApplicationController
       end
     end
   end
-  
+
   def update
     @assessment = Assessment.find(params[:id])
     params[:assessment][:involvement] = params[:assessment][:involvement].reject{ |e| e.empty? }.join(", ")
-    
+
     respond_to do |format|
       if @assessment.update_attributes(params[:assessment])
         format.html { redirect_to assessments_url, notice: 'assessment was successfully updated.' }
@@ -48,7 +51,7 @@ class AssessmentsController < ApplicationController
       end
     end
   end
-  
+
   def destroy
     @assessment = Assessment.find(params[:id])
     @assessment.destroy

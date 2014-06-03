@@ -5,7 +5,7 @@
 <%= semantic_form_for(@assessment) do |f| %>
   <%= f.inputs do %>
 	<%= hidden_field_tag :course_id, @course.id %>
-	<%= f.input :involvement, :label => "In what ways was #{@course.repository.nil? ? "our Library/Archive" : @course.repository.name} involved in your class? ", :as => :check_boxes, :collection => Assessment::INVOLVEMENT %>
+	<%= f.input :involvement, :label => "In what ways was #{@repository_name} involved in your class? ", :as => :check_boxes, :collection => Assessment::INVOLVEMENT %>
 	<p>Please evaluate how well the following met your teaching needs, 1 being Poor, 5 being Excellent and 0 being Not Applicable:</p>
 	<%= f.input :staff_experience, :as => :radio, :collection => {"0 Not Applicable" => 0, "1 Poor" => 1, "2" => 2, "3 Sufficient" => 3, "4" => 4, "5 Excellent" => 5 }, :label => "Reference staff expertise: " %>
 	<%= f.input :staff_availability, :as => :radio, :collection => {"0 Not Applicable" => 0, "1 Poor" => 1, "2" => 2, "3 Sufficient" => 3, "4" => 4, "5 Excellent" => 5 }, :label => "Reference staff availability: " %>
@@ -14,11 +14,11 @@
 	<%= f.input :request_materials, :as => :radio, :collection => {"0 Not Applicable" => 0, "1 Poor" => 1, "2" => 2, "3 Sufficient" => 3, "4" => 4, "5 Excellent" => 5 }, :label => "Online request system for materials: " %>
 	<%= f.input :catalogs, :as => :radio, :collection => {"0 Not Applicable" => 0, "1 Poor" => 1, "2" => 2, "3 Sufficient" => 3, "4" => 4, "5 Excellent" => 5 }, :label => "Library catalogs (Hollis, OASIS, etc.): " %>
 	<%= f.input :digital_collections, :as => :radio, :collection => {"0 Not Applicable" => 0, "1 Poor" => 1, "2" => 2, "3 Sufficient" => 3, "4" => 4, "5 Excellent" => 5 }, :label => "Digital collections: " %>
-	
+
 	<%= f.input :using_materials, :label => "How did using collection materials complement your teaching goals? ", :input_html => { :rows => 5, :columns => 50 } %>
-	<%= f.input :involve_again, :as => :radio, :label => "Do you plan to involve #{@course.repository.nil? ? "our Library/Archive" : @course.repository.name} in your teaching again? " %>
+	<%= f.input :involve_again, :as => :radio, :label => "Do you plan to involve #{@repository_name} in your teaching again? " %>
 	<%= f.input :not_involve_again, :label => "If no, please tell us why not: ", :input_html => { :rows => 5, :columns => 50 } %>
-	<%= f.input :better_future, :label => "Do you have any suggestions about how #{@course.repository.nil? ? "our Library/Archive" : @course.repository.name} could improve your experience teaching with special collections better in the future? ", :input_html => { :rows => 5, :columns => 50 } %>
+	<%= f.input :better_future, :label => "Do you have any suggestions about how #{@repository_name} could improve your experience teaching with special collections better in the future? ", :input_html => { :rows => 5, :columns => 50 } %>
   <% end %>
   <%= f.actions do %>
     <%= f.action :submit, :as => :button, :label => 'Submit Assessment ' %>
