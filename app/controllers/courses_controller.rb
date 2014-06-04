@@ -12,7 +12,7 @@ class CoursesController < ApplicationController
   def process_datetimes
     dt_cols = Course.columns.select {|c| c.type == :datetime}
     dt_cols.each do |col|
-      if params[:course].include? col.name && !params[:course][col.name].blank?
+      if params[:course] && params[:course].include?(col.name) && !params[:course][col.name].blank?
         unless col.array
           begin
             params[:course][col.name] = Time.zone.parse(params[:course][col.name]).utc.to_datetime
@@ -32,7 +32,7 @@ class CoursesController < ApplicationController
       end
     end
     # Speaking of which, handle nested sessions
-    if !params[:course][:sections_attributes].blank?
+    if params[:course] && !params[:course][:sections_attributes].blank?
       sections = params[:course][:sections_attributes]
       sections.each_pair do |k, v|
         v[:requested_dates].map! do |date|

@@ -36,4 +36,7 @@ ClassRequestTool::Application.configure do
   config.assets.debug = false
   
   config.action_mailer.default_url_options = { :host => 'localhost' }
+
+  BetterErrors::Middleware.allow_ip! '127.0.0.1' 
+
 end
