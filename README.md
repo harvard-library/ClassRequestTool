@@ -45,6 +45,24 @@ The Class Request Tool (CRT) is a class reservation system that lets instructors
   ```
 6. Set up cron jobs to run various tasks, detailed in [lib/tasks/bootstrap.rb](lib/tasks/bootstrap.rb)
 
+## Capistrano
+
+Deployment is beyond the scope of this README, and generally site-specific.  There are example capistrano deployment files that reflect deployment practice at Harvard.
+
+Some basic notes:
+* The example files are written with this environment in mind:
+  * Capistrano 3+
+  * A user install of RVM for ruby management
+* Arbitrary rake tasks can be run remotely via the `deploy:rrake` task. Syntax is `cap $STAGE deploy:rrake T=$RAKE_TASK`.  So, to run `rake crt:bootstrap` in the `qa` deploy environment, do:
+
+  ```Shell
+  cap qa deploy:rrake T=crt:bootstrap
+  ```
+
+## Additional Dev Notes
+
+Additional development notes can be found [here](DEV_NOTES.md)
+
 ## Contributors
 
 * Dave Mayo: http://github.com/pobocks
