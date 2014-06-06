@@ -1,8 +1,19 @@
 class AssessmentsController < ApplicationController
+  require 'csv'
   before_filter :authenticate_admin_or_staff!, :except => [:new, :create]
 
   def index
-    @assessments = Assessment.order('name ASC')
+    @assessments = Assessment.order('created_at DESC')
+    @fields =  Assessment.attribute_names.reject do |el|
+      ['id',
+       'using_materials',
+       'involvement',
+       'comments',
+       'not_involve_again',
+       'created_at',
+       'updated_at'].include?(el)
+    end
+
   end
 
   def show
@@ -59,6 +70,22 @@ class AssessmentsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to assessments_url }
       format.json { head :no_content }
+    end
+  end
+
+  # CSV export
+  def export
+    @assessments = Assessment.order('created_at DESC')
+    respond_to do |format|
+      format.csv do
+        csv = CSV.generate(:encoding => 'utf-8') do |csv|
+          csv << Assessment.attribute_names
+          @assessments.each do |row|
+            csv << Assessment.attribute_names.map{|name| row.send name}
+          end
+        end
+        render :text => csv
+      end
     end
   end
 end

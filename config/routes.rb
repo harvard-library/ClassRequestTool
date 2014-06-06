@@ -5,7 +5,11 @@ ClassRequestTool::Application.routes.draw do
   resources :staff_involvements
 
 
-  resources :assessments
+  resources :assessments do
+    collection do
+      get 'export' # csv dump of assessments
+    end
+  end
 
 
   resources :notes
@@ -19,36 +23,36 @@ ClassRequestTool::Application.routes.draw do
       get 'summary'
       get 'recent_show'
       get 'take'
-    end 
+    end
     collection do
       get 'repo_select'
       get 'export'
-    end 
-  end  
+    end
+  end
 
   resources :locations
 
   resources :rooms
-  
+
   devise_for :users
-  
+
   # devise_scope :user do
   #   match "/hauthproxy/valid" => "devise/hauthproxy#valid"
   #   match '/hauthproxy/invalid' => 'devise/hauthproxy#invalid'
   #   match '/hauthproxy/logout' => 'devise/hauthproxy#sign_out', :as => :destroy_user_session
   # end
-  
+
   resources :users
 
   resources :repositories
-  
+
   resources :welcome do
     collection do
       get 'dashboard'
       get 'dashboard_items'
       get 'login'
-    end  
-  end  
+    end
+  end
 
 
   # The priority is based upon order of creation:
