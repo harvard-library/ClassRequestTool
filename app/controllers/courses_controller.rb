@@ -2,7 +2,7 @@ require 'csv'
 
 class CoursesController < ApplicationController
   before_filter :authenticate_login!, :except => [:recent_show]
-  before_filter :authenticate_admin_or_staff!, :only => [:take]
+  before_filter :authenticate_admin_or_staff!, :only => [:take, :export]
   #before_filter :authenticate_user!, :except => [:take, :recent_show]
   before_filter :process_datetimes, :only => [:create, :update]
 
@@ -307,33 +307,17 @@ class CoursesController < ApplicationController
     end
   end
 
-  # FIX THIS, BROKEN (timeframes 2-4 not handled)
-  # All I did was make sure it didn't error out, but it needs rewriting.
   def export
-    @courses = Course.order_by_last_section
-    CSV.open("#{Rails.root}/public/uploads/courses.csv", "w") do |csv|
-      csv << ["title", "subject", "course number", "affiliation", "contact first name", "contact last name", "contact username", "contact email", "contact phone", "pre class appt", "timeframe", "repository", "room", "staff involvement", "number of students", "status", "file", "external syllabus", "duration", "comments", "session count", "goal", "instruction session", "date submitted"]
-      @courses.each do |course|
-        row = Array.new
-        row << [course.title, course.subject, course.course_number, course.affiliation, course.contact_first_name, course.contact_last_name, course.contact_username, course.contact_email, course.contact_phone, course.pre_class_appt, course.sections.first.try(:actual_date)]
-        unless course.repository.nil?
-          row << [course.repository.name]
-        else
-          row << ["None"]
-        end
-        unless course.room.nil?
-          row << [course.room.name]
-        else
-          row << ["None"]
-        end
-        row << [course.staff_involvement, course.number_of_students, course.status, course.file, course.external_syllabus, course.duration, course.comments, course.session_count, course.goal, course.instruction_session, course.created_at]
-        row.flatten!
-        csv << row
+    @sections = Section.joins(:course).order('course_id ASC NULLS LAST, session ASC NULLS LAST, actual_date ASC NULLS LAST')
+    csv = CSV.generate(:encoding => 'utf-8') do |csv|
+      csv << Course.attribute_names + [:session, :section_id, :date]
+      @sections.each do |section|
+        values = Course.attribute_names.map {|name| section.course.send name}
+        values += [section.session, section.id, section.actual_date]
+        csv << values
       end
     end
-    flash[:notice] = 'Exported!'
-    @csv = true
-    redirect_to courses_path(:csv => @csv)
+    render :text => csv
   end
 
 end
