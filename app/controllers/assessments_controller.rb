@@ -43,11 +43,26 @@ class AssessmentsController < ApplicationController
       }
     }
     @text_fields = {
-      "not_involve_again" => 'Reason patron doesn\'t want to involve repository again',
-      "better_future" => 'Suggestions for improvement',
-      "using_materials" => 'How using collection materials complemented teaching goals',
-      "involvement" => 'Repository involvement',
-      "comments" => 'Comments'
+      "not_involve_again" => {
+        :title => 'Reason patron doesn\'t want to involve repository again',
+        :slug => 'Why not?'
+      },
+      "better_future" => {
+        :title => 'Suggestions for improvement',
+        :slug => 'Suggestions'
+      },
+      "using_materials" => {
+        :title => 'How using collection materials complemented teaching goals',
+        :slug => 'Materials'
+      },
+      "involvement" => {
+        :title => 'Repository involvement',
+        :slug => 'Involvement'
+      },
+      "comments" => {
+        :title => 'Comments',
+        :slug => 'Comments'
+      }
     }
   end
 
