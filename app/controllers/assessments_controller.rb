@@ -3,17 +3,52 @@ class AssessmentsController < ApplicationController
   before_filter :authenticate_admin_or_staff!, :except => [:new, :create]
 
   def index
-    @assessments = Assessment.order('created_at DESC')
-    @fields =  Assessment.attribute_names.reject do |el|
-      ['id',
-       'using_materials',
-       'involvement',
-       'comments',
-       'not_involve_again',
-       'created_at',
-       'updated_at'].include?(el)
-    end
-
+    @assessments = Assessment.joins(:course).order('assessments.created_at DESC')
+    @fields = {
+      "staff_experience" => {
+        :title => 'Reference Staff expertise',
+        :slug => 'Expertise'
+      },
+      "staff_availability" => {
+        :title => 'Reference Staff availability',
+        :slug => 'Availability'
+      },
+      "space" => {
+        :title => 'Instructional space',
+        :slug => 'Space'
+      },
+      "request_course" => {
+        :title => 'Online request system for class',
+        :slug => 'CRT'
+      },
+      "request_materials" => {
+        :title => 'Online request system for materials',
+        :slug => 'Materials'
+      },
+      "catalogs" => {
+        :title => 'Library catalogs (online catalogs of books, manuscripts, images, etc.)',
+        :slug => 'Catalogs'
+      },
+      "digital_collections" => {
+        :title => 'Digital collections',
+        :slug => 'Digital Collections'
+      },
+      "involve_again" => {
+        :title => 'Plans to involve repository again',
+        :slug => 'Again?'
+      },
+      "created_at" => {
+        :title => 'Creation Time',
+        :slug => 'Date Submitted'
+      }
+    }
+    @text_fields = {
+      "not_involve_again" => 'Reason patron doesn\'t want to involve repository again',
+      "better_future" => 'Suggestions for improvement',
+      "using_materials" => 'How using collection materials complemented teaching goals',
+      "involvement" => 'Repository involvement',
+      "comments" => 'Comments'
+    }
   end
 
   def show
@@ -75,13 +110,13 @@ class AssessmentsController < ApplicationController
 
   # CSV export
   def export
-    @assessments = Assessment.order('created_at DESC')
+    @assessments = Assessment.joins(:course).order('assessments.created_at DESC')
     respond_to do |format|
       format.csv do
         csv = CSV.generate(:encoding => 'utf-8') do |csv|
-          csv << Assessment.attribute_names
+          csv << Assessment.attribute_names + ['course_title']
           @assessments.each do |row|
-            csv << Assessment.attribute_names.map{|name| row.send name}
+            csv << Assessment.attribute_names.map{|name| row.send name} + [row.course.title]
           end
         end
         render :text => csv

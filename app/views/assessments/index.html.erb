@@ -2,15 +2,25 @@
 <h4><%= link_to 'Download as CSV', export_assessments_path(:format => :csv) %></h4>
 <table id="assessment-table-current" class="table table-condensed tablesorter">
   <thead>
-    <% @fields.each do |name| %>
-      <th><%= name %></th>
+    <th>Course Title</th>
+    <% @fields.each_pair do |attribute, text| %>
+      <th title="<%= text[:title] %>"><%= text[:slug] %></th>
     <% end %>
+    <th>Text Fields</th>
   </thead>
   <tbody>
   <% @assessments.each do |a| %>
     <tr>
-      <% @fields.each do |name| %>
+      <td><%= a.course ? link_to(a.course.title, a.course) : '' %></td>
+
+      <% @fields.keys.each do |name| %>
         <td><%= a.send name %></td>
+      <% end %>
+
+      <td><% @text_fields.each do |attribute, title| %>
+        <% unless a.send(attribute).blank? %>
+          <button type="button" class="btn btn-default" data-toggle="popover" data-placement="left" data-title="<%= title %>" data-content="<%= a.send attribute %>"><%= attribute.humanize %></button>
+        <% end %>
       <% end %>
     </tr>
   <% end %>

@@ -159,7 +159,7 @@ $(document).ready(function(){
     .tablesorter()
 	.tablesorterPager({container: $("#pager-your-to-close-table"), size: 5, positionFixed: false})
   ;
-
+  $('#assessment-table-current').tablesorter()
 });
 jQuery(function(){
   $('#collapsable').click(function() {
