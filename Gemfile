@@ -43,6 +43,7 @@ group :development do
   gem 'capistrano-bundler','~> 1.1.2'
   gem 'pry-rails'
   gem 'pry-remote'
+  gem 'pry-doc'
   gem 'better_errors'
   gem 'binding_of_caller'
 end
