@@ -16,7 +16,7 @@ class Course < ActiveRecord::Base
   belongs_to :room
   belongs_to :repository
   has_many :sections, :dependent => :destroy
-  accepts_nested_attributes_for :sections
+  accepts_nested_attributes_for :sections, :reject_if => ->(s){s.blank?}, :allow_destroy => true
   has_many :notes, :dependent => :destroy
   has_and_belongs_to_many :item_attributes
   has_many :assessments, :dependent => :destroy
@@ -45,9 +45,9 @@ class Course < ActiveRecord::Base
   #    or an error will be thrown, because actual_date doesn't exist in the final relation/select
   #    .limit is affected for performance reasons.
   # e.g.
-  #    You should prefer Course.limit(10).ordered_by_last_section to Course.ordered_by_last_section
+  #    You should prefer Course.limit(10).ordered_by_last_section to Course.ordered_by_last_section.limit(10)
   # and
-  #    Courses.ordered_by_last_section.having('ANY_SQL_REFERENCING(actual_date)') will throw an exception
+  #    Course.ordered_by_last_section.having('ANY_SQL_REFERENCING(actual_date)') will throw an exception,
   def self.ordered_by_last_section
     inner_scope = joins('LEFT OUTER JOIN sections ON sections.course_id = courses.id').
       group('courses.id').order('MAX(actual_date) DESC NULLS LAST, courses.created_at DESC')
