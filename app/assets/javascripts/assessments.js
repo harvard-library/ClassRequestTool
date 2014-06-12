@@ -1,4 +1,6 @@
 $(function () {
+  /* UI convenience function - ensures one popover open at a time,
+     and that they close when user clicks elsewhere */
   var popover_sel = '#assessment-table-current button[data-toggle="popover"]'
   /* assessments#index */
   if (window.location.href.match(/assessments$/)) {
@@ -17,6 +19,5 @@ $(function () {
     $('body').on('click', '.popover', function (e) {
       e.stopPropagation();
     });
-
   }
 });
