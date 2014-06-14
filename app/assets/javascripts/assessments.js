@@ -3,7 +3,7 @@ $(function () {
      and that they close when user clicks elsewhere */
   var popover_sel = '#assessment-table-current button[data-toggle="popover"]'
   /* assessments#index */
-  if (window.location.href.match(/assessments$/)) {
+  if (window.location.href.match(/assessments($|\?.+$)/)) {
     $(popover_sel).popover();
 
     $('#assessment-table-current').on('click', 'button[data-toggle="popover"]', function (e) {
