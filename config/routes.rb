@@ -27,6 +27,7 @@ ClassRequestTool::Application.routes.draw do
     collection do
       get 'repo_select'
       get 'export'
+      get 'session_block'
     end
   end
 

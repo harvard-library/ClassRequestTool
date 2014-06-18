@@ -20,29 +20,56 @@ Final scheduling of a session is subject to both room and staff availability.
 <% end %>
 </div>
 
-<div class="form_full_width">
-  <% sect_num = 1 %>
-  <%= f.semantic_fields_for :sections do |f| %>
-    <h4>Session <%= sect_num %></h4>
-
-    <div class="form_full_width">
-      <%= f.input :session, :as => :hidden, :value => sect_num %>
-      <% sect_num += 1 %>
-      <% (0..1).each do |i| %>
-        <div class="form_date">
-          <% # Note: Use of f.object_name is kind of a hack, but Formtastic doesn't support arrays by default %>
-          <%= f.input :requested_dates,
-                      :as => :datetime_picker,
-                      :label => "#{(i+1).ordinalize} choice",
-                      :hint => "In YYYY-MM-DD HH:MM(am|pm) format",
-                        :wrapper_html => { :id => f.object_name.gsub(/[\[\]]+/, '_') + "requested_dates_#{i}_input"},
-                        :input_html => {:id => f.object_name.gsub(/[\[\]]+/, '_') + "requested_dates_#{i}",
-                                        :name => f.object_name + "[requested_dates][]",
-                                        :placeholder => "Click to select date/time"} %>
-        </div>
-      <% end %>
-    </div>
-  <% end %>
+<div class="form_full_width sessions">
+  <% @course.sessions.each.with_index(1) do |sesh, i| %>
+    <div id ="session-<%= i %>" class="session session-<%= i %>">
+      <h4>Session <%= i %></h4>
+      <% sesh.each.with_index(1) do |sect, sect_i| %>
+        <% name_prefix = "course[sections_attributes][#{i * sect_i}]" %>
+        <% id_prefix = "course_sections_attributes_#{i * sect_i}" %>
+        <div class="form_full_width section">
+          <h5>Section <%= sect_i %></h5>
+          <% if sect.id %>
+            <%= f.input :id,
+                        :as => :hidden,
+                        :value => sect.id,
+                        :input_html => {:id => "#{id_prefix}_id_input",
+                                        :name => "#{name_prefix}[id]"} %>
+          <% end %>
+          <% (0..1).each do |rd_i| %>
+            <div class="form_date">
+              <%= f.input :requested_dates,
+                          :as => :datetime_picker,
+                          :label => "#{(rd_i+1).ordinalize} choice",
+                          :hint => "In YYYY-MM-DD HH:MM(am|pm) format",
+                          :wrapper_html => { :id => "#{id_prefix}_input"},
+                          :input_html => {:id => "#{id_prefix}_requested_dates_#{rd_i}",
+                                          :name => "#{name_prefix}[requested_dates][]",
+                                          :placeholder => "Click to select date/time",
+                                          :value => display_with_tz(sect.requested_dates.try(:slice, rd_i))} %>
+              <% if current_user.can_schedule? %>
+                <button class="btn btn-default date-setter">Set as Actual Date</button>
+              <% end %>
+            </div> <!-- END form_date -->
+          <% end %> <%# END (0..1).each %>
+          <% if current_user.can_schedule? %>
+            <div class="form_full_width yellow-box" style="clear:both;">
+              <%= f.input :actual_date,
+                          :as => :datetime_picker,
+                          :label => "Actual Date",
+                          :hint => "In YYYY-MM-DD HH:MM(am|pm) format",
+                          :wrapper_html => {:id => "#{id_prefix}_actual_date_input"},
+                          :input_html => {:id => "#{id_prefix}_actual_date",
+                                          :name => "#{name_prefix}[actual_date]",
+                                          :placeholder => "Click to select date/time",
+                                          :class => 'actual-date',
+                                          :value => display_with_tz(sect.actual_date)} %>
+            </div>
+          <% end %> <%# END if %>
+        </div> <!-- END .section -->
+      <% end %> <%# END sesh.each.with_index %>
+    </div><!--  END .session -->
+  <% end %> <%# END @course.sessions.each.with_index %>
 </div>
 
 <div class="form_full_width">

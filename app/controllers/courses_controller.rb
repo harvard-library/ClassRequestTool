@@ -188,7 +188,7 @@ class CoursesController < ApplicationController
 
       if params[:course][:repository_id].blank?
         params[:course][:status] = "Homeless"
-      elsif params[:course][:sections_attributes].first.try(:actual_date).blank?
+      elsif params[:course][:sections_attributes].first && params[:course][:sections_attributes][:actual_date].blank?
         if (params[:course][:primary_contact_id].blank?) &&
             (params[:course][:user_ids].blank? || params[:course][:user_ids][1].blank?)
           params[:course][:status] = "Unclaimed, Unscheduled"
@@ -320,4 +320,13 @@ class CoursesController < ApplicationController
     render :text => csv
   end
 
+  def session_block
+    index = params[:index].try(:to_i) || 1
+    respond_to do |format|
+      format.html do
+        render :partial => 'shared/forms/session_block',
+               :locals => { :index => index, :admin => current_user.can_schedule?}
+      end
+    end
+  end
 end
