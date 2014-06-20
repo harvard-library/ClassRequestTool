@@ -4,29 +4,30 @@
     <h4>Session <%= index %></h4>
     <div class="form_full_width section">
       <h5>Section <%= index %></h5>
-      <div class="form_date">
-        <div id="course_sections_attributes_<%= index %>_input" class="datetime_picker input optional stringish form-group">
-          <label for="course_sections_attributes_<%= index %>_requested_dates_0" class="  control-label">1st choice</label>
-          <span class="form-wrapper"><input type="datetime-local" step="1" size="16" placeholder="Click to select date/time" name="course[sections_attributes][<%= index %>][requested_dates][]" maxlength="16" id="course_sections_attributes_<%= index %>_requested_dates_0" class="form-control hasDatepicker">
-            <span class="help-block">In YYYY-MM-DD HH:MM(am|pm) format</span>
-          </span>
+      <input type="hidden" name="course[sections_attributes][<%= index %>][session]" value="<%= index %>">
+      <% (0..1).each do |i| %>
+        <div class="form_date">
+          <div id="course_sections_attributes_<%= index %>_input"
+               class="datetime_picker input optional stringish form-group">
+            <label for="course_sections_attributes_<%= index %>_requested_dates_<%= i %>"
+                   class="control-label"><%= (i + 1).ordinalize %> choice</label>
+            <span class="form-wrapper">
+              <input type="datetime-local"
+                     step="1"
+                     size="16"
+                     placeholder="Click to select date/time"
+                     name="course[sections_attributes][<%= index %>][requested_dates][]"
+                     maxlength="16"
+                     id="course_sections_attributes_<%= index %>_requested_dates_<%= i %>"
+                     class="form-control">
+              <span class="help-block">In YYYY-MM-DD HH:MM(am|pm) format</span>
+            </span>
         </div>
         <% if admin %>
           <button class="btn btn-default date-setter">Set as Actual Date</button>
         <% end %>
       </div> <!-- END form_date -->
-      <div class="form_date">
-        <div id="course_sections_attributes_<%= index %>_input" class="datetime_picker input optional stringish form-group">
-          <label for="course_sections_attributes_<%= index %>_requested_dates_1" class="  control-label">2nd choice</label>
-          <span class="form-wrapper">
-            <input type="datetime-local" step="1" size="16" placeholder="Click to select date/time" name="course[sections_attributes][<%= index %>][requested_dates][]" maxlength="16" id="course_sections_attributes_<%= index %>_requested_dates_1" class="form-control hasDatepicker">
-            <span class="help-block">In YYYY-MM-DD HH:MM(am|pm) format</span>
-          </span>
-        </div>
-        <% if admin %>
-          <button class="btn btn-default date-setter">Set as Actual Date</button>
-        <% end %>
-      </div> <!-- END form_date -->
+      <% end %>
       <% if admin %>
         <div style="clear:both;" class="form_full_width yellow-box">
           <div id="course_sections_attributes_<%= index %>_actual_date_input" class="datetime_picker input optional stringish form-group">

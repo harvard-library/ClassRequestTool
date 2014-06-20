@@ -36,6 +36,13 @@ Final scheduling of a session is subject to both room and staff availability.
                         :input_html => {:id => "#{id_prefix}_id_input",
                                         :name => "#{name_prefix}[id]"} %>
           <% end %>
+          <% if sect.session %>
+            <%= f.input :id,
+                        :as => :hidden,
+                        :value => sect.session,
+                        :input_html => {:id => "#{id_prefix}_session_input",
+                                        :name => "#{name_prefix}[session]"} %>
+          <% end %>
           <% (0..1).each do |rd_i| %>
             <div class="form_date">
               <%= f.input :requested_dates,
