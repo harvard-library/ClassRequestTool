@@ -1,6 +1,6 @@
 $(function () {
-  $('[type=datetime-local]').each(function (i, el) {
-    $(el).datetimepicker({
+  $('body').on('click', '[type=datetime-local]:not(.hasDatepicker)', function (e) {
+    $(this).datetimepicker({
 	    dateFormat: 'yy-mm-dd',
 	    timeFormat: "hh:mm tt",
 	    buttonImage: "/assets/calendar_icon.png",
@@ -11,5 +11,6 @@ $(function () {
 	    minDate: 3,
 	    numberOfMonths: 2
     });
+    $(this).datetimepicker('show');
   });
 });
