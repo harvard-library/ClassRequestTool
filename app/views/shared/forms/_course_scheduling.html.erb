@@ -85,6 +85,17 @@ Final scheduling of a session is subject to both room and staff availability.
 </div>
 
 
+<div id="form_full_width">
+  <% unless @course.repository.nil? %>
+    <br />
+    <%= f.input :item_attributes, :as => :check_boxes, :collection => @course.repository.item_attributes, :label => "Room Technology Available: " %>
+  <% end %>
+  <br />
+  <%= f.input :comments, :label => "If you have any special room arrangements or further instructions regarding your class session, please enter them below: ", :input_html => { :rows => 5, :cols => 30 } %>
+</div>
+
+<%# Room stuff goes... here? Needs redoing %>
+
 <div class="form_full_width">
 	<br />
 	<p>Be sure to review your information and make any edits before submitting your request.</p>
