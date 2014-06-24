@@ -322,10 +322,11 @@ class CoursesController < ApplicationController
 
   def session_block
     index = params[:index].try(:to_i) || 1
+    section_index = params[:section_index].try(:to_i) || 1
     respond_to do |format|
       format.html do
         render :partial => 'shared/forms/session_block',
-               :locals => { :index => index, :admin => current_user.can_schedule?}
+               :locals => { :index => index, :section_index => section_index, :admin => current_user.can_schedule?}
       end
     end
   end

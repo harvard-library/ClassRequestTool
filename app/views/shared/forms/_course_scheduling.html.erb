@@ -19,15 +19,15 @@ Final scheduling of a session is subject to both room and staff availability.
   <%= link_to image_tag('calendar_icon.png')+"View Calendar to see availability", "#{@course.repository.calendar}", :onclick=>"window.open(this.href,'view_calendar', 'height=600, width=600');return false;" %>
 <% end %>
 </div>
-
+<% section_counter = 1 %>
 <div class="form_full_width sessions">
   <% @course.sessions.each.with_index(1) do |sesh, i| %>
     <div id ="session-<%= i %>" class="session session-<%= i %>">
       <h4>Session <%= i %></h4>
       <% sesh.each.with_index(1) do |sect, sect_i| %>
-        <% name_prefix = "course[sections_attributes][#{i * sect_i}]" %>
-        <% id_prefix = "course_sections_attributes_#{i * sect_i}" %>
-        <div class="form_full_width section">
+        <% name_prefix = "course[sections_attributes][#{section_counter}]" %>
+        <% id_prefix = "course_sections_attributes_#{section_counter}" %>
+        <div class="form_full_width section section-<%= section_counter %>">
           <h5>Section <%= sect_i %></h5>
           <% if sect.id %>
             <%= f.input :id,
@@ -74,6 +74,7 @@ Final scheduling of a session is subject to both room and staff availability.
             </div>
           <% end %> <%# END if %>
         </div> <!-- END .section -->
+        <% section_counter += 1 %>
       <% end %> <%# END sesh.each.with_index %>
     </div><!--  END .session -->
   <% end %> <%# END @course.sessions.each.with_index %>
