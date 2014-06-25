@@ -1,22 +1,21 @@
 ClassRequestTool::Application.routes.draw do
+  # Home
+  root :to => 'welcome#index'
+
   resources :emails
-
-
+  resources :item_attributes
+  resources :locations
+  resources :notes
+  resources :repositories
+  resources :rooms
   resources :staff_involvements
-
+  resources :users
 
   resources :assessments do
     collection do
       get 'export' # csv dump of assessments
     end
   end
-
-
-  resources :notes
-
-
-  resources :item_attributes
-
 
   resources :courses do
     member do
@@ -27,25 +26,13 @@ ClassRequestTool::Application.routes.draw do
     collection do
       get 'repo_select'
       get 'export'
+      # AJAX helpers for course new/edit form
       get 'session_block'
+      get 'section_block'
     end
   end
 
-  resources :locations
-
-  resources :rooms
-
   devise_for :users
-
-  # devise_scope :user do
-  #   match "/hauthproxy/valid" => "devise/hauthproxy#valid"
-  #   match '/hauthproxy/invalid' => 'devise/hauthproxy#invalid'
-  #   match '/hauthproxy/logout' => 'devise/hauthproxy#sign_out', :as => :destroy_user_session
-  # end
-
-  resources :users
-
-  resources :repositories
 
   resources :welcome do
     collection do
@@ -102,10 +89,6 @@ ClassRequestTool::Application.routes.draw do
   #     # (app/controllers/admin/products_controller.rb)
   #     resources :products
   #   end
-
-  # You can have the root of your site routed with "root"
-  # just remember to delete public/index.html.
-  root :to => 'welcome#index'
 
   # See how all your routes lay out with "rake routes"
 
