@@ -9,7 +9,6 @@ ClassRequestTool::Application.routes.draw do
   resources :repositories
   resources :rooms
   resources :staff_involvements
-  resources :users
 
   resources :assessments do
     collection do
@@ -33,6 +32,7 @@ ClassRequestTool::Application.routes.draw do
   end
 
   devise_for :users
+  resources :users
 
   resources :welcome do
     collection do
