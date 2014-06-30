@@ -143,7 +143,7 @@ class CoursesController < ApplicationController
     end
 
     # strip out empty sections
-    params[:course][:sections_attributes].delete_if{|k,v| v[:requested_dates].reject(&:nil?).blank? && v[:actual_date].blank?}
+    params[:course][:sections_attributes].delete_if{|k,v| v[:requested_dates].reject(&:nil?).blank? && v[:actual_date].blank? && v[:_destroy].blank?}
 
     if params[:send_assessment_email] == "1" || params[:no_assessment_email] == "1"
       @course.status = "Closed"

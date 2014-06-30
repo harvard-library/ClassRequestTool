@@ -34,7 +34,8 @@ Final scheduling of a session is subject to both room and staff availability.
                         :as => :hidden,
                         :value => sect.id,
                         :input_html => {:id => "#{id_prefix}_id_input",
-                                        :name => "#{name_prefix}[id]"} %>
+                                        :name => "#{name_prefix}[id]",
+                                        :class => 'id_val'} %>
           <% end %>
           <% if sect.session %>
             <%= f.input :id,
