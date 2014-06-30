@@ -27,6 +27,9 @@ end
 
 group :test, :development do
   gem 'stepford'
+  gem 'pry-rails'
+  gem 'pry-remote'
+  gem 'pry-doc'
 end
 
 group :test do
@@ -41,9 +44,6 @@ group :development do
   gem 'capistrano-rails',  '~> 1.0.0'
   gem 'capistrano-rvm',    '~> 0.1.1'
   gem 'capistrano-bundler','~> 1.1.2'
-  gem 'pry-rails'
-  gem 'pry-remote'
-  gem 'pry-doc'
   gem 'better_errors'
   gem 'binding_of_caller'
 end
