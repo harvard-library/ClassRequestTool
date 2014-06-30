@@ -12,7 +12,7 @@ Given /^(?:"([^"]*)"|user) logs in$/ do |name|
   end
   visit('/users/sign_in')
   within "#welcome-left" do
-    fill_in "Email", :with => name
+    fill_in "Username", :with => name
     fill_in "Password", :with => 'password'
     click_button "Sign in"
   end
