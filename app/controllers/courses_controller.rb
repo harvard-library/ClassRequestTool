@@ -74,7 +74,7 @@ class CoursesController < ApplicationController
       @course = Course.new
     end
     @uploader = FileUploader.new
-    @course.sections << (0..3).map {Section.new(:course => @course)}
+    @course.sections = [Section.new(:course => @course)]
   end
 
   def edit
