@@ -2,6 +2,24 @@ Feature: User Actions
   In order to allow anything to happen,
   Users have to work.
 
+Scenario: Sign in a staff user
+  Given a staff user named "staffuser_test"
+  And user logs in
+  Then I should see "Signed in successfully."
+  And I should see "Welcome, staffuser_test"
+  And I should see "Dashboard"
+  And I should not see "Admin Area"
+  And I should not see "My Classes"
+
+Scenario: user logs out
+  Given a user named "test_user"
+  And user logs in
+  And user logs out
+  Then I should see "Signed out successfully."
+  And I should see "Sign In/Sign Up"
+  And I should not see "Edit Account"
+  And I should not see "Sign Out"
+
 Scenario: Try to create new account with missing required information
   Given a new user named "incomplete_user"
   And "incomplete_user" has first of "Ima"
@@ -35,14 +53,11 @@ Scenario: Try to create new account with password/confirmation mis-match
 
 Scenario: Sign in a  User
   Given a user named "test_user"
-  And "test_user" logs in
+  And user logs in
   Then I should see "Signed in successfully."
-
-Scenario: Sign in a  User with welcome
-  Given a user named "test_user"
-  And "test_user" logs in
-  Then I should see "Signed in successfully." 
   And I should see "Welcome, test_user"
+  And I should not see "Dashboard"
+
 
 Scenario: Reject invalid sign-in  credentials
   Given a user with invalid credentials

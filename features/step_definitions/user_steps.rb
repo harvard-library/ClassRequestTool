@@ -4,6 +4,11 @@
 #Password is too short (minimum is 6 characters)
 #Password can't be blank
 
+Given(/^a staff user named "(.*?)"$/) do |name|
+#Given /^a staff user named  "([^"]*)"$/ do |name|
+  @user = FactoryGirl.create(:user, :username => name, :password => 'staffpassword', :staff => true)
+end
+
 Given /^a user named "([^"]*)"$/ do |name|
   @user = FactoryGirl.create(:user, :username => name, :password => 'password')
 end
@@ -12,6 +17,7 @@ Given /^(?:"([^"]*)"|user) logs in$/ do |name|
   unless name
     if @user
       name = @user.username
+      passw = @user.password
     else
       raise "Log in whom, exactly?"
     end
@@ -19,10 +25,14 @@ Given /^(?:"([^"]*)"|user) logs in$/ do |name|
   visit('/users/sign_in')
   within "#welcome-left" do
     fill_in "Username", :with => name
-    fill_in "Password", :with => 'password'
+    fill_in "Password", :with => passw
     click_button "Sign in"
   end
 end
+Given(/^user logs out$/) do
+  click_link("Sign Out")
+end
+
 Given(/^a user with invalid credentials$/) do
   visit('/users/sign_in')
   within "#welcome-left" do
