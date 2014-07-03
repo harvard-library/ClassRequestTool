@@ -34,7 +34,8 @@ Final scheduling of a session is subject to both room and staff availability.
                         :as => :hidden,
                         :value => sect.id,
                         :input_html => {:id => "#{id_prefix}_id_input",
-                                        :name => "#{name_prefix}[id]"} %>
+                                        :name => "#{name_prefix}[id]",
+                                        :class => 'id_val'} %>
           <% end %>
           <% if sect.session %>
             <%= f.input :id,
@@ -49,8 +50,9 @@ Final scheduling of a session is subject to both room and staff availability.
               <%= f.input :requested_dates,
                           :as => :datetime_picker,
                           :label => "#{(rd_i+1).ordinalize} choice",
-                          :hint => "In YYYY-MM-DD HH:MM(am|pm) format",
                           :wrapper_html => { :id => "#{id_prefix}_input"},
+                          :size => 26,
+                          :maxlength => 26,
                           :input_html => {:id => "#{id_prefix}_requested_dates_#{rd_i}",
                                           :name => "#{name_prefix}[requested_dates][]",
                                           :placeholder => "Click to select date/time",
@@ -65,7 +67,6 @@ Final scheduling of a session is subject to both room and staff availability.
               <%= f.input :actual_date,
                           :as => :datetime_picker,
                           :label => "Actual Date",
-                          :hint => "In YYYY-MM-DD HH:MM(am|pm) format",
                           :wrapper_html => {:id => "#{id_prefix}_actual_date_input"},
                           :input_html => {:id => "#{id_prefix}_actual_date",
                                           :name => "#{name_prefix}[actual_date]",
@@ -73,16 +74,17 @@ Final scheduling of a session is subject to both room and staff availability.
                                           :class => 'actual-date',
                                           :value => display_with_tz(sect.actual_date)} %>
             </div>
-          <% end %> <%# END if %>
+          <% end %> <%# END if current_user.can_schedule? %>
         </div> <!-- END .section -->
         <% section_counter += 1 %>
       <% end %> <%# END sesh.each.with_index %>
+      <button class="add_section btn btn-default">Add Section</button>
     </div><!--  END .session -->
   <% end %> <%# END @course.sessions.each.with_index %>
 </div>
 
 <div class="form_full_width">
-  <button class="add_session btn btn-default">Temp</button>
+  <button class="add_session btn btn-default">Add Session</button>
   <p>To request class visits outside of regular hours, please add your timing preferences in the note section below.</p>
   <%= f.input :duration, :label => "Class Duration (hours): ", :hint => '1 hour increments, maximum 3 hours', :input_html => { :size => 1, :maxlength => 4 } %>
 </div>

@@ -13,11 +13,10 @@
                    class="control-label"><%= (i + 1).ordinalize %> choice</label>
             <span class="form-wrapper">
               <input type="datetime-local"
-                     step="1" size="16" placeholder="Click to select date/time" maxlength="16"
+                     step="1" size="26" placeholder="Click to select date/time" maxlength="26"
                      name="course[sections_attributes][<%= section_index %>][requested_dates][]"
                      id="course_sections_attributes_<%= section_index %>_requested_dates_<%= i %>"
                      class="form-control">
-              <span class="help-block">In YYYY-MM-DD HH:MM(am|pm) format</span>
             </span>
         </div>
         <% if admin %>
@@ -33,15 +32,15 @@
                    class="control-label">Actual Date</label>
             <span class="form-wrapper">
               <input type="datetime-local"
-                     step="1" size="16" placeholder="Click to select date/time" maxlength="16"
+                     step="1" size="26" placeholder="Click to select date/time" maxlength="26"
                      name="course[sections_attributes][<%= section_index %>][actual_date]"
                      id="course_sections_attributes_<%= section_index %>_actual_date"
                      class="actual-date form-control">
-              <span class="help-block">In YYYY-MM-DD HH:MM(am|pm) format</span>
             </span>
           </div>
         </div>
       <% end %>
     </div> <!-- END .section -->
+    <button class="add_section btn btn-default">Add Section</button>
   </div> <!-- END .session -->
 </div>
