@@ -92,15 +92,6 @@ end
 
 
 
-Then /^(?:I )should see "(.*?)" and "Welcome, (.*?)"$/ do |text1, text2|
-
-  if page.respond_to? :should
-    page.should (have_content(text1) && have_content(text2))
-  else
-    assert (page.has_content?(text1) && page.has_content?(text2))
-  end  
-end
-
 
 Then /^(?:|I )should see "([^"]*)"$/ do |text|
   if page.respond_to? :should

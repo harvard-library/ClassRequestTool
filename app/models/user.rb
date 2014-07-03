@@ -18,6 +18,11 @@ class User < ActiveRecord::Base
   def to_s
     full_name
   end
+  
+  def display_name
+    return self.full_name == " " ? self.username : self.full_name 
+  end
+
 
   def full_name
     return "#{self.first_name} #{self.last_name}"

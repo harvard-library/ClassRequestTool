@@ -10,7 +10,8 @@ Scenario: Sign in a  User
 Scenario: Sign in a  User with welcome
   Given a user named "test_user"
   And "test_user" logs in
-  Then I should see "Signed in successfully." and "Welcome, test_user"
+  Then I should see "Signed in successfully." 
+  And I should see "Welcome, test_user"
 
 Scenario: Reject invalid sign-in  credentials
   Given a user with invalid credentials
@@ -25,6 +26,7 @@ Scenario: Create a New Account
   And "new_user" has pwconf of "newPw111"
   And "new_user" signs up
   Then I should see "Welcome! You have signed up successfully"
+  And I should see "Welcome, New User"
 
 Scenario: Create a Minimal Account
   Given a new user named "new_user"
@@ -33,4 +35,4 @@ Scenario: Create a Minimal Account
   And "new_user" has pwconf of "newPw111"
   And "new_user" signs up
   Then I should see "Welcome! You have signed up successfully"
-
+  And I should see "Welcome, new_user"
