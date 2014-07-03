@@ -33,8 +33,9 @@ Given(/^a user with invalid credentials$/) do
 end
 
 Given(/^a new user named "(.*?)"$/) do |name|
-  @user = FactoryGirl.build(:user, :username => name)
+  @user = FactoryGirl.build(:user, :username => name, :email => '')
 end
+
 
 Given(/^"(.*?)" has email of "(.*?)"$/) do |name, email|
   if @user && @user.username == name
@@ -94,6 +95,7 @@ end
 
 
 Then /^(?:|I )should see "([^"]*)"$/ do |text|
+#  binding.pry
   if page.respond_to? :should
     page.should have_content(text)
   else
