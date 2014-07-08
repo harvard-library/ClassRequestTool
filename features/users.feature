@@ -2,6 +2,15 @@ Feature: User Actions
   In order to allow anything to happen,
   Users have to work.
 
+Scenario: Sign in an admin user
+  Given an admin user named "adminuser_test"
+  And user logs in
+  Then I should see "Signed in successfully."
+  And I should see "Welcome, adminuser_test"
+  And I should see "Dashboard"
+  And I should see "Admin Area"
+  And I should not see "My Classes"
+
 Scenario: Sign in a staff user
   Given a staff user named "staffuser_test"
   And user logs in

@@ -4,8 +4,11 @@
 #Password is too short (minimum is 6 characters)
 #Password can't be blank
 
-Given(/^a staff user named "(.*?)"$/) do |name|
-#Given /^a staff user named  "([^"]*)"$/ do |name|
+Given /^an admin user named "([^"]*)"$/ do |name|
+  @user = FactoryGirl.create(:user, :username => name, :password => 'adminpassword', :admin=> true)
+end
+
+Given /^a staff user named "([^"]*)"$/ do |name|
   @user = FactoryGirl.create(:user, :username => name, :password => 'staffpassword', :staff => true)
 end
 
