@@ -2,6 +2,11 @@ Feature: User Actions
   In order to allow anything to happen,
   Users have to work.
 
+Scenario: Unsigned in user
+   Given a user clicks on Not Sure
+   Then I should see "To continue, please choose a method for login:"
+   And I should see "Sign In/Sign Up"
+
 Scenario: Navigate as an admin user
   Given an admin user named "adminuser_test"
   And user logs in

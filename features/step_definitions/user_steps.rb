@@ -4,6 +4,10 @@
 #Password is too short (minimum is 6 characters)
 #Password can't be blank
 
+Given /^a user clicks on Not Sure$/ do 
+  visit("/courses/new")
+end
+
 Given /^an admin user named "([^"]*)"$/ do |name|
   @user = FactoryGirl.create(:user, :username => name, :password => 'adminpassword', :admin=> true)
 end
