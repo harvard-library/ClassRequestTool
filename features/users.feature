@@ -2,6 +2,13 @@ Feature: User Actions
   In order to allow anything to happen,
   Users have to work.
 
+Scenario: Navigate as an admin user
+  Given an admin user named "adminuser_test"
+  And user logs in
+  And admin user goes to Users
+  Then I should see "First Name"
+  And I should see "Actions"
+
 Scenario: Sign in an admin user
   Given an admin user named "adminuser_test"
   And user logs in

@@ -36,6 +36,10 @@ Given(/^user logs out$/) do
   click_link("Sign Out")
 end
 
+Given(/^admin user goes to Users$/) do
+  click_link("Admin Area")
+  click_link("Users")
+end
 Given(/^a user with invalid credentials$/) do
   visit('/users/sign_in')
   within "#welcome-left" do
