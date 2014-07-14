@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.18'
+gem 'rails', '3.2.19'
 
 gem 'dotenv-rails', '~> 0.10.0'
 gem 'therubyracer'
