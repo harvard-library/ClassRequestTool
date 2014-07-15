@@ -142,8 +142,10 @@ class CoursesController < ApplicationController
       redirect_to('/') and return
     end
 
-    # strip out empty sections
-    params[:course][:sections_attributes].delete_if{|k,v| v[:requested_dates].reject(&:nil?).blank? && v[:actual_date].blank? && v[:_destroy].blank?}
+    if params.has_key?(:course) && params[:course].has_key?(:sections_attributes)
+      # strip out empty sections
+      params[:course][:sections_attributes].delete_if{|k,v| v[:requested_dates].reject(&:nil?).blank? && v[:actual_date].blank? && v[:_destroy].blank?}
+    end
 
     if params[:send_assessment_email] == "1" || params[:no_assessment_email] == "1"
       @course.status = "Closed"

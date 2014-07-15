@@ -87,12 +87,12 @@
 	Comments: <%= @course.comments unless @course.comments.nil? %> <br />
 </div>
 <div id="welcome-right">
-    <% if current_user.try(:staff?) || current_user.try(:admin?) || current_user.try(:superadmin?) %>
+  <% if current_user.try(:staff?) || current_user.try(:admin?) || current_user.try(:superadmin?) %>
 	  <h4>Admin Actions</h4>
-	  	Status: <%= @course.status %> <br />
+	  Status: <%= @course.status %> <br />
 		Primary Library/Archive Contact:
 		<% unless @course.primary_contact.nil? %>
-		   <span id="staffContact"><%= @course.primary_contact.first_name %> <%= @course.primary_contact.last_name unless @course.contact_last_name.nil? %></span> - <%= mail_to @course.primary_contact.email, "Send Email" %>
+		  <span id="staffContact"><%= @course.primary_contact.first_name %> <%= @course.primary_contact.last_name unless @course.contact_last_name.nil? %></span> - <%= mail_to @course.primary_contact.email, "Send Email" %>
 		<% else %>
 		  None
 		<% end %>
@@ -116,15 +116,16 @@
 
 	  <div class="yellow-box">
 		<h4>When class is complete, make selection below to close class:</h4>
-	    <%= semantic_form_for(@course, :html => {:multipart => true}) do |f| %>
-	  	  <%= f.inputs do %>
+	  <%= semantic_form_for(@course, :html => {:multipart => true}) do |f| %>
+	  	<%= f.inputs do %>
+        <%= f.input :status, :as => :hidden, :value => "Closed" %>
 		    <%= check_box_tag :send_assessment_email %> Close class and send assessment email to requester<br /><br />
 		    <%= check_box_tag :no_assessment_email %> Close class and do NOT send assessment email to requester<br /><br />
 		  <% end %>
-	  	  <%= f.actions do %>
-	  	    <%= f.action :submit, :as => :button, :label => 'Update Request ' %>
-	  	  <% end %>
-	    <% end %>
+	  	<%= f.actions do %>
+	  	  <%= f.action :submit, :as => :button, :label => 'Update Request ' %>
+	  	<% end %>
+	  <% end %>
 	  </div>
 	<% elsif current_user.try(:patron?)%>
   	  <h4>Additional Actions</h4>
