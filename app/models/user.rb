@@ -10,7 +10,7 @@ class User < ActiveRecord::Base
   attr_accessible :email, :password, :password_confirmation, :remember_me, :first_name, :last_name, :repository_ids, :username
 
   validates_uniqueness_of :username
-
+  validates_presence_of :username, :unless => :pinuser
   has_and_belongs_to_many :courses
   has_and_belongs_to_many :repositories, :order => "name"
   has_many :notes
