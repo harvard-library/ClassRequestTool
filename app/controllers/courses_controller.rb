@@ -115,7 +115,7 @@ class CoursesController < ApplicationController
     respond_to do |format|
       if params[:schedule_future_class] == "1"
         unless params[:course][:sections_attributes].select {|s| !s[:actual_date].blank? && s[:actual_date] < DateTime.now}.blank?
-          flash[:error] = "Please confirm scheduling class in the past."
+          flash.now[:error] = "Please confirm scheduling class in the past."
           format.html { render action: "new" }
           format.json { render json: @course.errors, status: :unprocessable_entity }
         end
@@ -130,7 +130,7 @@ class CoursesController < ApplicationController
           format.html { redirect_to summary_course_url(:id => @course.id), notice: 'Class was successfully submitted for approval.' }
         end
       else
-        flash[:error] = "Please correct the errors in the form."
+        flash.now[:error] = "Please correct the errors in the form."
         format.html { render action: "new" }
         format.json { render json: @course.errors, status: :unprocessable_entity }
       end
@@ -167,7 +167,7 @@ class CoursesController < ApplicationController
           format.html { redirect_to course_url(@course), notice: 'Class was successfully closed.' }
           format.json { head :no_content }
         else
-          flash[:error] = "Please correct the errors."
+          flash.now[:error] = "Please correct the errors."
           format.html { render action: "show" }
           format.json { render json: @course.errors, status: :unprocessable_entity }
         end
@@ -213,7 +213,7 @@ class CoursesController < ApplicationController
       respond_to do |format|
         if params[:schedule_future_class] == "1"
           unless params[:course][:sections_attributes].select {|s| !s[:actual_date].blank? && s[:actual_date] < DateTime.now}.blank?
-            flash[:error] = "Please confirm scheduling class in the past."
+            flash.now[:error] = "Please confirm scheduling class in the past."
             format.html { render action: "edit" }
             format.json { render json: @course.errors, status: :unprocessable_entity }
           end
@@ -259,7 +259,7 @@ class CoursesController < ApplicationController
           format.html { redirect_to course_url(@course), notice: 'Class was successfully updated.' }
           format.json { head :no_content }
         else
-          flash[:error] = "Please correct the errors in the form."
+          flash.now[:error] = "Please correct the errors in the form."
           format.html { render action: "edit" }
           format.json { render json: @course.errors, status: :unprocessable_entity }
         end
