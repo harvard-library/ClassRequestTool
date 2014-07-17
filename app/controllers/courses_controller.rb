@@ -47,6 +47,29 @@ class CoursesController < ApplicationController
     end
   end
 
+  # Helper for update, used to determine status
+  def adjust_status(c_params)
+    if c_params[:status] == "Closed" || @course.status == "Closed"
+      "Closed"
+    elsif c_params[:repository_id].blank?
+      "Homeless"
+    elsif c_params[:sections_attributes].first && c_params[:sections_attributes][:actual_date].blank?
+      if (c_params[:primary_contact_id].blank?) &&
+          (c_params[:user_ids].blank? || c_params[:user_ids][1].blank?)
+        "Unclaimed, Unscheduled"
+      else
+        "Claimed, Unscheduled"
+      end
+    else
+      if (c_params[:primary_contact_id].blank?) &&
+          (c_params[:user_ids].blank? || c_params[:user_ids][1].blank?)
+        "Scheduled, Unclaimed"
+      else
+        "Scheduled, Claimed"
+      end
+    end
+  end
+
   def index
     @courses_all = Course.ordered_by_last_section.all #.all required due to AR inelegance (count drops the select off of ordered_by_last_section)
     @courses_mine_current = current_user.mine_current
@@ -148,130 +171,70 @@ class CoursesController < ApplicationController
       params[:course][:sections_attributes].delete_if{|k,v| v[:requested_dates].reject(&:nil?).blank? && v[:actual_date].blank? && v[:_destroy].blank?}
     end
 
-    # This whole branch is just for the Admin "Course Close" miniform on course#show
-    if params.has_key?("send_assessment_email") || params[:course].try(:fetch, :status, nil) == "Closed"
-      @course.status = params[:course][:status]
+    repo_change = false
+    staff_change = false
 
-      respond_to do |format|
-        if @course.save
-          #add note to course that course is closed
-          note = Note.new(:note_text => "Class has been marked as closed.", :course_id => @course.id, :user_id => current_user.id)
-          note.save
+    # adjust status
+    if !params[:course][:repository_id].blank? && @course.repository_id != params[:course][:repository_id].to_i
+      repo_change = true
+    end
 
-          if params[:send_assessment_email] == "1"
-            @course.send_assessment_email
-            #add note to course that an email has been sent
-            note = Note.new(:note_text => "Assessment email sent.", :course_id => @course.id, :user_id => current_user.id)
-            note.save
-          end
+    if (@course.primary_contact.blank? && !params[:course][:primary_contact_id].blank?) ||
+        (@course.users.blank? && !params[:course][:user_ids].blank? && !params[:course][:user_ids][1].blank?)
+      staff_change = true
+    end
 
-          format.html { redirect_to course_url(@course), notice: 'Class was successfully closed.' }
-          format.json { head :no_content }
-        else
-          flash.now[:error] = "Please correct the errors."
-          format.html { render action: "show" }
-          format.json { render json: @course.errors, status: :unprocessable_entity }
-        end
-      end
-    else
-      unless params[:course][:repository_id].blank?
-        @repository = Repository.find(params[:course][:repository_id])
-      end
+    params[:course][:status] = adjust_status(params[:course])
 
-      repo_change = false
-      staff_change = false
-      timeframe_change = false
-
-      if @course.repository != @repository
-        repo_change = true
-      end
-      if (@course.primary_contact.blank? && !params[:course][:primary_contact_id].blank?) ||
-          (@course.users.blank? && !params[:course][:user_ids].blank? && !params[:course][:user_ids][1].blank?)
-        staff_change = true
-      end
-      if not @course.sections.map(&:actual_date).reject(&:nil?).blank?
-        timeframe_change = true
-      end
-
-      if params[:course][:repository_id].blank?
-        params[:course][:status] = "Homeless"
-      elsif params[:course][:sections_attributes].first && params[:course][:sections_attributes][:actual_date].blank?
-        if (params[:course][:primary_contact_id].blank?) &&
-            (params[:course][:user_ids].blank? || params[:course][:user_ids][1].blank?)
-          params[:course][:status] = "Unclaimed, Unscheduled"
-        else
-          params[:course][:status] = "Claimed, Unscheduled"
-        end
-      else
-        if (params[:course][:primary_contact_id].blank?) &&
-            (params[:course][:user_ids].blank? || params[:course][:user_ids][1].blank?)
-          params[:course][:status] = "Scheduled, Unclaimed"
-        else
-          params[:course][:status] = "Scheduled, Claimed"
-        end
-      end
-
-      respond_to do |format|
-        if params[:schedule_future_class] == "1"
-          unless params[:course][:sections_attributes].select {|s| !s[:actual_date].blank? && s[:actual_date] < DateTime.now}.blank?
-            flash.now[:error] = "Please confirm scheduling class in the past."
-            format.html { render action: "edit" }
-            format.json { render json: @course.errors, status: :unprocessable_entity }
-          end
-        end
-        if params[:course][:status] == "Closed"
-          #add note to course that course is closed
-          note = Note.new(:note_text => "Class has been marked as closed.", :course_id => @course.id, :user_id => current_user.id)
-          note.save
-        end
-        if @course.update_attributes(params[:course])
-          if params[:send_assessment_email] == "1"
-            @course.send_assessment_email
-            #add note to course that an email has been sent
-            note = Note.new(:note_text => "Assessment email sent.", :course_id => @course.id, :user_id => current_user.id)
-            note.save
-          end
-          if repo_change == true
-            unless @course.repository.blank?
-              @course.send_repo_change_email
-              #add note to course that an email has been sent
-              note = Note.new(:note_text => "Library/Archive change email sent.", :course_id => @course.id, :user_id => current_user.id)
-              note.save
-            else
-              #add note to course that an repo changed to null
-              note = Note.new(:note_text => "Library/Archive changed to none.", :course_id => @course.id, :user_id => current_user.id)
-              note.save
-            end
-
-          end
-          if staff_change == true
-            @course.send_staff_change_email(current_user)
-            #add note to course that an email has been sent
-            note = Note.new(:note_text => "Staff change email sent.", :course_id => @course.id, :user_id => current_user.id)
-            note.save
-          end
-          if params[:send_timeframe_email] == "1"
-            @course.send_timeframe_change_email
-            #add note to course that an email has been sent
-            note = Note.new(:note_text => "Date/Time set/change email sent.", :course_id => @course.id, :user_id => current_user.id)
-            note.save
-          end
-
-          format.html { redirect_to course_url(@course), notice: 'Class was successfully updated.' }
-          format.json { head :no_content }
-        else
-          flash.now[:error] = "Please correct the errors in the form."
+    if params[:schedule_future_class] == "1"
+      unless params[:course][:sections_attributes].select {|s| !s[:actual_date].blank? && s[:actual_date] < DateTime.now}.blank?
+        flash.now[:error] = "Please confirm scheduling class in the past."
+        respond_to do |format|
           format.html { render action: "edit" }
           format.json { render json: @course.errors, status: :unprocessable_entity }
         end
       end
+    end
+
+    @course.attributes = params[:course]
+
+    if @course.save
+      if params[:course][:status] == "Closed" # check params because editing closed courses should not create notes
+        @course.notes.create(:note_text => "Class has marked as closed.", :user_id => current_user.id)
+        if params[:send_assessment_email] == "1"
+          @course.send_assessment_email
+          @course.notes.create(:note_text => "Assessment email sent.", :user_id => current_user.id)
+        end
+      end
+
+      if repo_change
+        @course.send_repo_change_email unless @course.repository.blank?
+        @course.notes.create(:note_text => "Library/Archive changed to #{@course.repository.blank? ? "none" : @course.repository.name + "Email sent"}.",
+                             :user_id => current_user)
+      end
+
+      if staff_change
+        @course.send_staff_change_email(current_user)
+        @course.notes.create(:note_text => "Staff change email sent.", :user_id => current_user.id)
+      end
+    else
+      flash[:error] = "Update Error: Could not save"
+      respond_to do |format|
+        format.html { redirect_to :action => :edit }
+        format.json { render :json => @course.errors, :status => :unprocessable_entity }
+      end
+    end
+
+    respond_to do |format|
+      format.html { redirect_to course_url(@course), notice: 'Class was successfully updated.' }
+      format.json { head :no_content }
     end
   end
 
   def destroy
     @course = Course.find(params[:id])
     unless current_user.try(:staff?) || current_user.try(:admin?) || current_user.try(:superadmin?) || @course.contact_email == current_user.email
-       redirect_to('/') and return
+      redirect_to('/') and return
     end
     @course.destroy
 
