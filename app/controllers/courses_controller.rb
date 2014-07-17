@@ -148,8 +148,9 @@ class CoursesController < ApplicationController
       params[:course][:sections_attributes].delete_if{|k,v| v[:requested_dates].reject(&:nil?).blank? && v[:actual_date].blank? && v[:_destroy].blank?}
     end
 
-    if params[:send_assessment_email] == "1" || params[:no_assessment_email] == "1"
-      @course.status = "Closed"
+    # This whole branch is just for the Admin "Course Close" miniform on course#show
+    if params.has_key?("send_assessment_email") || params[:course].try(:fetch, :status, nil) == "Closed"
+      @course.status = params[:course][:status]
 
       respond_to do |format|
         if @course.save
@@ -157,7 +158,7 @@ class CoursesController < ApplicationController
           note = Note.new(:note_text => "Class has been marked as closed.", :course_id => @course.id, :user_id => current_user.id)
           note.save
 
-          if params[:send_assessment_email] == "1" && (params[:no_assessment_email].nil? || params[:no_assessment_email] == "0")
+          if params[:send_assessment_email] == "1"
             @course.send_assessment_email
             #add note to course that an email has been sent
             note = Note.new(:note_text => "Assessment email sent.", :course_id => @course.id, :user_id => current_user.id)
@@ -224,7 +225,7 @@ class CoursesController < ApplicationController
           note.save
         end
         if @course.update_attributes(params[:course])
-          if params[:send_assessment_email] == "1" && (params[:no_assessment_email].nil? || params[:no_assessment_email] == "0")
+          if params[:send_assessment_email] == "1"
             @course.send_assessment_email
             #add note to course that an email has been sent
             note = Note.new(:note_text => "Assessment email sent.", :course_id => @course.id, :user_id => current_user.id)
