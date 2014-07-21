@@ -5,6 +5,7 @@ class CoursesController < ApplicationController
   before_filter :authenticate_admin_or_staff!, :only => [:take, :export]
   #before_filter :authenticate_user!, :except => [:take, :recent_show]
   before_filter :process_datetimes, :only => [:create, :update]
+  before_filter :check_future_class, :only => [:create, :update]
 
   # Processes all datetime fields that map directly to AR columns
   # NOTE: Anything NOT mapping to a datetime column needs to be handled
@@ -43,6 +44,20 @@ class CoursesController < ApplicationController
           end
         end
         v[:requested_dates].reject!(&:blank?)
+      end
+    end
+  end
+
+  def check_future_class
+    if params[:schedule_future_class] == "1"
+      unless params[:course][:sections_attributes].values.select {|s| !s[:actual_date].blank? && s[:actual_date] < DateTime.now}.blank?
+        respond_to do |format|
+          format.html {
+            flash[:error] = "Please confirm scheduling class in past."
+            redirect_to :back
+          }
+          format.json { render json: @course.errors, status: :unprocessable_entity }
+        end
       end
     end
   end
@@ -136,13 +151,6 @@ class CoursesController < ApplicationController
     @course = Course.new(params[:course])
 
     respond_to do |format|
-      if params[:schedule_future_class] == "1"
-        unless params[:course][:sections_attributes].select {|s| !s[:actual_date].blank? && s[:actual_date] < DateTime.now}.blank?
-          flash.now[:error] = "Please confirm scheduling class in the past."
-          format.html { render action: "new" }
-          format.json { render json: @course.errors, status: :unprocessable_entity }
-        end
-      end
       if @course.save
         if current_user.try(:patron?) || params[:schedule_future_class] == "1"
           @course.new_request_email
@@ -185,16 +193,6 @@ class CoursesController < ApplicationController
     end
 
     params[:course][:status] = adjust_status(params[:course])
-
-    if params[:schedule_future_class] == "1"
-      unless params[:course][:sections_attributes].select {|s| !s[:actual_date].blank? && s[:actual_date] < DateTime.now}.blank?
-        flash.now[:error] = "Please confirm scheduling class in the past."
-        respond_to do |format|
-          format.html { render action: "edit" }
-          format.json { render json: @course.errors, status: :unprocessable_entity }
-        end
-      end
-    end
 
     @course.attributes = params[:course]
 

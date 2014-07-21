@@ -4,17 +4,13 @@
 
 <div class="form_full_width">
 <h4>Date/Time of Class</h4>
-<span id="multiple">Please enter your preferred date and time for each session. Second choices and back-up times/days may be indicated in the notes field below. If your only options for scheduling fall outside normal business hours, please use the note field to detail your availability.
-</span>
-<span id="single">Please select up to 3 dates/times for your session.
-</span>
-<br /><br />
-Final scheduling of a session is subject to both room and staff availability.
+<p>Please enter your preferred date and time for each session. If your only options for scheduling fall outside normal business hours, please use the note field to detail your availability.</p>
+<p>Final scheduling of a session is subject to both room and staff availability.</p>
 </div>
 
 <div class="form_full_width">
 <% if (@course.repository.nil? || @course.repository.blank?) || (@course.repository.calendar.nil? || @course.repository.calendar.blank?) %>
-  This Library/Archive does not have a publicly available calendar. Please submit your request with your preferred times and a staff member will get back to you.
+  <p>This Library/Archive does not have a publicly available calendar. Please submit your request with your preferred times and a staff member will get back to you.</p>
 <% else %>
   <%= link_to image_tag('calendar_icon.png')+"View Calendar to see availability", "#{@course.repository.calendar}", :onclick=>"window.open(this.href,'view_calendar', 'height=600, width=600');return false;" %>
 <% end %>
@@ -89,6 +85,13 @@ Final scheduling of a session is subject to both room and staff availability.
   <%= f.input :duration, :label => "Class Duration (hours): ", :hint => '1 hour increments, maximum 3 hours', :input_html => { :size => 1, :maxlength => 4 } %>
 </div>
 
+<% if current_user.can_schedule? %>
+  <div class="form_full_width yellow-box">
+    <%= check_box_tag :schedule_future_class, value = "1", checked = true %> Uncheck to schedule past class(es)<br /><br />
+    <%= f.input :pre_class_appt, :label => "Actual Pre-Class Appointment Date/Time (if necessary): ", :as => :string, :input_html => { :size => 30, :value => @course.pre_class_appt.nil? ? nil : @course.pre_class_appt.strftime('%Y-%m-%d %I:%M %P'), :readonly => true, :placeholder => "Click to select date/time" } %>
+    <%= check_box_tag :send_timeframe_email %> Check to send email notification of confirmed or changed class date/time and (if applicable) scheduled pre-class appointment to requester.<br /><br />
+  </div>
+<% end %>
 
 <div id="form_full_width">
   <% unless @course.repository.nil? %>
