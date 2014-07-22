@@ -12,6 +12,7 @@ $(function () {
     $('body').on('click', 'button.add_session', function (e) {
       e.preventDefault();
 
+      // Make SURE it can't end up with the same number
       var index = +$('.session').last().attr('class').match(/session-(\d+)/)[1] + 1;
       var section_index = +$('.section').last().attr('class').match(/section-(\d+)/)[1] + 1;
 
@@ -41,14 +42,14 @@ $(function () {
     /* Delete sessions, either by adding _destroy input to all sections (for sessions in DB) *
      *   or by deleting session from the page if not.                                        *
      * Always leaves at least one session on the page.                                       */
-    $('body').on('click', '.session:not(.delete) button.delete_session', function (e) {
+    $('body').on('click', '.session:not(.deleted) button.delete_session', function (e) {
       e.preventDefault();
 
       var $this_session = $(e.currentTarget).closest('.session');
       var persisted = $this_session.find('.id_val').length;
 
       if (persisted) {
-        $this_session.addClass('delete');
+        $this_session.addClass('deleted');
         $this_session.find('.section input.id_val').each(function (i, el) {
           var name = $(el).attr('name').replace(/\[id\]$/, '[_destroy]');
           $(el).closest('.section').append('<input type="hidden" name="' + name + '" value="1">');
@@ -64,17 +65,17 @@ $(function () {
     /* Delete sections, either by adding _destroy input (for sections in DB) *
      *   or by deleting section from the page if not.                        *
      * Always leaves at least one section in the session.                    */
-    $('body').on('click', '.section:not(.delete) button.delete_section', function (e) {
+    $('body').on('click', '.section:not(.deleted) button.delete_section', function (e) {
       e.preventDefault();
 
       var $this_session = $(e.currentTarget).closest('.session');
       var $section = $(e.currentTarget).closest('.section');
 
       var persisted = $section.find('.id_val').length;
-      var name = $section.attr('name').replace(/\[id\]$/, '[_destroy]');
+      var name = $section.find('input.id_val').attr('name').replace(/\[id\]$/, '[_destroy]');
 
       if (persisted) {
-        $section.addClass('delete');
+        $section.addClass('deleted');
         $section.append('<input type="hidden" name="' + name + '" value="1">');
       }
       else {

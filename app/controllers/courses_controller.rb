@@ -64,20 +64,20 @@ class CoursesController < ApplicationController
 
   # Helper for update, used to determine status
   def adjust_status(c_params)
-    if c_params[:status] == "Closed" || @course.status == "Closed"
+    if c_params[:status] == "Closed" || @course && @course.status == "Closed"
       "Closed"
     elsif c_params[:repository_id].blank?
       "Homeless"
-    elsif c_params[:sections_attributes].first && c_params[:sections_attributes][:actual_date].blank?
+    elsif c_params[:sections_attributes].first && c_params[:sections_attributes].first[:actual_date].blank?
       if (c_params[:primary_contact_id].blank?) &&
-          (c_params[:user_ids].blank? || c_params[:user_ids][1].blank?)
+          (c_params[:user_ids].blank? || c_params[:user_ids][0].blank?)
         "Unclaimed, Unscheduled"
       else
         "Claimed, Unscheduled"
       end
     else
       if (c_params[:primary_contact_id].blank?) &&
-          (c_params[:user_ids].blank? || c_params[:user_ids][1].blank?)
+          (c_params[:user_ids].blank? || c_params[:user_ids][0].blank?)
         "Scheduled, Unclaimed"
       else
         "Scheduled, Claimed"
@@ -128,21 +128,7 @@ class CoursesController < ApplicationController
       @repository = Repository.find(params[:course][:repository_id])
     end
 
-    if params[:course][:repository_id].blank?
-      params[:course][:status] = "Homeless"
-    elsif params[:course][:sections_attributes].blank?
-      if (params[:course][:primary_contact_id].blank?) && (params[:course][:user_ids].nil? || params[:course][:user_ids][1].nil? || params[:course][:user_ids][1].empty?)
-        params[:course][:status] = "Unclaimed, Unscheduled"
-      else
-        params[:course][:status] = "Claimed, Unscheduled"
-      end
-    else
-      if (params[:course][:primary_contact_id].blank?) && (params[:course][:user_ids].nil? || params[:course][:user_ids][1].nil? || params[:course][:user_ids][1].empty?)
-        params[:course][:status] = "Scheduled, Unclaimed"
-      else
-        params[:course][:status] = "Scheduled, Claimed"
-      end
-    end
+    params[:course][:status] = adjust_status(params[:course])
 
     # strip out empty sections
     if params.has_key?(:course) && params[:course].has_key?(:sections_attributes)
@@ -182,17 +168,18 @@ class CoursesController < ApplicationController
     repo_change = false
     staff_change = false
 
-    # adjust status
+    # Begin gross status manipulation *&!%
     if !params[:course][:repository_id].blank? && @course.repository_id != params[:course][:repository_id].to_i
       repo_change = true
     end
 
     if (@course.primary_contact.blank? && !params[:course][:primary_contact_id].blank?) ||
-        (@course.users.blank? && !params[:course][:user_ids].blank? && !params[:course][:user_ids][1].blank?)
+        (@course.users.blank? && !params[:course][:user_ids].blank? && !params[:course][:user_ids][0].blank?)
       staff_change = true
     end
 
     params[:course][:status] = adjust_status(params[:course])
+    # End gross status manipulation
 
     @course.attributes = params[:course]
 
@@ -206,12 +193,14 @@ class CoursesController < ApplicationController
       end
 
       if repo_change
+        # FIX INFO_NEEDED Should "changed from" repos get email? Inquiring Bobbis want to know
         @course.send_repo_change_email unless @course.repository.blank?
         @course.notes.create(:note_text => "Library/Archive changed to #{@course.repository.blank? ? "none" : @course.repository.name + "Email sent"}.",
                              :user_id => current_user)
       end
 
       if staff_change
+        # FIX INFO_NEEDED Should "dropped" staff members get this email?
         @course.send_staff_change_email(current_user)
         @course.notes.create(:note_text => "Staff change email sent.", :user_id => current_user.id)
       end
