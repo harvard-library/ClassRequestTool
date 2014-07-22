@@ -49,7 +49,7 @@ $(function () {
 
       if (persisted) {
         $this_session.addClass('delete');
-        name = $this_session.find('.section input.id_val').each(function (i, el) {
+        $this_session.find('.section input.id_val').each(function (i, el) {
           var name = $(el).attr('name').replace(/\[id\]$/, '[_destroy]');
           $(el).closest('.section').append('<input type="hidden" name="' + name + '" value="1">');
         });
@@ -58,6 +58,27 @@ $(function () {
         if ($('.session').length > 1) {
           $this_session.remove();
         }
+      }
+    });
+
+    /* Delete sections, either by adding _destroy input (for sections in DB) *
+     *   or by deleting section from the page if not.                        *
+     * Always leaves at least one section in the session.                    */
+    $('body').on('click', '.section:not(.delete) button.delete_section', function (e) {
+      e.preventDefault();
+
+      var $this_session = $(e.currentTarget).closest('.session');
+      var $section = $(e.currentTarget).closest('.section');
+
+      var persisted = $section.find('.id_val').length;
+      var name = $section.attr('name').replace(/\[id\]$/, '[_destroy]');
+
+      if (persisted) {
+        $section.addClass('delete');
+        $section.append('<input type="hidden" name="' + name + '" value="1">');
+      }
+      else {
+        $section.remove();
       }
     });
   }

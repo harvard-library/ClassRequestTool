@@ -19,12 +19,12 @@
 <div class="form_full_width sessions">
   <% @course.sessions.each.with_index(1) do |sesh, i| %>
     <div id ="session-<%= i %>" class="session session-<%= i %>">
-      <h4>Session <%= i %></h4>
+      <h4>Session <%= i %> <button class="btn btn-default delete_session">-</button></h4>
       <% sesh.each.with_index(1) do |sect, sect_i| %>
         <% name_prefix = "course[sections_attributes][#{section_counter}]" %>
         <% id_prefix = "course_sections_attributes_#{section_counter}" %>
         <div class="form_full_width section section-<%= section_counter %>">
-          <h5>Section <%= sect_i %></h5>
+          <h5>Section <%= sect_i %> <button class="btn btn-default delete_section" title="Delete Section">-</button></h5>
           <% if sect.id %>
             <%= f.input :id,
                         :as => :hidden,

@@ -5,4 +5,10 @@ div.session.delete {
 
 div.session {
   @include clearfix();
+  &:first-child button.delete_session {
+    display:none;
+  }
+  :first-child + .section button.delete_section {
+    display:none;
+  }
 }
