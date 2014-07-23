@@ -92,10 +92,11 @@ $(function () {
 
       var persisted = $section.find('.id_val').length;
       var last = ($this_session.find('.section:not(.deleted)').length == 1)
-      var name = $section.find('input.id_val').attr('name').replace(/\[id\]$/, '[_destroy]');
+      var name;
 
       if (!last) {
         if (persisted) {
+          name = $section.find('input.id_val').attr('name').replace(/\[id\]$/, '[_destroy]');
           $section.addClass('deleted');
           $section.find('button.delete_section').text('+');
           $section.append('<input type="hidden" class="destroy" name="' + name + '" value="1">');
