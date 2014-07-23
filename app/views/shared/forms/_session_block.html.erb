@@ -1,6 +1,6 @@
 <%# LOCALS: index, section_index, admin %>
 <div id="session-<%= index %>" class="session session-<%= index %> form_full_width">
-  <h4>Session <%= index %> <button class="btn btn-default delete_session">Delete</button></h4>
+  <h4>Session <%= index %> <button class="btn btn-default delete_session">-</button></h4>
   <div class="form_full_width section section-<%= section_index %>">
     <h5>Section 1 <button class="btn btn-default delete_section">Delete</button></h5>
     <input type="hidden" name="course[sections_attributes][<%= section_index %>][session]" class="session_val" value="<%= index %>">
