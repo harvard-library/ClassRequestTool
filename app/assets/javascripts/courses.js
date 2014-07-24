@@ -1,4 +1,5 @@
 $(function () {
+  var today = new Date();
   /* courses#(new|edit) */
   if (window.location.href.match(/courses\/(\d+\/)?(new|edit)(?:\?.+)?/)){
     /* Sets a particular requested date as actual date */
@@ -119,6 +120,37 @@ $(function () {
       $section.find('input.destroy').remove();
       $section.removeClass('deleted');
       $section.find('button.delete_section').text('-');
+    });
+
+    /* Prompt user for submission if both backdated and post-dated actual_dates exist, *
+     *   deletions excepted.                                                           */
+    $('body').on('submit', 'form.formtastic.course', function (e) {
+      var backdated = []; var postdated = [];
+      var confstring = "You have actual dates in both the past and future, is this correct?\n\n";
+
+      /* We need the datetimepickers definitely set up, so we can call the API function on them */
+      $('.actual-date:not(.hasDatepicker)').each(function (i, el) { crt.setup_datetimepicker(el) });
+
+      $('.datetime_picker .actual-date')
+        .filter(function (i,el) { return $(el).parents('.deleted').length == 0})
+        .each(function (i,el) {
+          var date = $(el).datetimepicker('getDate');
+
+          if (date < today) {
+            backdated.push(date.toString());
+          }
+          else {
+            postdated.push(date.toString());
+          }
+        });
+
+      if (backdated.length > 0 && postdated.length > 0) {
+        confstring += "Past Dates:\n\t" + backdated.join("\n\t") + "\n\n";
+        confstring += "Future Dates:\n\t" + postdated.join("\n\t") + "\n";
+        if (!confirm(confstring)) {
+          e.preventDefault();
+        }
+      }
     });
   }
 });

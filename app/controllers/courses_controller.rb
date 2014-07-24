@@ -5,7 +5,7 @@ class CoursesController < ApplicationController
   before_filter :authenticate_admin_or_staff!, :only => [:take, :export]
   #before_filter :authenticate_user!, :except => [:take, :recent_show]
   before_filter :process_datetimes, :only => [:create, :update]
-  before_filter :check_future_class, :only => [:create, :update]
+  before_filter :backdated?, :only => [:create, :update]
 
   # Processes all datetime fields that map directly to AR columns
   # NOTE: Anything NOT mapping to a datetime column needs to be handled
@@ -48,18 +48,8 @@ class CoursesController < ApplicationController
     end
   end
 
-  def check_future_class
-    if params[:schedule_future_class] == "1"
-      unless params[:course][:sections_attributes].values.select {|s| !s[:actual_date].blank? && s[:actual_date] < DateTime.now}.blank?
-        respond_to do |format|
-          format.html {
-            flash[:error] = "Please confirm scheduling class in past."
-            redirect_to :back
-          }
-          format.json { render json: @course.errors, status: :unprocessable_entity }
-        end
-      end
-    end
+  def backdated?
+    @backdated = (params[:course][:sections_attributes].values.select {|s| !s[:actual_date].blank? && s[:actual_date] < DateTime.now}.blank?)
   end
 
   # Helper for update, used to determine status
@@ -138,7 +128,7 @@ class CoursesController < ApplicationController
 
     respond_to do |format|
       if @course.save
-        if current_user.try(:patron?) || params[:schedule_future_class] == "1"
+        unless @backdated
           @course.new_request_email
         end
         if user_signed_in?
