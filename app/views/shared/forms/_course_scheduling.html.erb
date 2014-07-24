@@ -33,6 +33,7 @@
                                         :name => "#{name_prefix}[id]",
                                         :class => 'id_val'} %>
           <% end %>
+
           <% if sect.session %>
             <%= f.input :id,
                         :as => :hidden,
@@ -41,6 +42,7 @@
                                         :name => "#{name_prefix}[session]",
                                         :class => 'session_val'} %>
           <% end %>
+
           <% (0..1).each do |rd_i| %>
             <div class="form_date">
               <%= f.input :requested_dates,
@@ -53,6 +55,7 @@
                                           :name => "#{name_prefix}[requested_dates][]",
                                           :placeholder => "Click to select date/time",
                                           :value => display_with_tz(sect.requested_dates.try(:slice, rd_i))} %>
+
               <% if current_user.can_schedule? %>
                 <button class="btn btn-default date-setter">Set as Actual Date</button>
               <% end %>
@@ -87,7 +90,15 @@
 
 <% if current_user.can_schedule? %>
   <div class="form_full_width yellow-box">
-    <%= f.input :pre_class_appt, :label => "Actual Pre-Class Appointment Date/Time (if necessary): ", :as => :string, :input_html => { :size => 30, :value => @course.pre_class_appt.nil? ? nil : @course.pre_class_appt.strftime('%Y-%m-%d %I:%M %P'), :readonly => true, :placeholder => "Click to select date/time" } %>
+    <%= f.input :pre_class_appt,
+                :label => "Actual Pre-Class Appointment Date/Time (if necessary): ",
+                :as => :string,
+                :input_html => {
+                  :size => 30,
+                  :value => @course.pre_class_appt.nil? ? nil : @course.pre_class_appt.strftime('%Y-%m-%d %I:%M %P'),
+                  :readonly => true,
+                  :placeholder => "Click to select date/time" } %>
+
     <%= check_box_tag :send_timeframe_email %> Check to send email notification of confirmed or changed class date/time and (if applicable) scheduled pre-class appointment to requester.<br /><br />
   </div>
 <% end %>
@@ -95,10 +106,15 @@
 <div id="form_full_width">
   <% unless @course.repository.nil? %>
     <br />
-    <%= f.input :item_attributes, :as => :check_boxes, :collection => @course.repository.item_attributes, :label => "Room Technology Available: " %>
+    <%= f.input :item_attributes,
+                :as => :check_boxes,
+                :collection => @course.repository.item_attributes,
+                :label => "Room Technology Available: " %>
   <% end %>
   <br />
-  <%= f.input :comments, :label => "If you have any special room arrangements or further instructions regarding your class session, please enter them below: ", :input_html => { :rows => 5, :cols => 30 } %>
+  <%= f.input :comments,
+              :label => "If you have any special room arrangements or further instructions regarding your class session, please enter them below: ",
+              :input_html => { :rows => 5, :cols => 30 } %>
 </div>
 
 <%# Room stuff goes... here? Needs redoing %>
