@@ -3,9 +3,12 @@ require 'csv'
 class CoursesController < ApplicationController
   before_filter :authenticate_login!, :except => [:recent_show]
   before_filter :authenticate_admin_or_staff!, :only => [:take, :export]
-  #before_filter :authenticate_user!, :except => [:take, :recent_show]
   before_filter :process_datetimes, :only => [:create, :update]
   before_filter :backdated?, :only => [:create, :update]
+
+  # Formtastic inserts blank entry in user_ids, strip out any such from :user_ids
+  # Ref: https://github.com/justinfrench/formtastic/issues/633
+  before_filter ->(){params[:user_ids] && params[:user_ids].reject!(&:blank?)} , :only => [:create, :update]
 
   # Processes all datetime fields that map directly to AR columns
   # NOTE: Anything NOT mapping to a datetime column needs to be handled
@@ -60,15 +63,13 @@ class CoursesController < ApplicationController
       "Homeless"
     elsif c_params[:sections_attributes].values.first &&
           c_params[:sections_attributes].values.first[:actual_date].blank?
-      if (c_params[:primary_contact_id].blank?) &&
-          (c_params[:user_ids].blank? || c_params[:user_ids][0].blank?)
+      if c_params[:primary_contact_id].blank? && c_params[:user_ids].blank?
         "Unclaimed, Unscheduled"
       else
         "Claimed, Unscheduled"
       end
     else
-      if (c_params[:primary_contact_id].blank?) &&
-          (c_params[:user_ids].blank? || c_params[:user_ids][0].blank?)
+      if c_params[:primary_contact_id].blank? && c_params[:user_ids].blank?
         "Scheduled, Unclaimed"
       else
         "Scheduled, Claimed"
@@ -165,7 +166,7 @@ class CoursesController < ApplicationController
     end
 
     if (@course.primary_contact.blank? && !params[:course][:primary_contact_id].blank?) ||
-        (@course.users.blank? && !params[:course][:user_ids].blank? && !params[:course][:user_ids][0].blank?)
+        (@course.users.blank? && !params[:course][:user_ids].blank? && !params[:course][:user_ids].first.blank?)
       staff_change = true
     end
 
