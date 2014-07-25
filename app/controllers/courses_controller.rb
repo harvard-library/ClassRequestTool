@@ -58,7 +58,8 @@ class CoursesController < ApplicationController
       "Closed"
     elsif c_params[:repository_id].blank?
       "Homeless"
-    elsif c_params[:sections_attributes].first && c_params[:sections_attributes].first[:actual_date].blank?
+    elsif c_params[:sections_attributes].values.first &&
+          c_params[:sections_attributes].values.first[:actual_date].blank?
       if (c_params[:primary_contact_id].blank?) &&
           (c_params[:user_ids].blank? || c_params[:user_ids][0].blank?)
         "Unclaimed, Unscheduled"
