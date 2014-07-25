@@ -52,7 +52,7 @@ class CoursesController < ApplicationController
   end
 
   def backdated?
-    @backdated = (params[:course][:sections_attributes].values.select {|s| !s[:actual_date].blank? && s[:actual_date] < DateTime.now}.blank?)
+    @backdated = (params[:course][:sections_attributes] && params[:course][:sections_attributes].values.select {|s| !s[:actual_date].blank? && s[:actual_date] < DateTime.now}.blank?)
   end
 
   # Helper for update, used to determine status
@@ -61,7 +61,8 @@ class CoursesController < ApplicationController
       "Closed"
     elsif c_params[:repository_id].blank?
       "Homeless"
-    elsif c_params[:sections_attributes].values.first &&
+    elsif c_params[:sections_attributes] &&
+          c_params[:sections_attributes].values.first &&
           c_params[:sections_attributes].values.first[:actual_date].blank?
       if c_params[:primary_contact_id].blank? && c_params[:user_ids].blank?
         "Unclaimed, Unscheduled"
