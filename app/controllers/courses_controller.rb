@@ -166,7 +166,7 @@ class CoursesController < ApplicationController
     end
 
     if (@course.primary_contact.blank? && !params[:course][:primary_contact_id].blank?) ||
-        (@course.users.blank? && !params[:course][:user_ids].blank? && !params[:course][:user_ids].first.blank?)
+        (@course.users.blank? && !params[:course][:user_ids].blank?)
       staff_change = true
     end
 
