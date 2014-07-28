@@ -7,8 +7,8 @@
 
 <h3>Dashboard</h3>
 
-<div id="dash-wrap">
-  <div id="dash_widget">
+<div class="dash-wrap">
+  <div class="dash_widget">
   <h4><%= link_to "Upcoming Classes for Your Library/Archive", dashboard_items_welcome_index_path(:courses => @your_repo_courses, :title => "Upcoming Classes for Your Library/Archive"), :target => "blank" %></h4>
   <% unless @your_repo_courses.nil? || @your_repo_courses.empty? %>
     <table id="your-repo-courses-table" class="table table-condensed tablesorter">
@@ -42,7 +42,7 @@
         <% end %>
   </div>
 
-  <div id="dash_widget">
+  <div class="dash_widget">
   <h4><%= link_to "Homeless Classes", dashboard_items_welcome_index_path(:courses => @homeless, :title => "Homeless Classes"), :target => "blank" %></h4>
   <% unless @homeless.nil? || @homeless.empty? %>
 	<table id="homeless-table" class="table table-condensed tablesorter">
@@ -76,8 +76,8 @@
   <% end %>
   </div>
 </div>
-<div id="dash-wrap">
-  <div id="dash_widget">
+<div class="dash-wrap">
+  <div class="dash_widget">
   <h4><%= link_to "Your Claimed, Unscheduled Classes", dashboard_items_welcome_index_path(:courses => @your_unscheduled, :title => "Your Claimed, Unscheduled Classes"), :target => "blank" %></h4>
   <% unless @your_unscheduled.nil? || @your_unscheduled.empty? %>
     <table id="your-unscheduled-table" class="table table-condensed tablesorter">
@@ -109,7 +109,7 @@
   <% end %>
   </div>
 
-  <div id="dash_widget">
+  <div class="dash_widget">
   <h4><%= link_to "Unscheduled, Unclaimed Classes", dashboard_items_welcome_index_path(:courses => @unscheduled_unclaimed, :title => "Unscheduled, Unclaimed Classes"), :target => "blank" %></h4>
     <% unless @unscheduled_unclaimed.nil? || @unscheduled_unclaimed.empty? %>
   	<table id="unassigned-table" class="table table-condensed tablesorter">
@@ -143,8 +143,8 @@
     <% end %>
   </div>
 </div>
-<div id="dash-wrap">
-  <div id="dash_widget">
+<div class="dash-wrap">
+  <div class="dash_widget">
   <h4><%= link_to "Your Scheduled, Claimed Classes", dashboard_items_welcome_index_path(:courses => @your_upcoming, :title => "Your Scheduled, Claimed Classes"), :target => "blank" %></h4>
   <% unless @your_upcoming.nil? || @your_upcoming.empty? %>
     <table id="your-upcoming-table" class="table table-condensed tablesorter">
@@ -178,7 +178,7 @@
   <% end %>
   </div>
 
-  <div id="dash_widget">
+  <div class="dash_widget">
     <h4><%= link_to "Scheduled, Unclaimed Classes", dashboard_items_welcome_index_path(:courses => @scheduled_unclaimed, :title => "Scheduled, Unclaimed Classes"), :target => "blank" %></h4>
       <% unless @scheduled_unclaimed.nil? || @scheduled_unclaimed.empty? %>
     	<table id="roomless-table" class="table table-condensed tablesorter">
@@ -213,8 +213,8 @@
   </div>
 </div>
 
-<div id="dash-wrap">
-  <div id="dash_widget">
+<div class="dash-wrap">
+  <div class="dash_widget">
   <h4><%= link_to "Your Classes To Close", dashboard_items_welcome_index_path(:courses => @your_classes_to_close, :title => "Your Classes To Close"), :target => "blank" %></h4>
   <% unless @your_classes_to_close.nil? || @your_classes_to_close.empty? %>
     <table id="your-to-close-table" class="table table-condensed tablesorter">
@@ -248,7 +248,7 @@
   <% end %>
   </div>
 
-  <div id="dash_widget">
+  <div class="dash_widget">
   <h4><%= link_to "Your Closed Classes", dashboard_items_welcome_index_path(:courses => @your_past, :title => "Your Closed Classes"), :target => "blank" %></h4>
   <span id="your-past">
     <% unless @your_past.nil? || @your_past.empty? %>
