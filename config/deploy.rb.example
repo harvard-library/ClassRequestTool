@@ -40,6 +40,14 @@ namespace :deploy do
 
   after :publishing, :restart
 
+  after :restart, :crontab do
+    on roles(:app), in: :sequence, wait: 5 do
+      within release_path do
+        execute :rake, "crt:cron_task:setup_crontab --rakefile=#{release_path}/Rakefile RAILS_ENV=#{Proc.new do fetch(:rails_env) end.call}"
+      end
+    end
+  end
+
   after :restart, :clear_cache do
     on roles(:web), in: :groups, limit: 3, wait: 10 do
       # Here we can do anything such as:
