@@ -37,7 +37,6 @@ ClassRequestTool::Application.routes.draw do
   resources :welcome do
     collection do
       get 'dashboard'
-      get 'dashboard_items'
       get 'login'
     end
   end

@@ -1,0 +1,34 @@
+<%# Accepts locals: id, title, courses %>
+<div class="dash_widget">
+  <h4><%= title %></h4>
+  <% unless courses.blank? %>
+    <table id="<%= id %>" class="table table-condensed tablesorter">
+	    <thead>
+	      <tr>
+		      <th>Name</th>
+		      <th>Submission Date</th>
+		      <th>Class Date</th>
+		      <th></th>
+	      </tr>
+	    </thead>
+	    <tbody>
+        <% courses.each do |course| %>
+      	  <tr>
+	  	      <td><%= link_to(course.title, course ) %></td>
+		        <td><%= course.created_at.strftime('%m/%d/%Y') %></td>
+		        <td><%= course.sections.first.try(:actual_date).try(:strftime, '%m/%d/%Y %I:%M %P') unless course.sections.first.try(:actual_date).nil? %></td>
+		        <td><%= link_to('Edit', edit_course_path(course), :class => "action-edit") %><br />
+			        <%= link_to('Add Note', course_path(course), :class => "action-edit") %><br />
+              <% if current_user.admin? || current_user.superadmin? %>
+	   		        <%= link_to('Delete', course_path(course), :confirm => "Are you sure?", :method => :delete) %>
+      	      <% end %>
+		        </td>
+	        </tr>
+        <% end %>
+	    </tbody>
+	  </table>
+	  <%= render :partial => '/shared/tablesorter_pager', :locals => {:pager_id => "#{id}" } %>
+  <% else %>
+	  None yet!
+  <% end %>
+</div>

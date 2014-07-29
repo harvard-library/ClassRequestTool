@@ -22,11 +22,4 @@ class WelcomeController < ApplicationController
     @your_classes_to_close = current_user.classes_to_close
   end
 
-  def dashboard_items
-    course_ids = params[:courses]
-    @title = params[:title]
-    unless course_ids.nil?
-      @courses = Course.find(course_ids)
-    end
-  end
 end

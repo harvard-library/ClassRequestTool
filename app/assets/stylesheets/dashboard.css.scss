@@ -1,0 +1,15 @@
+.dash-wrap {
+	float: left;
+	width: 100%;
+  > .tab-pane > h4 {
+    margin-bottom: 1em;
+    font-style: italic;
+  }
+}
+
+.dash_widget {
+	width: 44%;
+	float: left;
+	padding-right: 50px;
+	padding-bottom: 10px;
+}

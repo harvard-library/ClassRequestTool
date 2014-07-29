@@ -1,286 +1,67 @@
 <script>
   $(function() {
-    $("table#sortTableExample").tablesorter({ sortList: [[1,0]] });
+   $("table#sortTableExample").tablesorter({ sortList: [[1,0]] });
+   $('.nav-tabs[role="tablist"] a').each(function (i,el) {
+     $(el).click(function (e) {
+       e.preventDefault();
+       $(this).tab('show');
+     });
+   });
   });
 </script>
 
 
 <h3>Dashboard</h3>
+<ul class="nav nav-tabs" role="tablist">
+  <li><a role="tab" data-toggle="tab" href="#upcoming" class="active">Upcoming Classes</a></li>
+  <li><a role="tab" data-toggle="tab" href="#unclaimed">To Be Scheduled</a></li>
+  <li><a role="tab" data-toggle="tab" href="#closed">Completed Classes</a></li>
+</ul>
+<div class="dash-wrap tab-content">
+  <div class="tab-pane active" id="upcoming">
+    <h4>Your Upcoming Classes</h4>
+    <%= render :partial => 'shared/dashboard_table',
+               :locals => { :id => 'your-unscheduled-table',
+                            :title => 'Your Claimed, Unscheduled Classes',
+                            :courses => @your_unscheduled } %>
 
-<div class="dash-wrap">
-  <div class="dash_widget">
-  <h4><%= link_to "Upcoming Classes for Your Library/Archive", dashboard_items_welcome_index_path(:courses => @your_repo_courses, :title => "Upcoming Classes for Your Library/Archive"), :target => "blank" %></h4>
-  <% unless @your_repo_courses.nil? || @your_repo_courses.empty? %>
-    <table id="your-repo-courses-table" class="table table-condensed tablesorter">
-      <thead>
-		<tr>
-      	  <th>Name</th>
-      	  <th>Class Date</th>
-		  <th>Status</th>
-      	  <th></th>
-      	</tr>
-	  </thead>
-	  <tbody>
-        <% @your_repo_courses.each do |course| %>
-          <tr>
-      	    <td><%= link_to(course.title, course ) %></td>
-      		<td><%= course.sections.first.try(:actual_date).try(:strftime, '%m/%d/%Y %I:%M %P') unless course.sections.first.try(:actual_date).nil? %></td>
-			<td><%= course.status unless course.status.nil? %></td>
-      		<td><%= link_to('Edit', edit_course_path(course), :class => "action-edit") %>
-            <% if current_user.try(:admin?) || current_user.try(:superadmin?) %>
-      	   	  <br /><%= link_to('Delete', course_path(course), :confirm => "Are you sure?", :method => :delete) %>
-          	<% end %>
-		    </td>
-      	  </tr>
-        <% end %>
-	  </tbody>
-    </table>
-		<br />
-		<%= render :partial => '/shared/tablesorter_pager', :locals => {:pager_id => "your-repo-courses-table" } %>
-        <% else %>
-      	None yet!
-        <% end %>
-  </div>
+    <%= render :partial => 'shared/dashboard_table',
+               :locals => { :id => 'your-upcoming-table',
+                            :title => 'Your Scheduled, Claimed Classes',
+                            :courses => @your_upcoming } %>
 
-  <div class="dash_widget">
-  <h4><%= link_to "Homeless Classes", dashboard_items_welcome_index_path(:courses => @homeless, :title => "Homeless Classes"), :target => "blank" %></h4>
-  <% unless @homeless.nil? || @homeless.empty? %>
-	<table id="homeless-table" class="table table-condensed tablesorter">
-	<thead>
-	  <tr>
-		<th>Name</th>
-		<th>Submission Date</th>
-		<th>Class Date</th>
-		<th></th>
-	  </tr>
-	</thead>
-	<tbody>
-      <% @homeless.each do |course| %>
-      	<tr>
-	  	  <td><%= link_to(course.title, course ) %></td>
-		  <td><%= course.created_at.strftime('%m/%d/%Y') %></td>
-		  <td><%= course.sections.first.try(:actual_date).try(:strftime, '%m/%d/%Y %I:%M %P') unless course.sections.first.try(:actual_date).nil? %></td>
-		  <td><%= link_to('Edit', edit_course_path(course), :class => "action-edit") %><br />
-			  <%= link_to('Add Note', course_path(course), :class => "action-edit") %><br />
-          <% if current_user.try(:admin?) || current_user.try(:superadmin?) %>
-	   		<%= link_to('Delete', course_path(course), :confirm => "Are you sure?", :method => :delete) %>
-    	  <% end %>
-		  </td>
-	    </tr>
-      <% end %>
-	</tbody>
-	</table>
-	<%= render :partial => '/shared/tablesorter_pager', :locals => {:pager_id => "homeless-table" } %>
-  <% else %>
-	None yet!
-  <% end %>
-  </div>
-</div>
-<div class="dash-wrap">
-  <div class="dash_widget">
-  <h4><%= link_to "Your Claimed, Unscheduled Classes", dashboard_items_welcome_index_path(:courses => @your_unscheduled, :title => "Your Claimed, Unscheduled Classes"), :target => "blank" %></h4>
-  <% unless @your_unscheduled.nil? || @your_unscheduled.empty? %>
-    <table id="your-unscheduled-table" class="table table-condensed tablesorter">
-	  <thead>
-	  <tr>
-		<th>Name</th>
-		<th>Submission Date</th>
-		<th></th>
-	  </tr>
-	  </thead>
-	  <tbody>
-    <% @your_unscheduled.each do |course| %>
-      	<tr>
-	  	  <td><%= link_to(course.title, course ) %></td>
-		  <td><%= course.created_at.strftime('%m/%d/%Y') %></td>
-		  <td><%= link_to('Edit', edit_course_path(course), :class => "action-edit") %><br />
-			  <%= link_to('Add Note', course_path(course), :class => "action-edit") %><br />
-          <% if current_user.try(:admin?) || current_user.try(:superadmin?) %>
-	   		 <%= link_to('Delete', course_path(course), :confirm => "Are you sure?", :method => :delete) %>
-      	  <% end %>
-		  </td>
-	    </tr>
-    <% end %>
-	  </tbody>
-	</table>
-	<%= render :partial => '/shared/tablesorter_pager', :locals => {:pager_id => "your-unscheduled-table" } %>
-  <% else %>
-	None yet!
-  <% end %>
-  </div>
+  </div> <!-- END #upcoming -->
 
-  <div class="dash_widget">
-  <h4><%= link_to "Unscheduled, Unclaimed Classes", dashboard_items_welcome_index_path(:courses => @unscheduled_unclaimed, :title => "Unscheduled, Unclaimed Classes"), :target => "blank" %></h4>
-    <% unless @unscheduled_unclaimed.nil? || @unscheduled_unclaimed.empty? %>
-  	<table id="unassigned-table" class="table table-condensed tablesorter">
-	<thead>
-  	  <tr>
-  		<th>Name</th>
-		<th>Submission Date</th>
-  		<th>Class Date</th>
-  		<th></th>
-  	  </tr>
-    </thead>
-	<tbody>
-        <% @unscheduled_unclaimed.each do |course| %>
-        	<tr>
-  	  	  <td><%= link_to(course.title, course ) %></td>
-		  <td><%= course.created_at.strftime('%m/%d/%Y') %></td>
-  		  <td><%= course.sections.first.try(:actual_date).try(:strftime, '%m/%d/%Y %I:%M %P') unless course.sections.first.try(:actual_date).nil? %></td>
-  		  <td><%= link_to('Edit', edit_course_path(course), :class => "action-edit") %><br />
-			  <%= link_to('Add Note', course_path(course), :class => "action-edit") %><br />
-          <% if current_user.try(:admin?) || current_user.try(:superadmin?) %>
-  	   		<%= link_to('Delete', course_path(course), :confirm => "Are you sure?", :method => :delete) %>
-      	  <% end %>
-		  </td>
-  	    </tr>
-        <% end %>
-	</tbody>
-  	</table>
-	<%= render :partial => '/shared/tablesorter_pager', :locals => {:pager_id => "unassigned-table" } %>
-    <% else %>
-  	None yet!
-    <% end %>
-  </div>
-</div>
-<div class="dash-wrap">
-  <div class="dash_widget">
-  <h4><%= link_to "Your Scheduled, Claimed Classes", dashboard_items_welcome_index_path(:courses => @your_upcoming, :title => "Your Scheduled, Claimed Classes"), :target => "blank" %></h4>
-  <% unless @your_upcoming.nil? || @your_upcoming.empty? %>
-    <table id="your-upcoming-table" class="table table-condensed tablesorter">
-	  <thead>
-	  <tr>
-		<th>Name</th>
-		<th>Submission Date</th>
-		<th>Class Date</th>
-		<th></th>
-	  </tr>
-	  </thead>
-	  <tbody>
-    <% @your_upcoming.each do |course| %>
-      	<tr>
-	  	  <td><%= link_to(course.title, course ) %></td>
-		  <td><%= course.created_at.strftime('%m/%d/%Y') %></td>
-		  <td><%= course.sections.first.try(:actual_date).try(:strftime, '%m/%d/%Y %I:%M %P') unless course.sections.first.try(:actual_date).nil? %></td>
-		  <td><%= link_to('Edit', edit_course_path(course), :class => "action-edit") %><br />
-			  <%= link_to('Add Note', course_path(course), :class => "action-edit") %><br />
-          <% if current_user.try(:admin?) || current_user.try(:superadmin?) %>
-	   		 <%= link_to('Delete', course_path(course), :confirm => "Are you sure?", :method => :delete) %>
-      	  <% end %>
-		  </td>
-	    </tr>
-    <% end %>
-	  </tbody>
-	</table>
-	<%= render :partial => '/shared/tablesorter_pager', :locals => {:pager_id => "your-upcoming-table" } %>
-  <% else %>
-	None yet!
-  <% end %>
-  </div>
+  <div class="tab-pane" id="unclaimed">
+    <h4>Classes to be Scheduled</h4>
+    <%= render :partial => 'shared/dashboard_table',
+               :locals => { :id => 'homeless-table',
+                            :title => 'Homeless Classes',
+                            :courses => @homeless } %>
 
-  <div class="dash_widget">
-    <h4><%= link_to "Scheduled, Unclaimed Classes", dashboard_items_welcome_index_path(:courses => @scheduled_unclaimed, :title => "Scheduled, Unclaimed Classes"), :target => "blank" %></h4>
-      <% unless @scheduled_unclaimed.nil? || @scheduled_unclaimed.empty? %>
-    	<table id="roomless-table" class="table table-condensed tablesorter">
-		<thead>
-    	  <tr>
-    		<th>Name</th>
-			<th>Submission Date</th>
-    		<th>Class Date</th>
-    		<th></th>
-    	  </tr>
-		</thead>
-		<tbody>
-          <% @scheduled_unclaimed.each do |course| %>
-          	<tr>
-    	  	  <td><%= link_to(course.title, course ) %></td>
-			  <td><%= course.created_at.strftime('%m/%d/%Y') %></td>
-    		  <td><%= course.sections.first.try(:actual_date).try(:strftime, '%m/%d/%Y %I:%M %P') unless course.sections.first.try(:actual_date).nil? %></td>
-    		  <td><%= link_to('Edit', edit_course_path(course), :class => "action-edit") %><br />
-				  <%= link_to('Add Note', course_path(course), :class => "action-edit") %><br />
-              <% if current_user.try(:admin?) || current_user.try(:superadmin?) %>
-    	   		<%= link_to('Delete', course_path(course), :confirm => "Are you sure?", :method => :delete) %>
-        	  <% end %>
-			  </td>
-    	    </tr>
-          <% end %>
-		</tbody>
-    	</table>
-		<%= render :partial => '/shared/tablesorter_pager', :locals => {:pager_id => "roomless-table" } %>
-      <% else %>
-    	None yet!
-      <% end %>
-  </div>
-</div>
 
-<div class="dash-wrap">
-  <div class="dash_widget">
-  <h4><%= link_to "Your Classes To Close", dashboard_items_welcome_index_path(:courses => @your_classes_to_close, :title => "Your Classes To Close"), :target => "blank" %></h4>
-  <% unless @your_classes_to_close.nil? || @your_classes_to_close.empty? %>
-    <table id="your-to-close-table" class="table table-condensed tablesorter">
-	  <thead>
-	  <tr>
-		<th>Name</th>
-		<th>Submission Date</th>
-		<th>Class Date</th>
-		<th></th>
-	  </tr>
-	  </thead>
-	  <tbody>
-    <% @your_classes_to_close.each do |course| %>
-      	<tr>
-	  	  <td><%= link_to(course.title, course ) %></td>
-		  <td><%= course.created_at.strftime('%m/%d/%Y') %></td>
-		  <td><%= course.sections.first.try(:actual_date).try(:strftime, '%m/%d/%Y %I:%M %P') unless course.sections.first.try(:actual_date).nil? %></td>
-		  <td><%= link_to('Edit to Close', course_path(course), :class => "action-edit") %><br />
-			  <%= link_to('Add Note', course_path(course), :class => "action-edit") %><br />
-          <% if current_user.try(:admin?) || current_user.try(:superadmin?) %>
-	   		 <%= link_to('Delete', course_path(course), :confirm => "Are you sure?", :method => :delete) %>
-      	  <% end %>
-		  </td>
-	    </tr>
-    <% end %>
-	  </tbody>
-	</table>
-	<%= render :partial => '/shared/tablesorter_pager', :locals => {:pager_id => "your-to-close-table" } %>
-  <% else %>
-	None yet!
-  <% end %>
-  </div>
+    <%= render :partial => 'shared/dashboard_table',
+               :locals => { :id => 'unassigned-table',
+                            :title => 'Classes to be Scheduled',
+                            :courses => @unscheduled_unclaimed } %>
 
-  <div class="dash_widget">
-  <h4><%= link_to "Your Closed Classes", dashboard_items_welcome_index_path(:courses => @your_past, :title => "Your Closed Classes"), :target => "blank" %></h4>
-  <span id="your-past">
-    <% unless @your_past.nil? || @your_past.empty? %>
-      <table id="your-past-table" class="table table-condensed tablesorter">
-	  <thead>
-  	  <tr>
-  		<th>Name</th>
-		<th>Submission Date</th>
-  		<th>Class Date</th>
-  		<th></th>
-  	  </tr>
-      </thead>
-	  <tbody>
-      <% @your_past.each do |course| %>
-        <tr>
-  	  	  <td><%= link_to(course.title, course ) %></td>
-		  <td><%= course.created_at.strftime('%m/%d/%Y') %></td>
-  		  <td><%= course.sections.first.try(:actual_date).try(:strftime, '%m/%d/%Y %I:%M %P') unless course.sections.first.try(:actual_date).nil? %></td>
-  		  <td><%= link_to('Edit', edit_course_path(course), :class => "action-edit") %><br />
-			  <%= link_to('Add Note', course_path(course), :class => "action-edit") %><br />
-          <% if current_user.try(:admin?) || current_user.try(:superadmin?) %>
-  	   	   <%= link_to('Delete', course_path(course), :confirm => "Are you sure?", :method => :delete) %>
-          <% end %>
-		  </td>
-  	    </tr>
-      <% end %>
-	  </tbody>
-  	</table>
-	<%= render :partial => '/shared/tablesorter_pager', :locals => {:pager_id => "your-past-table" } %>
-    <% else %>
-  	None yet!
-    <% end %>
-  </span>
-  </div>
-</div>
+    <%= render :partial => 'shared/dashboard_table',
+               :locals => { :id => 'roomless-table',
+                            :title => 'Scheduled Classes',
+                            :courses => @scheduled_unclaimed } %>
+
+  </div> <!-- END unclaimed -->
+
+  <div class="tab-pane" id="closed">
+    <h4>Your Completed Classes</h4>
+    <%= render :partial => 'shared/dashboard_table',
+               :locals => { :id => 'your-to-close-table',
+                            :title => 'Your Classes To Close',
+                            :courses => @your_classes_to_close } %>
+
+    <%= render :partial => 'shared/dashboard_table',
+               :locals => { :id => 'your-past-table',
+                            :title => 'Your Closed Classes',
+                            :courses => @your_past } %>
+  </div> <!-- END #closed -->
+</div> <!-- END .dash-wrap -->
