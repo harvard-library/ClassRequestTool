@@ -8,8 +8,11 @@
 }
 
 .dash_widget {
-	width: 44%;
+	width: 48%;
 	float: left;
-	padding-right: 50px;
-	padding-bottom: 10px;
+  padding-bottom: 10px;
+  &:first-child {
+	  margin-right: 4%;
+  }
+
 }

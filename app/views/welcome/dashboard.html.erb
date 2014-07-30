@@ -30,24 +30,25 @@
                             :courses => @your_upcoming } %>
 
   </div> <!-- END #upcoming -->
-
   <div class="tab-pane" id="unclaimed">
-    <%= render :partial => 'shared/dashboard_table',
+    <div class="clearfix">
+      <%= render :partial => 'shared/dashboard_table',
                :locals => { :id => 'homeless-table',
                             :title => 'Homeless Classes',
                             :courses => @homeless } %>
 
 
-    <%= render :partial => 'shared/dashboard_table',
-               :locals => { :id => 'unassigned-table',
-                            :title => 'Classes to be Scheduled',
-                            :courses => @unscheduled_unclaimed } %>
-
-    <%= render :partial => 'shared/dashboard_table',
-               :locals => { :id => 'roomless-table',
-                            :title => 'Scheduled Classes',
-                            :courses => @scheduled_unclaimed } %>
-
+      <%= render :partial => 'shared/dashboard_table',
+                 :locals => { :id => 'unassigned-table',
+                              :title => 'Classes to be Scheduled',
+                              :courses => @unscheduled_unclaimed } %>
+    </div>
+    <div class="clearfix">
+      <%= render :partial => 'shared/dashboard_table',
+                 :locals => { :id => 'roomless-table',
+                              :title => 'Scheduled Classes',
+                              :courses => @scheduled_unclaimed } %>
+    </div>
   </div> <!-- END unclaimed -->
 
   <div class="tab-pane" id="closed">
