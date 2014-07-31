@@ -20,7 +20,6 @@
 		<th>Class Date</th>
 		<th>Repository</th>
 		<th>Status</th>
-		<th>Actions</th>
 	  </tr>
 	</thead>
 	<tbody>
@@ -31,11 +30,6 @@
 		  <td><%= course.sections.first.try(:actual_date).try(:strftime, '%m/%d/%Y %I:%M %P') unless course.sections.first.try(:actual_date).nil? %></td>
 		  <td><%= course.repository.nil? ? "Not Assigned" : course.repository.name %></td>
 		  <td><%= course.status %></td>
-		  <td>
-		  <% if course.sections.first.try(:actual_date).nil? %>
-		    <%= link_to('Edit', edit_course_path(course), :class => "action-edit") %> | <%= link_to('Delete', course_path(course), :confirm => "Are you sure?", :method => :delete) %>
-	  	  <% end %>
-		  </td>
 	    </tr>
 	    <% end %>
 	</tbody>
@@ -62,7 +56,6 @@
 		<th>Class Date</th>
 		<th>Repository</th>
 		<th>Status</th>
-		<th>Actions</th>
 	  </tr>
 	</thead>
 	<tbody>
@@ -73,11 +66,6 @@
 		  <td><%= course.sections.first.try(:actual_date).try(:strftime, '%m/%d/%Y %I:%M %P') unless course.sections.first.try(:actual_date).nil? %></td>
 		  <td><%= course.repository.nil? ? "Not Assigned" : course.repository.name %></td>
 		  <td><%= course.status %></td>
-		  <td>
-		  <% if course.sections.first.try(:actual_date).nil? %>
-		    <%= link_to('Edit', edit_course_path(course), :class => "action-edit") %> | <%= link_to('Delete', course_path(course), :confirm => "Are you sure?", :method => :delete) %>
-	  	  <% end %>
-		  </td>
 	    </tr>
 	    <% end %>
 	</tbody>

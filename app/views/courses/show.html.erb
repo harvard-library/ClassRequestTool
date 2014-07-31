@@ -1,7 +1,7 @@
 <h3><%= @course.title %></h3>
 <br />
 <div id="welcome-left">
-<% if (current_user.try(:patron?) && @course.sections.select {|s| s.actual_date}.blank?) || (current_user.try(:staff?) || current_user.try(:admin?) || current_user.try(:superadmin?)) %>
+<% if current_user.try(:can_schedule?) %>
 <p><%= button_to('Edit Class Info', edit_course_path(@course), :class => "action-edit", :method => :get) %></p>
 <% end %>
 

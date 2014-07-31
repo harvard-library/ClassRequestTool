@@ -2,7 +2,7 @@ require 'csv'
 
 class CoursesController < ApplicationController
   before_filter :authenticate_login!, :except => [:recent_show]
-  before_filter :authenticate_admin_or_staff!, :only => [:take, :export]
+  before_filter :authenticate_admin_or_staff!, :only => [:take, :export, :edit]
   before_filter :process_datetimes, :only => [:create, :update]
   before_filter :backdated?, :only => [:create, :update]
 
