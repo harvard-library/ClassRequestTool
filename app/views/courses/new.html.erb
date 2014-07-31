@@ -9,18 +9,31 @@
       }
     });
   }
+ $(function () {
+   $('form').on('submit', function (e) {
+     console.log('ReplaceState');
+     history.replaceState({submitted: "yes"}, '', "");
+   });
+   if (history && history.state && history.state.submitted == "yes"){
+     $('form').on('submit', function (e) {
+       e.preventDefault();
+       alert("You've already submitted this form. Redirecting to homepage!");
+       location.href = "/";
+     });
+   }
+ });
  </script>
  <noscript>Please enable Javascript.</noscript>
 
 <h3>Request a Class Session</h3>
 
-<div id="info-left">	
+<div id="info-left">
   <%= semantic_form_for(@course, :html => {:multipart => true}) do |f| %>
 	<%= f.inputs do %>
 	  <h4><%= @course.repository.nil? ? "Not Sure - Help me Choose" : @course.repository.name %></h4>
 	  <% unless @course.repository.nil? %>
 		<%= f.hidden_field :repository_id, :value => @course.repository.id %>
-	  <% end %>	
+	  <% end %>
 		<span id="requester_info"><%= render :partial => 'shared/forms/course_requester_info', :locals=>{:f=>f} %></span>
         <span id="course_info"><%= render :partial => 'shared/forms/course_info', :locals=>{:f=>f} %></span>
         <span id="involvement_info"><%= render :partial => 'shared/forms/course_staff_involvement', :locals=>{:f=>f} %></span>
@@ -30,5 +43,5 @@
 	<%= f.actions do %>
 	  <%= f.action :submit, :as => :button, :label => 'Submit Request ' %>
 	<% end %>
-  <% end %>	
+  <% end %>
 </div>
