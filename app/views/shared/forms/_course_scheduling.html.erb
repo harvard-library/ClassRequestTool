@@ -46,13 +46,14 @@
           <% (0..1).each do |rd_i| %>
             <div class="form_date">
               <%= f.input :requested_dates,
-                          :as => :datetime_picker,
+                          :as => :string,
                           :label => "#{(rd_i+1).ordinalize} choice",
                           :wrapper_html => { :id => "#{id_prefix}_input"},
                           :size => 26,
                           :maxlength => 26,
                           :input_html => {:id => "#{id_prefix}_requested_dates_#{rd_i}",
                                           :name => "#{name_prefix}[requested_dates][]",
+                                          :class => 'requested_date date',
                                           :placeholder => "Click to select date/time",
                                           :value => display_with_tz(sect.requested_dates.try(:slice, rd_i))} %>
 
@@ -64,13 +65,13 @@
           <% if current_user.can_schedule? %>
             <div class="form_full_width yellow-box" style="clear:both;">
               <%= f.input :actual_date,
-                          :as => :datetime_picker,
+                          :as => :string,
                           :label => "Actual Date",
                           :wrapper_html => {:id => "#{id_prefix}_actual_date_input"},
                           :input_html => {:id => "#{id_prefix}_actual_date",
                                           :name => "#{name_prefix}[actual_date]",
                                           :placeholder => "Click to select date/time",
-                                          :class => 'actual-date',
+                                          :class => 'actual-date date',
                                           :value => display_with_tz(sect.actual_date)} %>
             </div>
           <% end %> <%# END if current_user.can_schedule? %>
@@ -97,6 +98,7 @@
                   :size => 30,
                   :value => @course.pre_class_appt.nil? ? nil : @course.pre_class_appt.strftime('%Y-%m-%d %I:%M %P'),
                   :readonly => true,
+                  :class => 'pre-class-date date',
                   :placeholder => "Click to select date/time" } %>
 
     <%= check_box_tag :send_timeframe_email %> Check to send email notification of confirmed or changed class date/time and (if applicable) scheduled pre-class appointment to requester.<br /><br />

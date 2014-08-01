@@ -5,15 +5,15 @@
   <% (0..1).each do |i| %>
     <div class="form_date">
       <div id="course_sections_attributes_<%= section_index %>_input"
-           class="datetime_picker input optional stringish form-group">
+           class="string input optional stringish form-group">
         <label for="course_sections_attributes_<%= section_index %>_requested_dates_<%= i %>"
                class="control-label"><%= (i + 1).ordinalize %> choice</label>
         <span class="form-wrapper">
-          <input type="datetime-local"
-                 step="1" size="26" placeholder="Click to select date/time" maxlength="26"
+          <input type="text"
+                 size="26" placeholder="Click to select date/time" maxlength="26"
                  name="course[sections_attributes][<%= section_index %>][requested_dates][]"
                  id="course_sections_attributes_<%= section_index %>_requested_dates_<%= i %>"
-                 class="form-control">
+                 class="date requested_date form-control">
         </span>
       </div>
       <% if admin %>
@@ -24,15 +24,15 @@
   <% if admin %>
     <div style="clear:both;" class="form_full_width yellow-box">
       <div id="course_sections_attributes_<%= section_index %>_actual_date_input"
-           class="datetime_picker input optional stringish form-group">
+           class="string input optional stringish form-group">
         <label for="course_sections_attributes_<%= section_index %>_actual_date"
                class="control-label">Actual Date</label>
         <span class="form-wrapper">
-          <input type="datetime-local"
-                 step="1" size="26" placeholder="Click to select date/time" maxlength="26"
+          <input type="text"
+                 size="26" placeholder="Click to select date/time" maxlength="26"
                  name="course[sections_attributes][<%= section_index %>][actual_date]"
                  id="course_sections_attributes_<%= section_index %>_actual_date"
-                 class="actual-date form-control">
+                 class="date actual-date form-control">
         </span>
       </div>
     </div>

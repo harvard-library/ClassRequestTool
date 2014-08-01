@@ -20,7 +20,7 @@ $(function () {
     });
   }
 
-  $('body').on('click', '[type=datetime-local]:not(.hasDatepicker)', function (e) {
+  $('body').on('click', 'input.date:not(.hasDatepicker)', function (e) {
     crt.setup_datetimepicker(this);
     $(this).datetimepicker('show');
   });
