@@ -189,7 +189,7 @@ class CoursesController < ApplicationController
         # FIX INFO_NEEDED Should "changed from" repos get email? Inquiring Bobbis want to know
         @course.send_repo_change_email unless @course.repository.blank?
         @course.notes.create(:note_text => "Library/Archive changed to #{@course.repository.blank? ? "none" : @course.repository.name + "Email sent"}.",
-                             :user_id => current_user)
+                             :user_id => current_user.id)
       end
 
       if staff_change
