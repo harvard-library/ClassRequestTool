@@ -260,10 +260,10 @@ class CoursesController < ApplicationController
   def export
     @sections = Section.joins(:course).order('course_id ASC NULLS LAST, session ASC NULLS LAST, actual_date ASC NULLS LAST')
     csv = CSV.generate(:encoding => 'utf-8') do |csv|
-      csv << Course.attribute_names + [:session, :section_id, :date]
+      csv << Course.attribute_names + [:session, :section_id, :date, :headcount]
       @sections.each do |section|
         values = Course.attribute_names.map {|name| section.course.send name}
-        values += [section.session, section.id, section.actual_date]
+        values += [section.session, section.id, section.actual_date, (section.headcount || 'Not Entered')]
         csv << values
       end
     end

@@ -73,7 +73,20 @@
                                           :placeholder => "Click to select date/time",
                                           :class => 'actual-date date',
                                           :value => display_with_tz(sect.actual_date)} %>
+              <%= f.input :headcount,
+                        :as => :number,
+                        :hint => "Actual number of students that attended.",
+                        :only_integer => true,
+                        :min => 0,
+                        :step => 1,
+                        :size => 3,
+                        :wrapper_html => {:id => "#{id_prefix}_headcount_input"},
+                        :input_html => {:id => "#{id_prefix}_headcount",
+                                        :name => "#{name_prefix}[headcount]",
+                                        :value => sect.headcount} %>
             </div>
+
+
           <% end %> <%# END if current_user.can_schedule? %>
         </div> <!-- END .section -->
         <% section_counter += 1 %>

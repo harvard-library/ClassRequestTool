@@ -9,7 +9,7 @@
 #
 # Example:  The Course "History of the Book" might have three Sessions(1,2,3), which are
 #           each split over two dates or rooms, for a total of six sections.  In this case,
-#           the sections table would look like this (requested_dates omitted)
+#           the sections table would look like this (some fields omitted)
 #
 #             | id | course_id | room_id | session |  actual_date  |
 #             |----------------------------------------------------|
@@ -28,5 +28,6 @@ class Section < ActiveRecord::Base
                   :actual_date,     # Single DateTime
                   :session,         # Integer representing session membership
                   :room,
-                  :course)
+                  :course,
+                  :headcount)       # actual number of people in room, recorded after the fact
 end

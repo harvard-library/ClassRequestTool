@@ -6,3 +6,7 @@ div.deleted {
 div.session {
   @include clearfix();
 }
+
+input[type=number] {
+  max-width: 5em;
+}

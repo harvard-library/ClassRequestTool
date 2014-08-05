@@ -11,7 +11,9 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140527151215) do
+ActiveRecord::Schema.define(:version => 20140801133423) do
+
+  add_extension "fuzzystrmatch"
 
   create_table "assessments", :force => true do |t|
     t.text     "using_materials"
@@ -209,6 +211,7 @@ ActiveRecord::Schema.define(:version => 20140527151215) do
     t.integer  "room_id"
     t.datetime "created_at",                     :null => false
     t.datetime "updated_at",                     :null => false
+    t.integer  "headcount"
   end
 
   add_index "sections", ["actual_date"], :name => "index_sections_on_actual_date"

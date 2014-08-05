@@ -1,3 +1,11 @@
+<%#
+  NOTE: spans with ids on this page, with the exception of span#headcount and span#avgHeadcount,
+    are used by Aeon to pull information out of the CRT.
+
+  span#headcount and span#avgHeadcount are there for potential future use by Aeon
+
+  DO NOT CHANGE THEM without also changing the Aeon plugin that relies on them.
+%>
 <h3><%= @course.title %></h3>
 <br />
 <div id="welcome-left">
@@ -6,12 +14,14 @@
 <% end %>
 
 	<h4>Course Information</h4>
-	Library/Archive: <span id="repository"><%= @course.repository.nil? ? "Not Sure - Help me Choose" : @course.repository.name %></span> <br />
-	Title: <span id="title"><%= @course.title unless @course.title.nil? %></span> <br />
-	Subject: <span id="subject"><%= @course.subject unless @course.subject.nil? %></span> <br />
-	Course Number: <span id="class"><%= @course.course_number unless @course.course_number.nil? %></span> <br />
-	Affiliation: <span id="affiliation"><%= @course.affiliation unless @course.affiliation.nil? %></span> <br />
-	Number of Students: <span id="studentNo"><%= @course.number_of_students unless @course.number_of_students.nil? %></span> <br />
+	Library/Archive: <span id="repository"><%= @course.repository.nil? ? "Not Sure - Help me Choose" : @course.repository.name %></span> <br>
+	Title: <span id="title"><%= @course.title unless @course.title.nil? %></span> <br>
+	Subject: <span id="subject"><%= @course.subject unless @course.subject.nil? %></span> <br>
+	Course Number: <span id="class"><%= @course.course_number unless @course.course_number.nil? %></span> <br>
+	Affiliation: <span id="affiliation"><%= @course.affiliation unless @course.affiliation.nil? %></span> <br>
+	Number of Students: <span id="studentNo"><%= @course.number_of_students unless @course.number_of_students.nil? %></span> <br>
+  Actual Attendance (So far): <span id="headcount"><%= @course.headcount || 'None recorded' %></span><br>
+  Average Attendance per section: <span id="avgHeadcount"><%= @course.avg_headcount || 'None recorded' %></span><br>
 	Syllabus:
 	<%  if @course.file.blank? && @course.external_syllabus.nil? %>
 	  None
@@ -74,8 +84,9 @@
           <%== aeon_timeframe_emitted ? '' : '<span id="timeframe">' %><%= sect.try(:actual_date).try(:strftime, '%m/%d/%Y %l:%M %P') %><%== aeon_timeframe_emitted ? '' : '</span>' %><br />
           <% aeon_timeframe_emitted = true %>
         <% elsif sect.requested_dates %>
-          Requested Times: <%== '<ul><li>' + sect.requested_dates.map {|rd| rd.strftime('%m/%d/%Y %I:%M %P') }.join("</li><li>") + '</li></ul>' %>
+          <div>Requested Times: <%== '<ul><li>' + sect.requested_dates.map {|rd| rd.strftime('%m/%d/%Y %I:%M %P') }.join("</li><li>") + '</li></ul>' %></div>
         <% end %>
+        <div>Headcount: <%= sect.headcount ? sect.headcount : "Not Recorded" %></div>
       <% end %>
 	  <% end %>
 	<% else %>

@@ -23,7 +23,7 @@
 <%= f.input :external_syllabus, :label => "OR Syllabus (Enter URL): ", :input_html => { :value => @course.external_syllabus.nil? ? "http://" : @course.external_syllabus } %>
 </div>
 <div class="form_col1">
-<%= f.input :number_of_students, :label => "Number of Students: ", :hint => !@course.repository.nil? ? "Maximum class limit is #{@course.repository.class_limit unless @course.repository.nil?}. For larger groups/classes the staff will be in touch with possible options." : "For larger groups/classes the staff will be in touch with possible options." %>
+<%= f.input :number_of_students, :as => :number, :min => 0, :step => 1, :label => "Number of Students: ", :hint => !@course.repository.nil? ? "Maximum class limit is #{@course.repository.class_limit unless @course.repository.nil?}. For larger groups/classes the staff will be in touch with possible options." : "For larger groups/classes the staff will be in touch with possible options." %>
 </div>
 <div class="form_full_width">
 <%= f.input :goal, :label => "What is your goal for this class session? ", :input_html => { :rows => 5, :columns => 100 } %>

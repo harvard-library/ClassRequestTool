@@ -68,10 +68,39 @@ class Course < ActiveRecord::Base
     where(:status => 'Scheduled, Unclaimed').ordered_by_last_section
   end
 
+  def headcount
+    sections.map(&:headcount).reject(&:blank?).reduce(:+)
+  end
+
+  def avg_headcount
+    hc = headcount
+    if hc
+      (hc / sections.map(&:headcount).reject(&:blank?).count.to_f).try(:round, 1)
+    else
+      nil
+    end
+  end
+
+  # Internal class for attaching functions to sessions
+  class Session < Array
+    def headcount
+      map(&:headcount).reject(&:blank?).reduce(:+)
+    end
+
+    def avg_headcount
+      hc = headcount
+      if hc
+        (headcount / map(&:headcount).reject(&:blank?).count.to_f).try(:round, 1)
+      else
+        nil
+      end
+    end
+  end
+
   # Returns an array of sessions, ordered by session number
   def sessions
     sesh = sections.group_by(&:session)
-    sesh.keys.sort.reduce([]) {|result, key| result << sesh[key];result}
+    sesh.keys.sort.reduce([]) {|result, key| result << Session.new(sesh[key]);result}
   end
 
   def new_request_email

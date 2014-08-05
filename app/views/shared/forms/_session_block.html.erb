@@ -37,6 +37,20 @@
                    class="date actual-date form-control">
           </span>
         </div>
+
+        <div id="course_sections_attributes_<%= section_index %>_headcount_input"
+             class="number input optional numeric stringish form-group">
+          <label for="course_sections_attributes_<%= section_index %>_headcount"
+                 class="  control-label">Headcount</label>
+          <span class="form-wrapper">
+            <input type="number"
+                   step="1" min="0"
+                   name="course[sections_attributes][<%= section_index %>][headcount]"
+                   id="course_sections_attributes_<%= section_index%>_headcount"
+                   class="form-control">
+            <span class="help-block">Actual number of students that attended.</span>
+          </span>
+        </div>
       </div>
     <% end %>
   </div> <!-- END .section -->
