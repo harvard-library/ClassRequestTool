@@ -68,6 +68,9 @@ class Course < ActiveRecord::Base
     where(:status => 'Scheduled, Unclaimed').ordered_by_last_section
   end
 
+  # Headcounts represent after-the-fact, definite attendance numbers
+  #   The following functions depend on Course::Session,
+  #   defined at bottom of this file
   def headcount
     sections.map(&:headcount).reject(&:blank?).reduce(:+)
   end
@@ -78,22 +81,6 @@ class Course < ActiveRecord::Base
       (hc / sections.map(&:headcount).reject(&:blank?).count.to_f).try(:round, 1)
     else
       nil
-    end
-  end
-
-  # Internal class for attaching functions to sessions
-  class Session < Array
-    def headcount
-      map(&:headcount).reject(&:blank?).reduce(:+)
-    end
-
-    def avg_headcount
-      hc = headcount
-      if hc
-        (headcount / map(&:headcount).reject(&:blank?).count.to_f).try(:round, 1)
-      else
-        nil
-      end
     end
   end
 
@@ -275,6 +262,22 @@ class Course < ActiveRecord::Base
       <p>If you would consider taking five minutes to help us improve our services by filling out <a href='#{ROOT_URL}#{new_assessment_path(:course_id => self.id)}'> a short assessment about your experience, we would greatly appreciate it.</a></p>
       <p>Thank you for utilizing #{repository} in your course. We hope to work with you again soon.</p>"
     )
+  end
+
+  # Internal class for attaching functions to sessions
+  class Session < Array
+    def headcount
+      map(&:headcount).reject(&:blank?).reduce(:+)
+    end
+
+    def avg_headcount
+      hc = headcount
+      if hc
+        (headcount / map(&:headcount).reject(&:blank?).count.to_f).try(:round, 1)
+      else
+        nil
+      end
+    end
   end
 
 end

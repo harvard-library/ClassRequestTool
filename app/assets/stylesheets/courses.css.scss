@@ -10,3 +10,16 @@ div.session {
 input[type=number] {
   max-width: 5em;
 }
+
+/* course/#/summary */
+.summary-label {
+  font-weight: bold;
+}
+
+ul.summary-info {
+  list-style: none outside none;
+  padding-left: 1em;
+  li {
+    padding-bottom: 0.2em;
+  }
+}

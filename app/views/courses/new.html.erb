@@ -11,13 +11,12 @@
   }
  $(function () {
    $('form').on('submit', function (e) {
-     console.log('ReplaceState');
      history.replaceState({submitted: "yes"}, '', "");
    });
    if (history && history.state && history.state.submitted == "yes"){
      $('form').on('submit', function (e) {
        e.preventDefault();
-       alert("You've already submitted this form. Redirecting to homepage!");
+       alert("You've already submitted this form. Redirecting to the Class Request Tool's homepage!");
        location.href = "/";
      });
    }

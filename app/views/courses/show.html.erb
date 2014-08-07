@@ -14,110 +14,134 @@
 <% end %>
 
 	<h4>Course Information</h4>
-	Library/Archive: <span id="repository"><%= @course.repository.nil? ? "Not Sure - Help me Choose" : @course.repository.name %></span> <br>
-	Title: <span id="title"><%= @course.title unless @course.title.nil? %></span> <br>
-	Subject: <span id="subject"><%= @course.subject unless @course.subject.nil? %></span> <br>
-	Course Number: <span id="class"><%= @course.course_number unless @course.course_number.nil? %></span> <br>
-	Affiliation: <span id="affiliation"><%= @course.affiliation unless @course.affiliation.nil? %></span> <br>
-	Number of Students: <span id="studentNo"><%= @course.number_of_students unless @course.number_of_students.nil? %></span> <br>
-  Actual Attendance (So far): <span id="headcount"><%= @course.headcount || 'None recorded' %></span><br>
-  Average Attendance per section: <span id="avgHeadcount"><%= @course.avg_headcount || 'None recorded' %></span><br>
-	Syllabus:
+  <ul class="summary-info">
+	  <li><span class="summary-label">Library/Archive:</span> <span id="repository"><%= @course.repository.nil? ? "Not Sure - Help me Choose" : @course.repository.name %></span></li>
+	  <li><span class="summary-label">Title:</span> <span id="title"><%= @course.title unless @course.title.nil? %></span></li>
+	  <span class="summary-label">Subject:</span> <span id="subject"><%= @course.subject unless @course.subject.nil? %></span> <br>
+	  <li><span class="summary-label">Course Number:</span> <span id="class"><%= @course.course_number unless @course.course_number.nil? %></span></li>
+	  <li><span class="summary-label">Affiliation:</span> <span id="affiliation"><%= @course.affiliation unless @course.affiliation.nil? %></span></li>
+	  <li><span class="summary-label">Number of Students:</span> <span id="studentNo"><%= @course.number_of_students unless @course.number_of_students.nil? %></span></li>
+    <li><span class="summary-label">Actual Attendance (So far):</span> <span id="headcount"><%= @course.headcount || 'None recorded' %></span</li>
+    <li><span class="summary-label">Average Attendance per section:</span> <span id="avgHeadcount"><%= @course.avg_headcount || 'None recorded' %></span></li>
+	  <li><span class="summary-label">Syllabus:</span>
 	<%  if @course.file.blank? && @course.external_syllabus.nil? %>
 	  None
 	<% else %>
 	  <%= link_to "Syllabus", @course.file_url unless @course.file.blank? %>
 	  <%  unless @course.external_syllabus.nil? %>
-	  <br />
+	  </li>
 	    <%= link_to @course.external_syllabus, @course.external_syllabus, :target => "blank" %>
 	  <% end %>
 	<% end %>
-	<br />
-	Goal for Class Session: <%= @course.goal unless @course.goal.nil? %><br />
+	  </li>
+    <li><span class="summary-label">Goal for Class Session:</span> <%= @course.goal unless @course.goal.nil? %></li>
+  </ul>
 
 	<h4>Requester Information</h4>
-	Primary Contact Username:  <span id="requestorUsername"><%= @course.contact_username unless @course.contact_username.nil? %></span> <br />
-	Primary Contact Name:  <span id="patronContact"><%= @course.contact_first_name unless @course.contact_first_name.nil? %> <%= @course.contact_last_name unless @course.contact_last_name.nil? %></span> <br />
-	Primary Contact Email: <%= @course.contact_email unless @course.contact_email.nil? %> <br />
-	Primary Contact Phone: <%= @course.contact_phone unless @course.contact_phone.nil? %> <br />
-
+  <ul class="summary-info">
+	<li><span class="summary-label">Primary Contact Username:</span>  <span id="requestorUsername"><%= @course.contact_username unless @course.contact_username.nil? %></span></li>
+	<li><span class="summary-label">Primary Contact Name:</span>  <span id="patronContact"><%= @course.contact_first_name unless @course.contact_first_name.nil? %> <%= @course.contact_last_name unless @course.contact_last_name.nil? %></span></li>
+  <li><span class="summary-label">Primary Contact Email:</span> <%= @course.contact_email unless @course.contact_email.nil? %></li>
+  <li><span class="summary-label">Primary Contact Phone:</span> <%= @course.contact_phone unless @course.contact_phone.nil? %></li>
+  </ul>
 	<h4>Staff Involvement</h4>
-	Primary Library/Archive Contact:
-	<% unless @course.primary_contact.nil? %>
-	   <%= mail_to @course.primary_contact.email, "#{@course.primary_contact.full_name}" %>
-	<% else %>
-	  None
-	<% end %>
-	<br />
-	Staff Involvement: <br />
-	<ul>
-	<% @course.staff_involvements.each do |si| %>
-	  <li><%= si.involvement_text %></li>
-	<% end %>
-	</ul>
-	<%= @course.staff_involvement unless @course.staff_involvement.nil? || @course.staff_involvement.blank? %> <br />
+  <ul class="summary-info">
+	  <li><span class="summary-label">Primary Library/Archive Contact:</span>
+	    <% unless @course.primary_contact.nil? %>
+	      <%= mail_to @course.primary_contact.email, "#{@course.primary_contact.full_name}" %>
+	    <% else %>
+	      None
+	    <% end %>
+	  </li>
+	  <li><span class="summary-label">Staff Involvement:</span>
+	    <ul>
+	      <% @course.staff_involvements.each do |si| %>
+	        <li><%= si.involvement_text %></li>
+	      <% end %>
+        <li><%= @course.staff_involvement unless @course.staff_involvement.nil? || @course.staff_involvement.blank? %></li>
+	    </ul>
+  </ul>
 
 	<h4>Pre-Class Appointment</h4>
-	<% if !@course.pre_class_appt.nil? %>
-	  Pre-Class Appt: <%= @course.pre_class_appt.strftime('%m/%d/%Y %I:%M %P') unless @course.pre_class_appt.nil? %> <br />
-	<% elsif !@course.pre_class_appt_choice_1.nil? || !@course.pre_class_appt_choice_2.nil? || !@course.pre_class_appt_choice_3.nil? %>
-	  Choice 1: <%= @course.pre_class_appt_choice_1.strftime('%m/%d/%Y %I:%M %P') unless @course.pre_class_appt_choice_1.nil? %> <br />
-	  Choice 2: <%= @course.pre_class_appt_choice_2.strftime('%m/%d/%Y %I:%M %P') unless @course.pre_class_appt_choice_2.nil? %> <br />
-	  Choice 3: <%= @course.pre_class_appt_choice_3.strftime('%m/%d/%Y %I:%M %P') unless @course.pre_class_appt_choice_3.nil? %> <br />
+  <ul class="summary-info">
+	  <% if !@course.pre_class_appt.nil? %>
+	    <li><span class="summary-label">Pre-Class Appt:</span> <%= @course.pre_class_appt.strftime('%m/%d/%Y %I:%M %P') unless @course.pre_class_appt.nil? %></li>
+	  <% elsif !@course.pre_class_appt_choice_1.nil? || !@course.pre_class_appt_choice_2.nil? || !@course.pre_class_appt_choice_3.nil? %>
+	    <li><span class="summary-label">Choice 1:</span> <%= @course.pre_class_appt_choice_1.strftime('%m/%d/%Y %I:%M %P') unless @course.pre_class_appt_choice_1.nil? %></li>
+	    <li><span class="summary-label">Choice 2:</span> <%= @course.pre_class_appt_choice_2.strftime('%m/%d/%Y %I:%M %P') unless @course.pre_class_appt_choice_2.nil? %></li>
+	    <li><span class="summary-label">Choice 3:</span> <%= @course.pre_class_appt_choice_3.strftime('%m/%d/%Y %I:%M %P') unless @course.pre_class_appt_choice_3.nil? %></li>
 	<% else %>
-	  To be scheduled, if required.
+	    <li>To be scheduled, if required.</li>
 	<% end %>
-
+  </ul>
 
 	<h4>Scheduling</h4>
-	Number of Sessions: <%= @course.sessions.count %> <br />
+  <ul class="summary-info">
+	  <li><span class="summary-label">Number of Sessions: <%= @course.sessions.count %></span></li>
+  </ul>
 
 	<h4>Date/Time of Class</h4>
 	<% if !@course.sections.map(&:actual_date).reject(&:nil?).blank? ||
         !@course.sections.map(&:requested_dates).reject(&:nil?).blank? %>
-    <% aeon_timeframe_emitted = nil # Has the first timeframe been emitted for Aeon's sake?  %>
-    <% @course.sessions.each.with_index(1) do |sesh, i| %>
-      <h5>Session <%= i %></h5>
-      <h6>Dates/Times</h6>
-      <% sesh.each do |sect| %>
-        <% if sect.actual_date %>
-          <%== aeon_timeframe_emitted ? '' : '<span id="timeframe">' %><%= sect.try(:actual_date).try(:strftime, '%m/%d/%Y %l:%M %P') %><%== aeon_timeframe_emitted ? '' : '</span>' %><br />
-          <% aeon_timeframe_emitted = true %>
-        <% elsif sect.requested_dates %>
-          <div>Requested Times: <%== '<ul><li>' + sect.requested_dates.map {|rd| rd.strftime('%m/%d/%Y %I:%M %P') }.join("</li><li>") + '</li></ul>' %></div>
-        <% end %>
-        <div>Headcount: <%= sect.headcount ? sect.headcount : "Not Recorded" %></div>
-      <% end %>
-	  <% end %>
+    <div>
+      <% aeon_timeframe_emitted = nil # Has the first timeframe been emitted for Aeon's sake?  %>
+      <% @course.sessions.each.with_index(1) do |sesh, i| %>
+        <h5>Session <%= i %></h5>
+        <h6>Dates/Times</h6>
+        <ul class="summary-info">
+          <% sesh.each do |sect| %>
+            <% if sect.actual_date %>
+              <li><span class="summary-label">Actual Date:</span> <%== aeon_timeframe_emitted ? '' : '<span id="timeframe">' %><%= sect.try(:actual_date).try(:strftime, '%m/%d/%Y %l:%M %P') %><%== aeon_timeframe_emitted ? '' : '</span>' %></li>
+              <% aeon_timeframe_emitted = true %>
+            <% elsif sect.requested_dates %>
+              <li><span class="summary-label">Requested Times: </span> <%== '<ul><li>' + sect.requested_dates.map {|rd| rd.strftime('%m/%d/%Y %I:%M %P') }.join("</li><li>") + '</li></ul>' %></li>
+            <% end %>
+            <li><span class="summary-label">Headcount:</span> <%= sect.headcount ? sect.headcount : "Not Recorded" %></li>
+          <% end %>
+        </ul>
+	    <% end %>
+    </div>
 	<% else %>
-	  No class dates selected.
+	  <div>No class dates selected.</div>
 	<% end %>
-	<br />
-	Class Duration: <span id="duration"><%= @course.duration unless @course.duration.nil? %></span> hour(s) <br />
-	Room: <span id="room"><%= @course.room.name unless @course.room.nil? %></span> <br />
-	Comments: <%= @course.comments unless @course.comments.nil? %> <br />
+
+  <ul class="summary-info">
+	  <li><span class="summary-label">Class Duration:</span> <span id="duration"><%= @course.duration unless @course.duration.nil? %></span> hour(s)</li>
+	  <li><span class="summary-label">Room:</span> <span id="room"><%= @course.room.name unless @course.room.nil? %></span></li>
+	  <li><span class="summary-label">Comments:</span> <%= @course.comments unless @course.comments.nil? %></li>
+  </ul>
 </div>
+
 <div id="welcome-right">
   <% if current_user.try(:staff?) || current_user.try(:admin?) || current_user.try(:superadmin?) %>
 	  <h4>Admin Actions</h4>
-	  Status: <%= @course.status %> <br />
-		Primary Library/Archive Contact:
-		<% unless @course.primary_contact.nil? %>
-		  <span id="staffContact"><%= @course.primary_contact.first_name %> <%= @course.primary_contact.last_name unless @course.contact_last_name.nil? %></span> - <%= mail_to @course.primary_contact.email, "Send Email" %>
-		<% else %>
-		  None
-		<% end %>
-		<br />
-		Other Staff Assigned:
-	    <% @course.users.each do |user| %>
-		  <%= mail_to user.email, "#{user.full_name}" %>,
-	    <% end %>
+    <ul class="summary-info">
+	    <li><span class="summary-label">Status:</span> <%= @course.status %></li>
+		  <li><span class="summary-label">Primary Library/Archive Contact:</span>
+		    <% unless @course.primary_contact.nil? %>
+		      <span id="staffContact"><%= @course.primary_contact.first_name %> <%= @course.primary_contact.last_name unless @course.contact_last_name.nil? %></span> - <%= mail_to @course.primary_contact.email, "Send Email" %>
+		    <% else %>
+		      None
+		    <% end %>
+      </li>
+		</ul>
+
+		<h4>Other Staff Assigned:</h4>
+    <ul class="summary-info">
+      <% unless @course.users.blank? %>
+        <% @course.users.each do |user| %>
+		      <li><%= mail_to user.email, "#{user.full_name}" %></li>
+	      <% end %>
+      <% else %>
+        <li>None</li>
+      <% end %>
+    </ul>
 		<h4>Assessments</h4>
 		<p>After your class we may send you an assessment form to learn about your experience and improve our service.</p>
 		<p>If you would like to submit an additional assessment, please <%= link_to "click here", new_assessment_path(:course_id => @course.id) %>.</p>
-		  <% @course.assessments.each do |assessment| %>
-		    <%= link_to "View Assessment", assessment_path(assessment) %><br />
-		  <% end %>
+		<% @course.assessments.each do |assessment| %>
+		  <%= link_to "View Assessment", assessment_path(assessment) %><br />
+		<% end %>
 
 		<h4>Notes</h4>
   	    <%= render :partial => 'notes/all_notes', :locals => {:notes => @notes } %>
