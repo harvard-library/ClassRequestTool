@@ -2,9 +2,12 @@ $(document).ready(function(){
   var prepTablesorter = function(name, opts, pg_opts) {
     var id = '#' + name;
     var pg_id = '#pager-' + name;
+    var search_id = name + '_search';
+    // Create search field
+    $(id).before('<input id="' + search_id + '" type="search" class="search" data-column="all" placeholder="Search table" />');
 
-    $(id).tablesorter($.extend({widgets:['filter']}, opts))
-      .tablesorterPager($.extend({container: $(pg_id), removeRows: false}, pg_opts));
+    $(id).tablesorter($.extend({widgets:['filter'], widgetOptions: {filter_external: '#' + search_id, filter_columnFilters: false}}, opts))
+      .tablesorterPager($.extend({container: $(pg_id), removeRows: false, output: "{page}/{filteredPages} pages ({totalPages} total)"}, pg_opts));
   }
 
   prepTablesorter('course-table-current');
