@@ -9,6 +9,7 @@
 		      <th>Submission Date</th>
 		      <th>Class Date</th>
 		      <th></th>
+          <th class="hidden">Search fodder</th>
 	      </tr>
 	    </thead>
 	    <tbody>
@@ -23,6 +24,7 @@
 	   		        <%= link_to('Delete', course_path(course), :confirm => "Are you sure?", :method => :delete) %>
       	      <% end %>
 		        </td>
+            <td class="hidden"><%= course.subject %></td>
 	        </tr>
         <% end %>
 	    </tbody>
