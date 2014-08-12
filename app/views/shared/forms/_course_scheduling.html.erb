@@ -87,7 +87,7 @@
 
               <%= select_tag :room_id,
                              option_groups_from_collection_for_select(
-                               Repository.all,
+                               Repository.order(:name),
                                :rooms,
                                :name,
                                :id,
