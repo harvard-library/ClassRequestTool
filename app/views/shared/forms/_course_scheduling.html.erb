@@ -84,6 +84,18 @@
                         :input_html => {:id => "#{id_prefix}_headcount",
                                         :name => "#{name_prefix}[headcount]",
                                         :value => sect.headcount} %>
+
+              <%= select_tag :room_id,
+                             option_groups_from_collection_for_select(
+                               Repository.all,
+                               :rooms,
+                               :name,
+                               :id,
+                               :name,
+                               sect.room_id),
+                             :include_blank => true,
+                             :id => "#{id_prefix}_room_id",
+                             :name => "#{name_prefix}[room_id]" %>
             </div>
 
 
