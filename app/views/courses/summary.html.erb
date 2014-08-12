@@ -38,11 +38,18 @@
 
 	<h4>Staff Involvement</h4>
 	<ul>
-	<% @course.staff_involvements.each do |si| %>
-	  <li><%= si.involvement_text %></li>
-	<% end %>
+    <% if @course.staff_involvements.blank? && @course.staff_involvement.blank? %>
+      <li>None</li>
+    <% else %>
+	    <% @course.staff_involvements.each do |si| %>
+	      <li><%= si.involvement_text %></li>
+	    <% end %>
+      <% unless @course.staff_involvement.blank? %>
+        <li><%= @course.staff_involvement %></li>
+      <% end %>
+    <% end %>
 	</ul>
-	<%= @course.staff_involvement unless @course.staff_involvement.nil? || @course.staff_involvement.blank? %>
+
   <% sections = @course.sections.order("session ASC") %>
 	<h4>Scheduling</h4>
   <% c_sessions = (sections.group_by(&:session).count <= 1 ? "Single Session" : "Multiple Sessions, Same Materials") %>
@@ -54,7 +61,7 @@
 	<h5>Approved Date/Times</h5>
   <ul>
     <% sections.each do |s| %>
-      <li><%= s.actual_date.try(:strftime, '%m/%d/%Y %I:%M %P') %></li>
+      <li><%= s.actual_date.try(:strftime, '%m/%d/%Y %I:%M %P') %><%= s.room ? " in #{s.room.name}" : '' %></li>
 	  <% end %>
   </ul>
 <% elsif !sections.map(&:requested_dates).reject(&:nil?).blank?  %>

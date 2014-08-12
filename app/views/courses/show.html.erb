@@ -58,7 +58,9 @@
 	      <% @course.staff_involvements.each do |si| %>
 	        <li><%= si.involvement_text %></li>
 	      <% end %>
-        <li><%= @course.staff_involvement unless @course.staff_involvement.nil? || @course.staff_involvement.blank? %></li>
+        <% unless @course.staff_involvement.blank? %>
+          <li><%= @course.staff_involvement %></li>
+        <% end %>
 	    </ul>
   </ul>
 
@@ -97,6 +99,7 @@
               <li><span class="summary-label">Requested Times: </span> <%== '<ul><li>' + sect.requested_dates.map {|rd| rd.strftime('%m/%d/%Y %I:%M %P') }.join("</li><li>") + '</li></ul>' %></li>
             <% end %>
             <li><span class="summary-label">Headcount:</span> <%= sect.headcount ? sect.headcount : "Not Recorded" %></li>
+            <li><span class="summary-label">Room:</span> <%= sect.room ? sect.room.name : 'No room assigned' %></li>
           <% end %>
         </ul>
 	    <% end %>
@@ -107,7 +110,6 @@
 
   <ul class="summary-info">
 	  <li><span class="summary-label">Class Duration:</span> <span id="duration"><%= @course.duration unless @course.duration.nil? %></span> hour(s)</li>
-	  <li><span class="summary-label">Room:</span> <span id="room"><%= @course.room.name unless @course.room.nil? %></span></li>
 	  <li><span class="summary-label">Comments:</span> <%= @course.comments unless @course.comments.nil? %></li>
   </ul>
 </div>
