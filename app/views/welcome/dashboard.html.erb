@@ -14,6 +14,7 @@
 <h3>Dashboard</h3>
 <ul class="nav nav-tabs" role="tablist">
   <li><a role="tab" data-toggle="tab" href="#upcoming" class="active">Upcoming Classes</a></li>
+  <li><a role="tab" data-toggle="tab" href="#homeless">Homeless Classes</a></li>
   <li><a role="tab" data-toggle="tab" href="#unclaimed">Classes to Claim</a></li>
   <li><a role="tab" data-toggle="tab" href="#closed">Completed Classes</a></li>
 </ul>
@@ -30,20 +31,22 @@
                             :courses => @your_upcoming } %>
 
   </div> <!-- END #upcoming -->
-  <div class="tab-pane" id="unclaimed">
+
+  <div class="tab-pane" id="homeless">
     <div class="clearfix">
       <%= render :partial => 'shared/dashboard_table',
-               :locals => { :id => 'homeless-table',
-                            :title => 'Homeless Classes',
-                            :courses => @homeless } %>
+                 :locals => { :id => 'homeless-table',
+                              :title => 'Homeless Classes',
+                              :courses => @homeless } %>
+    </div>
+  </div> <!-- END homeless -->
 
-
+  <div class="tab-pane" id="unclaimed">
+    <div class="clearfix">
       <%= render :partial => 'shared/dashboard_table',
                  :locals => { :id => 'unassigned-table',
                               :title => 'Classes to be Scheduled',
                               :courses => @unscheduled_unclaimed } %>
-    </div>
-    <div class="clearfix">
       <%= render :partial => 'shared/dashboard_table',
                  :locals => { :id => 'roomless-table',
                               :title => 'Scheduled Classes',

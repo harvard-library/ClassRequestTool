@@ -11,8 +11,25 @@
 	width: 48%;
 	float: left;
   padding-bottom: 10px;
+  ul {
+    list-style-type:none;
+  }
   &:first-child {
 	  margin-right: 4%;
   }
+}
 
+#homeless .dash_widget {
+  width: 100%;
+  ul > li {
+    display:inline-block;
+    &:after {
+      content: ' | ';
+      color: #aaa;
+    }
+    &:last-child:after {
+      content: none;
+    }
+
+  }
 }
