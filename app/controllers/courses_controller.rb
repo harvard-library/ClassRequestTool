@@ -113,6 +113,10 @@ class CoursesController < ApplicationController
     unless current_user.try(:staff?) || current_user.try(:admin?) || current_user.try(:superadmin?) || @course.contact_email == current_user.email
        redirect_to('/') and return
     end
+    # Make sure there's always one section to be edited.
+    if @course.sections.blank?
+      @course.sections = [Section.new(:course => @course)]
+    end
     @staff_involvement = @course.staff_involvement.split(',')
   end
 
@@ -140,8 +144,8 @@ class CoursesController < ApplicationController
           format.html { redirect_to summary_course_url(:id => @course.id), notice: 'Class was successfully submitted for approval.' }
         end
       else
-        flash.now[:error] = "Please correct the errors in the form."
-        format.html { render action: "new" }
+        flash[:error] = "Please correct the errors in the form."
+        format.html { redirect_to :action => :new }
         format.json { render json: @course.errors, status: :unprocessable_entity }
       end
     end
