@@ -49,6 +49,17 @@
           <span class="help-block">Actual number of students that attended.</span>
         </span>
       </div>
+
+      <%= select_tag :room_id,
+                     option_groups_from_collection_for_select(
+                       Repository.order(:name),
+                       :rooms,
+                       :name,
+                       :id,
+                       :name),
+                     :include_blank => true,
+                     :id => "course_sections_attributes_#{section_index}_room_id",
+                     :name => "course[sections_attributes][#{section_index}][room_id]" %>
     </div>
   <% end %>
 </div> <!-- END .section -->
