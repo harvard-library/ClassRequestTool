@@ -20,6 +20,7 @@
 		<th>Class Date</th>
 		<th>Repository</th>
 		<th>Status</th>
+    <th>Contact</th>
     <th class="hidden">Search fodder</th>
 	  </tr>
 	</thead>
@@ -31,6 +32,7 @@
 		  <td><%= course.sections.first.try(:actual_date).try(:strftime, '%m/%d/%Y %I:%M %P') unless course.sections.first.try(:actual_date).nil? %></td>
 		  <td><%= course.repository.nil? ? "Not Assigned" : course.repository.name %></td>
 		  <td><%= course.status %></td>
+      <td><%= course.contact_last_name %></td>
       <td class="hidden"><%= course.subject %></td>
 	    </tr>
 	    <% end %>
@@ -58,6 +60,7 @@
 		<th>Class Date</th>
 		<th>Repository</th>
 		<th>Status</th>
+    <th>Contact</th>
     <th class="hidden">Search fodder</th>
 	  </tr>
 	</thead>
@@ -69,6 +72,7 @@
 		  <td><%= course.sections.first.try(:actual_date).try(:strftime, '%m/%d/%Y %I:%M %P') unless course.sections.first.try(:actual_date).nil? %></td>
 		  <td><%= course.repository.nil? ? "Not Assigned" : course.repository.name %></td>
 		  <td><%= course.status %></td>
+      <td><%= course.contact_last_name %></td>
       <td class="hidden"><%= course.subject %></td>
 	    </tr>
 	    <% end %>
@@ -99,6 +103,7 @@
 		<th>Class Date</th>
 		<th>Repository</th>
 		<th>Status</th>
+    <th>Contact</th>
 		<th>Actions</th>
     <th class="hidden">Search fodder</th>
 	  </tr>
@@ -111,6 +116,7 @@
 		  <td><%= course.sections.first.try(:actual_date).try(:strftime, '%m/%d/%Y %I:%M %P') unless course.sections.first.try(:actual_date).nil? %></td>
 		  <td><%= course.repository.nil? ? "Not Assigned" : course.repository.name %></td>
 		  <td><%= course.status %></td>
+      <td><%= course.contact_last_name %></td>
 		  <td><%= link_to('Edit', edit_course_path(course), :class => "action-edit") %>
 	      <% if current_user.try(:admin?) || current_user.try(:superadmin?) %>
 	   		 | <%= link_to('Delete', course_path(course), :confirm => "Are you sure?", :method => :delete) %>
