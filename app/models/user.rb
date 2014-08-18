@@ -18,9 +18,9 @@ class User < ActiveRecord::Base
   def to_s
     full_name
   end
-  
+
   def display_name
-    return self.full_name == " " ? self.username : self.full_name 
+    return self.full_name == " " ? self.username : self.full_name
   end
 
 
@@ -56,7 +56,7 @@ class User < ActiveRecord::Base
   end
 
   def upcoming_courses
-    courses.order("primary_contact_id = #{id}").unscheduled_unclaimed
+    courses.where(:status => 'Scheduled, Claimed').order("primary_contact_id = #{id}").ordered_by_last_section
   end
 
   def past_courses
