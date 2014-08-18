@@ -24,7 +24,6 @@ $(document).ready(function(){
   prepTablesorter('users-table');
   prepTablesorter('involvement-table');
   prepTablesorter('your-unscheduled-table', {}, {positionFixed: false});
-  prepTablesorter('your-unscheduled-table', {}, {positionFixed: false});
   prepTablesorter('your-upcoming-table', {}, {positionFixed:false});
   prepTablesorter('your-past-table', {}, {positionFixed: false});
   prepTablesorter('homeless-table', {}, {positionFixed: false});
