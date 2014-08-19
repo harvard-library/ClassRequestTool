@@ -45,6 +45,10 @@ GEM
       erubis (>= 2.6.6)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
+    bootflat-rails (0.1.9)
+      bootstrap-sass (~> 3.1)
+      jquery-rails (~> 3.1)
+      sass (~> 3.3)
     bootstrap-sass (3.1.1.0)
       sass (~> 3.2)
     builder (3.0.4)
@@ -187,7 +191,7 @@ GEM
     rdoc (3.12.2)
       json (~> 1.4)
     ref (1.0.5)
-    sass (3.3.4)
+    sass (3.4.0)
     sass-rails (3.2.6)
       railties (~> 3.2.0)
       sass (>= 3.1.10)
@@ -239,6 +243,7 @@ PLATFORMS
 DEPENDENCIES
   better_errors
   binding_of_caller
+  bootflat-rails
   bootstrap-sass
   capistrano (~> 3.1.0)
   capistrano-bundler (~> 1.1.2)
@@ -264,7 +269,7 @@ DEPENDENCIES
   pry-rails
   pry-remote
   rails (= 3.2.19)
-  sass-rails (~> 3.2.3)
+  sass-rails (~> 3.2.6)
   schema_to_scaffold
   stepford
   therubyracer

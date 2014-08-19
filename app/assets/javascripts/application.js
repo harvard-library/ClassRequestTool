@@ -18,5 +18,6 @@
 //= require jquery-tablesorter/jquery.tablesorter.widgets
 //= require jquery-tablesorter/addons/pager/jquery.tablesorter.pager
 //= require bootstrap
+//= require icheck.min
 //= require ckeditor/init
 //= require_tree .

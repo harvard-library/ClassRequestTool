@@ -32,7 +32,7 @@ body > nav.navbar {
 
 nav.navbar {
   background-color: #f8ead8; /* fallback color, place your own */
-
+  border-color: transparent;
   /* Gradients for modern browsers, replace as you see fit */
   background-image: -moz-linear-gradient(top, #f8ead8, #f8ead8);
   background-image: -ms-linear-gradient(top, #f8ead8, #f8ead8);
@@ -94,6 +94,10 @@ select {
 
 input, .uneditable-input {
 	width: auto;
+}
+
+.icheckbox_flat {
+  margin-right: 1em;
 }
 
 input[readonly] {
