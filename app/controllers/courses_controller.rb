@@ -114,9 +114,8 @@ class CoursesController < ApplicationController
        redirect_to('/') and return
     end
     # Make sure there's always one section to be edited.
-    if @course.sections.blank?
-      @course.sections = [Section.new(:course => @course)]
-    end
+    @course.sections.blank? ? @course.sections << Section.new(:course => @course) : nil
+
     @staff_involvement = @course.staff_involvement.split(',')
   end
 
@@ -144,8 +143,9 @@ class CoursesController < ApplicationController
           format.html { redirect_to summary_course_url(:id => @course.id), notice: 'Class was successfully submitted for approval.' }
         end
       else
-        flash[:error] = "Please correct the errors in the form."
-        format.html { redirect_to :action => :new }
+        flash.now[:error] = "Please correct the errors in the form."
+        @course.sections.blank? ? @course.sections << Section.new(:course => @course) : nil
+        format.html { render :action => :new }
         format.json { render json: @course.errors, status: :unprocessable_entity }
       end
     end
@@ -201,17 +201,19 @@ class CoursesController < ApplicationController
         @course.send_staff_change_email(current_user)
         @course.notes.create(:note_text => "Staff change email sent.", :user_id => current_user.id)
       end
-    else
-      flash[:error] = "Update Error: Could not save"
+
       respond_to do |format|
-        format.html { redirect_to :action => :edit }
+        format.html { redirect_to course_url(@course), notice: 'Class was successfully updated.' }
+        format.json { head :no_content }
+      end
+
+    else
+      flash.now[:error] = "Update Error: Could not save"
+      @course.sections.blank? ? @course.sections << Section.new(:course => @course) : nil
+      respond_to do |format|
+        format.html { render :action => :edit }
         format.json { render :json => @course.errors, :status => :unprocessable_entity }
       end
-    end
-
-    respond_to do |format|
-      format.html { redirect_to course_url(@course), notice: 'Class was successfully updated.' }
-      format.json { head :no_content }
     end
   end
 
