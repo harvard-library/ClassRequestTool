@@ -1,5 +1,5 @@
 <div class="navbar-collapse" id="main-nav">
-  <ul class="nav nav-pills" role="navigation">
+  <ul class="nav navbar-nav" role="navigation">
 	  <li><%= link_to "Home", root_path %></li>
 
     <% if current_user.try(:superadmin?) || current_user.try(:admin?) %>
@@ -44,6 +44,8 @@
       <li style="border:1px dashed black;"><%= link_to "Sign In/Sign Up", new_user_session_path %></li>
 	    <li style="border:1px dashed black;"><%= link_to "Sign In/Sign Up with Harvard PIN", user_hauthproxy_sign_in_path %></li>
     <% end %>
-    <li class="navbar-right"><a href="https://docs.google.com/forms/d/1sXRDtvBth1uVKddiHKQ7Psgu2vZeEOFIG08pKYn5ilU/viewform" target="_blank">Questions/Feedback</a></li>
+  </ul>
+  <ul class="nav navbar-nav navbar-right">
+    <li class="navbar-link"><a href="https://docs.google.com/forms/d/1sXRDtvBth1uVKddiHKQ7Psgu2vZeEOFIG08pKYn5ilU/viewform" target="_blank">Questions/Feedback</a></li>
   </ul>
 </div>

@@ -9,7 +9,6 @@ body { padding-top: 0px; }
 }
 
 .content {
-  background-color: #f8ead8;
   padding: 20px;
   margin: 0 -20px; /* negative indent the amount of the padding to maintain the grid system */
   -webkit-border-radius: 0 0 6px 6px;
@@ -24,26 +23,6 @@ body { padding-top: 0px; }
   position: relative;
   margin-bottom: 0;
   box-shadow: 0 1px 3px rgba(0,0,0,.25);
-}
-
-body > nav.navbar {
-  background-color: #F8EAD8;
-}
-
-nav.navbar {
-  background-color: #f8ead8; /* fallback color, place your own */
-  border-color: transparent;
-  /* Gradients for modern browsers, replace as you see fit */
-  background-image: -moz-linear-gradient(top, #f8ead8, #f8ead8);
-  background-image: -ms-linear-gradient(top, #f8ead8, #f8ead8);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#f8ead8), to(#f8ead8));
-  background-image: -webkit-linear-gradient(top, #f8ead8, #f8ead8);
-  background-image: -o-linear-gradient(top, #f8ead8, #f8ead8);
-  background-image: linear-gradient(top, #f8ead8, #f8ead8);
-  background-repeat: repeat-x;
-
-  /* IE8-9 gradient filter */
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f8ead8', endColorstr='#f8ead8', GradientType=0);
 }
 
 nav.navbar > .container {
@@ -68,24 +47,6 @@ nav.navbar > .container {
 .dropdown-menu li:hover .sub-menu {
   visibility: visible;
   display: block;
-}
-
-.navbar .sub-menu:before {
-  border-bottom: 7px solid transparent;
-  border-left: none;
-  border-right: 7px solid rgba(0, 0, 0, 0.2);
-  border-top: 7px solid transparent;
-  left: -7px;
-  top: 10px;
-}
-.navbar .sub-menu:after {
-  border-top: 6px solid transparent;
-  border-left: none;
-  border-right: 6px solid #fff;
-  border-bottom: 6px solid transparent;
-  left: 10px;
-  top: 11px;
-  left: -6px;
 }
 
 select {
