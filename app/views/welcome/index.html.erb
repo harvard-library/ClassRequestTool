@@ -5,14 +5,14 @@
 <% end %>
 
 <%= render :partial => 'shared/welcome_text' %>
-
+<div class="row">
 <div id="welcome-left">
   	<h4>Participating Special Collections Libraries/Archives</h4>
 	<p style="margin-bottom:0;">
-	<%= link_to "Not Sure - Help me Choose", new_course_path %><br /> 
+	<%= link_to "Not Sure - Help me Choose", new_course_path %><br />
 	<div style="font-size: 11px; margin-left:1em; margin-bottom:0.3em;">Select this option if you would like us to match your class with a library/archive.<br /></div>
 	<% @repositories.each do |repo| %>
-	  <%= link_to repo.name, repo %><br /> 
+	  <%= link_to repo.name, repo %><br />
 	<% end %>
 	</p>
 	<p><a href="http://lib.harvard.edu/archives-and-special-collections-harvard">See all Archives and Special Collections at Harvard</a></p>
@@ -23,13 +23,14 @@
 
 <div id="welcome-right">
   	<h4>Recent Classes</h4>
-	  <% unless @courses.nil? %>	
-	  	<% @courses.each do |course| %>	
-	      
+	  <% unless @courses.nil? %>
+	  	<% @courses.each do |course| %>
+
 		    <li><%= link_to(course.title, recent_show_course_url(course) ) %></li>
-		  
+
 	    <% end %>
 	  <% else %>
 		None yet!
 	  <% end %>
+</div>
 </div>

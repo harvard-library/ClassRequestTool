@@ -19,7 +19,7 @@
   <li><a role="tab" data-toggle="tab" href="#closed">Completed Classes</a></li>
 </ul>
 <div class="dash-wrap tab-content">
-  <div class="tab-pane active" id="upcoming">
+  <div class="tab-pane active row" id="upcoming">
     <%= render :partial => 'shared/dashboard_table',
                :locals => { :id => 'your-unscheduled-table',
                             :title => 'Your Claimed, Unscheduled Classes',
@@ -32,7 +32,7 @@
 
   </div> <!-- END #upcoming -->
 
-  <div class="tab-pane" id="homeless">
+  <div class="tab-pane row" id="homeless">
     <div class="clearfix">
       <%= render :partial => 'shared/dashboard_table',
                  :locals => { :id => 'homeless-table',
@@ -41,7 +41,7 @@
     </div>
   </div> <!-- END homeless -->
 
-  <div class="tab-pane" id="unclaimed">
+  <div class="tab-pane row" id="unclaimed">
     <div class="clearfix">
       <%= render :partial => 'shared/dashboard_table',
                  :locals => { :id => 'unassigned-table',
@@ -54,7 +54,7 @@
     </div>
   </div> <!-- END unclaimed -->
 
-  <div class="tab-pane" id="closed">
+  <div class="tab-pane row" id="closed">
     <%= render :partial => 'shared/dashboard_table',
                :locals => { :id => 'your-to-close-table',
                             :title => 'Your Classes To Close',

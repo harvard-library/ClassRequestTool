@@ -28,6 +28,7 @@ h1,h2,h3,h4,h5,h6 {
 
 #footer {
   padding: 20px 0px 20px 0px;
+  text-align: center;
 }
 
 #feedback {
@@ -37,7 +38,7 @@ h1,h2,h3,h4,h5,h6 {
 }
 
 /* Lastly, apply responsive CSS fixes as necessary */
-@media (max-width: 767px) {
+@media (max-width: $screen-sm-min) {
   #footer {
     margin-left: -20px;
     margin-right: -20px;
@@ -47,20 +48,11 @@ h1,h2,h3,h4,h5,h6 {
 }
 
 #welcome-left {
-	float: left;
-	width: 40%;
+  @include make-md-column(6);
 }
 
 #welcome-right {
-	float: right;
-	width: 50%;
-
-}
-
-#welcome-middle {
-	float: left;
-	padding-left: 10px;
-	width: 45%;
+	@include make-md-column(6);
 }
 
 .yellow-box {
