@@ -13,7 +13,49 @@
  *= require jquery-tablesorter/theme.dark
  */
 
+ /* Header font: Vollkorn. Only normal style is supported. No italic. */
  @charset "utf-8";
+ @font-face {
+   font-family: "Vollkorn";
+   src: url('vollkorn-medium-webfont.woff') format('woff');
+   src: url('Vollkorn-Medium.ttf') format('truetype');
+   font-weight: normal;
+   font-style: normal;
+ }
+ @font-face {
+   font-family: "Vollkorn";
+   src: url('vollkorn-semibold-webfont.woff') format('woff');
+   src: url('Vollkorn-Semibold.ttf') format('truetype');
+   font-weight: bold;
+   font-style: normal;
+ }
+
+ /* Body font: Roboto */
+ @font-face {
+   font-family: "Roboto";
+   src: url('Roboto-Regular.ttf') format('truetype');
+   font-weight: normal;
+   font-style: normal;
+ }
+ @font-face {
+   font-family: "Roboto";
+   src: url('Roboto-Bold.ttf') format('truetype');
+   font-weight: bold;
+   font-style: normal;
+ }
+ @font-face {
+   font-family: "Roboto";
+   src: url('Roboto-Italic.ttf') format('truetype');
+   font-weight: normal;
+   font-style: italic;
+ }
+ @font-face {
+   font-family: "Roboto";
+   src: url('Roboto-BoldItalic.ttf') format('truetype');
+   font-weight: bold;
+   font-style: italic;
+ }
+
  @import "bootstrap";
  @import "bootflat";
  @import "bootstrap_and_overrides";
