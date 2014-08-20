@@ -1,28 +1,5 @@
-body { padding-top: 0px; }
-
-.col-md-12 {
-  width: 97%;
-}
-
 .container {
   width: 1080px;
-}
-
-.content {
-  padding: 20px;
-  margin: 0 -20px; /* negative indent the amount of the padding to maintain the grid system */
-  -webkit-border-radius: 0 0 6px 6px;
-  -moz-border-radius: 0 0 6px 6px;
-  border-radius: 0 0 6px 6px;
-  -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.15);
-  -moz-box-shadow: 0 1px 2px rgba(0,0,0,.15);
-  box-shadow: 0 1px 2px rgba(0,0,0,.15);
-}
-
-.navbar-fixed-top {
-  position: relative;
-  margin-bottom: 0;
-  box-shadow: 0 1px 3px rgba(0,0,0,.25);
 }
 
 nav.navbar > .container {
@@ -34,19 +11,6 @@ nav.navbar > .container {
       margin:0 auto;
     }
   }
-}
-
-.dropdown-menu .sub-menu {
-  left: 100%;
-  position: absolute;
-  top: 0;
-  visibility: hidden;
-  margin-top: -1px;
-}
-
-.dropdown-menu li:hover .sub-menu {
-  visibility: visible;
-  display: block;
 }
 
 select {
