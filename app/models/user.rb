@@ -56,15 +56,18 @@ class User < ActiveRecord::Base
   end
 
   def upcoming_courses
-    courses.where(:status => 'Scheduled, Claimed').order("primary_contact_id = #{id}").ordered_by_last_section
+    (Course.where(:status => 'Scheduled, Claimed', :primary_contact_id => id).ordered_by_last_section +
+     courses.where(:status => 'Scheduled, Claimed').ordered_by_last_section).uniq
   end
 
   def past_courses
-    courses.where(:status => 'Closed').order("primary_contact_id = #{id}").ordered_by_last_section
+    (Course.where(:status => 'Closed', :primary_contact_id => id).ordered_by_last_section +
+     courses.where(:status => 'Closed').ordered_by_last_section).uniq
   end
 
   def unscheduled_courses
-    courses.where(:status => "Claimed, Unscheduled").order("primary_contact_id = #{id}").ordered_by_last_section
+    (Course.where(:status => 'Claimed, Unscheduled', :primary_contact_id => id).ordered_by_last_section +
+     courses.where(:status => "Claimed, Unscheduled").ordered_by_last_section).uniq
   end
 
   def mine_current
