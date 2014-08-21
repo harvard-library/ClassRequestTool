@@ -3,14 +3,14 @@
 <%= form_tag new_course_path, :method => :get do %>
 <p>
   <%= hidden_field_tag :repository, @repository.id %>
-  <%= submit_tag "Request a class at this Library/Archive" %>
+  <%= submit_tag "Request a Class" %>
 </p>
 <% end %>
 
 <div>
 	Description: <%= raw @repository.description unless @repository.description.nil? %> <br />
-	Class Limit: <%= @repository.class_limit unless @repository.class_limit.nil? %> <br />
-	Technology Available:
+	Room Capacity: <%= @repository.class_limit unless @repository.class_limit.nil? %> <br />
+	Classroom Technologies Available:
 	<% unless @repository.item_attributes.nil? || @repository.item_attributes.empty? %>
 	<ul>
 	  <% @repository.item_attributes.each do |attribute| %>
@@ -35,7 +35,10 @@
 	  <br />
 	<% end %>
 	<br />
-	For more details on teaching at this Library/Archive <%= link_to "click here", @repository.landing_page, :target => "_blank" %>. <br /><br />
+        <% unless @repository.landing_page.nil? || @repository.landing_page.empty? %>
+	<%= link_to " More details on teaching at this Library/Archive", @repository.landing_page, :target => "_blank" %>. <br />
+	<% end %>
+	<br />
 
 	<% unless @repository.class_policies.nil? || @repository.class_policies.blank? %>
 	Class Policies:
@@ -84,7 +87,7 @@
           <% end %>
     	</table>
       <% else %>
-    	None yet!
+    	None yet.
       <% end %>
 </div>
 

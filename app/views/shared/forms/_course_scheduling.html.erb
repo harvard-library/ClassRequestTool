@@ -136,11 +136,11 @@
     <%= f.input :item_attributes,
                 :as => :check_boxes,
                 :collection => @course.repository.item_attributes,
-                :label => "Room Technology Available: " %>
+                :label => "Classroom Technologies Available: " %>
   <% end %>
   <br />
   <%= f.input :comments,
-              :label => "If you have any special room arrangements or further instructions regarding your class session, please enter them below: ",
+              :label => "If you have any special room arrangements or further instructions regarding your class session, please enter them below. It is also helpful to note any accessibility issues the library/archive can endeavor to accommodate.",
               :input_html => { :rows => 5, :cols => 30 } %>
 </div>
 

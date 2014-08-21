@@ -8,14 +8,16 @@
 <div class="row">
 <div id="welcome-left">
   	<h4>Participating Special Collections Libraries/Archives</h4>
+	<p>
+	  Select a Participating Special Collections Library/Archive
+	</p>
 	<p style="margin-bottom:0;">
 	<%= link_to "Not Sure - Help me Choose", new_course_path %><br />
-	<div style="font-size: 11px; margin-left:1em; margin-bottom:0.3em;">Select this option if you would like us to match your class with a library/archive.<br /></div>
+	<div style="font-size: .85em; margin-left:1em; margin-bottom:0.3em;">Select this option if you would like us to match your class with a library/archive.<br /></div>
 	<% @repositories.each do |repo| %>
 	  <%= link_to repo.name, repo %><br />
 	<% end %>
 	</p>
-	<p><a href="http://lib.harvard.edu/archives-and-special-collections-harvard">See all Archives and Special Collections at Harvard</a></p>
 	<p>
 	Are you a Special Collections Library/Archive at Harvard?<br /> Would you like to participate?<br /> <a href="mailto:rhowarth@fas.harvard.edu">Join us!</a>
 	</p>
@@ -30,7 +32,7 @@
 
 	    <% end %>
 	  <% else %>
-		None yet!
+		None yet.
 	  <% end %>
 </div>
 </div>

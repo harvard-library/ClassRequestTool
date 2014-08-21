@@ -1,4 +1,4 @@
-<h3>Staff Involvements</h3>
+<h3>Staff Services</h3>
 
 <div>
   	<table id="involvement-table" class="table table-condensed tablesorter">
@@ -34,6 +34,6 @@
 	<br />
 	<br />
   <% if current_user.try(:admin?) || current_user.try(:superadmin?) %>
-    <%= link_to("Add New Staff Involvement", new_staff_involvement_path ) %>
+    <%= link_to("Add New Staff Service", new_staff_involvement_path ) %>
   <% end %>
 </div>

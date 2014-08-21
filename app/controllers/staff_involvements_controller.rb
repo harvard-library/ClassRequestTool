@@ -19,7 +19,7 @@ class StaffInvolvementsController < ApplicationController
     @staff_involvement = StaffInvolvement.new(params[:staff_involvement])
     respond_to do |format|
       if @staff_involvement.save
-        format.html { redirect_to staff_involvements_url, notice: 'StaffInvolvement was successfully created.' }
+        format.html { redirect_to staff_involvements_url, notice: 'Staff Service was successfully created.' }
         format.json { render json: @staff_involvement, status: :created, staff_involvement: @staff_involvement }
       else
         format.html { render action: "new" }
@@ -33,7 +33,7 @@ class StaffInvolvementsController < ApplicationController
 
     respond_to do |format|
       if @staff_involvement.update_attributes(params[:staff_involvement])
-        format.html { redirect_to staff_involvements_url, notice: 'StaffInvolvement was successfully updated.' }
+        format.html { redirect_to staff_involvements_url, notice: 'Staff Service was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
