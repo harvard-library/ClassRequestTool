@@ -152,7 +152,7 @@
 		<%= render :partial => 'shared/forms/note', :locals => {:note => @note, :course => @course } %>
     <% unless @course.status == "Closed" %>
 	    <div class="yellow-box">
-		    <h4>When class is complete, make selection below to close class:</h4>
+		    <p>When class is complete, click box to send class assessment, if desired. Use button below to close class.</p>
 	      <%= semantic_form_for(@course, :html => {:multipart => true}) do |f| %>
 	  	    <%= f.inputs do %>
             <%= f.input :status, :as => :hidden, :value => "Closed" %>
