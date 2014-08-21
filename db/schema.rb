@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140801133423) do
+ActiveRecord::Schema.define(:version => 20140821202750) do
 
   add_extension "fuzzystrmatch"
 
@@ -78,13 +78,10 @@ ActiveRecord::Schema.define(:version => 20140801133423) do
   end
 
   add_index "courses", ["affiliation"], :name => "index_courses_on_affiliation"
-  add_index "courses", ["comments"], :name => "index_courses_on_comments"
   add_index "courses", ["contact_email"], :name => "index_courses_on_contact_email"
   add_index "courses", ["contact_phone"], :name => "index_courses_on_contact_phone"
   add_index "courses", ["course_number"], :name => "index_courses_on_course_number"
   add_index "courses", ["duration"], :name => "index_courses_on_duration"
-  add_index "courses", ["external_syllabus"], :name => "index_courses_on_external_syllabus"
-  add_index "courses", ["goal"], :name => "index_courses_on_goal"
   add_index "courses", ["instruction_session"], :name => "index_courses_on_instruction_session"
   add_index "courses", ["pre_class_appt"], :name => "index_courses_on_pre_class_appt"
   add_index "courses", ["session_count"], :name => "index_courses_on_session_count"
