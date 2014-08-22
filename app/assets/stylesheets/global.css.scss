@@ -81,10 +81,15 @@ h1,h2,h3,h4,h5,h6 {
 }
 
 .form_date {
-	width: 45%;
+	width: 42%;
 	float: left;
-	padding-right: 5%;
+	margin-right: 5%;
 	padding-bottom: 10px;
+}
+.delete-button {
+  width: 4%;
+  float: left;
+  padding-top: 28px;
 }
 
 th {

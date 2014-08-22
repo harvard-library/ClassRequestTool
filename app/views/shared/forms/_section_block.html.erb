@@ -1,6 +1,5 @@
-<%# LOCALS: display_section, session_i, section_index, admin %>
+<%# LOCALS: session_i, section_index, admin %>
 <div class="form_full_width section section-<%= section_index %>">
-  <h5>Section <%= display_section %> <button class="btn btn-default delete_section">-</button></h5>
   <input type="hidden" name="course[sections_attributes][<%= section_index %>][session]" class="session_val" value="<%= session_i %>">
   <% (0..1).each do |i| %>
     <div class="form_date">
@@ -21,6 +20,9 @@
       <% end %>
     </div> <!-- END form_date -->
   <% end %>
+  <div class="delete-button">
+    <button class="btn btn-primary delete_section glyphicon glyphicon-minus" />
+  </div>
   <% if admin %>
     <div style="clear:both;" class="form_full_width yellow-box">
       <div id="course_sections_attributes_<%= section_index %>_actual_date_input"

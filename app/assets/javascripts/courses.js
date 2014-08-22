@@ -31,60 +31,20 @@ $(function () {
 
       var $this_session = $(e.currentTarget).closest('.session');
       var session_i = +$this_session.find('.session_val').val();
-      var display_section = 1 + +$this_session.find('.section').last().find('h5').text().match(/\d+/)[0];
       var section_index = 1 + +$('.section').last().attr('class').match(/section-(\d+)/)[1];
 
-      $.get('/courses/section_block', {session_i: session_i, display_section:display_section, section_index:section_index})
+      $this_session.find('.section-header').removeClass('hidden');
+
+      $.get('/courses/section_block', {session_i: session_i, section_index:section_index})
         .done(function (data) {
           $(e.currentTarget).before(data);
         });
     });
 
-    /* Delete sessions, either by adding _destroy input to all sections (for sessions in DB) *
-     *   or by deleting session from the page if not.                                        *
-     * Always leaves at least one session on the page.                                       */
-    $('body').on('click', '.session:not(.deleted) button.delete_session', function (e) {
-      e.preventDefault();
-
-      var $this_session = $(e.currentTarget).closest('.session');
-      var persisted = $this_session.find('.id_val').length;
-      var last = ($('.session:not(.deleted)').length == 1)
-
-      if (!last) {
-        if (persisted) {
-          $this_session.addClass('deleted');
-          $this_session.find('button.delete_session').text('+');
-          $this_session.find('.section input.id_val').each(function (i, el) {
-            var name = $(el).attr('name').replace(/\[id\]$/, '[_destroy]');
-            $(el).closest('.section').append('<input type="hidden" class="destroy" name="' + name + '" value="1">');
-          });
-        }
-        else {
-          if ($('.session').length > 1) {
-            $this_session.remove();
-          }
-        }
-      }
-      else {
-        alert("Cannot delete last session on page");
-      }
-    });
-
-    /* Undelete session */
-    $('body').on('click', '.session.deleted button.delete_session', function (e) {
-      e.preventDefault();
-
-      var $this_session = $(e.currentTarget).closest('.session');
-
-      $this_session.find('input.destroy').remove();
-      $this_session.removeClass('deleted');
-      $this_session.find('button.delete_session').text('-');
-    })
-
-
     /* Delete sections, either by adding _destroy input (for sections in DB) *
      *   or by deleting section from the page if not.                        *
-     * Always leaves at least one section in the session.                    */
+     * If this is the last section in a session, and that session is not the *
+     *   last section on the page, delete that.                    */
     $('body').on('click', '.section:not(.deleted) button.delete_section', function (e) {
       e.preventDefault();
 
@@ -92,22 +52,23 @@ $(function () {
       var $section = $(e.currentTarget).closest('.section');
 
       var persisted = $section.find('.id_val').length;
-      var last = ($this_session.find('.section:not(.deleted)').length == 1)
+      var num_sections = $this_session.find('.section').length;
       var name;
 
-      if (!last) {
-        if (persisted) {
-          name = $section.find('input.id_val').attr('name').replace(/\[id\]$/, '[_destroy]');
-          $section.addClass('deleted');
-          $section.find('button.delete_section').text('+');
-          $section.append('<input type="hidden" class="destroy" name="' + name + '" value="1">');
-        }
-        else {
-          $section.remove();
-        }
+      if (persisted) {
+        name = $section.find('input.id_val').attr('name').replace(/\[id\]$/, '[_destroy]');
+        $section.addClass('deleted');
+        $section.find('button.delete_section').removeClass('glyphicon-minus').addClass('glyphicon-plus');
+        $section.append('<input type="hidden" class="destroy" name="' + name + '" value="1">');
       }
       else {
-        alert("Cannot delete last section from session");
+        $section.remove();
+        if (num_sections == 1) {
+          $this_session.remove();
+        }
+        else if (num_sections == 2) {
+          $this_session.find('.section-header').addClass('hidden');
+        }
       }
     });
 
@@ -119,8 +80,9 @@ $(function () {
 
       $section.find('input.destroy').remove();
       $section.removeClass('deleted');
-      $section.find('button.delete_section').text('-');
+      $section.find('button.delete_section').removeClass('glyphicon-plus').addClass('glyphicon-minus');
     });
+
 
     /* Prompt user for submission if both backdated and post-dated actual_dates exist, *
      *   deletions excepted.                                                           */

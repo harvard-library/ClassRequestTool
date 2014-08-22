@@ -1,6 +1,5 @@
 <%# LOCALS: index, section_index, admin %>
-<div id="session-<%= index %>" class="session session-<%= index %> form_full_width">
-  <h4>Session <%= index %> <button class="btn btn-default delete_session">-</button></h4>
+<div id="session-<%= index %>" class="session session-<%= index %> col-xs-12">
   <%= render :partial => 'shared/forms/section_block',
              :locals => {:display_section => 1,
                          :session_i => index,

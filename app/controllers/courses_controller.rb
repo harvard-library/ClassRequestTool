@@ -106,8 +106,10 @@ class CoursesController < ApplicationController
     else
       @course = Course.new
     end
+
+    @substitute_session = [Course::Session[Section.new(:course => @course)]]
+
     @uploader = FileUploader.new
-    @course.sections = [Section.new(:course => @course)]
   end
 
   def edit
@@ -115,9 +117,8 @@ class CoursesController < ApplicationController
     unless current_user.try(:staff?) || current_user.try(:admin?) || current_user.try(:superadmin?) || @course.contact_email == current_user.email
        redirect_to('/') and return
     end
-    # Make sure there's always one section to be edited.
-    @course.sections.blank? ? @course.sections << Section.new(:course => @course) : nil
 
+    @substitute_session = @course.sections.blank? ? [Course::Session[Section.new(:course => @course)]] : nil
     @staff_involvement = @course.staff_involvement.split(',')
   end
 
@@ -146,7 +147,7 @@ class CoursesController < ApplicationController
         end
       else
         flash.now[:error] = "Please correct the errors in the form."
-        @course.sections.blank? ? @course.sections << Section.new(:course => @course) : nil
+        @substitute_session = @course.sections.blank? ? Course::Session[Section.new(:course => @course)] : nil
         format.html { render :action => :new }
         format.json { render json: @course.errors, status: :unprocessable_entity }
       end
@@ -290,13 +291,12 @@ class CoursesController < ApplicationController
   end
 
   def section_block
-    display_section = params[:display_section].try(:to_i) || 1
     session_i = params[:session_i].try(:to_i) || 1
     section_index = params[:section_index].try(:to_i) || 1
     respond_to do |format|
       format.html do
         render :partial => 'shared/forms/section_block',
-               :locals => { :display_section => display_section, :session_i => session_i, :section_index => section_index, :admin => current_user.can_schedule?}
+               :locals => { :session_i => session_i, :section_index => section_index, :admin => current_user.can_schedule?}
       end
     end
   end
