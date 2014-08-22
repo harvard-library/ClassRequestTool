@@ -4,8 +4,8 @@
 
 <div class="form_full_width">
 <h4>Date/Time of Class</h4>
-<p>Please enter your preferred date and time for each session. If your only options for scheduling fall outside normal business hours, please use the note field to detail your availability.</p>
-<p>Final scheduling of a session is subject to both room and staff availability.</p>
+<p>Please enter your preferred date and time for each class visit. If your only options for scheduling fall outside normal business hours, please use the note field to detail your availability.</p>
+<p>Final scheduling of a class visit is subject to both room and staff availability.</p>
 </div>
 
 <div class="form_full_width">
@@ -19,7 +19,7 @@
 <div class="form_full_width sessions">
   <% @course.sessions.each.with_index(1) do |sesh, i| %>
     <div id ="session-<%= i %>" class="session session-<%= i %>">
-      <h4>Session <%= i %> <button class="btn btn-default delete_session">-</button></h4>
+      <h4>Class Visit <%= i %> <button class="btn btn-default delete_session">-</button></h4>
       <% sesh.each.with_index(1) do |sect, sect_i| %>
         <% name_prefix = "course[sections_attributes][#{section_counter}]" %>
         <% id_prefix = "course_sections_attributes_#{section_counter}" %>
@@ -140,7 +140,7 @@
   <% end %>
   <br />
   <%= f.input :comments,
-              :label => "If you have any special room arrangements or further instructions regarding your class session, please enter them below. It is also helpful to note any accessibility issues the library/archive can endeavor to accommodate.",
+              :label => "If you have any special room arrangements or further instructions regarding your class visit, please enter them below. It is also helpful to note any accessibility issues the library/archive can endeavor to accommodate.",
               :input_html => { :rows => 5, :cols => 30 } %>
 </div>
 
