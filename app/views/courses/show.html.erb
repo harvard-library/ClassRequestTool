@@ -34,7 +34,7 @@
 	  <% end %>
 	<% end %>
 	  </li>
-    <li><span class="summary-label">Goal for Class Session:</span> <%= @course.goal unless @course.goal.nil? %></li>
+    <li><span class="summary-label">Goal for Class Visit:</span> <%= @course.goal unless @course.goal.nil? %></li>
   </ul>
 
 	<h4>Requester Information</h4>
@@ -44,7 +44,7 @@
   <li><span class="summary-label">Primary Contact Email:</span> <%= @course.contact_email unless @course.contact_email.nil? %></li>
   <li><span class="summary-label">Primary Contact Phone:</span> <%= @course.contact_phone unless @course.contact_phone.nil? %></li>
   </ul>
-	<h4>Staff Involvement</h4>
+	<h4>Staff Services</h4>
   <ul class="summary-info">
 	  <li><span class="summary-label">Primary Library/Archive Contact:</span>
 	    <% unless @course.primary_contact.nil? %>
@@ -53,7 +53,7 @@
 	      None
 	    <% end %>
 	  </li>
-	  <li><span class="summary-label">Staff Involvement:</span>
+	  <li><span class="summary-label">Staff Services:</span>
 	    <ul>
 	      <% @course.staff_involvements.each do |si| %>
 	        <li><%= si.involvement_text %></li>
@@ -79,7 +79,7 @@
 
 	<h4>Scheduling</h4>
   <ul class="summary-info">
-	  <li><span class="summary-label">Number of Sessions: <%= @course.sessions.count %></span></li>
+	  <li><span class="summary-label">Number of Class Visits: <%= @course.sessions.count %></span></li>
   </ul>
 
 	<h4>Date/Time of Class</h4>
