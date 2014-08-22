@@ -33,7 +33,7 @@
 		  <td><%= course.repository.nil? ? "Not Assigned" : course.repository.name %></td>
 		  <td><%= course.status %></td>
       <td><%= course.contact_last_name %></td>
-      <td class="hidden"><%= course.subject %></td>
+      <td class="hidden"><%= searchable_fields(course) %></td>
 	    </tr>
 	    <% end %>
 	</tbody>
@@ -73,7 +73,7 @@
 		  <td><%= course.repository.nil? ? "Not Assigned" : course.repository.name %></td>
 		  <td><%= course.status %></td>
       <td><%= course.contact_last_name %></td>
-      <td class="hidden"><%= course.subject %></td>
+      <td class="hidden"><%= searchable_fields(course) %></td>
 	    </tr>
 	    <% end %>
 	</tbody>
@@ -122,7 +122,7 @@
 	   		 | <%= link_to('Delete', course_path(course), :confirm => "Are you sure?", :method => :delete) %>
 	  	  <% end %>
 		  </td>
-      <td class="hidden"><%= course.subject %></td>
+      <td class="hidden"><%= searchable_fields(course) %></td>
 	    </tr>
 	    <% end %>
 	</tbody>

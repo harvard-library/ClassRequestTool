@@ -8,7 +8,7 @@ $(document).ready(function(){
     var pg_defaults = {container: $(pg_id), removeRows: false, output: "{page}/{filteredPages} pages ({totalPages} total)", size: 20}
 
     // Create search field
-    $(id).before('<input id="' + search_id + '" type="search" class="search" data-column="all" placeholder="Search table" />');
+    $(id).before('<input id="' + search_id + '" type="search" class="search" data-column="all" placeholder="Search" />');
 
     $(id).tablesorter($.extend(ts_defaults, opts))
       .tablesorterPager($.extend(pg_defaults, pg_opts));
