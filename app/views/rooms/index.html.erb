@@ -1,7 +1,7 @@
 <h3>Rooms</h3>
 
 <div>
-  	<table id="rooms-table" class="table table-condensed tablesorter">
+  	<table id="rooms-table" class="table table-striped table-condensed tablesorter">
 	<thead>
 	  <tr>
 		<th>Name</th>
@@ -10,7 +10,7 @@
 		<th>Technology Available</th>
 		<th>Actions</th>
 	  </tr>
-	</thead> 
+	</thead>
 	<tbody>
 	    <% @rooms.each do |room| %>
 	    	<tr>
@@ -30,12 +30,12 @@
 	      <% if current_user.try(:admin?) %>
 	   		<%= link_to('Edit', edit_room_path(room), :class => "action-edit") %>
   	      <% elsif current_user.try(:superadmin?) %>
-  	   		<%= link_to('Edit', edit_room_path(room), :class => "action-edit") %> | <%= link_to('Delete', room_path(room), :confirm => "Are you sure?", :method => :delete) %>	
+  	   		<%= link_to('Edit', edit_room_path(room), :class => "action-edit") %> | <%= link_to('Delete', room_path(room), :confirm => "Are you sure?", :method => :delete) %>
 	  	  <% end %>
 		  </td>
 	    </tr>
 	    <% end %>
-	</tbody>	
+	</tbody>
 	</table>
 	<br />
 	<%= render :partial => '/shared/tablesorter_pager', :locals => {:pager_id => "rooms-table" } %>

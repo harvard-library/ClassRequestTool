@@ -12,7 +12,7 @@
 
 	<h4>Current Classes</h4>
   <% unless @courses_mine_current.empty? %>
-    <table id="course-table-current" class="table table-condensed tablesorter">
+    <table id="course-table-current" class="table table-striped table-condensed tablesorter">
 	<thead>
 	  <tr>
 		<th>Name</th>
@@ -52,7 +52,7 @@
 <div>
   <h4>Past Classes</h4>
   <% unless @courses_mine_past.empty? %>
-    <table id="course-table-past" class="table table-condensed tablesorter">
+    <table id="course-table-past" class="table table-striped table-condensed tablesorter">
 	<thead>
 	  <tr>
 		<th>Name</th>
@@ -95,7 +95,7 @@
   <h4><%= link_to('Export Courses to CSV', export_courses_path(:format => :csv)) %></h4>
   <% end %>
   <% unless @courses_all.empty? %>
-    <table id="course-table-all" class="table table-condensed tablesorter">
+    <table id="course-table-all" class="table table-striped table-condensed tablesorter">
 	<thead>
 	  <tr>
 		<th>Name</th>

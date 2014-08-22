@@ -1,13 +1,13 @@
 <h3>Libraries/Archives</h3>
 
 <div>
-  	<table id="repositories-table" class="table table-condensed tablesorter">
+  	<table id="repositories-table" class="table table-striped table-condensed tablesorter">
 	<thead>
 	  <tr>
 		<th>Name</th>
 		<th>Actions</th>
 	  </tr>
-	</thead> 
+	</thead>
 	<tbody>
 	    <% @repositories.each do |repo| %>
 	    	<tr>
@@ -16,12 +16,12 @@
 	      <% if current_user.try(:admin?) %>
 	   		<%= link_to('Edit', edit_repository_path(repo), :class => "action-edit") %>
   	      <% elsif current_user.try(:superadmin?) %>
-  	   		<%= link_to('Edit', edit_repository_path(repo), :class => "action-edit") %> | <%= link_to('Delete', repository_path(repo), :confirm => "Are you sure?", :method => :delete) %>	
+  	   		<%= link_to('Edit', edit_repository_path(repo), :class => "action-edit") %> | <%= link_to('Delete', repository_path(repo), :confirm => "Are you sure?", :method => :delete) %>
 	  	  <% end %>
 		  </td>
 	    </tr>
 	    <% end %>
-	</tbody>	
+	</tbody>
 	</table>
     <br />
     <%= render :partial => '/shared/tablesorter_pager', :locals => {:pager_id => "repositories-table" } %>
@@ -30,6 +30,5 @@
   <% if current_user.try(:admin?) || current_user.try(:superadmin?) %>
     <%= link_to("Add New Library/Archive", new_repository_path, :class => "btn btn-default" ) %>
   <% end %>
-  
-</div>
 
+</div>

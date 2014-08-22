@@ -1,13 +1,13 @@
 <h3>Classroom Technologies Available</h3>
 
 <div>
-  	<table id="attributes-table" class="table table-condensed tablesorter">
+  	<table id="attributes-table" class="table table-striped table-condensed tablesorter">
 	<thead>
 	  <tr>
 		<th>Name</th>
 		<th>Actions</th>
 	  </tr>
-	</thead> 
+	</thead>
 	<tbody>
 	    <% @attributes.each do |attribute| %>
 	    <tr>
@@ -16,12 +16,12 @@
 	      <% if current_user.try(:admin?) %>
 	   		<%= link_to('Edit', edit_item_attribute_path(attribute), :class => "action-edit") %>
 		  <% elsif current_user.try(:superadmin?) %>
-		    <%= link_to('Edit', edit_item_attribute_path(attribute), :class => "action-edit") %> | <%= link_to('Delete', item_attribute_path(attribute), :confirm => "Are you sure?", :method => :delete) %>	
+		    <%= link_to('Edit', edit_item_attribute_path(attribute), :class => "action-edit") %> | <%= link_to('Delete', item_attribute_path(attribute), :confirm => "Are you sure?", :method => :delete) %>
 	  	  <% end %>
 		  </td>
 	    </tr>
 	    <% end %>
-	</tbody>	
+	</tbody>
 	</table>
 	<br />
 	<%= render :partial => '/shared/tablesorter_pager', :locals => {:pager_id => "attributes-table" } %>

@@ -1,14 +1,14 @@
 <h3>Staff Services</h3>
 
 <div>
-  	<table id="involvement-table" class="table table-condensed tablesorter">
+  	<table id="involvement-table" class="table table-striped table-condensed tablesorter">
 	<thead>
 	  <tr>
 		<th>Text</th>
 		<th>Libraries/Archives</th>
 		<th>Actions</th>
 	  </tr>
-	</thead> 
+	</thead>
 	<tbody>
 	    <% @staff_involvements.each do |si| %>
 	    <tr>
@@ -22,12 +22,12 @@
 	      <% if current_user.try(:admin?) %>
 	   		<%= link_to('Edit', edit_staff_involvement_path(si), :class => "action-edit") %>
   	      <% elsif current_user.try(:superadmin?) %>
-  	   		<%= link_to('Edit', edit_staff_involvement_path(si), :class => "action-edit") %> | <%= link_to('Delete', staff_involvement_path(si), :confirm => "Are you sure?", :method => :delete) %>	
+  	   		<%= link_to('Edit', edit_staff_involvement_path(si), :class => "action-edit") %> | <%= link_to('Delete', staff_involvement_path(si), :confirm => "Are you sure?", :method => :delete) %>
 	  	  <% end %>
 		  </td>
 	    </tr>
 	    <% end %>
-	</tbody>	
+	</tbody>
 	</table>
 	<br />
 	<%= render :partial => '/shared/tablesorter_pager', :locals => {:pager_id => "involvement-table" } %>
