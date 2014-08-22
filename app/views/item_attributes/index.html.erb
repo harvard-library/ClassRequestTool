@@ -28,6 +28,6 @@
 	<br />
 	<br />
   <% if current_user.try(:admin?) || current_user.try(:superadmin?) %>
-    <%= link_to("Add New Technology", new_item_attribute_path ) %>
+    <%= link_to("Add New Technology", new_item_attribute_path, :class => "btn btn-default" ) %>
   <% end %>
 </div>
