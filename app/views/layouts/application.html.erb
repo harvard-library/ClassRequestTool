@@ -25,7 +25,13 @@
 	<div id="wrap">
 	<nav class="navbar navbar-inverse navbar-static-top" role="navigation">
 	  <div class="container">
-      <div class="nav navbar-header row"><%= image_tag "harvard_class_request_banner.png", :class => "img-responsive" %></div>
+      <div class="nav navbar-header row"><%= image_tag "harvard_class_request_banner.png", :class => "img-responsive col-xs-12" %>
+        <button type="button" class="navbar-toggle col-xs-12" data-toggle="collapse" data-target="#main-nav">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar" style="margin-left: auto;margin-right:auto;"></span>
+          <span class="icon-bar" style="margin-left: auto;margin-right:auto;"></span>
+          <span class="icon-bar" style="margin-left: auto;margin-right:auto;"></span>
+        </button></div>
 
       <%= render :partial => 'shared/navigation' %>
     </div>

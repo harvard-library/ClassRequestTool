@@ -37,16 +37,6 @@ h1,h2,h3,h4,h5,h6 {
   padding: 5px;
 }
 
-/* Lastly, apply responsive CSS fixes as necessary */
-@media (max-width: $screen-sm-min) {
-  #footer {
-    margin-left: -20px;
-    margin-right: -20px;
-    padding-left: 20px;
-    padding-right: 20px;
-  }
-}
-
 #welcome-left {
   @include make-md-column(6);
 }
