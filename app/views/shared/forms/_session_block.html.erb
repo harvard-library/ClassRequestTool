@@ -1,9 +1,12 @@
 <%# LOCALS: index, section_index, admin %>
 <div id="session-<%= index %>" class="session session-<%= index %> col-xs-12">
-  <%= render :partial => 'shared/forms/section_block',
-             :locals => {:display_section => 1,
-                         :session_i => index,
-                         :section_index => section_index,
-                         :admin => admin} %>
-  <button class="add_section btn btn-default">Add Section</button>
+   <h5 class="section-header hidden">Sections</h5>
+   <div class="sections">
+     <%= render :partial => 'shared/forms/section_block',
+                :locals => {
+                :session_i => index,
+                :section_index => section_index,
+                :admin => admin} %>
+     <button class="add_section btn btn-default">Add Section</button>
+   </div> <!-- END .sections -->
 </div> <!-- END .session -->
