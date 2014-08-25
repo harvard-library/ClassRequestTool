@@ -22,6 +22,8 @@ $(function () {
              section_index: section_index})
         .done(function (data, status, jqXHR) {
           $('.sessions').append(data);
+          $(e.currentTarget).trigger('blur')
+          $('.section').last().find('.requested_date').first().trigger('focus');
         });
     });
 
@@ -38,6 +40,8 @@ $(function () {
       $.get('/courses/section_block', {session_i: session_i, section_index:section_index})
         .done(function (data) {
           $(e.currentTarget).before(data);
+          $(e.currentTarget).trigger('blur');
+          $this_session.find('.section').last().find('.requested_date').first().trigger('focus');
         });
     });
 
