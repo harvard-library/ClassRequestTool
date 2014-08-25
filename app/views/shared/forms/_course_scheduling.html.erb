@@ -1,9 +1,9 @@
 <div class="form_wrapper">
 
-<h4>Scheduling</h4>
+<h4>Scheduling Class Visit(s)</h4>
 
 <div class="form_full_width">
-<h4>Date/Time of Class</h4>
+
 <p>Please enter your preferred date and time for each class visit. If your only options for scheduling fall outside normal business hours, please use the note field to detail your availability.</p>
 <p>Final scheduling of a class visit is subject to both room and staff availability.</p>
 </div>
@@ -16,7 +16,7 @@
 <% end %>
 </div>
 <% section_counter = 1 %>
-<h4>Class Visit<%= 's' if @course.sessions.count > 1 %></h4>
+
 <div class="form_full_width sessions">
   <% sessions = @course.sections.blank? ? @substitute_session : @course.sessions %>
   <% sessions.each.with_index(1) do |sesh, i| %>
