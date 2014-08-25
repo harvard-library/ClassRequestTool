@@ -18,7 +18,6 @@ $(document).ready(function(){
   prepTablesorter('course-table-past');
   prepTablesorter('course-table-all');
   prepTablesorter('attributes-table');
-  prepTablesorter('locations-table');
   prepTablesorter('repositories-table');
   prepTablesorter('rooms-table');
   prepTablesorter('users-table');

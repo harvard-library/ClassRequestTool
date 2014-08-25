@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140821202750) do
+ActiveRecord::Schema.define(:version => 20140825194420) do
 
   add_extension "fuzzystrmatch"
 
@@ -138,14 +138,6 @@ ActiveRecord::Schema.define(:version => 20140821202750) do
     t.integer "room_id"
   end
 
-  create_table "locations", :force => true do |t|
-    t.string   "name"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
-
-  add_index "locations", ["name"], :name => "index_locations_on_name"
-
   create_table "notes", :force => true do |t|
     t.text     "note_text",                        :null => false
     t.integer  "user_id",                          :null => false
@@ -192,7 +184,6 @@ ActiveRecord::Schema.define(:version => 20140821202750) do
 
   create_table "rooms", :force => true do |t|
     t.string   "name"
-    t.integer  "location_id"
     t.datetime "created_at",                 :null => false
     t.datetime "updated_at",                 :null => false
     t.integer  "class_limit", :default => 0

@@ -4,7 +4,6 @@ ClassRequestTool::Application.routes.draw do
 
   resources :emails
   resources :item_attributes
-  resources :locations
   resources :notes
   resources :repositories
   resources :rooms

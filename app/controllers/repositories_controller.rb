@@ -1,23 +1,23 @@
 class RepositoriesController < ApplicationController
   before_filter :authenticate_superadmin!, :only => [:destroy]
   before_filter :authenticate_admin_or_staff!, :except => [:index, :show]
-  
+
   def index
     @repositories = Repository.order('name')
-  end  
-  
+  end
+
   def show
     @repository = Repository.find(params[:id])
   end
-  
+
   def new
     @repository = Repository.new
   end
-  
+
   def edit
     @repository = Repository.find(params[:id])
   end
-  
+
   def create
     @repository = Repository.new(params[:repository])
     respond_to do |format|
@@ -30,7 +30,7 @@ class RepositoriesController < ApplicationController
       end
     end
   end
-  
+
   def update
     @repository = Repository.find(params[:id])
 
@@ -44,7 +44,7 @@ class RepositoriesController < ApplicationController
       end
     end
   end
-  
+
   def destroy
     @repository = Repository.find(params[:id])
     @repository.destroy
