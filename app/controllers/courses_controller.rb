@@ -39,14 +39,16 @@ class CoursesController < ApplicationController
     if params[:course] && !params[:course][:sections_attributes].blank?
       sections = params[:course][:sections_attributes]
       sections.each_pair do |k, v|
-        v[:requested_dates].map! do |date|
-          begin
-            Time.zone.parse(date).utc.to_datetime
-          rescue
-            nil
+        if v[:requested_dates]
+          v[:requested_dates].map! do |date|
+            begin
+              Time.zone.parse(date).utc.to_datetime
+            rescue
+              nil
+            end
           end
+          v[:requested_dates].reject!(&:blank?)
         end
-        v[:requested_dates].reject!(&:blank?)
       end
     end
   end
@@ -131,7 +133,7 @@ class CoursesController < ApplicationController
 
     # strip out empty sections
     if params.has_key?(:course) && params[:course].has_key?(:sections_attributes)
-      params[:course][:sections_attributes].delete_if{|k,v| v[:requested_dates].reject(&:nil?).blank? && v[:actual_date].blank?}
+      params[:course][:sections_attributes].delete_if{|k,v| v[:requested_dates] && v[:requested_dates].reject(&:nil?).blank? && v[:actual_date].blank?}
     end
     @course = Course.new(params[:course])
 
@@ -162,7 +164,7 @@ class CoursesController < ApplicationController
 
     if params.has_key?(:course) && params[:course].has_key?(:sections_attributes)
       # strip out empty sections
-      params[:course][:sections_attributes].delete_if{|k,v| v[:requested_dates].reject(&:nil?).blank? && v[:actual_date].blank? && v[:_destroy].blank?}
+      params[:course][:sections_attributes].delete_if{|k,v| v[:requested_dates] && v[:requested_dates].reject(&:nil?).blank? && v[:actual_date].blank? && v[:_destroy].blank?}
     end
 
     repo_change = false

@@ -154,6 +154,20 @@
 	    <div class="yellow-box">
 		    <p>When class is complete, click box to send class assessment, if desired. Use button below to close class.</p>
 	      <%= semantic_form_for(@course, :html => {:multipart => true}) do |f| %>
+          <div class="panel panel-default" id="headcounts">
+            <div class="panel-heading">
+              <h4 class="panel-title"><a data-toggle="collapse" data-parent="#headcounts" href="#headcounts-entry">Headcounts</a></h4></div>
+            <div id="headcounts-entry" class="panel-collapse collapse out">
+              <div class="panel-body">
+                <%= f.semantic_fields_for :sections do |section| %>
+                  <% if section.object.try(:actual_date) %>
+                    <%= section.inputs :headcount, :name => "Visit #{section.object.session}: #{display_with_tz(section.object.actual_date)}" %>
+                  <% end %>
+                <% end %>
+              </div>
+            </div>
+          </div>
+
 	  	    <%= f.inputs do %>
             <%= f.input :status, :as => :hidden, :value => "Closed" %>
 		        <%= check_box_tag :send_assessment_email %> Send assessment email to requester<br /><br />
