@@ -42,6 +42,6 @@
 	<br />
 	<br />
   <% if current_user.try(:admin?) || current_user.try(:superadmin?) %>
-    <%= link_to("Add New Room", new_room_path, :class => "btn btn-default" ) %>
+    <%= link_to("Add New Room", new_room_path, :class => "btn btn-primary" ) %>
   <% end %>
 </div>

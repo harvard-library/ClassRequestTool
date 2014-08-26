@@ -13,8 +13,6 @@
 
 ActiveRecord::Schema.define(:version => 20140825194420) do
 
-  add_extension "fuzzystrmatch"
-
   create_table "assessments", :force => true do |t|
     t.text     "using_materials"
     t.string   "involvement"

@@ -2,4 +2,12 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
-  hello: "Hello world"
+  activerecord:
+    models:
+      item_attribute:
+        one: Technology
+        other: Technologies
+      staff_involvement:
+        one: Staff Service
+        other: Staff Services
+

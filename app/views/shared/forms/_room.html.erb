@@ -4,5 +4,7 @@
   <br />
   <%= f.input :item_attributes, :as => :check_boxes, :label => 'Classroom Technologies Available' %>
   
-  <%= f.actions %>
+  <%= f.actions do %>
+    <%= f.action :submit, :as => :button, :button_html => {:class => 'btn btn-primary'} %>
+  <% end %>
 <% end %>

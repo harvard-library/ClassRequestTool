@@ -9,5 +9,7 @@
   <%= f.input :rooms, :as => :check_boxes, :label => 'Available Rooms for this Library/Archive' %><br />
   <%= f.input :users, :as => :check_boxes, :collection => User.where(:patron => false).order('first_name ASC'), :label => "Staff Assigned to this Library/Archive " %><br />
   <%= f.input :item_attributes, :as => :check_boxes, :label => 'Technology Available in this Library/Archive' %>
-  <%= f.actions %>
+  <%= f.actions do %>
+    <%= f.action :submit, :as => :button, :button_html => {:class => 'btn btn-primary'} %>
+  <% end %>
 <% end %>

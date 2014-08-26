@@ -19,5 +19,7 @@
 	  </span>
 	<% end %>
   <% end %>
-  <%= f.actions %>
+  <%= f.actions do %>
+    <%= f.action :submit, :as => :button, :button_html => {:class => 'btn btn-primary'} %>
+  <% end %>
 <% end %>

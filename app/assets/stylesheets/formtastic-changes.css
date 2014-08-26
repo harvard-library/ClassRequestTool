@@ -1,1 +1,7 @@
 form.formtastic fieldset ol li.fl {display:inline; margin-right: 2em;}
+.radio,.radio input[type="radio"] {
+  margin-left: 0px;
+}
+.radio label {
+    padding-left: 10px;
+}

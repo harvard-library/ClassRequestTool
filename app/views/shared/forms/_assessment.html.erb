@@ -1,6 +1,6 @@
 <h3>Class Assessment</h3>
 
-<p>The following five questions ask for information on your experiences with our collections, facilities, staff and services in an instructional context. Your feedback is used to help us reflect on and improve our teaching and learning practices. We greatly value your feedback </p>
+<p>The following five questions ask for information on your experiences with our collections, facilities, staff and services in an instructional context. Your feedback is used to help us reflect on and improve our teaching and learning practices. We greatly value your feedback. </p>
 
 <%= semantic_form_for(@assessment) do |f| %>
   <%= f.inputs do %>
@@ -21,6 +21,6 @@
 	<%= f.input :better_future, :label => "Do you have any suggestions about how #{@repository_name} could improve your experience teaching with special collections better in the future? ", :input_html => { :rows => 5, :columns => 50 } %>
   <% end %>
   <%= f.actions do %>
-    <%= f.action :submit, :as => :button, :label => 'Submit Assessment ' %>
+    <%= f.action :submit, :as => :button, :button_html => {:class => 'btn btn-primary'},  :label => 'Submit Assessment ' %>
   <% end %>
 <% end %>

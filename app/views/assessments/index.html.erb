@@ -19,7 +19,7 @@
 
       <td><% @text_fields.each do |attribute, text| %>
         <% unless a.send(attribute).blank? %>
-          <button type="button" class="btn btn-default" data-toggle="popover" data-placement="left" data-title="<%= text[:title] %>" data-content="<%= a.send attribute %>"><%= text[:slug] %></button>
+          <button type="button" class="btn btn-primary" data-toggle="popover" data-placement="left" data-title="<%= text[:title] %>" data-content="<%= a.send attribute %>"><%= text[:slug] %></button>
         <% end %>
       <% end %>
     </tr>

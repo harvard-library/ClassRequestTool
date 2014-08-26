@@ -15,7 +15,7 @@
 	  <% unless @course.primary_contact_id.nil? %>
         <%= f.input :users, :as => :check_boxes, :collection => @course.repository.users.where(['user_id != ?', @course.primary_contact_id]), :label => "Assign Staff: " %>
 	  <% else %>
-	    <%= f.input :users, :as => :check_boxes, :collection => @course.repository.users, :label => "Assign Staff: " %>
+	    <%= f.input :users, :as => :check_boxes, :collection => @course.repository.users, :label => "Assign Additional Staff: " %>
       <% end %>
 	<% end %>
   </div>

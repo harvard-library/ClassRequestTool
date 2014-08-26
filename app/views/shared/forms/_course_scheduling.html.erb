@@ -122,9 +122,10 @@
   <p>To request class visits outside of regular hours, please add your timing preferences in the note section below.</p>
   <%= f.input :duration,
               :as => :number,
-              :min => 0, :max => 3, :step => 1, :size => 3, :only_integer => true,
-              :label => "Class Duration (hours): ",
-              :hint => '1 hour increments, maximum 3 hours', :input_html => { :size => 1, :maxlength => 4 } %>
+              :min => 0, :max => 3, :step => ".5", :size => 3, :only_integer => false,
+              :label => "Class Duration (please enter in hours): ",
+              :placeholder => "1.5",
+              :input_html => { :size => 1, :maxlength => 4 } %>
 </div>
 
 <% if current_user.can_schedule? %>
@@ -149,8 +150,7 @@
     <%= f.input :item_attributes,
                 :as => :check_boxes,
                 :collection => @course.repository.item_attributes,
-                :label => 'Classroom Technologies Available: ',
-                :hint => 'Please check those which are needed for your class' %>
+                :label => 'Classroom Technologies Available:<span class="help-block" style="font-weight:normal">Please check those  needed for your class.</span>'.html_safe %>
   <% end %>
   <br />
   <%= f.input :comments,

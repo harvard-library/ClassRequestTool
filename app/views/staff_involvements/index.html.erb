@@ -34,6 +34,6 @@
 	<br />
 	<br />
   <% if current_user.try(:admin?) || current_user.try(:superadmin?) %>
-    <%= link_to("Add New Staff Service", new_staff_involvement_path, :class => "btn btn-default" ) %>
+    <%= link_to("Add New Staff Service", new_staff_involvement_path, :class => "btn btn-primary" ) %>
   <% end %>
 </div>
