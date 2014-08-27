@@ -82,6 +82,10 @@ class CoursesController < ApplicationController
     end
   end
 
+  def substitute_session_if_necessary
+    @substitute_session = @course.sections.blank? ? [Course::Session[Section.new(:course => @course)]] : nil
+  end
+
   def index
     @courses_all = Course.ordered_by_last_section.all #.all required due to AR inelegance (count drops the select off of ordered_by_last_section)
     @courses_mine_current = current_user.mine_current
@@ -109,7 +113,7 @@ class CoursesController < ApplicationController
       @course = Course.new
     end
 
-    @substitute_session = [Course::Session[Section.new(:course => @course)]]
+    substitute_session_if_necessary
 
     @uploader = FileUploader.new
   end
@@ -120,7 +124,8 @@ class CoursesController < ApplicationController
        redirect_to('/') and return
     end
 
-    @substitute_session = @course.sections.blank? ? [Course::Session[Section.new(:course => @course)]] : nil
+    substitute_session_if_necessary
+
     @staff_involvement = @course.staff_involvement.split(',')
   end
 
@@ -149,7 +154,9 @@ class CoursesController < ApplicationController
         end
       else
         flash.now[:error] = "Please correct the errors in the form."
-        @substitute_session = @course.sections.blank? ? Course::Session[Section.new(:course => @course)] : nil
+
+        substitute_session_if_necessary
+
         format.html { render :action => :new }
         format.json { render json: @course.errors, status: :unprocessable_entity }
       end
