@@ -12,15 +12,18 @@
 <div class="form_col2">
 <%= f.input :affiliation, :label => "Academic institution or group affiliation: " %>
 </div>
-<div class="form_col1">
+<div class="form_full_width">
 <% unless @course.file.blank? %>
   <%= link_to "Current Syllabus", @course.file_url %><br />
   <%= f.input :remove_file, :as => :boolean, :label => "Delete Current Syllabus? " %>
 <% end %>
-<%= f.input :file, :as => :file, :label => "Share Your Syllabus (Optional) " %>
+<h5>Share Your Syllabus (Optional) <abbr title="Providing your syllabus helps staff to tailor suggestions for teaching and to identify class themes most richly supported by the collections."><span style="padding-left: .5em;" class="glyphicon glyphicon-question-sign"></span></abbr></h5>
 </div>
-<div class="form_col2">
-<%= f.input :external_syllabus, :label => "(or) Enter URL: ", :input_html => { :value => @course.external_syllabus.nil? ? "http://" : @course.external_syllabus } %>
+<div class="form_full_width">
+<%= f.input :file, :as => :file, :label => "&nbsp; " %>
+</div><div class="form_full_width">
+<div style="padding-left:5em; font-weight:bold; font-size: 1.2em;">OR</div>
+<%= f.input :external_syllabus, :label => "Enter URL: ", :input_html => { :value => @course.external_syllabus.nil? ? "http://" : @course.external_syllabus } %>
 </div>
 <div class="form_col1">
 <%= f.input :number_of_students, :as => :number, :min => 0, :step => 1, :label => "Number of Students: ", :hint => !@course.repository.nil? && !@course.repository.class_limit.nil? && @course.repository.class_limit != 0 ? "Room capacity is #{@course.repository.class_limit unless @course.repository.nil?}. Larger groups can often be accommodated. Staff will be in touch with options." : "" %>
