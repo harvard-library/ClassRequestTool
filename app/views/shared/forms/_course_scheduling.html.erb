@@ -122,9 +122,9 @@
   <p>To request class visits outside of regular hours, please add your timing preferences in the note section below.</p>
   <%= f.input :duration,
               :as => :number,
-              :min => 0, :max => 3, :step => ".5", :size => 3, :only_integer => false,
+              :min => 0, :max => 3, :step => 0.5, :size => 3, :only_integer => false,
               :label => "Class Duration (please enter in hours): ",
-              :placeholder => "1.5",
+              :hint => "e.g.: 1.5",
               :input_html => { :size => 1, :maxlength => 4 } %>
 </div>
 
