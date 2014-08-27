@@ -23,9 +23,9 @@
 <%= f.input :external_syllabus, :label => "(or) Enter URL: ", :input_html => { :value => @course.external_syllabus.nil? ? "http://" : @course.external_syllabus } %>
 </div>
 <div class="form_col1">
-<%= f.input :number_of_students, :as => :number, :min => 0, :step => 1, :label => "Number of Students: ", :hint => !@course.repository.nil? && !@course.repository.class_limit.nil? && @course.repository.class_limit != 0 ? "Room capacity is #{@course.repository.class_limit unless @course.repository.nil?}. Larger groups can often be accommodated. Staff will be in touch with options." : "" %>
+<%= f.input :number_of_students, :as => :number, :min => 0, :step => 1, :required => true,  :label => "Number of Students: ", :hint => !@course.repository.nil? && !@course.repository.class_limit.nil? && @course.repository.class_limit != 0 ? "Room capacity is #{@course.repository.class_limit unless @course.repository.nil?}. Larger groups can often be accommodated. Staff will be in touch with options." : "" %>
 </div>
 <div class="form_full_width">
-<%= f.input :goal, :label => "What is your goal for this class session? ", :input_html => { :rows => 5, :columns => 100 } %>
+<%= f.input :goal, :label => "What is your goal for this class session? ", :required => true,  :input_html => { :rows => 5, :columns => 100 } %>
 </div>
 </div>
