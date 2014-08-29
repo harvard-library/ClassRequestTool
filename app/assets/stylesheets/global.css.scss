@@ -31,12 +31,6 @@ h1,h2,h3,h4,h5,h6 {
   text-align: center;
 }
 
-#feedback {
-  float: right;
-  border:1px dashed black;
-  padding: 5px;
-}
-
 #welcome-left {
   @include make-md-column(6);
 }
