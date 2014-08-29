@@ -20,13 +20,13 @@
 <div class="form_full_width sessions">
   <% sessions = @course.sections.blank? ? @substitute_session : @course.sessions %>
   <% sessions.each.with_index(1) do |sesh, i| %>
-    <div id ="session-<%= i %>" class="session session-<%= i %>">
+    <div id ="session-<%= i %>" class="session session-<%= i %> col-xs-12" data-session_index="<%= i %>">
       <h5 class="section-header<%= " hidden" if sesh.count <= 1 %>">Sections</h5>
       <div class="sections">
         <% sesh.each.with_index(1) do |sect, sect_i| %>
           <% name_prefix = "course[sections_attributes][#{section_counter}]" %>
           <% id_prefix = "course_sections_attributes_#{section_counter}" %>
-          <div class="form_full_width section section-<%= section_counter %>">
+          <div class="form_full_width section section-<%= section_counter %>" data-section_index="<%= section_counter %>">
             <% if sect.id %>
               <%= f.input :id,
                           :as => :hidden,

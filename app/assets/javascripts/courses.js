@@ -1,5 +1,19 @@
 $(function () {
   var today = new Date();
+
+  /* Get next valid section index, based on what's on the page */
+  var getSectIndex = function () {
+    var section_index = 0;
+    var sections = $('.section').get();
+    var i = sections.length;
+
+    while (--i) {
+      section_index = Math.max(section_index, +sections[i].attributes['data-section_index'].value)
+    }
+
+    return section_index + 1;
+  };
+
   /* courses#(new|edit) */
   if (window.location.href.match(/courses\/(\d+\/)?(new|edit)(?:\?.+)?/)){
     /* Sets a particular requested date as actual date */
@@ -14,8 +28,8 @@ $(function () {
       e.preventDefault();
 
       // Make SURE it can't end up with the same number
-      var index = +$('.session').last().attr('class').match(/session-(\d+)/)[1] + 1;
-      var section_index = +$('.section').last().attr('class').match(/section-(\d+)/)[1] + 1;
+      var index = +$('.session').last().data('session_index') + 1;
+      var section_index = getSectIndex();
 
       $.get('/courses/session_block',
             {index: index,
@@ -33,7 +47,7 @@ $(function () {
 
       var $this_session = $(e.currentTarget).closest('.session');
       var session_i = +$this_session.find('.session_val').val();
-      var section_index = 1 + +$('.section').last().attr('class').match(/section-(\d+)/)[1];
+      var section_index = getSectIndex();
 
       $this_session.find('.section-header').removeClass('hidden');
 

@@ -1,5 +1,5 @@
 <%# LOCALS: session_i, section_index, admin %>
-<div class="form_full_width section section-<%= section_index %>">
+<div class="form_full_width section section-<%= section_index %>" data-section_index="<%= section_index %>">
   <input type="hidden" name="course[sections_attributes][<%= section_index %>][session]" class="session_val" value="<%= session_i %>">
   <% (0..1).each do |i| %>
     <div class="form_date">
