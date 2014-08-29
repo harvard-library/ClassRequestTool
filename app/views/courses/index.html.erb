@@ -4,10 +4,10 @@
 
 	To submit a new class, choose a Library/Archive:
 	  <%= form_tag new_course_path, :method => :get do %>
-	  <p>
-	    <%= select_tag :repository, options_from_collection_for_select(@repositories, "id", "name"), :prompt => "Not Sure - Help me Choose" %>
-	    <%= submit_tag "Go" %>
-	  </p>
+	  <div class="row">
+	    <%= select_tag :repository, options_from_collection_for_select(@repositories, "id", "name"), :class => 'input select form-control', :prompt => "Not Sure - Help me Choose" %>
+	    <%= submit_tag "Go", :class => 'btn btn-primary' %>
+	  </div>
 	  <% end %>
 
 	<h4>Current Classes</h4>
