@@ -93,20 +93,23 @@
                                           :name => "#{name_prefix}[headcount]",
                                           :value => sect.headcount} %>
 
-                <%= select_tag :room_id,
-                               option_groups_from_collection_for_select(
-                                 Repository.order(:name),
-                                 :rooms,
-                                 :name,
-                                 :id,
-                                 :name,
-                                 sect.room_id),
-                               :include_blank => true,
-                               :id => "#{id_prefix}_room_id",
-                               :name => "#{name_prefix}[room_id]" %>
+                <div id="<%= id_prefix %>_room_input" class="select input optional form-group">
+                  <label class="control-label" for="<%= id_prefix%>_room_id">Room:</label>
+                  <%= select_tag :room_id,
+                                 option_groups_from_collection_for_select(
+                                   Repository.order(:name),
+                                   :rooms,
+                                   :name,
+                                   :id,
+                                   :name,
+                                   sect.room_id),
+                                 :include_blank => true,
+                                 :id => "#{id_prefix}_room_id",
+                                 :name => "#{name_prefix}[room_id]",
+                                 :class => "form-control" %>
+                  <span class="help-block">Room that section is scheduled in.</span>
+                </div>
               </div>
-
-
             <% end %> <%# END if current_user.can_schedule? %>
           </div> <!-- END .section -->
           <% section_counter += 1 %>
@@ -124,7 +127,7 @@
               :as => :number,
               :min => 0, :max => 3, :step => 0.5, :size => 3, :only_integer => false,
               :label => "Class Duration (please enter in hours): ",
-              :hint => "e.g.: 1.5", 
+              :hint => "e.g.: 1.5",
               :input_html => { :size => 1, :maxlength => 4 } %>
 </div>
 
