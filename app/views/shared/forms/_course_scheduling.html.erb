@@ -12,8 +12,10 @@
 <% if (@course.repository.nil? || @course.repository.blank?) || (@course.repository.calendar.nil? || @course.repository.calendar.blank?) %>
   <p>This Library/Archive does not have a publicly available calendar. Please submit your request with your preferred times and a staff member will get back to you.</p>
 <% else %>
-  <%= link_to image_tag('calendar_icon.png')+"View Calendar to see availability", "#{@course.repository.calendar}", :onclick=>"window.open(this.href,'view_calendar', 'height=600, width=600');return false;" %>
+  <p><%= link_to image_tag('calendar_icon.png', :class => "cal-icon")+ " View Calendar to see availability", "#{@course.repository.calendar}",
+                 :onclick=>"window.open(this.href,'view_calendar', 'height=600, width=600');return false;" %>
 <% end %>
+  </p>
 </div>
 <% section_counter = 1 %>
 
@@ -122,7 +124,8 @@
 
 <div class="form_full_width">
   <button class="add_session btn btn-default">Add Class Visit</button>
-  <p>&nbsp;</p>
+</div>
+<div class="form_full_width">
   <%= f.input :duration,
               :as => :number,
               :min => 0, :max => 3, :step => 0.5, :size => 3, :only_integer => false,
