@@ -7,7 +7,7 @@ $(function () {
     var sections = $('.section').get();
     var i = sections.length;
 
-    while (--i) {
+    while (i--) {
       section_index = Math.max(section_index, +sections[i].attributes['data-section_index'].value)
     }
 
