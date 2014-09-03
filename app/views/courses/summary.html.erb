@@ -61,14 +61,14 @@
 	<h5>Approved Date/Times</h5>
   <ul>
     <% sections.each do |s| %>
-      <li><%= s.actual_date.try(:strftime, '%m/%d/%Y %I:%M %P') %><%= s.room ? " in #{s.room.name}" : '' %></li>
+      <li><%= display_with_tz(s.actual_date) %><%= s.room ? " in #{s.room.name}" : '' %></li>
 	  <% end %>
   </ul>
 <% elsif !sections.map(&:requested_dates).reject(&:nil?).blank?  %>
   <h5>Requested times</h5>
   <ul>
     <% sections.each do |s| %>
-      <li><%== "Section #{s.session}: <ul><li>" + (s.requested_dates ? s.requested_dates.map(&:to_s).join('</li><li>') : '') + '</li></ul>' %></li>
+      <li><%== "Section #{s.session}: <ul><li>" + (s.requested_dates ? s.requested_dates.map {|d| display_with_tz d}.join('</li><li>') : '') + '</li></ul>' %></li>
     <% end %>
   </ul>
 <% end %>
