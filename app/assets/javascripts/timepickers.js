@@ -1,6 +1,6 @@
 $(function () {
   /* Set up global namespace */
-  window.crt = window.hasOwnProperty('crt') ? window.crt : {}
+  crt = window['crt'] || {}
 
   crt.setup_datetimepicker = function (input) {
     var $input = $(input);
