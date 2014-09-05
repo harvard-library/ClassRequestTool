@@ -69,7 +69,7 @@
             <%# Don't give a delete for the first section if it's not persisted. THERE MUST ALWAYS BE ONE %>
             <% unless !sect.persisted? && sect_i == 1%>
               <div class="delete-button">
-                <button class="btn btn-primary delete_section glyphicon glyphicon-minus" />
+                <button class="btn btn-primary delete_section glyphicon glyphicon-minus"></button>
               </div>
               <% end %>
             <% if current_user.can_schedule? %>
