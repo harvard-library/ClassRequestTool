@@ -50,4 +50,4 @@ group :development do
 end
 
 gem 'jquery-rails', '~> 3.1.0'
-gem 'jquery-ui-rails', '~> 4.2.0'
+gem 'jquery-ui-sass-rails', '~> 4.0.3'

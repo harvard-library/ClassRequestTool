@@ -2,9 +2,3 @@
   max-width: none;
   width: 100%;
 }
-
-#ui-datepicker-div {
-  background-color: white !important;
-  border: 1px #eee solid !important;
-  padding: 1em !important;
-}
