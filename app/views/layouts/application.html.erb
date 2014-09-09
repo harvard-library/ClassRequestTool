@@ -7,6 +7,9 @@
   <!--[if lt IE 9]>
     <%= stylesheet_link_tag 'iefix', :media => "all" %>
   <![endif] -->
+  <!--[if lt IE 10]>
+    <%= stylesheet_link_tag 'application_split2', :media => 'all' %>
+  <![endif] -->
   <%= javascript_include_tag 'application' %>
   <%= csrf_meta_tags %>
   <%= yield :header_tags -%>
