@@ -184,7 +184,7 @@ class CoursesController < ApplicationController
 
     if (@course.primary_contact.blank? && !params[:course][:primary_contact_id].blank?) ||
         (@course.users.blank? && !params[:course][:user_ids].blank?)
-      staff_change = true
+      staff_change = true unless current_user.id == params[:course][:primary_contact_id].to_i
     end
 
     params[:course][:status] = adjust_status(params[:course])
