@@ -3,7 +3,7 @@
 <%= form_tag new_course_path, :method => :get do %>
 <p>
   <%= hidden_field_tag :repository, @repository.id %>
-  <%= submit_tag "Request a Class" %>
+  <%= submit_tag "Request a Class", :class => 'btn btn-primary' %>
 </p>
 <% end %>
 
