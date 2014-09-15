@@ -82,7 +82,7 @@ Scenario: Sign in a  User
 
 Scenario: Reject invalid sign-in  credentials
   Given a user with invalid credentials
-  Then I should see "Invalid email or password."
+  Then I should see "Invalid username or password."
 
 Scenario: Create a New Account
   Given a new user named "new_user"
