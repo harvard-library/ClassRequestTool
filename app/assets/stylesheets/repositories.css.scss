@@ -1,0 +1,9 @@
+div.repo-section {
+  margin-bottom: 1.5em;
+  &:last-child {
+    margin-bottom: 0;
+  }
+  span.summary-label {
+    margin-bottom: 0.5em;
+  }
+}

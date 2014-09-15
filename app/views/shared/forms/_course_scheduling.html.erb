@@ -89,7 +89,6 @@
                           :only_integer => true,
                           :min => 0,
                           :step => 1,
-                          :size => 3,
                           :wrapper_html => {:id => "#{id_prefix}_headcount_input"},
                           :input_html => {:id => "#{id_prefix}_headcount",
                                           :name => "#{name_prefix}[headcount]",
@@ -128,10 +127,10 @@
 <div class="form_full_width">
   <%= f.input :duration,
               :as => :number,
-              :min => 0, :max => 3, :step => 0.5, :size => 3, :only_integer => false,
-              :label => "Class Duration (please enter in hours): ",
-              :hint => "e.g.: 1.5",
-              :input_html => { :size => 1, :maxlength => 4 } %>
+              :min => 0, :max => 3, :step => 0.5, :only_integer => false,
+              :label => "Class Duration: ",
+              :hint => "Length of class, in hours",
+              :input_html => {:maxlength => 4, :placeholder => "e.g. 1.5"  } %>
 </div>
 
 <% if current_user.can_schedule? %>

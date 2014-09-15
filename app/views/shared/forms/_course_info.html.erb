@@ -17,7 +17,8 @@
   <%= link_to "Current Syllabus", @course.file_url %><br />
   <%= f.input :remove_file, :as => :boolean, :label => "Delete Current Syllabus? " %>
 <% end %>
-<h5>Share Your Syllabus (Optional) <abbr title="Providing your syllabus helps staff to tailor suggestions for teaching and to identify class themes most richly supported by the collections."><span style="padding-left: .5em;" class="glyphicon glyphicon-question-sign"></span></abbr></h5>
+<label class="control-label" for="course_file">Share Your Syllabus (Optional)</h5>
+<span class="help-block">Providing your syllabus helps staff to tailor suggestions for teaching and to identify class themes most richly supported by the collections.</span>
 </div>
 <div class="form_full_width">
 <%= f.input :file, :as => :file, :label => "&nbsp; " %>
