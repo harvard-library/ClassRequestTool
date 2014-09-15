@@ -27,7 +27,7 @@
     </script>
   <![endif] -->
 </head>
-<body <%= yield :body %>>
+<body class="<%= "c_#{controller.controller_name} a_#{controller.action_name}"%>">
 	<div id="wrap">
 	<nav class="navbar navbar-inverse navbar-static-top" role="navigation">
 	  <div class="container">

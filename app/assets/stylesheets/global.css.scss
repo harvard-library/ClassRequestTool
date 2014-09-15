@@ -112,6 +112,12 @@ div.ui-datepicker{
 	padding-right: 10em;
 	font-size: 90%;
 }
+@media (max-width: $screen-sm-max) {
+  #footer .container {
+    padding-left: 1em;
+    padding-right: 1em;
+  }
+}
 
 .cal-icon {
   margin-right:1em;
