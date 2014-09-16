@@ -29,10 +29,10 @@
 	  <%= f.hidden_field :repository_id, :value => @course.repository_id %>
 	<% end %>
 	</div>
-		<span id="requester_info"><%= render :partial => 'shared/forms/course_requester_info', :locals=>{:f=>f} %></span>
-        <span id="course_info"><%= render :partial => 'shared/forms/course_info', :locals=>{:f=>f} %></span>
-        <span id="involvement_info"><%= render :partial => 'shared/forms/course_staff_involvement', :locals=>{:f=>f} %></span>
-        <span id="scheduling_info"><%= render :partial => 'shared/forms/course_scheduling', :locals=>{:f=>f} %></span>
+	<div id="requester_info"><%= render :partial => 'shared/forms/course_requester_info', :locals=>{:f=>f} %></div>
+  <div id="course_info"><%= render :partial => 'shared/forms/course_info', :locals=>{:f=>f} %></div>
+  <div id="involvement_info"><%= render :partial => 'shared/forms/course_staff_involvement', :locals=>{:f=>f} %></div>
+  <div id="scheduling_info"><%= render :partial => 'shared/forms/course_scheduling', :locals=>{:f=>f} %></div>
 	<% end %>
 	<br />
 	<%= f.actions do %>
