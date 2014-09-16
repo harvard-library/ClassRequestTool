@@ -34,7 +34,6 @@
   <div id="involvement_info"><%= render :partial => 'shared/forms/course_staff_involvement', :locals=>{:f=>f} %></div>
   <div id="scheduling_info"><%= render :partial => 'shared/forms/course_scheduling', :locals=>{:f=>f} %></div>
 	<% end %>
-	<br />
 	<%= f.actions do %>
 	  <%= f.action :submit, :as => :button, :label => 'Update Request ',  :button_html =>{:class => "btn btn-primary"} %>
 	<% end %>
