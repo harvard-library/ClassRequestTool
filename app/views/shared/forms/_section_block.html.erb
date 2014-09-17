@@ -52,7 +52,7 @@
         </span>
       </div>
       <div id="course_sections_attributes_<%= section_index %>_room_input" class="select input optional form-group">
-        <label class="control-label" for="course_sections_attributes_<%= section_index %>_room_id">Room:</label>
+        <label class="control-label" for="course_sections_attributes_<%= section_index %>_room_id">Room Assignment:</label>
         <%= select_tag :room_id,
                        option_groups_from_collection_for_select(
                          Repository.order(:name),

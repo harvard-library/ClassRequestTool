@@ -95,7 +95,7 @@
                                           :value => sect.headcount} %>
 
                 <div id="<%= id_prefix %>_room_input" class="select input optional form-group">
-                  <label class="control-label" for="<%= id_prefix%>_room_id">Room assignment:</label>
+                  <label class="control-label" for="<%= id_prefix%>_room_id">Room Assignment:</label>
                   <%= select_tag :room_id,
                                  option_groups_from_collection_for_select(
                                    Repository.order(:name),

@@ -59,6 +59,17 @@ class CoursesController < ApplicationController
     end
   end
 
+  def additional_staff
+    # Set additional staff
+    if @course.repository.nil?
+      User.all_admins
+    elsif @course.primary_contact_id.nil?
+      @course.repository.users
+    else
+      @course.repository.users.where('user_id <> ?', @course.primary_contact_id)
+    end
+  end
+
   # Helper for update, used to determine status
   def adjust_status(c_params)
     if c_params[:status] == "Closed" || @course && @course.status == "Closed"
@@ -113,6 +124,8 @@ class CoursesController < ApplicationController
       @course = Course.new
     end
 
+    @additional_staff = additional_staff
+
     substitute_session_if_necessary
 
     @uploader = FileUploader.new
@@ -123,6 +136,8 @@ class CoursesController < ApplicationController
     unless current_user.try(:staff?) || current_user.try(:admin?) || current_user.try(:superadmin?) || @course.contact_email == current_user.email
        redirect_to('/') and return
     end
+
+    @additional_staff = additional_staff
 
     substitute_session_if_necessary
 
