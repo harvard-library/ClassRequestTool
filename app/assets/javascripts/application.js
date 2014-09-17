@@ -20,4 +20,5 @@
 //= require bootstrap
 //= require icheck.min
 //= require ckeditor/init
+//= require selectivizr-min
 //= require_tree .
