@@ -23,6 +23,25 @@ class User < ActiveRecord::Base
     return self.full_name == " " ? self.username : self.full_name
   end
 
+  # Custom setters for boolean user type fields
+  #===========================================================
+  # Ensure that users only have one type by setting others
+  #   to false.
+  # If user has no type after setting, makes their type patron
+  types = %w|patron superadmin admin staff|
+  types.each do |type|
+    define_method (type + '=').to_sym do |arg|
+      write_attribute type, arg
+      if arg
+        types.reject {|el| el == type}.each do |untype|
+          write_attribute untype, false
+        end
+      elsif user_type == "none"
+        write_attribute "patron", true
+      end
+      arg
+    end
+  end
 
   def full_name
     return "#{self.first_name} #{self.last_name}"
