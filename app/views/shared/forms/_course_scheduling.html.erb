@@ -116,7 +116,10 @@
           <% section_counter += 1 %>
         <% end %> <%# END sesh.each.with_index %>
       </div> <!-- END .sections -->
-      <button class="add_section btn btn-default">Add Section</button>
+      <div class="add_section-button-block">
+        <button class="add_section btn btn-default">Add Section</button>
+        <span class="help-block">Sections are subgroups of a class that will meet at different times but consult the same materials.</span>
+      </div>
     </div><!--  END .session -->
   <% end %> <%# END @course.sessions.each.with_index %>
 </div>

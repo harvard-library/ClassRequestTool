@@ -14,11 +14,13 @@ div.session {
   &:nth-child(even) {
     background-color: #dfefff;
   }
-  .section {
-    padding: 1em;
-    border-top: 1px solid #eee;
-    &:first-child {
-      border-top: none;
+  .sections {
+    .section {
+      padding: 1em;
+      border-top: 1px solid #eee;
+      &:first-child {
+        border-top: none;
+      }
     }
   }
 }
@@ -58,4 +60,8 @@ select#repository + input {
 
 form div.calendar {
   padding-bottom: 1em;
+}
+
+.add_section-button-block {
+  padding-left: 1em;
 }
