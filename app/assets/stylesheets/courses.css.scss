@@ -14,6 +14,9 @@ div.session {
   &:nth-child(even) {
     background-color: #dfefff;
   }
+  &.even {
+    background-color: #dfefff;
+  }
   .sections {
     .section {
       padding: 1em;

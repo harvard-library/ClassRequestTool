@@ -1,4 +1,31 @@
 $(function () {
+  /* Detects support for the ':nth-child()' CSS pseudo-selector.
+
+     5 `<div>` elements with `1px` width are created.
+     Then every other element has its `width` set to `2px`.
+     A Javascript loop then tests if the `<div>`s have the expected width
+     using the modulus operator.
+  */
+  if (window['Modernizr']) {
+    Modernizr.testStyles('#modernizr div {width:1px} #modernizr div:nth-child(2n) {width:2px;}', function( elem ) {
+      Modernizr.addTest('nthchild', function() {
+        var elems = elem.getElementsByTagName('div'),
+        test = true;
+        for (var i = 0; i < 5; i++) {
+          test = test && elems[i].offsetWidth === i % 2 + 1;
+        }
+        return test;
+      });
+    }, 5);
+
+    if (! $('html').hasClass('nthchild')) {
+      $('html').on('session_update', function (e) {
+        $('.session:nth-child(odd)').removeClass('even');
+        $('.session:nth-child(even)').addClass('even');
+      });
+    }
+  }
+
   var today = new Date();
 
   /* Get next valid section index, based on what's on the page */
@@ -36,6 +63,7 @@ $(function () {
              section_index: section_index})
         .done(function (data, status, jqXHR) {
           $('.sessions').append(data);
+          $('html').trigger('session_update');
         });
     });
 
@@ -83,6 +111,7 @@ $(function () {
         else if (num_sections == 2) {
           $this_session.find('.section-header').addClass('hidden');
         }
+        $('html').trigger('session_update');
       }
     });
 

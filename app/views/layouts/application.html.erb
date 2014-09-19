@@ -5,27 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <%= stylesheet_link_tag    'application', :media => "all" %>
   <!--[if lt IE 9]>
-    <%= stylesheet_link_tag 'iefix', :media => "all" %>
+  <%= stylesheet_link_tag 'iefix', :media => "all" %>
   <![endif] -->
   <!--[if lt IE 10]>
     <%= stylesheet_link_tag 'application_split2', :media => 'all' %>
   <![endif] -->
-  <%= javascript_include_tag 'application' %>
+  <!--[if lt IE 9]>
+  <%= javascript_include_tag :modernizr %>
+  <![endif]-->
   <%= csrf_meta_tags %>
   <%= yield :header_tags -%>
-
-  <!--[if IE]>
-  <script type="text/javascript">
-    document.createElement("article");
-    document.createElement("nav");
-    document.createElement("section");
-    document.createElement("header");
-    document.createElement("aside");
-    document.createElement("figure");
-    document.createElement("legend");
-    document.createElement("footer");
-    </script>
-  <![endif] -->
 </head>
 <body class="<%= "c_#{controller.controller_name} a_#{controller.action_name} u_#{current_user ? current_user.user_type : "anon"}" %>">
 	<div id="wrap">
@@ -61,5 +50,6 @@
       <%= render :partial => 'shared/footer' %>
     </div>
   </div>
+  <%= javascript_include_tag 'application' %>
 </body>
 </html>
