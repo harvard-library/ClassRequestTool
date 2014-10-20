@@ -101,7 +101,7 @@ class Course < ActiveRecord::Base
       :to => self.contact_email,
       :subject => "[ClassRequestTool] Class Request Successfully Submitted for #{self.title}",
       :body => "<p>Your class request has been successfully submitted for #{self.title}.</p>
-      <p>You may review your request <a href='#{ROOT_URL}#{course_path(self)}'>here</a> and update it with any new details or comments by leaving a note for staff.</p>
+      <p>You may review your request <a href='//#{ROOT_URL}#{course_path(self)}'>here</a> and update it with any new details or comments by leaving a note for staff.</p>
       <p>Thank you for your request. We look forward to working with you.</p>"
     )
     # if repository is empty (homeless), send to all admins of tool
@@ -115,14 +115,14 @@ class Course < ActiveRecord::Base
         :body => "<p>A new homeless class request has been received in the Class Request Tool.</p>
         <p>
         Library/Archive: Not yet assigned<br />
-        <a href='#{ROOT_URL}#{course_path(self)}'>#{self.title}</a><br />
+        <a href='//#{ROOT_URL}#{course_path(self)}'>#{self.title}</a><br />
         Subject: #{self.subject}<br />
         Course Number: #{self.course_number}<br />
         Affiliation: #{self.affiliation}<br />
         Number of Students: #{self.number_of_students}<br />
         Syllabus: #{self.external_syllabus}<br />
         </p>
-        <p>If this class is appropriate for your library or archive, please, <a href='#{ROOT_URL}#{edit_course_path(self)}'>edit the course</a> and assign it to your repository.</p>"
+        <p>If this class is appropriate for your library or archive, please, <a href='//#{ROOT_URL}#{edit_course_path(self)}'>edit the course</a> and assign it to your repository.</p>"
       )
 
     # if repository is not empty, send to all users assigned to repository selected
@@ -139,14 +139,14 @@ class Course < ActiveRecord::Base
         :subject => "[ClassRequestTool] A new class request has been received for #{repository}",
         :body => "<p>
         Library/Archive: #{repository}<br />
-        <a href='#{ROOT_URL}#{course_path(self)}'>#{self.title}</a><br />
+        <a href='//#{ROOT_URL}#{course_path(self)}'>#{self.title}</a><br />
         Subject: #{self.subject}<br />
         Course Number: #{self.course_number}<br />
         Affiliation: #{self.affiliation}<br />
         Number of Students: #{self.number_of_students}<br />
         Syllabus: #{self.external_syllabus}<br />
         </p>
-        <p>If you wish to manage or confirm details, claim this class or assign it to another staff member at #{repository}, please <a href='#{ROOT_URL}#{edit_course_path(self)}'>edit the course</a>.</p>"
+        <p>If you wish to manage or confirm details, claim this class or assign it to another staff member at #{repository}, please <a href='//#{ROOT_URL}#{edit_course_path(self)}'>edit the course</a>.</p>"
       )
     end
   end
@@ -166,14 +166,14 @@ class Course < ActiveRecord::Base
         :body => "<p>A class has been transferred to #{repository}. This may be a formerly Homeless class or a class another repository has suggested would be more appropriate for #{repository}.</p>
         <p>
         Library/Archive: #{repository}<br />
-        <a href='#{ROOT_URL}#{course_path(self)}'>#{self.title}</a><br />
+        <a href='//#{ROOT_URL}#{course_path(self)}'>#{self.title}</a><br />
         Subject: #{self.subject}<br />
         Course Number: #{self.course_number}<br />
         Affiliation: #{self.affiliation}<br />
         Number of Students: #{self.number_of_students}<br />
         Syllabus: #{self.external_syllabus}<br />
         </p>
-        <p>If you wish to manage or confirm details, claim this class or assign it to another staff member at #{repository}, please <a href='#{ROOT_URL}#{edit_course_path(self)}'>edit the course</a>.</p>"
+        <p>If you wish to manage or confirm details, claim this class or assign it to another staff member at #{repository}, please <a href='//#{ROOT_URL}#{edit_course_path(self)}'>edit the course</a>.</p>"
       )
   end
 
@@ -192,14 +192,14 @@ class Course < ActiveRecord::Base
       :body => "<p>You have been assigned to a class for #{repository}.</p>
       <p>
       Library/Archive: #{repository}<br />
-      <a href='#{ROOT_URL}#{course_path(self)}'>#{self.title}</a><br />
+      <a href='//#{ROOT_URL}#{course_path(self)}'>#{self.title}</a><br />
       Subject: #{self.subject}<br />
       Course Number: #{self.course_number}<br />
       Affiliation: #{self.affiliation}<br />
       Number of Students: #{self.number_of_students}<br />
       Syllabus: #{self.external_syllabus}<br />
       </p>
-      <p>Please <a href='#{ROOT_URL}#{edit_course_path(self)}'>confirm the class date and time</a> and if applicable, add the class to your event management system (e.g. Aeon) and/or room calendar.</p>"
+      <p>Please <a href='//#{ROOT_URL}#{edit_course_path(self)}'>confirm the class date and time</a> and if applicable, add the class to your event management system (e.g. Aeon) and/or room calendar.</p>"
     )
   end
 
@@ -233,12 +233,12 @@ class Course < ActiveRecord::Base
       :to => self.contact_email,
       :subject => "Your class at #{repository} has been confirmed.",
       :body => "<p>Thank you for submitting your request for a class session at #{repository}. The request has been reviewed and confirmed.</p>
-      <p>Title: <a href='#{ROOT_URL}#{course_path(self)}'>#{self.title}</a><br />
+      <p>Title: <a href='//#{ROOT_URL}#{course_path(self)}'>#{self.title}</a><br />
       Confirmed Date: #{self.sections.first.try(:actual_date)}<br />
       Duration: #{self.duration} hours<br />
       Staff contact:<a href='mailto:#{email}'> #{name}</a>
       </p>
-      <p>If you have any questions or additional details to share, please add a note to the <a href='#{ROOT_URL}#{course_path(self)}'>class request</a>.</p>
+      <p>If you have any questions or additional details to share, please add a note to the <a href='//#{ROOT_URL}#{course_path(self)}'>class request</a>.</p>
       <p>#{pre_class}</p>"
     )
   end
@@ -254,7 +254,7 @@ class Course < ActiveRecord::Base
       :body => "<p>Your class session</p>
       <p>
       Library/Archive: #{repository}<br />
-      <a href='#{ROOT_URL}#{course_path(self)}'>#{self.title}</a><br />
+      <a href='//#{ROOT_URL}#{course_path(self)}'>#{self.title}</a><br />
       Subject: #{self.subject}<br />
       Course Number: #{self.course_number}<br />
       Affiliation: #{self.affiliation}<br />
@@ -262,7 +262,7 @@ class Course < ActiveRecord::Base
       Syllabus: #{self.external_syllabus}<br />
       </p>
       <p>was recently completed.</p>
-      <p>If you would consider taking five minutes to help us improve our services by filling out <a href='#{ROOT_URL}#{new_assessment_path(:course_id => self.id)}'> a short assessment about your experience, we would greatly appreciate it.</a></p>
+      <p>If you would consider taking five minutes to help us improve our services by filling out <a href='//#{ROOT_URL}#{new_assessment_path(:course_id => self.id)}'> a short assessment about your experience, we would greatly appreciate it.</a></p>
       <p>Thank you for utilizing #{repository} in your course. We hope to work with you again soon.</p>"
     )
   end
