@@ -16,7 +16,7 @@ class Assessment < ActiveRecord::Base
         :reply_to => DEFAULT_MAILER_SENDER,
         :to => admins.join(", "),
         :subject => "[ClassRequestTool] Class Assessment Received",
-        :body => "<p>Review the feedback for #{self.course.title} <a href='//#{ROOT_URL}#{assessment_path(self)}'> here</a>.</p>"
+        :body => "<p>Review the feedback for #{self.course.title} <a href='http://#{ROOT_URL}#{assessment_path(self)}'> here</a>.</p>"
       )
     # if assigned users is not empty, send to all users assigned to course selected
     else
@@ -29,7 +29,7 @@ class Assessment < ActiveRecord::Base
         :reply_to => DEFAULT_MAILER_SENDER,
         :to => users.join(", "),
         :subject => "[ClassRequestTool] Class Assessment Received",
-        :body => "<p>An assessment has been received for one of your classes. Review the feedback for #{self.course.title} <a href='//#{ROOT_URL}#{assessment_path(self)}'> here</a>.</p>"
+        :body => "<p>An assessment has been received for one of your classes. Review the feedback for #{self.course.title} <a href='http://#{ROOT_URL}#{assessment_path(self)}'> here</a>.</p>"
       )
     end
   end
