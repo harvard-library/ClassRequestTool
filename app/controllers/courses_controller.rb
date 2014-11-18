@@ -55,7 +55,7 @@ class CoursesController < ApplicationController
 
   def backdated?
     unless params[:course][:sections_attributes] && params[:course][:sections_attributes].values.select{|s| !s[:actual_date].blank?}.blank?
-      @backdated = (params[:course][:sections_attributes] && params[:course][:sections_attributes].values.select {|s| !s[:actual_date].blank? && s[:actual_date] < DateTime.now}.blank?)
+      @backdated = (params[:course][:sections_attributes] && params[:course][:sections_attributes].values.select {|s| !s[:actual_date].blank? && DateTime.parse(s[:actual_date]) < DateTime.now}.blank?)
     end
   end
 
