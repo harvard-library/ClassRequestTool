@@ -13,8 +13,13 @@ ClassRequestTool::Application.configure do
   config.consider_all_requests_local       = true
   config.action_controller.perform_caching = false
 
-  # Don't care if the mailer can't send
-  config.action_mailer.raise_delivery_errors = false
+  # Set up action mailer
+  mailer_config = YAML::load(File.open("#{Rails.root}/config/mailer.yml"))
+  config.action_mailer.raise_delivery_errors = true
+  mailconf = mailer_config['mailer']['development']
+  config.action_mailer.delivery_method = mailconf['delivery_method']
+  config.action_mailer.smtp_settings = mailconf['settings']
+  config.action_mailer.default_url_options = { :protocol => 'http://', :host => mailconf['settings']['domain'], :port => ':3000' }
 
   # Print deprecation notices to the Rails logger
   config.active_support.deprecation = :log

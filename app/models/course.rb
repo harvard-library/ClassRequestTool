@@ -33,7 +33,7 @@ class Course < ActiveRecord::Base
 
   mount_uploader :file, FileUploader
 
-  STATUS = ['Scheduled, Unclaimed', 'Scheduled, Claimed', 'Claimed, Unscheduled', 'Unclaimed, Unscheduled', 'Homeless', 'Closed']
+  STATUS = ['Scheduled, Unclaimed', 'Scheduled, Claimed', 'Claimed, Unscheduled', 'Unclaimed, Unscheduled', 'Homeless', 'Cancelled', 'Closed']
   validates_inclusion_of :status, :in => STATUS
 
   # Note: DO NOT replace MAX(actual_date) with alias, .count will error out
@@ -149,6 +149,34 @@ class Course < ActiveRecord::Base
         <p>If you wish to manage or confirm details, claim this class or assign it to another staff member at #{repository}, please <a href='http://#{ROOT_URL}#{edit_course_path(self)}'>edit the course</a>.</p>"
       )
     end
+  end
+
+  def send_cancellation_email
+    # Send to primary contact, if exists, and to first staff contact with email
+    emails = Array.new
+    unless self.primary_contact.nil? || self.primary_contact.email.blank?
+      emails << primary_contact.email
+    end
+    unless self.users.nil?
+      self.users.each do |user|
+        unless user.email.blank?
+          email << user.email
+          break
+        end
+      end
+    end
+    
+    binding.pry
+
+    # Send email
+    Email.create(
+      :from => DEFAULT_MAILER_SENDER,
+      :reply_to => DEFAULT_MAILER_SENDER,
+      :to => emails.join(','),
+      :subject => "Class cancellation confirmation",
+      :body => "<p>The class request for #{self.title} has been cancelled. We maintain a record of this class request.</p>
+      <p>If you have any questions or additional details to share, please add a note to the <a href='http://#{ROOT_URL}#{course_path(self)}'>class request</a>.</p>"
+    )
   end
 
   def send_repo_change_email
