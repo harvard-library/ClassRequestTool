@@ -17,7 +17,7 @@
 	  <tr>
 		<th>Name</th>
 		<th>Submission Date</th>
-		<th>Class Date</th>
+		<th>Class Date(s)</th>
 		<th>Repository</th>
 		<th>Status</th>
 		<th>Requester</th>
@@ -29,7 +29,16 @@
 	    <tr>
 	  	  <td><%= link_to(course.title, course ) %></td>
 		  <td><%= course.created_at.strftime('%m/%d/%Y') %></td>
-		  <td><%= course.sections.first.try(:actual_date).try(:strftime, '%m/%d/%Y %I:%M %P') unless course.sections.first.try(:actual_date).nil? %></td>
+		  <td class="section-times">
+		    <% unless course.sections.first.try(:actual_date).nil? %>
+		      <ul class="list-unstyled"> 
+		        <% course.sections.each do |s| %>
+		          <li class="<%= (s.try(:actual_date) > DateTime.now) ? 'future' : 'past' %>"><%= s.try(:actual_date).try(:strftime, '%m/%d/%Y %I:%M %P') %></li>
+		        <% end %>
+		      </ul>
+		    <% end %>
+		  </td>
+<!--		  <td><%= course.sections.first.try(:actual_date).try(:strftime, '%m/%d/%Y %I:%M %P') unless course.sections.first.try(:actual_date).nil? %></td> -->
 		  <td><%= course.repository.nil? ? "Not Assigned" : course.repository.name %></td>
 		  <td><%= course.status %></td>
       <td><%= course.contact_last_name %></td>
@@ -47,7 +56,6 @@
   <% end %>
 
 </div>
-
 
 <div>
   <h4>Past Classes</h4>

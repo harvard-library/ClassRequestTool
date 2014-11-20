@@ -129,4 +129,22 @@ $(function () {
       }
     });
   }
+  
+  /* On index display next section date and make hoverable to show all */
+  var indigo = '#293352';
+  var normalTextColor = '#434A54';
+  if ($('.section-times li').length > 1) {
+    $('.section-times').addClass('multiple');
+  }
+  $('.section-times.multiple li').hide();
+  $('.section-times.multiple ul').each(function() {
+    $(this).children('li.future:first').show();
+  });
+  $('.section-times.multiple').append('<span class="glyphicon glyphicon-th-list"></span>');
+  $('.section-times.multiple .glyphicon').mouseenter(
+    function() { $(this).siblings().children().slideDown(); $(this).siblings().children('.future').css({'font-weight':'bold', 'color': indigo}); }
+  );
+  $('.section-times.multiple').mouseleave(
+    function() { $(this).children('ul').children('li').not('li.future:first').slideUp(); $(this).children('ul').children('li').css({'font-weight':'normal', 'color':normalTextColor}); }
+  );
 });

@@ -65,3 +65,18 @@ form div.calendar {
 .add_section-button-block {
   padding-left: 1em;
 }
+
+/* TK modifications */
+.section-times.multiple {
+  position: relative;
+  .glyphicon {
+    position: absolute;
+    top: 8px;
+    left: 0;
+    cursor: pointer;
+    color: $slate;
+  }
+  li {
+    padding-left: 10px;
+  }
+}
