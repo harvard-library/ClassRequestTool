@@ -128,9 +128,17 @@ div.ui-datepicker{
 a {
   color: $crimson;
 }
-.btn-primary, .btn-primary:active, .btn-primary.active, .btn-primary.disabled, .btn-primary[disabled]  {
+.btn-primary, .btn-primary.disabled, .btn-primary[disabled]  {
   background-color: $crimson;
   border-color: darken($crimson, 10%);
+}
+.btn-primary:active, .btn-primary.active {
+  background-color: $ink;
+  border-color: lighten($ink, 10%);
+}
+.btn-primary:hover, .btn-primary:focus {
+  background-color: $slate;
+  border-color: darken($slate, 10%);
 }
 .navbar-inverse {
   background-color: $saffron;
