@@ -133,9 +133,11 @@ $(function () {
   /* On index display next section date and make hoverable to show all */
   var indigo = '#293352';
   var normalTextColor = '#434A54';
-  if ($('.section-times li').length > 1) {
-    $('.section-times').addClass('multiple');
-  }
+  $('.section-times ul').each(function() {
+    if ($(this).children('li').length > 1) {
+      $(this).parent().addClass('multiple');
+    }
+  });
   $('.section-times.multiple li').hide();
   $('.section-times.multiple ul').each(function() {
     $(this).children('li.future:first').show();
