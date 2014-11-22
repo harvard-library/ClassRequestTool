@@ -32,6 +32,8 @@ class Course < ActiveRecord::Base
   validates_presence_of :duration, :message => "please enter a duration in hours"
 
   mount_uploader :file, FileUploader
+  
+  default_scope group('courses.id').order('created_at DESC')
 
   STATUS = ['Scheduled, Unclaimed', 'Scheduled, Claimed', 'Claimed, Unscheduled', 'Unclaimed, Unscheduled', 'Homeless', 'Cancelled', 'Closed']
   validates_inclusion_of :status, :in => STATUS
