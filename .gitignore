@@ -18,6 +18,7 @@
 /tmp
 .DS_Store
 config/database.yml
+config/mailer.yml
 
 public/uploads/*
 
