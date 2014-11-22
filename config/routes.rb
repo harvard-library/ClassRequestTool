@@ -29,6 +29,7 @@ ClassRequestTool::Application.routes.draw do
       get 'section_block'
     end
   end
+  get "/courses/:id/cancel", to: 'courses#cancel'
 
   devise_for :users
   resources :users

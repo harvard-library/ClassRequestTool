@@ -143,6 +143,21 @@ class CoursesController < ApplicationController
 
     @staff_involvement = @course.staff_involvement.split(',')
   end
+  
+  def cancel
+    course = Course.find(params[:id])
+    course.status = 'Cancelled'
+    if course.save(validate: false)         # Don't bother with validation since the class is being cancelled
+      course.send_cancellation_email
+      flash[:notice] = "The class <em>#{course.title}</em> was successfully cancelled.".html_safe
+    else
+      flash[:alert] = "There was an error cancelling the class."
+    end
+    
+    respond_to do |format|
+      format.html { redirect_to :back }
+    end
+  end
 
   def create
     unless params[:course][:repository_id].blank?
@@ -155,6 +170,9 @@ class CoursesController < ApplicationController
     if params.has_key?(:course) && params[:course].has_key?(:sections_attributes)
       params[:course][:sections_attributes].delete_if{|k,v| v[:requested_dates] && v[:requested_dates].reject(&:nil?).blank? && v[:actual_date].blank?}
     end
+    
+    binding.pry
+    
     @course = Course.new(params[:course])
 
     respond_to do |format|
