@@ -160,14 +160,12 @@ class Course < ActiveRecord::Base
     unless self.users.nil?
       self.users.each do |user|
         unless user.email.blank?
-          email << user.email
+          emails << user.email
           break
         end
       end
     end
     
-    binding.pry
-
     # Send email
     Email.create(
       :from => DEFAULT_MAILER_SENDER,

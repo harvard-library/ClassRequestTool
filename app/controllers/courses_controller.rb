@@ -171,8 +171,6 @@ class CoursesController < ApplicationController
       params[:course][:sections_attributes].delete_if{|k,v| v[:requested_dates] && v[:requested_dates].reject(&:nil?).blank? && v[:actual_date].blank?}
     end
     
-    binding.pry
-    
     @course = Course.new(params[:course])
 
     respond_to do |format|
