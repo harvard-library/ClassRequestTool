@@ -75,6 +75,8 @@ class CoursesController < ApplicationController
   def adjust_status(c_params)
     if c_params[:status] == "Closed" || @course && @course.status == "Closed"
       "Closed"
+    elsif c_params[:status] == "Cancelled" || @course && @course.status == "Cancelled"
+      "Cancelled"
     elsif c_params[:repository_id].blank?
       "Homeless"
     elsif c_params[:sections_attributes] &&
