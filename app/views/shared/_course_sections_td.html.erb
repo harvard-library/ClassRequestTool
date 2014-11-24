@@ -1,0 +1,13 @@
+<td class="section-times">
+  <% unless course.sections.first.try(:actual_date).nil? %>
+    <ul class="list-unstyled"> 
+      <% course.sections.each do |s| %>
+        <% if s.try(:actual_date).nil? %>
+          <li class="unscheduled">- Unscheduled -</li>
+        <% else %>
+          <li class="<%= (s.try(:actual_date) > DateTime.now) ? 'future' : 'past' %>"><%= s.try(:actual_date).try(:strftime, '%m/%d/%Y %I:%M %P') %></li>
+        <% end %>
+      <% end %>
+    </ul>
+  <% end %>
+</td>

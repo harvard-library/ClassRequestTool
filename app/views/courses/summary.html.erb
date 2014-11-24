@@ -73,7 +73,7 @@
   </ul>
 <% end %>
 	<br />
-	Class Duration: <%= @course.duration unless @course.duration.nil? %> hour(s) <br />
+	Class Duration: <%= pluralize(@course.duration, 'hour') unless @course.duration.nil? %><br />
 	Comments: <%= @course.comments unless @course.comments.nil? %> <br />
 </div>
 
