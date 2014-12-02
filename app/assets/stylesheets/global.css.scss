@@ -125,9 +125,6 @@ div.ui-datepicker{
 }
 
 /* Harvard branding color overrides */
-a {
-  color: $crimson;
-}
 .btn-primary, .btn-primary.disabled, .btn-primary[disabled]  {
   background-color: $crimson;
   border-color: darken($crimson, 10%);
@@ -139,11 +136,4 @@ a {
 .btn-primary:hover, .btn-primary:focus {
   background-color: $slate;
   border-color: darken($slate, 10%);
-}
-.navbar-inverse {
-  background-color: $saffron;
-  border-color: $ink;
-}
-.navbar-inverse .navbar-text, .navbar-inverse .navbar-nav > li > a {
-  color: $ink;
 }
