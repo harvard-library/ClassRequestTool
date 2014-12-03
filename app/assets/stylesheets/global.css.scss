@@ -126,6 +126,7 @@ div.ui-datepicker{
 
 /* Harvard branding color overrides */
 .btn-primary, .btn-primary.disabled, .btn-primary[disabled]  {
+  color: $creme;
   background-color: $crimson;
   border-color: darken($crimson, 10%);
 }
@@ -141,8 +142,9 @@ div.ui-datepicker{
 /* Account management bar at top */
 .user-account {
   text-align: right;
-  padding: 3px 10px;
-  background-color: $creme;
+  padding: 4px 0;
+  background-color: #444;
+  color:$creme;
   font-size: 0.9em;
   .btn {
     font-size: 0.9em;
