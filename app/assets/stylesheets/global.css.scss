@@ -137,3 +137,14 @@ div.ui-datepicker{
   background-color: $slate;
   border-color: darken($slate, 10%);
 }
+
+/* Account management bar at top */
+.user-account {
+  text-align: right;
+  padding: 3px 10px;
+  background-color: $creme;
+  font-size: 0.9em;
+  .btn {
+    font-size: 0.9em;
+  }
+}
