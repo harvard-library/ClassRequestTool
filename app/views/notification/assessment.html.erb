@@ -1,5 +1,5 @@
 <p>Your class session</p>
-<%= render :partial => 'shared/notification_course_info', :locals => { @course } %>
+<%= render :partial => 'shared/notification_course_info' %>
 <p>was recently completed.</p>
 <p>If you would consider taking five minutes to help us improve our services by filling out <a href='<%= "http://#{ROOT_URL}#{new_assessment_path(:course_id => @course.id)}" %>'> a short assessment about your experience</a>, we would greatly appreciate it.</p>
 <p>Thank you for utilizing <%= #{@course.repo_name} %> in your course. We hope to work with you again soon.</p>

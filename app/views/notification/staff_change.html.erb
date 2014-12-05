@@ -1,3 +1,3 @@
 <p>You have been assigned to a class for <%= @course.repo_name %>.</p>
-<%= render :partial => 'shared/notification_course_info', :locals => { @course } %>
+<%= render :partial => 'shared/notification_course_info' %>
 <p>Please <a href='<%= "http://#{ROOT_URL}#{edit_course_path(@course)}" %>'>confirm the class date and time</a> and if applicable, add the class to your event management system (e.g. Aeon) and/or room calendar.</p>"
