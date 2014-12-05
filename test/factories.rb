@@ -7,15 +7,55 @@ FactoryGirl.define do
   end
   
   factory :course do
-    sequence(:id)
-    contact_email 'Test Contact Email'
-    contact_phone 'Test Contact Phone'
+    title 'Test Course Title'
+    contact_email 'course_contact@example.com'
+    contact_phone '617-492-TEST'
+    contact_first_name 'Jolene'
+    contact_last_name 'Patron'
+    number_of_students 5
+    goal 'Lofty goal'
+    duration 2
+    
+    trait :homeless do
+      status 'Homeless'
+      # no repository
+    end
+
+    trait :su do
+      status 'Scheduled, Unclaimed'
+      association :repository
+    end
+    
+    trait :sc do
+      status 'Scheduled, Claimed'
+      association :repository
+    end
+    
+    trait :cu do
+      status 'Claimed, Unscheduled'
+      association :repository
+    end
+    
+    trait :uu do
+      status 'Unclaimed, Unscheduled'
+      association :repository
+    end
+    
+    trait :cancelled do
+      status 'Cancelled'
+      association :repository
+    end
+
+    trait :closed do
+      status 'Closed'
+      association :repository
+    end
   end
   
-  factory :email do
-    sequence(:id)
-    message_sent false
-  end
+#   factory :email do
+#     sequence(:id)
+#     message_sent false
+#   end
   
   factory :item_attribute do
     sequence(:id)
@@ -33,8 +73,14 @@ FactoryGirl.define do
   end
   
   factory :repository do
-    sequence(:id)
+    name 'Test Repository'
     can_edit false
+    
+    trait :with_staff do
+      after(:create) do |repository|
+      create_list(:staff, 3, :repository => repository)
+    end
+  end
   end
   
   factory :room do
@@ -46,15 +92,49 @@ FactoryGirl.define do
   end
   
   factory :user do
-    sequence(:id)
-    sequence(:email) do |n|; "person#{n}@example.com"; end
-    encrypted_password ''
+    password 'password_cant_be_blank'    
+    email 'guest@example.com'
+    username 'GuestUser'
+    first_name 'Guest'
+    last_name 'User'
     admin false
     staff false
-    patron true
-    sequence(:username) do |n|; "Test Username #{n}"; end
+    patron false
     superadmin false
     pinuser false
-  end
-  
+    
+    trait :patron do
+      patron true
+      email 'patron@example.com'
+      username 'PatronUser'
+      first_name 'Patron'
+      last_name 'PUser'
+    end
+
+    trait :admin do
+      admin true
+      staff true
+      email 'admin@example.com'
+      username 'AdminUser'
+      first_name 'Admin'
+      last_name 'AUser'
+    end
+
+    trait :superadmin do
+      superadmin true
+      staff true
+      email 'superadmin@example.com'
+      username 'SuperadminUser'
+      first_name 'Superadmin'
+      last_name 'NUser'
+    end
+
+    trait :staff do
+      staff true
+      email 'staff@example.com'
+      username 'StaffUser'
+      first_name 'Staff'
+      last_name 'FUser'
+    end
+  end    
 end
