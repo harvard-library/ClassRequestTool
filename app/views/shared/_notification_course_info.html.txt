@@ -1,9 +1,9 @@
-Library/Archive: <%= #{course.repo_name %>
-<%= #{course.title} %> (<%= "http://#{ROOT_URL}#{course_path(course)}" %>)
-Subject: <%= #{course.subject} %>
-Course Number: <%= #{course.course_number} %>
-Affiliation: <%= #{course.affiliation} %>
-Number of Students: <%= #{course.number_of_students} %>
-Syllabus: <%= #{course.external_syllabus} %>
+Library/Archive: <%= @course.repo_name %>
+<%= @course.title %> (<%= "http://#{ROOT_URL}#{course_path(@course)}" %>)
+Subject: <%= #{@course.subject} %>
+@course Number: <%= @course.course_number %>
+Affiliation: <%= @course.affiliation %>
+Number of Students: <%= @course.number_of_students %>
+Syllabus: <%= @course.external_syllabus %>
 
 

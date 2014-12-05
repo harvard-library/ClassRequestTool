@@ -4,8 +4,32 @@
 # model remove the '{}' from the fixture names and add the columns immediately
 # below each fixture, per the syntax in the comments below
 #
-one: {}
-# column: value
-#
-two: {}
-#  column: value
+attached_course:
+  title:              'Attached Course'
+  contact_email:      'course_contact@example.com'
+  contact_phone:      '617-492-TEST'
+  contact_first_name: 'Jolene'
+  contact_last_name:  'Patrone'
+  number_of_students: 5
+  goal:               'Lofty goal'
+  duration:           2
+  repository:         repo
+  primary_contact:    patron
+  users:              
+                      - staff
+  status:             'Unclaimed, Unscheduled'
+
+homeless_course:
+  title:              'Homeless Course'
+  contact_email:      'course_contact@example.com'
+  contact_phone:      '617-492-TEST'
+  contact_first_name: 'Jolene'
+  contact_last_name:  'Patrone'
+  number_of_students: 7
+  goal:               'Simple goal'
+  duration:           1.5
+  primary_contact:    patron
+  users:              
+                      - staff
+  status:             'Unclaimed, Unscheduled'
+

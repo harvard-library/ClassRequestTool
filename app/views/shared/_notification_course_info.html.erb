@@ -1,8 +1,8 @@
-<p>Library/Archive: <%= #{course.repo_name %><br />
-  <a href='<%= "http://#{ROOT_URL}#{course_path(course)}" %>'><%= #{course.title} %></a><br />
-  Subject: <%= #{course.subject} %><br />
-  Course Number: <%= #{course.course_number} %><br />
-  Affiliation: <%= #{course.affiliation} %><br />
-  Number of Students: <%= #{course.number_of_students} %><br />
-  Syllabus: <%= #{course.external_syllabus} %><br />
+<p>Library/Archive: <%= @course.repo_name  %><br />
+  <a href='<%= "http://#{ROOT_URL}#{course_path(@course)}" %>'><%= @course.title %></a><br />
+  Subject: <%= @course.subject %><br />
+  @course Number: <%= @course.course_number %><br />
+  Affiliation: <%= @course.affiliation %><br />
+  Number of Students: <%= @course.number_of_students %><br />
+  Syllabus: <%= @course.external_syllabus %><br />
 </p>

@@ -78,7 +78,7 @@ FactoryGirl.define do
     
     trait :with_staff do
       after(:create) do |repository|
-      create_list(:staff, 3, :repository => repository)
+      create_list(:user, 3, { :staff => true, :repository => repository})
     end
   end
   end
