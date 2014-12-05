@@ -1,0 +1,8 @@
+Your class request has been successfully submitted for <%= @course.title %>.
+
+You may review your request and update it with any new details or comments by leaving a note for staff here:
+
+<%= "http://#{ROOT_URL}#{course_path(@course)}" %>
+ 
+Thank you for your request. We look forward to working with you.
+
