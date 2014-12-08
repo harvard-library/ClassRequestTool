@@ -11,12 +11,12 @@ class NotificationTest < ActionMailer::TestCase
     ActionMailer::Base.deliveries         = []
   end
   
-  context 'attached_repo' do
+  context 'course attached to repo' do
     context 'assessment' do
       setup do
         @course = courses(:attached_course)
         Notification.assessment(@course).deliver
-        @recipient = [@course.primary_contact.email]
+        @recipient = [@course.contact_email]
       end
     
       teardown do
@@ -35,7 +35,7 @@ class NotificationTest < ActionMailer::TestCase
   
       # Destination email
       should 'send to the correct recipient' do
-        assert_equal(@recipient, ActionMailer::Base.deliveries.first.to, "The requestor email is incorrect")
+        assert_equal(@recipient, ActionMailer::Base.deliveries.first.to, "The recipient email is incorrect")
       end
       
       # Subject
@@ -49,8 +49,8 @@ class NotificationTest < ActionMailer::TestCase
         @course = courses(:attached_course)
         Notification.cancellation(@course).deliver
         @recipients = [@course.primary_contact.email]
-        @recipients << @course.users.map {|e| e.email }
-        @recipients.uniq.sort
+        @recipients += @course.users.map {|e| e.email }
+        @recipients
       end
     
       teardown do
@@ -69,7 +69,7 @@ class NotificationTest < ActionMailer::TestCase
   
       # Destination email
       should 'send to the correct recipients' do
-        assert_equal(@recipients, ActionMailer::Base.deliveries.first.to, "The requestor email is incorrect")
+        assert_equal(@recipients.uniq.sort, ActionMailer::Base.deliveries.first.to.uniq.sort, "The recipient email is incorrect")
       end
       
       # Subject
@@ -100,7 +100,7 @@ class NotificationTest < ActionMailer::TestCase
   
       # Destination email
       should 'send to the correct recipient' do
-        assert_equal([@course.contact_email], ActionMailer::Base.deliveries.first.to, "The requestor email is incorrect")
+        assert_equal([@course.contact_email], ActionMailer::Base.deliveries.first.to, "The recipient email is incorrect")
       end
       
       # Subject
@@ -133,7 +133,7 @@ class NotificationTest < ActionMailer::TestCase
   
       # Destination email
       should 'send to the correct recipients' do
-        assert_equal(@recipients, ActionMailer::Base.deliveries.first.to, "The requestor email is incorrect")
+        assert_equal(@recipients, ActionMailer::Base.deliveries.first.to, "The recipient email is incorrect")
       end
       
       # Subject
@@ -148,7 +148,7 @@ class NotificationTest < ActionMailer::TestCase
         Notification.repo_change(@course).deliver
         @recipients = @course.users.map {|e| e.email }
         @recipients << users(:superadmin).email
-        @recipients.uniq.sort
+        @recipients
       end
     
       teardown do
@@ -167,7 +167,7 @@ class NotificationTest < ActionMailer::TestCase
   
       # Destination email
       should 'send to the correct recipients' do
-        assert_equal(@recipients, ActionMailer::Base.deliveries.first.to.uniq.sort, "The requestor email is incorrect")
+        assert_equal(@recipients.uniq.sort, ActionMailer::Base.deliveries.first.to.uniq.sort, "The recipient email is incorrect")
       end
       
       # Subject
@@ -182,7 +182,7 @@ class NotificationTest < ActionMailer::TestCase
         Notification.staff_change(@course, nil).deliver
         @recipients = @course.users.map {|e| e.email }
         @recipients << @course.primary_contact.email
-        @recipients.uniq.sort
+        @recipients
       end
     
       teardown do
@@ -201,7 +201,7 @@ class NotificationTest < ActionMailer::TestCase
   
       # Destination email
       should 'send to the correct recipients' do
-        assert_equal(@recipients, ActionMailer::Base.deliveries.first.to.uniq.sort, "The requestor email is incorrect")
+        assert_equal(@recipients.uniq.sort, ActionMailer::Base.deliveries.first.to.uniq.sort, "The recipient email is incorrect")
       end
       
       # Subject
@@ -233,7 +233,7 @@ class NotificationTest < ActionMailer::TestCase
   
       # Destination email
       should 'send to the correct recipients' do
-        assert_equal(@recipient, ActionMailer::Base.deliveries.first.to.uniq.sort, "The requestor email is incorrect")
+        assert_equal(@recipient, ActionMailer::Base.deliveries.first.to.uniq.sort, "The recipient email is incorrect")
       end
       
       # Subject
@@ -241,6 +241,40 @@ class NotificationTest < ActionMailer::TestCase
         assert_equal("[ClassRequestTool] You have been assigned a class", ActionMailer::Base.deliveries.last.subject, "The subject is incorrect")
       end  
     end
-end
+  end
+
+  context 'homeless course' do
+    context 'new request to admin' do
+      setup do
+        @course = courses(:homeless_course)
+        Notification.new_request_to_admin(@course).deliver
+        @recipients = (User.where('superadmin = true OR admin = true').pluck(:email)).uniq.sort
+      end
+    
+      teardown do
+        ActionMailer::Base.deliveries.clear
+      end
+  
+      # Number of emails
+      should 'send one email' do
+        assert_equal(1, ActionMailer::Base.deliveries.count, "Sends the wrong number of emails")
+      end
+  
+      # Sender email
+      should 'use the default sender email' do
+        assert_equal([DEFAULT_MAILER_SENDER], ActionMailer::Base.deliveries.first.from, "The sender email is wrong")
+      end
+  
+      # Destination email
+      should 'send to the correct recipients' do
+        assert_equal(@recipients, ActionMailer::Base.deliveries.first.to, "The recipient email is incorrect")
+      end
+      
+      # Subject
+      should 'set the subject correctly' do
+        assert_equal("[ClassRequestTool] A New Homeless Class Request has been Received", ActionMailer::Base.deliveries.last.subject, "The subject is incorrect")
+      end  
+    end
+  end
 end
 

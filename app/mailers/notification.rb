@@ -14,7 +14,7 @@ class Notification < ActionMailer::Base
     # Send to primary contact, if exists, and to first staff contact with email    
     emails = Array.new
     unless course.primary_contact.blank?
-      emails << primary_contact.email
+      emails << course.primary_contact.email
     end
     unless course.users.nil?
       course.users.each do |user|
