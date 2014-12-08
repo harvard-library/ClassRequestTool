@@ -19,13 +19,8 @@
 		        <td><%= course.created_at.strftime('%m/%d/%Y') %></td>
 	          <%= render :partial => '/shared/course_sections_td', :locals => {:course => course } %>
 <!--		        <td><%= course.sections.first.try(:actual_date).try(:strftime, '%m/%d/%Y %I:%M %P') unless course.sections.first.try(:actual_date).nil? %></td> -->
-		        <td><ul><li><%= link_to('Edit', edit_course_path(course), :class => "action-edit") %></li>
-			        <li><%= link_to('Add Note', course_path(course), :class => "action-edit") %></li>
-              <% if current_user.admin? || current_user.superadmin? %>
-                <li><%= link_to('Cancel', "#{course_path(course)}/cancel", :confirm => "Are you sure?") %></li>
-	   		        <li><%= link_to('Delete', course_path(course), :confirm => "Are you sure?", :method => :delete) %></li>
-      	      <% end %>
-            </ul>
+		        <td>
+		          <%= render :partial => 'shared/course_actions', :locals => { :course => course } %>
 		        </td>
             <td class="hidden"><%= searchable_fields(course) %></td>
 	        </tr>

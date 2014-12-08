@@ -119,13 +119,8 @@
 		  <td><%= course.repository.nil? ? "Not Assigned" : course.repository.name %></td>
 		  <td><%= course.status %></td>
       <td><%= course.contact_last_name %></td>
-		  <td><%= link_to('Edit', edit_course_path(course), :class => "action-edit") %>
-		    <% #if course.status != 'Cancelled' %>
-		     | <%= link_to('Cancel', "#{course_path(course)}/cancel", :confirm => "Are you sure?") %>
-		    <% #end %>
-	      <% if current_user.try(:admin?) || current_user.try(:superadmin?) %>
-	   		 | <%= link_to('Delete', course_path(course), :confirm => "Are you sure?", :method => :delete) %>
-	  	  <% end %>
+		  <td>
+		    <%= render :partial => 'shared/course_actions', :locals => { :course => course } %>
 		  </td>
       <td class="hidden"><%= searchable_fields(course) %></td>
 	    </tr>
