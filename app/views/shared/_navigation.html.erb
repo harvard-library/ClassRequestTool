@@ -13,18 +13,7 @@
 			      <li><%= link_to "Staff Services", staff_involvements_path %></li>
             <li><%= link_to "Assessments", assessments_path %></li>
 			      <li><%= link_to "Users", users_path %></li>
-			      <li>Notification Previews <b class="caret"></b></a>
-			        <ul class="dropdown-submenu" role="menu" aria-labelledby="drop2">
-			          <li><%= link_to "Assessment", "#{admin_notifications_path}/assessment" %></li>
-			          <li><%= link_to "Cancellation", "#{admin_notifications_path}/cancellation" %></li>
-			          <li><%= link_to "Uncancellation", "#{admin_notifications_path}/uncancellation" %></li>
-			          <li><%= link_to "New Request (admin)", "#{admin_notifications_path}/new_request_to_admin" %></li>
-			          <li><%= link_to "New Request (requestor)", "#{admin_notifications_path}/new_request_to_requestor" %></li>
-			          <li><%= link_to "Repo Change", "#{admin_notifications_path}/repo_change" %></li>
-			          <li><%= link_to "Staff Change", "#{admin_notifications_path}/staff_change" %></li>
-			          <li><%= link_to "Timeframe Change", "#{admin_notifications_path}/timeframe_change" %></li>
-			        </ul>
-			      </li>
+			      <li><%= link_to "Notification Previews", admin_notifications_path %></a></li>
 	        </ul>
 	      </li>
 	      <li><%= link_to "Edit Account", edit_user_registration_path %></li>

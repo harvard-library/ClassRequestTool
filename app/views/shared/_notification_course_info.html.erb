@@ -4,5 +4,7 @@
   Course Number: <%= @course.course_number %><br />
   Affiliation: <%= @course.affiliation %><br />
   Number of Students: <%= @course.number_of_students %><br />
-  Syllabus: <%= @course.external_syllabus %><br />
+  <% unless @course.external_syllabus == 'http://' %>
+    Syllabus: <%= @course.external_syllabus %><br />
+  <% end %>
 </p>
