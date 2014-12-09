@@ -1,4 +1,4 @@
-<p>Thank you for submitting your request for a class session at <% @course.repo_name %>. The request has been reviewed and confirmed.</p>
+<p>Thank you for submitting your request for a class session at <%= @course.repo_name %>. The request has been reviewed and confirmed.</p>
 <p>Title: <a href='<%= "http://#{ROOT_URL}#{course_path(@course)}" %>'><%= @course.title %></a><br />
   Confirmed Date: <%= @course.sections.first.try(:actual_date) %><br />
   Duration: <%= @course.duration %> hours<br />

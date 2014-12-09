@@ -2,6 +2,6 @@ A class has been transferred to <%= @course.repo_name %>. This may be a formerly
 
 <% render :partial => 'shared/notification_course_info' %>
 
-If you wish to manage or confirm details, claim this class or assign it to another staff member at <%= @course.repository %>, please edit the course:
+If you wish to manage or confirm details, claim this class or assign it to another staff member at <%= @course.repository.name %>, please edit the course:
 
 <%= "http://#{ROOT_URL}#{edit_course_path(@course)}" %>

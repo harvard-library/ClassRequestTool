@@ -41,6 +41,12 @@ ClassRequestTool::Application.routes.draw do
       get 'login'
     end
   end
+  
+  namespace :admin do
+    namespace :notifications do
+      match 'preview(/:action(/:id(.format)))' => 'notification#:action'
+    end
+  end
 
 
   # The priority is based upon order of creation:
