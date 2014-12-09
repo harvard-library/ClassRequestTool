@@ -352,11 +352,51 @@ class CoursesController < ApplicationController
   end
 
   def export
+    exportable = [
+      :title,
+      :subject,
+      :course_number,
+      :affiliation,
+      :contact_email,
+      :contact_phone,
+      :pre_class_appt,
+      :repository,
+      :staff_involvement,
+      :number_of_students,
+      :status,
+      :file,
+      :external_syllabus,
+      :duration,
+      :comments,
+      :session_count,
+      :goal,
+      :instruction_session,
+      :contact_first_name,
+      :contact_last_name,
+      :contact_username,
+      :primary_contact,
+      :staff
+    ]
+      
     @sections = Section.joins(:course).order('course_id ASC NULLS LAST, session ASC NULLS LAST, actual_date ASC NULLS LAST')
     csv = CSV.generate(:encoding => 'utf-8') do |csv|
-      csv << Course.attribute_names + [:session, :section_id, :date, :headcount]
+      csv << exportable + [:session, :section_id, :date, :headcount]
       @sections.each do |section|
-        values = Course.attribute_names.map {|name| section.course.send name}
+        course = section.course
+        values = []
+        exportable.each do |c|
+          case (c)
+            when :repository
+              values << course.repository.name
+            when :primary_contact
+              values << (course.primary_contact.blank? ? '' : course.primary_contact.full_name)
+            when :staff
+              binding.pry
+              values << (course.users.count > 0 ? course.users.map{ |u| u.full_name }.join('!') : '')
+            else
+              values << course.send("#{c}")
+          end
+        end
         values += [section.session, section.id, section.actual_date, (section.headcount || 'Not Entered')]
         csv << values
       end
@@ -385,6 +425,4 @@ class CoursesController < ApplicationController
       end
     end
   end
-
-
 end
