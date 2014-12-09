@@ -1,5 +1,5 @@
-<p>Library/Archive: <%= @course.repo_name  %><br />
-  <a href='<%= "http://#{ROOT_URL}#{course_path(@course)}" %>'><%= @course.title %></a><br />
+<p>  Title: <a href='<%= "http://#{ROOT_URL}#{course_path(@course)}" %>'><em><%= @course.title %></em></a><br />
+  Library/Archive: <%= @course.repo_name  %><br />
   Subject: <%= @course.subject %><br />
   Course Number: <%= @course.course_number %><br />
   Affiliation: <%= @course.affiliation %><br />
