@@ -78,6 +78,40 @@ class NotificationTest < ActionMailer::TestCase
       end  
     end
 
+    context 'uncancellation' do
+      setup do
+        @course = courses(:attached_course)
+        Notification.uncancellation(@course).deliver
+        @recipients = [@course.primary_contact.email]
+        @recipients += @course.users.map {|e| e.email }
+        @recipients
+      end
+    
+      teardown do
+        ActionMailer::Base.deliveries.clear
+      end
+  
+      # Number of emails
+      should 'send one email' do
+        assert_equal(1, ActionMailer::Base.deliveries.count, "Sends the wrong number of emails")
+      end
+  
+      # Sender email
+      should 'use the default sender email' do
+        assert_equal([DEFAULT_MAILER_SENDER], ActionMailer::Base.deliveries.first.from, "The sender email is wrong")
+      end
+  
+      # Destination email
+      should 'send to the correct recipients' do
+        assert_equal(@recipients.uniq.sort, ActionMailer::Base.deliveries.first.to.uniq.sort, "The recipient email is incorrect")
+      end
+      
+      # Subject
+      should 'set the subject correctly' do
+        assert_equal("[ClassRequestTool] Class uncancellation confirmation", ActionMailer::Base.deliveries.last.subject, "The subject is incorrect")
+      end  
+    end
+
     context 'new request to requestor' do
       setup do
         @course = courses(:attached_course)

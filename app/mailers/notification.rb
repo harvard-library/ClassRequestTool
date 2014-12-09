@@ -109,4 +109,24 @@ class Notification < ActionMailer::Base
     mail(to: course.contact_email, subject: "[ClassRequestTool] You have been assigned a class")
   end
 
+  def uncancellation(course)
+    @course = course
+
+    # Send to primary contact, if exists, and to first staff contact with email    
+    emails = Array.new
+    unless course.primary_contact.blank?
+      emails << course.primary_contact.email
+    end
+    unless course.users.nil?
+      course.users.each do |user|
+        unless user.email.blank?
+          emails << user.email
+          break
+        end
+      end
+    end
+    
+    # Send email
+    mail(to: emails, subject: "[ClassRequestTool] Class uncancellation confirmation")
+  end
 end

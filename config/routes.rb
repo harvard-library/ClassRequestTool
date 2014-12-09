@@ -29,7 +29,8 @@ ClassRequestTool::Application.routes.draw do
       get 'section_block'
     end
   end
-  get "/courses/:id/cancel", to: 'courses#cancel'
+  get "/courses/:id/cancel",    to: 'courses#cancel'
+  get "/courses/:id/uncancel",  to: 'courses#uncancel'
 
   devise_for :users
   resources :users

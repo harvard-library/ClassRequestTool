@@ -162,6 +162,42 @@ class CoursesController < ApplicationController
       format.html { redirect_to :back }
     end
   end
+  
+  def uncancel
+    course = Course.find(params[:id])
+    
+    if course.repository.blank?
+      course.status = 'Homeless'
+    else if 
+      course.sections &&
+      course.sections.first &&
+      course.sections.first.actual_date.blank?
+      if course.primary_contact.blank? && course.users.blank?
+        course.status =  "Unclaimed, Unscheduled"
+      else
+        course.status =  "Claimed, Unscheduled"
+      end
+    else
+      if course.primary_contact.blank? && course.users.blank?
+        "Scheduled, Unclaimed"
+      else
+        "Scheduled, Claimed"
+      end
+    end
+    
+    if course.save(validate: false)         # Don't bother with validation since the class is being recovered
+      Notification.uncancellation(course).deliver
+      flash[:notice] = "The class <em>#{course.title}</em> was successfully uncancelled.".html_safe
+    else
+      flash[:alert] = "There was an error uncancelling the class."
+    end
+    
+    respond_to do |format|
+      format.html { redirect_to :back }
+    end
+  end
+
+  end
 
   def create
     unless params[:course][:repository_id].blank?
