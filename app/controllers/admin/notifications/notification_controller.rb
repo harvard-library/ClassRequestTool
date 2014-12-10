@@ -1,7 +1,7 @@
 class Admin::Notifications::NotificationController < ApplicationController
 
   # By default list links to all emails
-  def method_missing(m, *args, &block)
+  def action_missing(m, *args, &block)
   
     case (m)
       when :assessment
@@ -40,5 +40,15 @@ class Admin::Notifications::NotificationController < ApplicationController
         render :file => 'admin/notifications/all_notifications'
 
     end 
+  end
+  
+  def toggle_notifications
+    if ENV['NOTIFICATIONS_STATUS'] == 'ON'
+      ENV['NOTIFICATIONS_STATUS'] = 'OFF'
+    else
+      ENV['NOTIFICATIONS_STATUS'] = 'ON'
+    end
+    
+    render :text => ENV['NOTIFICATIONS_STATUS']
   end
 end

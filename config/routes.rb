@@ -44,7 +44,8 @@ ClassRequestTool::Application.routes.draw do
   
   namespace :admin do
     namespace :notifications do
-      match 'preview(/:action(/:id(.format)))' => 'notification#:action'
+      match 'preview(/:action(/:id(.format)))', to: 'notification#:action'
+      get 'toggle',                             to: 'notification#toggle_notifications'   # AJAX route 
     end
   end
 

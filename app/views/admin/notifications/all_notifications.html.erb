@@ -1,4 +1,6 @@
 <h3>Notification Previews</h3>
+<p>Notifications are <span class="notification-status"><%= (ENV['NOTIFICATIONS_STATUS'] == 'OFF' || ENV['NOTIFICATIONS_STATUS'].blank?) ? 'OFF' : 'ON' %></span></p>
+<p><button class="toggle-notification-status btn btn-primary">Toggle notifications</button></p>
 <ul class="list-group">
   <li class="list-group-item"><%= link_to "Assessment", "#{admin_notifications_path}/assessment" %></li>
   <li class="list-group-item"><%= link_to "Cancellation", "#{admin_notifications_path}/cancellation" %></li>
