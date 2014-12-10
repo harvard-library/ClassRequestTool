@@ -1,4 +1,5 @@
 <% flash.each do |name, msg| %>
+  <% next if name.match(/affiliation/) %>
   <% if msg.is_a?(String) %>
     <div class="alert alert-<%= name == :notice ? "success" : "danger" %>">
       <a class="close" data-dismiss="alert">&#215;</a>

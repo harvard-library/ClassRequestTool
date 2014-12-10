@@ -10,7 +10,20 @@
 <%= f.input :course_number, :label => "Course Number: " %>
 </div>
 <div class="form_col2">
-<%= f.input :affiliation, :label => "Academic institution or group affiliation: " %>
+  <div id="affiliation" class="form-group">
+    <label class="control-label" for="affiliation">Harvard Affiliate?</label>
+    <p>
+      <%= radio_button_tag :affiliation_selection, 'yes', flash[:affiliation_selection] == 'yes' %> Yes
+      <%= radio_button_tag :affiliation_selection, 'no', flash[:affiliation_selection] == 'no' %> No
+    </p>
+    <div id="harvard_yes" class="affiliation_field">
+      <%= select_tag :harvard_affiliation, HARVARD_AFFILIATES.map{ |opt| "<option#{opt == flash[:harvard_affiliation] ? ' selected' : ''}>#{opt}</option>" }.join("\n").html_safe, :prompt => '-- Select one --' %>
+    </div>
+    <div id="harvard_no_or_other" class="affiliation_field">
+      <label class="control-label">Other Affiliate</label><br />
+      <%= text_field_tag :other_affiliation, flash[:other_affiliation], class: 'form-control' %>
+    </div>
+  </div>
 </div>
 <div class="form_full_width">
 <% unless @course.file.blank? %>

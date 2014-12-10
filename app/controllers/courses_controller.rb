@@ -200,6 +200,7 @@ class CoursesController < ApplicationController
   end
 
   def create
+    
     unless params[:course][:repository_id].blank?
       @repository = Repository.find(params[:course][:repository_id])
     end
@@ -211,14 +212,26 @@ class CoursesController < ApplicationController
       params[:course][:sections_attributes].delete_if{|k,v| v[:requested_dates] && v[:requested_dates].reject(&:nil?).blank? && v[:actual_date].blank?}
     end
     
+    # set affiliation
+    if params[:harvard_affiliation].blank? || params[:harvard_affiliation] == 'Other'
+      params[:course][:affiliation] = params[:other_affiliation]
+    else
+      params[:course][:affiliation] = "#{params[:harvard_affiliation] == 'Other' ? 'Other: ' : ''} #{params[:harvard_affiliation]}"
+    end
+    
+    # save affiliation parameters in case there is a form error
+    flash[:harvard_affiliation]   = params[:harvard_affiliation]
+    flash[:other_affiliation]     = params[:other_affiliation]
+    flash[:affiliation_selection] = params[:affiliation_selection]
+    
     @course = Course.new(params[:course])
 
     respond_to do |format|
       if @course.save
         unless @backdated
 #          @course.new_request_email
-          Notification.new_request_to_requestor(@course).deliver
-          Notification.new_request_to_admin(@course).deliver
+#           Notification.new_request_to_requestor(@course).deliver
+#           Notification.new_request_to_admin(@course).deliver
         end
         if user_signed_in?
           format.html { redirect_to summary_course_url(@course), notice: 'Class was successfully created.' }
