@@ -21,4 +21,4 @@ HARVARD_AFFILIATES = [
   'Radcliffe Institute for Advanced Study',
   'Other'
 ]
-  
+ENV['NOTIFICATIONS_STATUS'] = 'ON'  

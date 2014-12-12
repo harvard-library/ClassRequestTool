@@ -21,10 +21,12 @@ class NotesController < ApplicationController
     @note = Note.new(params[:note])
     respond_to do |format|
       if @note.save
-        @note.new_note_email(current_user)
-        unless @note.staff_comment || @note.course.contact_email == current_user.email
-          @note.new_patron_note_email
-        end
+        Notification.new_note(@note, current_user).deliver
+#        @note.new_note_email(current_user)
+#        unless @note.staff_comment || @note.course.contact_email == current_user.email
+#          Notification.new_note(@note).deliver
+#          @note.new_patron_note_email
+#        end
         format.html { redirect_to course_url(@note.course), notice: 'Note was successfully created.' }
         format.json { render json: @note, status: :created, note: @note }
       else

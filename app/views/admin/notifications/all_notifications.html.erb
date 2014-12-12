@@ -1,13 +1,7 @@
 <h3>Notification Previews</h3>
-<p>Notifications are <span class="notification-status"><%= (ENV['NOTIFICATIONS_STATUS'] == 'OFF' || ENV['NOTIFICATIONS_STATUS'].blank?) ? 'OFF' : 'ON' %></span></p>
 <p><button class="toggle-notification-status btn btn-primary">Toggle notifications</button></p>
 <ul class="list-group">
-  <li class="list-group-item"><%= link_to "Assessment", "#{admin_notifications_path}/assessment" %></li>
-  <li class="list-group-item"><%= link_to "Cancellation", "#{admin_notifications_path}/cancellation" %></li>
-  <li class="list-group-item"><%= link_to "Uncancellation", "#{admin_notifications_path}/uncancellation" %></li>
-  <li class="list-group-item"><%= link_to "New Request (admin)", "#{admin_notifications_path}/new_request_to_admin" %></li>
-  <li class="list-group-item"><%= link_to "New Request (requestor)", "#{admin_notifications_path}/new_request_to_requestor" %></li>
-  <li class="list-group-item"><%= link_to "Repo Change", "#{admin_notifications_path}/repo_change" %></li>
-  <li class="list-group-item"><%= link_to "Staff Change", "#{admin_notifications_path}/staff_change" %></li>
-  <li class="list-group-item"><%= link_to "Timeframe Change", "#{admin_notifications_path}/timeframe_change" %></li>
+  <% Notification.instance_methods(false).each do |n| %>
+    <li class="list-group-item"><%= link_to n.to_s.gsub('_', ' ').capitalize, "#{admin_notifications_path}/#{n.to_s}" %></li>
+  <% end %>
 </ul>

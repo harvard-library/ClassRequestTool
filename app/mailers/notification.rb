@@ -1,7 +1,29 @@
 class Notification < ActionMailer::Base
+
+  require 'pry'
+  require 'pry-byebug'
+
+  include  AbstractController::Callbacks    # Includes the after_filter
+
   default from: DEFAULT_MAILER_SENDER
   
-  def assessment(course)
+  after_filter :deliver_notifications
+  
+  def assessment_received(assessment)
+    @assessment = assessment
+    # sends to assigned users, otherwise, send to all admins of tool
+    if @assessment.course.primary_contact.blank? && @assessment.course.users.blank?
+      recipients = User.where('superadmin = ? OR admin = ?', true, true).map{|a| a.email}
+    else
+      recipients = @assessment.course.users.map{|u| u.email }
+      unless @assessment.course.primary_contact.blank?
+        recipients << @assessment.course.primary_contact.email
+      end
+    end
+    mail(to: recipients, subject: "[ClassRequestTool] Class Assessment Received")
+  end
+
+  def assessment_requested(course)
     @course = course
 
     # send email to requester    
@@ -12,24 +34,57 @@ class Notification < ActionMailer::Base
     @course = course
 
     # Send to primary contact, if exists, and to first staff contact with email    
-    emails = Array.new
+    recipients = Array.new
     unless course.primary_contact.blank?
-      emails << course.primary_contact.email
+      recipients << course.primary_contact.email
     end
     unless course.users.nil?
       course.users.each do |user|
         unless user.email.blank?
-          emails << user.email
+          recipients << user.email
           break
         end
       end
     end
     
     # Send email
-    mail(to: emails, subject: "[ClassRequestTool] Class cancellation confirmation")
+    mail(to: recipients, subject: "[ClassRequestTool] Class cancellation confirmation")
   end
   
   
+  def new_note(note, current_user)
+    @note = note
+    @course = @note.course
+    repository = @note.course.repo_name
+    
+    recipients = []
+    
+    # Send to all admins and repository staff if there are no repository contacts
+    if @note.course.primary_contact.blank? && @note.course.users.blank?
+      recipients += User.where('admin = ? OR superadmin = ?', true, true).map{|u| u.email }
+      unless @note.course.repository.nil?
+        recipients += @note.course.repository.users.map{|u| u.email}
+      end
+    
+    # Otherwise send to all users assigned to course
+    else
+      recipients += @note.course.users.map{|u| u.email}
+      unless @note.course.primary_contact.nil?
+        recipients << @note.course.primary_contact.email
+      end
+    end
+    
+    # If it's not a comment for staff, send to the patron, too
+    unless @note.staff_comment
+      recipients << @note.course.contact_email
+    end
+    
+    # Remove the current user's email
+    recipients -= [current_user.email]
+       
+    mail(to: recipients, subject: "[ClassRequestTool] A Comment has been Added to a Class")
+  end
+
   def new_request_to_requestor(course)
     @course = course
        
@@ -39,21 +94,19 @@ class Notification < ActionMailer::Base
   
   def new_request_to_admin(course)
     @course = course
-
+    
     # If repository is empty (homeless), send to all admins of tool
     if course.repository.blank?
-      emails = User.where('admin = ? OR superadmin = ?', true, true).collect{|a| a.email + ","}
+      recipients = User.where('admin = ? OR superadmin = ?', true, true).map{|a| a.email }
 
     # Otherwise send to all users assigned to the repository
     else
-      users = course.repository.users.collect{|u| u.email}
-      superadmins = User.all(:conditions => {:superadmin => true}).collect{|s| s.email}
-      users << superadmins
-      users.flatten!
-      emails = users
+      recipients = course.repository.users.map{|u| u.email}
+      superadmins = User.where(:superadmin => true).map{|u| u.email}
+      recipients += superadmins
     end
     
-    mail(to: emails, subject: "[ClassRequestTool] A New #{course.repository.blank? ? 'Homeless ' : ''}Class Request has been Received")
+    mail(to: recipients, subject: "[ClassRequestTool] A New #{course.repository.blank? ? 'Homeless ' : ''}Class Request has been Received")
   end
 
   def repo_change(course)
@@ -61,25 +114,23 @@ class Notification < ActionMailer::Base
     @repo = course.repo_name
     
     # send to all users of selected repository
-    users = course.repository.users.collect{|u| u.email}
-    superadmins = User.all(:conditions => {:superadmin => true}).collect{|s| s.email}
-    users << superadmins
-    users.flatten!
-    emails = users
-    
-    mail(to: emails, subject: "[ClassRequestTool] A Class has been Transferred to #{@repo}")
+    recipients = course.repository.users.map{|u| u.email}
+    superadmins = User.where(:superadmin => true).map{|u| u.email}
+    recipients += superadmins  
+    mail(to: recipients, subject: "[ClassRequestTool] A Class has been Transferred to #{@repo}")
   end
   
   def staff_change(course, current_user)
     @course = course
   
     # send to assigned staff members
-    emails = course.users.collect{|u| u == current_user ? '' : u.email}
+    recipients = course.users.map{|u| u.email}
     unless course.primary_contact.blank? || course.primary_contact == current_user
-      emails << course.primary_contact.email
+      recipients << course.primary_contact.email
     end
+    recipients -= [current_user.email]
  
-    mail(to: emails, subject: "[ClassRequestTool] You have been assigned a class")
+    mail(to: recipients, subject: "[ClassRequestTool] You have been assigned a class")
   end
 
   def timeframe_change(course)
@@ -113,20 +164,27 @@ class Notification < ActionMailer::Base
     @course = course
 
     # Send to primary contact, if exists, and to first staff contact with email    
-    emails = Array.new
+    recipients = Array.new
     unless course.primary_contact.blank?
-      emails << course.primary_contact.email
+      recipients << course.primary_contact.email
     end
     unless course.users.nil?
       course.users.each do |user|
         unless user.email.blank?
-          emails << user.email
+          recipients << user.email
           break
         end
       end
     end
     
     # Send email
-    mail(to: emails, subject: "[ClassRequestTool] Class uncancellation confirmation")
+    mail(to: recipients, subject: "[ClassRequestTool] Class uncancellation confirmation")
   end
+    
+  private
+    def deliver_notifications
+      if ENV['NOTIFICATIONS_STATUS'] != 'ON'
+        mail.perform_deliveries = false
+      end
+    end
 end

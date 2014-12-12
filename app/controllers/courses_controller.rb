@@ -55,7 +55,6 @@ class CoursesController < ApplicationController
 
   def backdated?
     unless params[:course][:sections_attributes] && params[:course][:sections_attributes].values.select{|s| !s[:actual_date].blank?}.blank?
-      binding.pry
       @backdated = (params[:course][:sections_attributes] && params[:course][:sections_attributes].values.select {|s| !s[:actual_date].blank? && s[:actual_date] < DateTime.now}.blank?)
     end
   end
@@ -151,9 +150,7 @@ class CoursesController < ApplicationController
     course = Course.find(params[:id])
     course.status = 'Cancelled'
     if course.save(validate: false)         # Don't bother with validation since the class is being cancelled
-      if ENV['NOTIFICATIONS_STATUS'] == 'ON'
-        Notification.cancellation(course).deliver
-      end
+      Notification.cancellation(course).deliver
       flash[:notice] = "The class <em>#{course.title}</em> was successfully cancelled.".html_safe
     else
       flash[:alert] = "There was an error cancelling the class."
@@ -187,9 +184,7 @@ class CoursesController < ApplicationController
     end
     
     if course.save(validate: false)         # Don't bother with validation since the class is being recovered
-      if ENV['NOTIFICATIONS_STATUS'] == 'ON'
-        Notification.uncancellation(course).deliver
-      end
+      Notification.uncancellation(course).deliver
       flash[:notice] = "The class <em>#{course.title}</em> was successfully uncancelled.".html_safe
     else
       flash[:alert] = "There was an error uncancelling the class."
@@ -232,10 +227,8 @@ class CoursesController < ApplicationController
     respond_to do |format|
       if @course.save
         unless @backdated
-          if ENV['NOTIFICATIONS_STATUS'] == 'ON'
-            Notification.new_request_to_requestor(@course).deliver
-            Notification.new_request_to_admin(@course).deliver
-          end
+          Notification.new_request_to_requestor(@course).deliver
+          Notification.new_request_to_admin(@course).deliver
         end
         if user_signed_in?
           format.html { redirect_to summary_course_url(@course), notice: 'Class was successfully created.' }
@@ -285,28 +278,20 @@ class CoursesController < ApplicationController
     if @course.save
       if params[:course][:status] == "Closed" # check params because editing closed courses should not create notes
         @course.notes.create(:note_text => "Class has marked as closed.", :user_id => current_user.id)
-        if params[:send_assessment_email] == "1"
-          if ENV['NOTIFICATIONS_STATUS'] == 'ON'
-            Notification.assessment(@course).deliver
-          end
-          @course.notes.create(:note_text => "Assessment email sent.", :user_id => current_user.id)
-        end
+        Notification.assessment(@course).deliver
+        @course.notes.create(:note_text => "Assessment email sent.", :user_id => current_user.id)
       end
 
       if repo_change
         # FIX INFO_NEEDED Should "changed from" repos get email? Inquiring Bobbis want to know
-        if ENV['NOTIFICATIONS_STATUS'] == 'ON'
-          Notification.repo_change(@course).deliver unless @course.repository.blank?
-        end
+        Notification.repo_change(@course).deliver unless @course.repository.blank?
         @course.notes.create(:note_text => "Library/Archive changed to #{@course.repository.blank? ? "none" : @course.repository.name + "Email sent"}.",
                              :user_id => current_user.id)
       end
 
       if staff_change
         # FIX INFO_NEEDED Should "dropped" staff members get this email?
-        if ENV['NOTIFICATIONS_STATUS'] == 'ON'
-          Notification.staff_change(@course, current_user).deliver
-        end
+        Notification.staff_change(@course, current_user).deliver
         @course.notes.create(:note_text => "Staff change email sent.", :user_id => current_user.id)
       end
 
@@ -411,7 +396,6 @@ class CoursesController < ApplicationController
             when :primary_contact
               values << (course.primary_contact.blank? ? '' : course.primary_contact.full_name)
             when :staff
-              binding.pry
               values << (course.users.count > 0 ? course.users.map{ |u| u.full_name }.join('!') : '')
             else
               values << course.send("#{c}")

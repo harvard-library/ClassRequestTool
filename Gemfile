@@ -32,6 +32,7 @@ group :test, :development do
   gem 'pry-rails'
   gem 'pry-remote'
   gem 'pry-doc'
+  gem 'pry-byebug'
 end
 
 group :test do

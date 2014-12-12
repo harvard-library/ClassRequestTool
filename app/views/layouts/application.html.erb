@@ -29,6 +29,9 @@
 </head>
 <body class="<%= "c_#{controller.controller_name} a_#{controller.action_name} u_#{current_user ? current_user.user_type : "anon"}" %>">
 	<div id="wrap">
+	<% if current_user && ( current_user.admin? || current_user.superadmin? ) %>
+	  <div class="notifications-status <%= ENV['NOTIFICATIONS_STATUS'] %>">Notifications are <b><%= ENV['NOTIFICATIONS_STATUS'] %></b></div>
+	<% end %>
 	<nav class="navbar navbar-inverse navbar-static-top" role="navigation">
 	  <%= render :partial => 'shared/user' %>
 	  <div class="container">

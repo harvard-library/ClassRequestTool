@@ -139,6 +139,19 @@ div.ui-datepicker{
   border-color: darken($slate, 10%);
 }
 
+/* Notifications */
+.notifications-status {
+  width: 100%;
+  color: white;
+  padding: 3px 40px;
+  &.OFF {
+    background-color: #800;
+  }
+  &.ON {
+    background-color: #080;
+  }
+}
+
 /* Account management bar at top */
 .user-account {
   text-align: right;

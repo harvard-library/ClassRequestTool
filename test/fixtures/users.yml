@@ -40,6 +40,19 @@ superadmin:
   superadmin: true
   pinuser:    false
 
+primary_contact:
+  encrypted_password:   'password_cant_be_blank'    
+  email:        'primary_contact@example.com'
+  username:     'PrimaryContact'
+  first_name:   'Primary'
+  last_name:    'Contact'
+  patron:       false
+  admin:        false
+  staff:        true
+  superadmin:   false
+  pinuser:      false
+  repositories: repo
+
 staff:
   encrypted_password:   'password_cant_be_blank'    
   email:        'staff@example.com'
