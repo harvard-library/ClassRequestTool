@@ -9,16 +9,21 @@ class Notification < ActionMailer::Base
   
   after_filter :deliver_notifications
   
-  def assessment_received(assessment)
+  def assessment_received_to_admins(assessment)
     @assessment = assessment
-    # sends to assigned users, otherwise, send to all admins of tool
-    if @assessment.course.primary_contact.blank? && @assessment.course.users.blank?
-      recipients = User.where('superadmin = ? OR admin = ?', true, true).map{|a| a.email}
-    else
-      recipients = @assessment.course.users.map{|u| u.email }
-      unless @assessment.course.primary_contact.blank?
-        recipients << @assessment.course.primary_contact.email
-      end
+    
+    # Sends to all tool admins
+    recipients = User.where('superadmin = ? OR admin = ?', true, true).map{|a| a.email}
+    mail(to: recipients, subject: "[ClassRequestTool] Class Assessment Received")
+  end
+
+  def assessment_received_to_users(assessment)
+    @assessment = assessment
+    
+    # Sends to assigned users
+    recipients = @assessment.course.users.map{|u| u.email }
+    unless @assessment.course.primary_contact.blank?
+      recipients << @assessment.course.primary_contact.email
     end
     mail(to: recipients, subject: "[ClassRequestTool] Class Assessment Received")
   end

@@ -4,10 +4,13 @@ class Admin::Notifications::NotificationController < ApplicationController
   def action_missing(m, *args, &block)
   
     case (m)
-      when 'assessment_received',
-        @course = Assessment.last
+      when 'assessment_received_to_admins'
+        @assessment = Assessment.last
 
-      when 'assessment_requested',
+      when 'assessment_received_to_users'
+        @assessment = Assessment.last
+
+      when 'assessment_requested'
         @course = Course.where(status: 'Closed').last
 
       when 'cancellation'

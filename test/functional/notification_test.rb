@@ -286,7 +286,7 @@ class NotificationTest < ActionMailer::TestCase
         @assessment = create(:assessment)
         @assessment.course.primary_contact = create(:user, :admin, :staff)
         @assessment.course.users = create_list(:user, 2, :staff)
-        Notification.assessment_received(@assessment).deliver
+        Notification.assessment_received_to_users(@assessment).deliver
       end
 
       # Number of emails
@@ -321,7 +321,7 @@ class NotificationTest < ActionMailer::TestCase
         @assessment.course.primary_contact = nil
         @assessment.course.users = []
         @assessment.save
-        Notification.assessment_received(@assessment).deliver
+        Notification.assessment_received_to_admins(@assessment).deliver
         recipients = []
         recipients = User.where('admin = ? OR superadmin = ?', true, true).pluck(:email)
         assert_equal(recipients.uniq.sort, ActionMailer::Base.deliveries.first.to.uniq.sort, "The recipient email is incorrect")

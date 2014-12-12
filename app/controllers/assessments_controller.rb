@@ -88,8 +88,11 @@ class AssessmentsController < ApplicationController
     @assessment.course = Course.find(params[:course_id])
     respond_to do |format|
       if @assessment.save
-        Notification.assessment_received(@assessment).deliver
-#        @assessment.new_assessment_email
+        if @assessment.course.primary_contact.blank? && @assessment.course.users.blank?
+          Notification.assessment_received_to_admins(@assessment).deliver
+        else
+          Notification.assessment_received_to_users(@assessment).deliver
+        end
         format.html { redirect_to course_url(@assessment.course), notice: 'assessment was successfully created.' }
         format.json { render json: @assessment, status: :created, assessment: @assessment }
       else

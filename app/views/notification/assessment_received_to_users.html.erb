@@ -1,1 +1,1 @@
-<p>An assessment has been received for one of your classes. Review the feedback for <%= @assessment.course.title %> <a href='http://<%= "#{ROOT_URL}#{assessment_path(self)}" %>'> here</a>.</p>
+<p>An assessment has been received for one of your classes. Review the feedback for <em><%= @assessment.course.title %></em> <a href='http://<%= "#{ROOT_URL}#{assessment_path(@assessment)}" %>'> here</a>.</p>
