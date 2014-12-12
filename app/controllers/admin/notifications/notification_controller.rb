@@ -23,7 +23,7 @@ class Admin::Notifications::NotificationController < ApplicationController
         @course = Course.where(status: 'Scheduled, Claimed').last
         
       when 'new_note'
-        @note = Note.new(:staff_note => false, :note_text => 'I have something to say about this!')
+        @note = Note.new(:staff_comment => false, :note_text => 'I have something to say about this!')
                 
       else
         all_notifications = 'admin/notifications/all_notifications'
