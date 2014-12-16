@@ -32,7 +32,7 @@
  	    <%= render :partial => '/shared/course_sections_td', :locals => {:course => course } %>
 <!--		  <td><%= course.sections.first.try(:actual_date).try(:strftime, '%m/%d/%Y %I:%M %P') unless course.sections.first.try(:actual_date).nil? %></td> -->
 		  <td><%= course.repo_name %></td>
-		  <td><%= course.full_status %></td>
+		  <td><%= full_status(course) %></td>
       <td><%= course.contact_last_name %></td>
       <td class="hidden"><%= searchable_fields(course) %></td>
 	    </tr>

@@ -118,7 +118,7 @@
   <% if current_user.try(:staff?) || current_user.try(:admin?) || current_user.try(:superadmin?) %>
 	  <h4>Admin Actions</h4>
     <ul class="summary-info">
-	    <li><span class="summary-label">Status:</span> <%= @course.full_status %></li>
+	    <li><span class="summary-label">Status:</span> <%= full_status(@course) %></li>
 		  <li><span class="summary-label">Primary Library/Archive Contact:</span>
 		    <% unless @course.primary_contact.nil? %>
 		      <span id="staffContact"><%= @course.primary_contact.first_name %> <%= @course.primary_contact.last_name unless @course.contact_last_name.nil? %></span> - <%= mail_to @course.primary_contact.email, "Send Email" %>
@@ -180,7 +180,7 @@
     <% end %>
 	<% elsif current_user.try(:patron?)%>
   	  <h4>Additional Actions</h4>
-  		Status: <%= @course.full_status %> <br />
+  		Status: <%= full_status(@course) %> <br />
 	  <h4>Assessments</h4>
 	    <p>After your class we may send you an assessment form to learn about your experience and improve our service.</p>
 	    <p>If you would like to submit an additional assessment, please <%= link_to "click here", new_assessment_path(:course_id => @course.id) %>.</p>
