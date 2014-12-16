@@ -33,9 +33,18 @@ class Course < ActiveRecord::Base
 
   mount_uploader :file, FileUploader
   
-  default_scope group('courses.id').order('created_at DESC')
-
-  STATUS = ['Scheduled, Unclaimed', 'Scheduled, Claimed', 'Claimed, Unscheduled', 'Unclaimed, Unscheduled', 'Homeless', 'Cancelled', 'Closed']
+  default_scope group('courses.id').order('courses.created_at DESC')
+  scope :unclaimed,   ->{ where(primary_contact_id: nil) }
+  scope :claimed,     ->{ where('primary_contact_id IS NOT NULL') }
+  scope :unscheduled, ->{ joins(:sections).where('sections.actual_date IS NULL') }
+  scope :scheduled,   ->{ joins(:sections).where('actual_date IS NOT NULL') }
+  scope :with_status, ->(status) { where(status: status) }
+  scope :upcoming,    ->{ joins(:sections).where("MAX(actual_date) IS NOT NULL AND MAX(actual_date) > ?", DateTime.now) }
+  scope :past,        ->{ joins(:sections).where("MAX(actual_date) IS NOT NULL AND MAX(actual_date) < ?", DateTime.now) }
+  
+  STATUS = ['Active', 'Cancelled', 'Closed']
+  
+#  STATUS = ['Scheduled, Unclaimed', 'Scheduled, Claimed', 'Claimed, Unscheduled', 'Unclaimed, Unscheduled', 'Homeless', 'Cancelled', 'Closed']
   validates_inclusion_of :status, :in => STATUS
 
   # Note: DO NOT replace MAX(actual_date) with alias, .count will error out
@@ -65,14 +74,6 @@ class Course < ActiveRecord::Base
     where(:status => 'Homeless').ordered_by_last_section
   end
 
-  def self.unscheduled_unclaimed
-    where(:status => 'Unclaimed, Unscheduled').ordered_by_last_section
-  end
-
-  def self.scheduled_unclaimed
-    where(:status => 'Scheduled, Unclaimed').ordered_by_last_section
-  end
-
   # Headcounts represent after-the-fact, definite attendance numbers
   #   The following functions depend on Course::Session,
   #   defined at bottom of this file
@@ -97,9 +98,32 @@ class Course < ActiveRecord::Base
   
   # Returns a repo name, whether the course repo is defined yet or not
   def repo_name
-    self.repository.blank? ? 'Not yet assigned' : self.repository.name
+    self.repository.blank? ? 'Unassigned' : self.repository.name
   end
-
+  
+  def scheduled?
+    if self.sections.blank?
+      secheduled = false
+    else
+      scheduled = true
+      self.sections.each do |section|
+        if section.actual_date.blank?
+          scheduled = false
+          break;
+        end
+      end
+    end
+    scheduled
+  end
+  
+  def claimed?
+    not(self.primary_contact.blank?)
+  end
+  
+  def homeless?
+    self.repository.blank?
+  end
+  
   # Internal class for attaching functions to sessions
   class Session < Array
     def headcount

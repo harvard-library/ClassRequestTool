@@ -76,22 +76,8 @@ class CoursesController < ApplicationController
       "Closed"
     elsif c_params[:status] == "Cancelled" || @course && @course.status == "Cancelled"
       "Cancelled"
-    elsif c_params[:repository_id].blank?
-      "Homeless"
-    elsif c_params[:sections_attributes] &&
-          c_params[:sections_attributes].values.first &&
-          c_params[:sections_attributes].values.first[:actual_date].blank?
-      if c_params[:primary_contact_id].blank? && c_params[:user_ids].blank?
-        "Unclaimed, Unscheduled"
-      else
-        "Claimed, Unscheduled"
-      end
     else
-      if c_params[:primary_contact_id].blank? && c_params[:user_ids].blank?
-        "Scheduled, Unclaimed"
-      else
-        "Scheduled, Claimed"
-      end
+      "Active"
     end
   end
 
@@ -163,25 +149,7 @@ class CoursesController < ApplicationController
   
   def uncancel
     course = Course.find(params[:id])
-    
-    if course.repository.blank?
-      course.status = 'Homeless'
-    else if 
-      course.sections &&
-      course.sections.first &&
-      course.sections.first.actual_date.blank?
-      if course.primary_contact.blank? && course.users.blank?
-        course.status =  "Unclaimed, Unscheduled"
-      else
-        course.status =  "Claimed, Unscheduled"
-      end
-    else
-      if course.primary_contact.blank? && course.users.blank?
-        "Scheduled, Unclaimed"
-      else
-        "Scheduled, Claimed"
-      end
-    end
+    course.status = 'Active'
     
     if course.save(validate: false)         # Don't bother with validation since the class is being recovered
       Notification.uncancellation(course).deliver
@@ -193,8 +161,6 @@ class CoursesController < ApplicationController
     respond_to do |format|
       format.html { redirect_to :back }
     end
-  end
-
   end
 
   def create

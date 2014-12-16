@@ -1,4 +1,4 @@
-class Admin::Notifications::NotificationController < ApplicationController
+class Admin::Notifications::NotificationController < Admin::AdminController
 
   # By default list links to all emails
   def action_missing(m, *args, &block)
@@ -23,7 +23,7 @@ class Admin::Notifications::NotificationController < ApplicationController
         @course = Course.where(status: 'Cancelled').last
 
       when 'repo_change', 'staff_change', 'timeframe_change'
-        @course = Course.where(status: 'Scheduled, Claimed').last
+        @course = Course.where(status: 'Active').last
         
       when 'new_note'
         @note = Note.new(:staff_comment => false, :note_text => 'I have something to say about this!')
