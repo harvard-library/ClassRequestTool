@@ -118,7 +118,7 @@
   <% if current_user.try(:staff?) || current_user.try(:admin?) || current_user.try(:superadmin?) %>
 	  <h4>Admin Actions</h4>
     <ul class="summary-info">
-	    <li><span class="summary-label">Status:</span> <%= full_status(@course) %></li>
+	    <li><span class="summary-label">Status:</span> <br /><%= full_status(@course) %></li>
 		  <li><span class="summary-label">Primary Library/Archive Contact:</span>
 		    <% unless @course.primary_contact.nil? %>
 		      <span id="staffContact"><%= @course.primary_contact.first_name %> <%= @course.primary_contact.last_name unless @course.contact_last_name.nil? %></span> - <%= mail_to @course.primary_contact.email, "Send Email" %>
