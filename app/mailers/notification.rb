@@ -1,8 +1,5 @@
 class Notification < ActionMailer::Base
 
-  require 'pry'
-  require 'pry-byebug'
-
   include  AbstractController::Callbacks    # Includes the after_filter
 
   default from: DEFAULT_MAILER_SENDER
