@@ -38,7 +38,7 @@ class Notification < ActionMailer::Base
   def cancellation(course)
     @course = course
 
-    # Send to primary contact, if exists, and to first staff contact with email    
+    # Send to primary staff contact, if exists, and to first staff contact with email    
     recipients = Array.new
     unless course.primary_contact.blank?
       recipients << course.primary_contact.email
@@ -141,7 +141,7 @@ class Notification < ActionMailer::Base
   def timeframe_change(course)
     @course = course
 
-    # figure out if there is a primary contact, if not send to first staff contact with email
+    # figure out if there is a primary staff contact, if not send to first staff contact with email
     unless course.primary_contact.blank?
       @staff_email = course.primary_contact.email
       @staff_name = "#{course.primary_contact.full_name}"
@@ -168,7 +168,7 @@ class Notification < ActionMailer::Base
   def uncancellation(course)
     @course = course
 
-    # Send to primary contact, if exists, and to first staff contact with email    
+    # Send to primary staff contact, if exists, and to first staff contact with email    
     recipients = Array.new
     unless course.primary_contact.blank?
       recipients << course.primary_contact.email

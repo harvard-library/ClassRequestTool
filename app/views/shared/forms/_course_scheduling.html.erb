@@ -62,7 +62,7 @@
                                             :value => display_with_tz(sect.requested_dates.try(:slice, rd_i))} %>
 
                 <% if current_user.can_schedule? %>
-                  <button class="btn btn-default date-setter">Set as Actual Date</button>
+                  <button class="btn btn-primary date-setter">Set as Actual Date</button>
                 <% end %>
               </div> <!-- END form_date -->
             <% end %> <%# END (0..1).each %>
@@ -117,7 +117,7 @@
         <% end %> <%# END sesh.each.with_index %>
       </div> <!-- END .sections -->
       <div class="add_section-button-block">
-        <button class="add_section btn btn-default">Add Section</button>
+        <button class="add_section btn btn-primary">Add Section</button>
         <span class="help-block">Sections are subgroups of a class that will meet at different times but consult the same materials.</span>
       </div>
     </div><!--  END .session -->
@@ -125,7 +125,7 @@
 </div>
 
 <div class="form_full_width">
-  <button class="add_session btn btn-default">Add Class Visit</button>
+  <button class="add_session btn btn-primary">Add Class Visit</button>
 </div>
 <div class="form_full_width">
   <%= f.input :duration,

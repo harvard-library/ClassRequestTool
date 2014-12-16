@@ -47,6 +47,7 @@ ClassRequestTool::Application.routes.draw do
       match 'preview(/:action(/:id(.format)))', to: 'notification#:action'
       get 'toggle',                             to: 'notification#toggle_notifications'   # AJAX route 
     end
+    get 'harvard_colors',                       to: 'admin#harvard_colors'
   end
 
 
