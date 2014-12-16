@@ -176,4 +176,12 @@ $(function () {
       $('#other_affiliation').val('')    
     }
   });
+  
+  /* Update additional staff list on assigning primary staff contact to course */
+  $('#course_primary_contact_id').on('change', function(e) {
+    var userId = $(this).val()
+    $('input#course_user_ids_' + userId).attr('checked', false).parent().removeClass('checked');
+    $('#course_users_input .checkbox').show();
+    $('.checkbox input#course_user_ids_' + userId).parent().parent().parent().hide();
+  });
 });
