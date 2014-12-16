@@ -116,7 +116,7 @@ class CoursesController < ApplicationController
 
     substitute_session_if_necessary
 
-    @uploader = FileUploader.new
+    @uploader = SyllabusUploader.new
   end
 
   def edit

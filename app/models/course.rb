@@ -6,7 +6,7 @@ class Course < ActiveRecord::Base
                    :title, :subject, :course_number, :affiliation, :number_of_students, :session_count,  #values
                    :comments,  :staff_involvement, :instruction_session, :goal,
                    :contact_username, :contact_first_name, :contact_last_name, :contact_email, :contact_phone, #contact info
-                   :status, :file, :remove_file, :external_syllabus, #syllabus
+                   :status, :syllabus, :remove_syllabus, :external_syllabus, #syllabus
                    :pre_class_appt, :timeframe, :timeframe_2, :timeframe_3, :timeframe_4, :duration, #concrete schedule vals
                    :time_choice_1, :time_choice_2, :time_choice_3, :time_choice_4, # tentative schedule vals
                    :pre_class_appt_choice_1, :pre_class_appt_choice_2, :pre_class_appt_choice_3 #unused
@@ -31,7 +31,7 @@ class Course < ActiveRecord::Base
   validates_presence_of :goal, :message => "please enter a goal"
   validates_presence_of :duration, :message => "please enter a duration in hours"
 
-  mount_uploader :file, FileUploader
+  mount_uploader :syllabus, SyllabusUploader
   
   default_scope group('courses.id').order('courses.created_at DESC')
   scope :unclaimed,   ->{ where(primary_contact_id: nil) }

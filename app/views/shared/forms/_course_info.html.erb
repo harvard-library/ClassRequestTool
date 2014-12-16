@@ -26,8 +26,8 @@
   </div>
 </div>
 <div class="form_full_width">
-<% unless @course.file.blank? %>
-  <%= link_to "Current Syllabus", @course.file_url %><br />
+<% unless @course.syllabus.blank? %>
+  <%= link_to "Current Syllabus", @course.syllabus_url %><br />
   <%= f.input :remove_file, :as => :boolean, :label => "Delete Current Syllabus? " %>
 <% end %>
 <label class="control-label" for="course_file">Share Your Syllabus (Optional)</h5>
