@@ -81,7 +81,7 @@
   <% if current_user.try(:can_schedule?) %>
     <%= link_to('Edit', edit_course_path(@course), :class => "action-edit") %>
   <% end %>
-  <% if (current_user.try(:admin?) || current_user.try(:superadmin?)) %>
+  <% if current_user.can_admin? %>
     | <%= link_to('Delete', course_path(@course), :confirm => "Are you sure?", :method => :delete) %>
   <% end %>
 </div>

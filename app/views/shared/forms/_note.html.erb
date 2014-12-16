@@ -2,7 +2,7 @@
   <%= f.input :note_text, :label => "Add a Note: ", :input_html => { :rows => 5, :columns => 250 } %>
   <%= f.hidden_field :course_id, :value => course.id %>
   <%= f.hidden_field :user_id, :value => current_user.id %>
-  <% if current_user.try(:staff?) || current_user.try(:admin?) || current_user.try(:superadmin?) %>
+  <% if current_user.staff? || current_user.can_admin? %>
     <%= f.input :staff_comment, :label => "Staff Note? (Uncheck to send to requester) ", :input_html => {:checked => "checked"} %>
   <% end %>
 <%= f.actions do %>

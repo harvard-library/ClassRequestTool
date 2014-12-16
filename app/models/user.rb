@@ -112,5 +112,9 @@ class User < ActiveRecord::Base
       having("MAX(actual_date) IS NOT NULL AND MAX(actual_date) < ?", DateTime.now).
       ordered_by_last_section
   end
+  
+  def can_admin?
+    admin? || superadmin?
+  end
 
 end

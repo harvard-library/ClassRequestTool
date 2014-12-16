@@ -6,7 +6,11 @@
 	  <tr>
 		<th>Text</th>
 		<th>Libraries/Archives</th>
-		<th>Actions</th>
+	  <% if current_user.admin? %>
+		  <th>Actions</th>
+		<% else %>
+		  <th></th>
+		<% end %>
 	  </tr>
 	</thead>
 	<tbody>
@@ -19,10 +23,11 @@
 		  <% end %>
 		  </td>
 		  <td>
-	      <% if current_user.try(:admin?) %>
-	   		<%= link_to('Edit', edit_staff_involvement_path(si), :class => "action-edit") %>
-  	      <% elsif current_user.try(:superadmin?) %>
-  	   		<%= link_to('Edit', edit_staff_involvement_path(si), :class => "action-edit") %> | <%= link_to('Delete', staff_involvement_path(si), :confirm => "Are you sure?", :method => :delete) %>
+	      <% if current_user.can_admin? %>
+	   		  <%= link_to('Edit', edit_staff_involvement_path(si), :class => "action-edit") %>
+	   		<% end %>
+  	    <% if current_user.superadmin? %>
+  	   	  | <%= link_to('Delete', staff_involvement_path(si), :confirm => "Are you sure?", :method => :delete) %>
 	  	  <% end %>
 		  </td>
 	    </tr>
@@ -33,7 +38,7 @@
 	<%= render :partial => '/shared/tablesorter_pager', :locals => {:pager_id => "involvement-table" } %>
 	<br />
 	<br />
-  <% if current_user.try(:admin?) || current_user.try(:superadmin?) %>
+  <% if current_user.can_admin? %>
     <%= link_to("Add New Staff Service", new_staff_involvement_path, :class => "btn btn-primary" ) %>
   <% end %>
 </div>

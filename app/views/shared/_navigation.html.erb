@@ -1,10 +1,10 @@
 <div class="navbar-collapse collapse" id="main-nav">
   <ul class="nav navbar-nav" role="navigation">
 	  <li><%= link_to "Home", root_path %></li>
-    <% if current_user.try(:can_schedule?) %>
+    <% if current_user && current_user.can_schedule? %>
       <li><%= link_to "Dashboard", dashboard_welcome_index_path %></li>
       <li><%= link_to "Classes", courses_path %></li>
-      <% if current_user.try(:superadmin?) || current_user.try(:admin?) %>
+      <% if current_user && current_user.can_admin? %>
 	      <li class="dropdown"><a id="drop1" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">Admin Area <b class="caret"></b></a>
 		      <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
 			      <li><%= link_to "Libraries/Archives", repositories_path %></li>
@@ -18,14 +18,14 @@
 	        </ul>
 	      </li>
 	      <li><%= link_to "Edit Account", edit_user_registration_path %></li>
-      <% elsif current_user.try(:staff?) %>
+      <% elsif current_user && current_user.staff? %>
 	      <li><%= link_to "Users", users_path %></li>
 	    <% end %>
-    <% elsif current_user.try(:patron?) %>
+    <% elsif current_user && current_user.patron? %>
       <li><%= link_to "Request a Class", courses_path %></li>
 	    <li><%= link_to "My Classes", courses_path %></li>
     <% end %>
-    <% if current_user.try(:patron?) || current_user.try(:staff) %>
+    <% if current_user && (current_user.patron? || current_user.staff) %>
       <li><%= link_to "Edit Account", edit_user_registration_path %></li>
     <% end %>
   </ul>

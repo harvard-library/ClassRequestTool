@@ -12,7 +12,7 @@ class NotesController < ApplicationController
   def edit
     @note = Note.find(params[:id])
     @course = @note.course
-    unless current_user.try(:staff?) || current_user.try(:admin?) || current_user.try(:superadmin?) || @note.course.contact_email == current_user.email
+    unless current_user.staff? || current_user.can_admin? || @note.course.contact_email == current_user.email
        redirect_to('/') and return
     end
   end
@@ -38,7 +38,7 @@ class NotesController < ApplicationController
 
   def update
     @note = Note.find(params[:id])
-    unless current_user.try(:staff?) || current_user.try(:admin?) || current_user.try(:superadmin?) || @note.course.contact_email == current_user.email
+    unless current_user.staff? || current_user.can_admin? || @note.course.contact_email == current_user.email
        redirect_to('/') and return
     end
 
@@ -56,7 +56,7 @@ class NotesController < ApplicationController
   def destroy
     @note = Note.find(params[:id])
     @course = @note.course
-    unless current_user.try(:staff?) || current_user.try(:admin?) || current_user.try(:superadmin?) || @course.contact_email == current_user.email
+    unless current_user.staff? || current_user.can_admin? || @course.contact_email == current_user.email
        redirect_to('/') and return
     end
     @note.destroy

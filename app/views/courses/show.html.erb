@@ -9,7 +9,7 @@
 <h3><%= @course.title %></h3>
 <br />
 <div id="welcome-left">
-<% if current_user.try(:can_schedule?) %>
+<% if current_user.can_schedule? %>
 <p><%= button_to('Edit Class Info', edit_course_path(@course), :class => "action-edit", :method => :get) %></p>
 <% end %>
 
@@ -115,7 +115,7 @@
 </div>
 
 <div id="welcome-right">
-  <% if current_user.try(:staff?) || current_user.try(:admin?) || current_user.try(:superadmin?) %>
+  <% if current_user.staff? || current_user.can_admin? %>
 	  <h4>Admin Actions</h4>
     <ul class="summary-info">
 	    <li><span class="summary-label">Status:</span> <br /><%= full_status(@course) %></li>
@@ -178,7 +178,7 @@
 	      <% end %>
 	    </div>
     <% end %>
-	<% elsif current_user.try(:patron?)%>
+	<% elsif current_user.patron?%>
   	  <h4>Additional Actions</h4>
   		Status: <%= full_status(@course) %> <br />
 	  <h4>Assessments</h4>
