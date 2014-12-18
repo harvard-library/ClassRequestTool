@@ -351,14 +351,14 @@ class CoursesController < ApplicationController
       
     @sections = Section.joins(:course).order('course_id ASC NULLS LAST, session ASC NULLS LAST, actual_date ASC NULLS LAST')
     csv = CSV.generate(:encoding => 'utf-8') do |csv|
-      csv << exportable + [:session, :section_id, :date, :headcount]
+      csv << (exportable + [:session, :section_id, :date, :headcount]).map { |c| c.to_s.gsub(/_/, ' ').titlecase }
       @sections.each do |section|
         course = section.course
         values = []
         exportable.each do |c|
           case (c)
             when :repository
-              values << course.repository.name
+              values << (course.repository.blank? ? '' : course.repository.name)
             when :primary_contact
               values << (course.primary_contact.blank? ? '' : course.primary_contact.full_name)
             when :staff

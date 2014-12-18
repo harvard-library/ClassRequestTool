@@ -68,7 +68,7 @@
 <% unless current_user.try(:patron?) || !user_signed_in? %>
   <div>
     <h4>Classes for This Library/Archive</h4>
-    <% unless @repository.courses.nil? || @repository.courses.empty? %>
+    <% unless @repository.courses.blank? %>
     	<table>
     	  <tr>
     		  <th>Name</th>
