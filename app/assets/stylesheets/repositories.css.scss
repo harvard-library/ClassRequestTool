@@ -7,3 +7,38 @@ div.repo-section {
     margin-bottom: 0.5em;
   }
 }
+
+/* Styled repo page */
+.c_repositories.a_show {
+  .repo-header {
+    text-align: center;
+    margin-bottom: 60px;
+  }
+  h4.column-head {
+    padding-top: 30px;
+    border-top: solid 2px black;
+    height: 4em;
+  }
+  .info {
+    margin-bottom: 30px;
+  }
+  .return-to-list {
+    margin-top: 30px;
+  }
+  fieldset.images {
+    border: solid 1px #999;
+    border-radius: 15px;
+    padding: 20px;
+  }
+  table.repo-images {
+    vertical-align: middle;
+    
+    td.delete btn.delete {
+      margin-top: 25px;
+    }
+    .thumb img { 
+      margin-top: 25px;
+    }
+  }
+}
+  

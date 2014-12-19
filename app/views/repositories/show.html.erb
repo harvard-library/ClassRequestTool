@@ -1,96 +1,136 @@
-<h3><%= @repository.name %></h3>
-<div class="repo-section">
+<div class="row repo-header">
+  <h3><%= @repository.name %></h3>
   <%= form_tag new_course_path, :method => :get do %>
     <p>
       <%= hidden_field_tag :repository, @repository.id %>
-      <%= submit_tag "Request a Class", :class => 'btn btn-primary' %>
+      <%= submit_tag "Request a class at the #{@repository.name}", :class => 'btn btn-primary' %>
     </p>
   <% end %>
 </div>
-<div>
-  <div class="repo-section"><span id="description" class="summary-label">Description:</span> <%= raw @repository.description unless @repository.description.nil? %></div>
-  <div class="repo-section"><span id="room-capacity" class="summary-label">Room Capacity:</span> <%= @repository.class_limit unless @repository.class_limit.nil? %></div>
-  <div class="repo-section"><span id="classroom-tech" class="summary-label">Classroom Technologies Available:</span>
-    <% unless @repository.item_attributes.nil? || @repository.item_attributes.empty? %>
-      <ul>
-        <% @repository.item_attributes.each do |attribute| %>
-          <li><%= attribute.name %>  <%= "- #{ attribute.description }" unless attribute.description.blank? %></li>
+<div class="row description">
+  <%= raw @repository.description unless @repository.description.nil? %>
+</div>
+<% unless @repository.attached_images.blank? %>
+  <div class="row repo-images">
+    <table class="table">
+      <tr>
+        <% @repository.attached_images.each do |pic| %>
+          <td><%= image_tag pic.image_url(:display) %><p class="caption"><%= pic.caption %></p></td>
         <% end %>
-      </ul>
-    <% else %>
-      None.
-    <% end %>
+      </tr>
+    </table>
   </div>
-  <% unless current_user.try(:patron?) || !user_signed_in? %>
-    <div class="repo-section"><span id="available-rooms" class="summary-label">Available Rooms:</span>
-      <% unless @repository.rooms.nil? || @repository.rooms.empty? %>
-        <ul>
+<% end %>
+<div class="row">
+  <div class="col-md-4 collections">
+    <div class="info">
+      <h4 class="column-head">Collections</h4>
+      <% if true %>
+        <p>(None listed)</p>
+      <% else %>
+        <%= @repository.collections %>
+      <% end %>
+    </div>
+  </div>
+  <div class="col-md-4 technology">
+    <div class="info">
+      <h4 class="column-head">Technology Available</h4>
+      <% unless @repository.item_attributes.blank? %>
+        <ul class="no-bullets">
+          <% @repository.item_attributes.each do |attribute| %>
+            <li><%= attribute.name %>  <%= "- #{ attribute.description }" unless attribute.description.blank? %></li>
+          <% end %>
+        </ul>
+      <% else %>
+        (None)
+      <% end %>
+    </div>
+  </div>
+  <div class="col-md-4 facilities">
+    <div class="info">
+      <h4 class="column-head">Available Rooms</h4>
+      <% unless @repository.rooms.blank? %>
+        <ul class="no-bullets">
           <% @repository.rooms.each do |room| %>
             <li><%= room.name %></li>
           <% end %>
         </ul>
       <% else %>
-        None.
+        <p>(None. Please notify the repository.)</p>
       <% end %>
     </div>
-  <% end %>
-
-  <% unless @repository.landing_page.nil? || @repository.landing_page.empty? %>
-    <div class="repo-section"><%= link_to " More details on teaching at this Library/Archive", @repository.landing_page, :target => "_blank" %>.</div>
-  <% end %>
-
-
-  <% unless @repository.class_policies.nil? || @repository.class_policies.blank? %>
-    <div class="repo-section"><span class="summary-label" id="class-policies">Class Policies:</span>
-      <%= raw @repository.class_policies %>
+      
+    <div class="info">
+      <h4>Class Limit: <span class="class-limit"><%= @repository.class_limit.blank? ? '(none)' : @repository.class_limit %></h4>
+    </div>
+    <% unless @repository.landing_page.blank? %>
+      <div class="info">
+        <p><%= link_to "Go here", @repository.landing_page, :target => "_blank" %>for more details on teaching at the <%= @repository.name %></p>
+      </div>
+    <% end %>
+    <div class="info">
+      <% unless @repository.calendar.blank? %>
+        <p>
+          <%= link_to image_tag('calendar_icon.png', :class => 'cal-icon' ) + " View Calendar", "#{@repository.calendar}", :onclick=>"window.open(this.href,'view_calendar', 'height=600, width=600');return false;" %>
+        </p>
+      <% else %>
+        <p>The <%= @repository.name %> does not have a publicly available calendar. When making a request, please submit with your preferred times and a staff member will get back to you.</p>
+      <% end %>
+    </div>
+    <% unless @repository.class_policies.blank? %>
+      <div class="info">
+        <p><%= link_to "Class policies", @repository.landing_page, :target => "_blank" %> for the <%= @repository.name %></p>
+      </div>
+    <% end %>
+    </div>
+  </div>
+  <% if current_user.can_admin? %>
+    <div class="row">
+      <div class="admin-box">
+        <div class="staff">
+          <h4>Assigned Staff Member(s)</h4>
+          <ul class="no-bullets">
+            <% @repository.users.each do |user| %>
+              <li><%= user.first_name %> <%= user.last_name %></li>
+            <% end %>
+          </ul>
+        </div>
+        <div class="manage">
+          <h4>Edit this repository</h4>
+          <%= link_to('Edit', edit_repository_path(@repository), :class => "action-edit") %> | <%= link_to('Delete', repository_path(@repository), :confirm => "Are you sure?", :method => :delete) %>
+        </div>
+      </div>
     </div>
   <% end %>
-  <div class="repo-section">
-    <% unless @repository.calendar.nil? || @repository.calendar.blank? %>
-      <%= link_to image_tag('calendar_icon.png', :class => 'cal-icon' ) + " View Calendar", "#{@repository.calendar}", :onclick=>"window.open(this.href,'view_calendar', 'height=600, width=600');return false;" %>
-    <% else %>
-      This Library/Archive does not have a publicly available calendar. Please submit your request with your preferred times and a staff member will get back to you.
-    <% end %>
-  </div>
-  <% if current_user.try(:admin?) || current_user.try(:superadmin?) %>
-    <div class="repo-section"><span class="summary-label" id="staff-members">Staff Member(s) Assigned:</span>
-	    <ul>
-	      <% @repository.users.each do |user| %>
-	        <li><%= user.first_name %> <%= user.last_name %></li>
-	      <% end %>
-	    </ul>
-	  </div>
-	  <%= link_to('Edit', edit_repository_path(@repository), :class => "action-edit") %> | <%= link_to('Delete', repository_path(@repository), :confirm => "Are you sure?", :method => :delete) %>
-  <% end %>
-	<br />
-</div>
 
-<% unless current_user.try(:patron?) || !user_signed_in? %>
-  <div>
-    <h4>Classes for This Library/Archive</h4>
-    <% unless @repository.courses.nil? || @repository.courses.empty? %>
-    	<table>
-    	  <tr>
-    		  <th>Name</th>
-    		  <th>Class Date</th>
-    		  <th></th>
-    	  </tr>
+  <div class="row classes">
+    <h4>Classes for the <%= @repository.name %></h4>
+    <% unless @repository.courses.blank? %>
+      <table class="table">
+        <tr>
+          <th>Name</th>
+          <th>Class Date</th>
+          <% if current_user.can_administer? %>
+            <th>Actions</th>
+          <% end %>
+        </tr>
         <% @repository.courses.ordered_by_last_section.limit(20).each do |course| %>
           <tr>
-    	  	  <td><%= link_to(course.title, course ) %></td>
-    		    <td><%= course.sections.first.try(:actual_date).try(:strftime, '%m/%d/%Y %I:%M %P') unless course.sections.first.try(:actual_date).nil? %></td>
-    		    <td><%= link_to('Edit', edit_course_path(course), :class => "action-edit") %></td>
-            <% if current_user.try(:admin?) || current_user.try(:superadmin?) %>
-    	   		  <td> | <%= link_to('Delete', course_path(course), :confirm => "Are you sure?", :method => :delete) %></td>
-        	  <% end %>
-    	    </tr>
+            <td><%= link_to(course.title, course ) %></td>
+            <%= render :partial => '/shared/course_sections_td', :locals => {:course => course } %>
+            <td><%= link_to('Edit', edit_course_path(course), :class => "action-edit") %></td>
+            <% if current_user.can_admin? %>
+              <td> | <%= link_to('Delete', course_path(course), :confirm => "Are you sure?", :method => :delete) %></td>
+            <% end %>
+          </tr>
         <% end %>
-    	</table>
+      </table>
     <% else %>
-    	None yet.
+      None yet.
     <% end %>
   </div>
 
-<% end %>
-<br />
-<p>Return <%= link_to "home", root_url %> to view another library/archive.</p>
+  <div class="row return-to-list">
+    <%= link_to "Return to library/archive list", root_url, :class => 'btn btn-primary' %>
+  </div>
+</div>

@@ -20,4 +20,11 @@
 //= require bootstrap
 //= require icheck.min
 //= require ckeditor/init
-//= require_tree .
+//= require jquery-ui-timepicker-addon.js
+//= require timepickers.js
+//= require tableSorters.js
+//= require respond.min.js
+//= require global.js
+//= require assessments.js
+//= require courses.js
+//= require repositories.js

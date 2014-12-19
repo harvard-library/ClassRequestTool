@@ -12,6 +12,7 @@ class RepositoriesController < ApplicationController
 
   def new
     @repository = Repository.new
+    @repository.attached_images.build
   end
 
   def edit
@@ -19,6 +20,7 @@ class RepositoriesController < ApplicationController
   end
 
   def create
+    remove_blank_image
     @repository = Repository.new(params[:repository])
     respond_to do |format|
       if @repository.save
@@ -32,11 +34,11 @@ class RepositoriesController < ApplicationController
   end
 
   def update
+    remove_blank_image
     @repository = Repository.find(params[:id])
-
     respond_to do |format|
       if @repository.update_attributes(params[:repository])
-        format.html { redirect_to repositories_url, notice: 'Library/Archive was successfully updated.' }
+        format.html { redirect_to repository_path(@repository), notice: 'Library/Archive was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
@@ -54,4 +56,10 @@ class RepositoriesController < ApplicationController
       format.json { head :no_content }
     end
   end
+  
+  private
+    def remove_blank_image
+      last_image_field = params[:repository][:attached_images_attributes].keys.map{ |k| k.to_i }.max
+      params[:repository][:attached_images_attributes].delete(last_image_field.to_s) if params[:repository][:attached_images_attributes][last_image_field.to_s]['image'].blank?    
+    end  
 end

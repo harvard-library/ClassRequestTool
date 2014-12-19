@@ -39,7 +39,11 @@ class ApplicationController < ActionController::Base
   end
   
   def authenticate_admin_or_staff!
-    if ! ( current_user.can_admin? || current_user.staff? )
+    if !user_signed_in?
+      cookies[:login_destination] = request.path
+      redirect_to(login_welcome_index_url)
+    elsif ! (current_user.can_admin? || current_user.staff? )
+      flash[:alert] = "You must be an admin to view that page"
       redirect_to(root_url)
     end  
   end

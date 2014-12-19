@@ -39,11 +39,11 @@ h1,h2,h3,h4,h5,h6 {
 	@include make-md-column(6);
 }
 
-.yellow-box {
-	border: 1px solid #df7e0a;
-	padding: 10px 10px 0 10px;
+.admin-box {
+	border: 1px solid $crimson;
+	padding: 10px;
 	margin-bottom: 1em;
-	background-color: #f7ec9b;
+	background-color: $lemon;
 }
 
 .form_wrapper {
@@ -163,3 +163,14 @@ div.ui-datepicker{
     font-size: 0.9em;
   }
 }
+ul.no-bullets {
+  list-style-type: none;
+  margin-left: 0;
+  padding-left: 0;
+  li {
+    margin-left: 0;
+    padding-left: 0;
+    line-height: 1.2
+  }
+}
+

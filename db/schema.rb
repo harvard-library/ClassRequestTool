@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141216182724) do
+ActiveRecord::Schema.define(:version => 20141217134040) do
 
   add_extension "fuzzystrmatch"
 
@@ -46,6 +46,17 @@ ActiveRecord::Schema.define(:version => 20141216182724) do
   add_index "assessments", ["staff_availability"], :name => "index_assessments_on_staff_availability"
   add_index "assessments", ["staff_experience"], :name => "index_assessments_on_staff_experience"
   add_index "assessments", ["using_materials"], :name => "index_assessments_on_using_materials"
+
+  create_table "attached_images", :force => true do |t|
+    t.string   "image"
+    t.string   "caption"
+    t.integer  "picture_id"
+    t.string   "picture_type"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+  end
+
+  add_index "attached_images", ["picture_id", "picture_type"], :name => "index_attached_images_on_picture_id_and_picture_type"
 
   create_table "courses", :force => true do |t|
     t.string   "title"
