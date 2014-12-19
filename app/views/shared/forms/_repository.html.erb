@@ -4,6 +4,7 @@
     <%= f.input :description, :as => :ckeditor, :label => 'Description' %><br />
     <%= f.input :landing_page, :label => 'Landing Page', :hint => "http://..." %><br />
     <%= f.input :class_policies, :as => :ckeditor, :label => 'Class Policies' %><br />
+    <%= f.input :email_details, :as => :ckeditor, :label => 'Class confirmation email details (next steps, etc.)' %><br />
     <%= f.input :calendar, :label => 'Calendar (if applicable)' %><br />
     <%= f.input :class_limit, :label => 'Class Limit' %><br />
     <%= f.input :can_edit, :label => 'Can Edit' %><br />
@@ -37,4 +38,3 @@
     <%= f.action :submit, :as => :button, :button_html => {:class => 'btn btn-primary'} %>
   <% end %>
 <% end %>
-<%= render :partial => 'shared/forms/jquery_fileupload_js' %>
