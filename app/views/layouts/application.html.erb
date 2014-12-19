@@ -35,7 +35,10 @@
 	<nav class="navbar navbar-inverse navbar-static-top" role="navigation">
 	  <%= render :partial => 'shared/user' %>
 	  <div class="container">
-      <div class="nav navbar-header row"><%= image_tag "harvard_class_request_banner.jpg", :class => " banner img-responsive col-xs-12" %>
+      <div class="nav navbar-header row">
+        <p class="slogan"><%= $local_config[:slogan] %></p>
+        <h1 class="tool-title"><%= $local_config[:tool_name] %></h1>
+        <%= $local_config.attached_image.nil? ? ('<p>(Banner image missing)</p>'.html_safe) : image_tag($local_config.attached_image.image.url, :class => " banner img-responsive col-xs-12") %>
         <button type="button" class="navbar-toggle col-xs-12" data-toggle="collapse" data-target="#main-nav">
           <span class="sr-only">Toggle navigation</span>
           <span class="icon-bar" style="margin-left: auto;margin-right:auto;"></span>

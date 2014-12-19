@@ -65,7 +65,7 @@
     </div>
     <% unless @repository.landing_page.blank? %>
       <div class="info">
-        <p><%= link_to "Go here", @repository.landing_page, :target => "_blank" %>for more details on teaching at the <%= @repository.name %></p>
+        <p><%= link_to "View more details", @repository.landing_page, :target => "_blank" %> on teaching at the <%= @repository.name %></p>
       </div>
     <% end %>
     <div class="info">
@@ -110,7 +110,7 @@
         <tr>
           <th>Name</th>
           <th>Class Date</th>
-          <% if current_user.can_administer? %>
+          <% if current_user.can_admin? %>
             <th>Actions</th>
           <% end %>
         </tr>

@@ -11,9 +11,18 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141219011800) do
+ActiveRecord::Schema.define(:version => 20141219215207) do
 
   add_extension "fuzzystrmatch"
+
+  create_table "affiliates", :force => true do |t|
+    t.string   "name"
+    t.string   "url"
+    t.text     "description"
+    t.integer  "customization_id"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+  end
 
   create_table "assessments", :force => true do |t|
     t.text     "using_materials"
@@ -114,6 +123,20 @@ ActiveRecord::Schema.define(:version => 20141219011800) do
   create_table "courses_users", :id => false, :force => true do |t|
     t.integer "course_id"
     t.integer "user_id"
+  end
+
+  create_table "customizations", :force => true do |t|
+    t.string   "institution"
+    t.string   "institution_long"
+    t.string   "tool_name"
+    t.string   "tool_tech_admin_name"
+    t.string   "tool_tech_admin_email"
+    t.string   "tool_content_admin_name"
+    t.string   "tool_content_admin_email"
+    t.string   "default_email_sender"
+    t.datetime "created_at",               :null => false
+    t.datetime "updated_at",               :null => false
+    t.string   "slogan"
   end
 
   create_table "emails", :force => true do |t|

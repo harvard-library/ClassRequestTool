@@ -153,26 +153,26 @@ $(function () {
   /* Handle affiliation code on course request form */
   $('#affiliation .affiliation_field').hide();
   $('#affiliation input[type=radio]:checked').val();
-  $('#harvard_' + $('#affiliation input[type=radio]:checked').val()).show();
+  $('#local_' + $('#affiliation input[type=radio]:checked').val()).show();
   if ($('#other_affiliation').val() != '') {
-    $('#harvard_no_or_other').show();
+    $('#local_no_or_other').show();
   }
   $('#affiliation input[type=radio]').change(function(e) {
     var selected = $('#affiliation input[type=radio]:checked').val();
     if (selected == 'yes') {
-      $('#harvard_yes').slideDown();
-      $('#harvard_no_or_other').slideUp();
+      $('#local_yes').slideDown();
+      $('#local_no_or_other').slideUp();
     } else {
-      $('#harvard_yes').slideUp();
-      $('#harvard_no_or_other').slideDown();
-      $('#harvard_affiliation').val(null);
+      $('#local_yes').slideUp();
+      $('#local_no_or_other').slideDown();
+      $('#local_affiliation').val(null);
     }
   });
-  $('body').delegate('#harvard_affiliation', 'change', function() {
+  $('body').delegate('#local_affiliation', 'change', function() {
     if ($(this).val() == 'Other') {
-      $('#harvard_no_or_other').slideDown();
+      $('#local_no_or_other').slideDown();
     } else {
-      $('#harvard_no_or_other').slideUp();
+      $('#local_no_or_other').slideUp();
       $('#other_affiliation').val('')    
     }
   });

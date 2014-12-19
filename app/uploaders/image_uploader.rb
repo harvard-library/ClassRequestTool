@@ -18,7 +18,7 @@ class ImageUploader < CarrierWave::Uploader::Base
   end
 
   # Process files as they are uploaded:
-  process :scale => [300, 300]
+  # process :scale => [300, 300]
 
   def scale(width, height)
     resize_to_limit(width, height)
@@ -32,6 +32,11 @@ class ImageUploader < CarrierWave::Uploader::Base
   # Creates a square version to display on the repo page as per design
   version :display do
     process :resize_to_fill => [150, 150]
+  end
+  
+  # Thumbnail for site banner, which is wide
+  version :banner_thumb do
+    process :resize_to_fit => [300, 100]
   end
 
   # Add a white list of extensions which are allowed to be uploaded.

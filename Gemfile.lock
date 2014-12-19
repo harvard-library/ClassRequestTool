@@ -80,6 +80,7 @@ GEM
     ckeditor (4.0.4)
       mime-types
       orm_adapter
+    cocoon (1.2.6)
     coderay (1.1.0)
     coffee-rails (3.2.2)
       coffee-script (>= 2.2.0)
@@ -268,6 +269,7 @@ DEPENDENCIES
   capistrano-rvm (~> 0.1.1)
   carrierwave
   ckeditor
+  cocoon
   coffee-rails (~> 3.2.1)
   css_splitter
   cucumber-rails

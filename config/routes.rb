@@ -44,11 +44,14 @@ ClassRequestTool::Application.routes.draw do
   end
   
   namespace :admin do
+    get 'localize',                             to: 'admin#localize'
+    resources :customizations,                  only: [:update]
+    resources :affiliates,                      only: [:create, :update, :destroy]
+    get 'harvard_colors',                       to: 'admin#harvard_colors'
     namespace :notifications do
       match 'preview(/:action(/:id(.format)))', to: 'notification#:action'
       get 'toggle',                             to: 'notification#toggle_notifications'   # AJAX route 
     end
-    get 'harvard_colors',                       to: 'admin#harvard_colors'
   end
 
 

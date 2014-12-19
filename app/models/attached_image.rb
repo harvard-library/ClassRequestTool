@@ -5,7 +5,6 @@ class AttachedImage < ActiveRecord::Base
   
   belongs_to :picture, polymorphic: true
 
-#  validates_presence_of :image, :message => "requires an image!"
   validates_length_of :caption, :maximum => 255
   
   # Convenience method for jquery file upload

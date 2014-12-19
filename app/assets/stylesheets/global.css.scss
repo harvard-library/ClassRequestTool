@@ -124,7 +124,7 @@ div.ui-datepicker{
   margin-right:1em;
 }
 
-/* Harvard branding color overrides */
+/* Branded color overrides */
 .btn-primary, .btn-primary.disabled, .btn-primary[disabled]  {
   color: $creme;
   background-color: $crimson;
@@ -174,3 +174,19 @@ ul.no-bullets {
   }
 }
 
+/* Header */
+.slogan {
+  font-family: 'Times';
+  font-weight: bold;
+  font-style: italic;
+  color: $creme;
+  font-size: 1.2em;
+  margin: 40px 0 3px 6px;
+  padding: 0;
+}
+h1.tool-title {
+  color: $creme;
+  font-size: 1.8em;
+  margin: 0 0 3px 4px;
+  padding: 0;
+}

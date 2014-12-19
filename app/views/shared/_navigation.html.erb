@@ -14,7 +14,10 @@
             <li><%= link_to "Assessments", assessments_path %></li>
 			      <li><%= link_to "Users", users_path %></li>
 			      <li><%= link_to "Notification Previews", admin_notifications_path %></a></li>
-			      <li><%= link_to "Harvard Colors", admin_harvard_colors_path %></a></li>
+			      <% if current_user.superadmin? %>
+			        <li><%= link_to "Tool Localization", admin_localize_path %></a></li>
+			        <li><%= link_to "Harvard Colors", admin_harvard_colors_path %></a></li>
+			      <% end %>
 	        </ul>
 	      </li>
 	      <li><%= link_to "Edit Account", edit_user_registration_path %></li>

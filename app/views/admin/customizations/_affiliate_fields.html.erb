@@ -1,0 +1,8 @@
+<div class="nested-fields">
+  <%= f.inputs do %>
+    <%= f.input :name, :required => true %>
+    <%= f.input :url, :required => false %>
+    <%= f.input :description, :as => :string, :required => false %>
+  <% end %>
+</div>
+  

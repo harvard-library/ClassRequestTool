@@ -1,5 +1,8 @@
 class ApplicationController < ActionController::Base
   #before_filter :authenticate_user!
+  
+  before_filter :set_local
+  
   protect_from_forgery
   
   def after_sign_in_path_for(user)
@@ -50,5 +53,10 @@ class ApplicationController < ActionController::Base
     
   def verify_credentials
     user_signed_in?
+  end
+  
+  def set_local
+    $local_config  = Customization.last
+    $affiliates    = Affiliate.all
   end
 end
