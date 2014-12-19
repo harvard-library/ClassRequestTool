@@ -37,13 +37,15 @@
     <li><span class="summary-label">Goal for Class Visit:</span> <%= @course.goal unless @course.goal.nil? %></li>
   </ul>
 
-	<h4>Requester Information</h4>
-  <ul class="summary-info">
-	<li><span class="summary-label">Primary Contact Username:</span>  <span id="requestorUsername"><%= @course.contact_username unless @course.contact_username.nil? %></span></li>
-	<li><span class="summary-label">Primary Contact Name:</span>  <span id="patronContact"><%= @course.contact_first_name unless @course.contact_first_name.nil? %> <%= @course.contact_last_name unless @course.contact_last_name.nil? %></span></li>
-  <li><span class="summary-label">Primary Contact Email:</span> <%= @course.contact_email unless @course.contact_email.nil? %></li>
-  <li><span class="summary-label">Primary Contact Phone:</span> <%= @course.contact_phone unless @course.contact_phone.nil? %></li>
-  </ul>
+  <% unless !user_signed_in? || current_user.patron? %>
+    <h4>Requester Information</h4>
+    <ul class="summary-info">
+    <li><span class="summary-label">Primary Contact Username:</span>  <span id="requestorUsername"><%= @course.contact_username unless @course.contact_username.nil? %></span></li>
+    <li><span class="summary-label">Primary Contact Name:</span>  <span id="patronContact"><%= @course.contact_first_name unless @course.contact_first_name.nil? %> <%= @course.contact_last_name unless @course.contact_last_name.nil? %></span></li>
+    <li><span class="summary-label">Primary Contact Email:</span> <%= @course.contact_email unless @course.contact_email.nil? %></li>
+    <li><span class="summary-label">Primary Contact Phone:</span> <%= @course.contact_phone unless @course.contact_phone.nil? %></li>
+    </ul>
+  <% end %>
 	<h4>Staff Services</h4>
   <ul class="summary-info">
 	  <li><span class="summary-label">Primary Library/Archive Contact:</span>
@@ -179,9 +181,7 @@
 	    </div>
     <% end %>
 	<% elsif current_user.patron?%>
-  	  <h4>Additional Actions</h4>
-  		Status: <%= full_status(@course) %> <br />
-	  <h4>Assessments</h4>
+ 	  <h4>Assessments</h4>
 	    <p>After your class we may send you an assessment form to learn about your experience and improve our service.</p>
 	    <p>If you would like to submit an additional assessment, please <%= link_to "click here", new_assessment_path(:course_id => @course.id) %>.</p>
 	    <% @course.assessments.each do |assessment| %>
