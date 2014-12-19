@@ -19,10 +19,10 @@
 	Affiliation: <%= @course.affiliation unless @course.affiliation.nil? %> <br />
 	Number of Students: <%= @course.number_of_students unless @course.number_of_students.nil? %> <br />
 	Syllabus:
-	<%  if @course.file.blank? && @course.external_syllabus.nil? %>
+	<%  if @course.syllabus.blank? && @course.external_syllabus.nil? %>
 	  None
 	<% else %>
-	  <%= link_to "Syllabus", @course.file_url unless @course.file.blank? %>
+	  <%= link_to "Syllabus", @course.syllabus_url unless @course.syllabus.blank? %>
 	  <%  unless @course.external_syllabus.nil? %>
 	    <br />
 	    <%= link_to @course.external_syllabus, @course.external_syllabus, :target => "blank" %>
@@ -81,7 +81,7 @@
   <% if current_user.try(:can_schedule?) %>
     <%= link_to('Edit', edit_course_path(@course), :class => "action-edit") %>
   <% end %>
-  <% if (current_user.try(:admin?) || current_user.try(:superadmin?)) %>
+  <% if current_user.can_admin? %>
     | <%= link_to('Delete', course_path(@course), :confirm => "Are you sure?", :method => :delete) %>
   <% end %>
 </div>

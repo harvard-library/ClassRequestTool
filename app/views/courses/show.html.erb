@@ -9,7 +9,7 @@
 <h3><%= @course.title %></h3>
 <br />
 <div id="welcome-left">
-<% if current_user.try(:can_schedule?) %>
+<% if current_user.can_schedule? %>
 <p><%= button_to('Edit Class Info', edit_course_path(@course), :class => "action-edit", :method => :get) %></p>
 <% end %>
 
@@ -24,10 +24,10 @@
     <li><span class="summary-label">Actual Attendance (So far):</span> <span id="headcount"><%= @course.headcount || 'None recorded' %></span</li>
     <li><span class="summary-label">Average Attendance per section:</span> <span id="avgHeadcount"><%= @course.avg_headcount || 'None recorded' %></span></li>
 	  <li><span class="summary-label">Syllabus:</span>
-	<%  if @course.file.blank? && @course.external_syllabus.nil? %>
+	<%  if @course.syllabus.blank? && @course.external_syllabus.nil? %>
 	  None
 	<% else %>
-	  <%= link_to "Syllabus", @course.file_url unless @course.file.blank? %>
+	  <%= link_to "Syllabus", @course.syllabus_url unless @course.syllabus.blank? %>
 	  <%  unless @course.external_syllabus.nil? %>
 	  </li>
 	    <%= link_to @course.external_syllabus, @course.external_syllabus, :target => "blank" %>
@@ -115,7 +115,7 @@
 </div>
 
 <div id="welcome-right">
-  <% if current_user.try(:staff?) || current_user.try(:admin?) || current_user.try(:superadmin?) %>
+  <% if current_user.staff? || current_user.can_admin? %>
 	  <h4>Admin Actions</h4>
     <ul class="summary-info">
 	    <li><span class="summary-label">Status:</span> <br /><%= full_status(@course) %></li>
@@ -151,7 +151,7 @@
 
 		<%= render :partial => 'shared/forms/note', :locals => {:note => @note, :course => @course } %>
     <% unless @course.status == "Closed" %>
-	    <div class="yellow-box">
+	    <div class="admin-box">
 		    <p>When class is complete, click box to send class assessment, if desired. Use button below to close class.</p>
 	      <%= semantic_form_for(@course, :html => {:multipart => true}) do |f| %>
           <div class="panel panel-default" id="headcounts">
@@ -178,7 +178,7 @@
 	      <% end %>
 	    </div>
     <% end %>
-	<% elsif current_user.try(:patron?)%>
+	<% elsif current_user.patron?%>
   	  <h4>Additional Actions</h4>
   		Status: <%= full_status(@course) %> <br />
 	  <h4>Assessments</h4>

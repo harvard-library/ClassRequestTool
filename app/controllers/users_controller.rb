@@ -60,7 +60,7 @@ class UsersController < ApplicationController
       @selected = "Patron"
     end
     
-    unless current_user.try(:admin?) || current_user.try(:superadmin?) || @user.email == current_user.email
+    unless current_user.can_admin? || @user.email == current_user.email
        redirect_to('/') and return
     end
   end
@@ -68,7 +68,7 @@ class UsersController < ApplicationController
   def destroy
     @user = User.find(params[:id])
     
-    unless current_user.try(:superadmin?) || @user.email == current_user.email
+    unless current_user.superadmin? || @user.email == current_user.email
        redirect_to('/') and return
     end
     
@@ -83,7 +83,7 @@ class UsersController < ApplicationController
 
   def update
     @user = User.find(params[:id])
-    unless current_user.try(:admin?) || current_user.try(:superadmin?) || @user.email == current_user.email
+    unless current_user.can_admin? || @user.email == current_user.email
        redirect_to('/') and return
     end
     if params[:role] == "Superadmin"

@@ -4,10 +4,10 @@
 <% if @user.admin? %>
 	Is Admin.
 <% end %>
-<% if current_user.try(:admin?) %>
+<% if current_user.can_admin? %>
   <ul class="actions">
     <li><%= link_to('Edit', edit_user_path(@user), :class => "action-edit") %></li>
-    <% if current_user.try(:superadmin?) %>
+    <% if current_user.superadmin? %>
       <li><%= link_to('Delete', user_path(@user), :confirm => "Are you sure?", :method => :delete) %></li>
     <% end %>
   </ul>

@@ -5,7 +5,7 @@
     <li><%= link_to('Edit', edit_course_path(course), :class => "action-edit") %></li>
     <li><%= link_to('Cancel', "#{course_path(course)}/cancel", :confirm => "Are you sure?") %></li>
   <% end %>
-  <% if current_user.try(:superadmin?) %>
+  <% if current_user.superadmin? %>
     <li><%= link_to('Delete', course_path(course), :confirm => "Are you sure?", :method => :delete) %></li>
   <% end %>
 </ul>

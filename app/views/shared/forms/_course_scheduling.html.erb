@@ -73,7 +73,7 @@
               </div>
               <% end %>
             <% if current_user.can_schedule? %>
-              <div class="form_full_width yellow-box" style="clear:both;">
+              <div class="form_full_width admin-box" style="clear:both;">
                 <%= f.input :actual_date,
                             :as => :string,
                             :label => "Actual Date",
@@ -137,7 +137,7 @@
 </div>
 
 <% if current_user.can_schedule? %>
-  <div class="form_full_width yellow-box">
+  <div class="form_full_width admin-box">
     <%= f.input :pre_class_appt,
                 :label => "Actual Pre-Class Appointment Date/Time (if necessary): ",
                 :as => :string,

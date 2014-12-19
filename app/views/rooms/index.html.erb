@@ -8,7 +8,11 @@
 		<th>Limit</th>
 		<th>Libraries/Archives Associated</th>
 		<th>Technology Available</th>
-		<th>Actions</th>
+	  <% if current_user.can_admin? %>
+		  <th>Actions</th>
+		<% else %>
+		  <th></th>
+		<% end %>
 	  </tr>
 	</thead>
 	<tbody>
@@ -27,10 +31,11 @@
 			<% end %>
 		  </td>
 		  <td>
-	      <% if current_user.try(:admin?) %>
-	   		<%= link_to('Edit', edit_room_path(room), :class => "action-edit") %>
-  	      <% elsif current_user.try(:superadmin?) %>
-  	   		<%= link_to('Edit', edit_room_path(room), :class => "action-edit") %> | <%= link_to('Delete', room_path(room), :confirm => "Are you sure?", :method => :delete) %>
+	      <% if current_user.can_admin? %>
+	   		  <%= link_to('Edit', edit_room_path(room), :class => "action-edit") %>
+	   		<% end %>
+  	    <% if current_user.superadmin? %>
+  	   	  | <%= link_to('Delete', room_path(room), :confirm => "Are you sure?", :method => :delete) %>
 	  	  <% end %>
 		  </td>
 	    </tr>
@@ -41,7 +46,7 @@
 	<%= render :partial => '/shared/tablesorter_pager', :locals => {:pager_id => "rooms-table" } %>
 	<br />
 	<br />
-  <% if current_user.try(:admin?) || current_user.try(:superadmin?) %>
+  <% if current_user.can_admin? %>
     <%= link_to("Add New Room", new_room_path, :class => "btn btn-primary" ) %>
   <% end %>
 </div>

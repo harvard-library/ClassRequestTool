@@ -8,6 +8,7 @@ ClassRequestTool::Application.routes.draw do
   resources :repositories
   resources :rooms
   resources :staff_involvements
+  resources :attached_images, :only => [:index, :create, :destroy]
 
   resources :assessments do
     collection do
