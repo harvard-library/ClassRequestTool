@@ -1,5 +1,7 @@
 <h3>Notification Previews</h3>
-<p><button class="toggle-notification-status btn btn-primary">Toggle notifications</button></p>
+<% if current_user && current_user.superadmin? %>
+  <p><button class="toggle-notification-status btn btn-primary">Toggle notifications</button></p>
+<% end %>
 <ul class="list-group">
   <% Notification.instance_methods(false).each do |n| %>
     <% next if /^_/.match(n.to_s) %>
