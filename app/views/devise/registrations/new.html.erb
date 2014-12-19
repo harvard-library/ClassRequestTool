@@ -1,27 +1,13 @@
-<h3>Sign up</h3>
-
-<%= form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f| %>
-  <%= devise_error_messages! %>
-
-  <div><%= f.label :username %>
-  <%= f.text_field :username, :autofocus => true %></div>
-
-  <div><%= f.label :email %>
-  <%= f.email_field :email %></div>
-
-  <div><%= f.label :first_name %>
-  <%= f.text_field :first_name %></div>
-
-  <div><%= f.label :last_name %>
-  <%= f.text_field :last_name %></div>
-
-  <div><%= f.label :password %>
-  <%= f.password_field :password %></div>
-
-  <div><%= f.label :password_confirmation %>
-  <%= f.password_field :password_confirmation %></div>
-
-  <div><%= f.submit "Sign up" %></div>
+<h2>Sign up</h2>
+<%= semantic_form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f| %>
+  <%= f.semantic_errors %>
+  <%= f.inputs do %>
+    <%= f.input :email, hint:"Enter your email address" %>
+    <%= f.input :password, hint:"Enter password" %>
+    <%= f.input :password_confirmation, hint:"Confirm password" %>
+  <% end %>
+  <%= f.actions do %>
+    <%= f.action :submit, :as => :button, :button_html => {:class => "primary"} %>
+  <% end %>
 <% end %>
-
-<%= render "devise/shared/links" %>
+<%= render :partial => "devise/shared/links" %>

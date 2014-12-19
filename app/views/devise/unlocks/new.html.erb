@@ -1,12 +1,11 @@
-<h3>Resend unlock instructions</h3>
-
-<%= form_for(resource, :as => resource_name, :url => unlock_path(resource_name), :html => { :method => :post }) do |f| %>
-  <%= devise_error_messages! %>
-
-  <div><%= f.label :email %><br />
-  <%= f.email_field :email, :autofocus => true %></div>
-
-  <div><%= f.submit "Resend unlock instructions" %></div>
+<h2>Resend unlock instructions</h2>
+<%= semantic_form_for(resource, :as => resource_name, :url => unlock_path(resource_name), :html => { :method => :post }) do |f| %>
+  <%= f.semantic_errors %>
+  <%= f.inputs do %>
+    <%= f.input :email, hint:"Enter your email address" %>
+  <% end %>
+  <%= f.actions do %>
+    <%= f.action :submit, :as => :button :button_html => {:class => "primary", :value => "Resend unlock instructions"} %>
+  <% end %>
 <% end %>
-
-<%= render "devise/shared/links" %>
+<%= render :partial => "devise/shared/links" %>
