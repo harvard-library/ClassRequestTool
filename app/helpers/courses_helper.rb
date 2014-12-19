@@ -10,17 +10,18 @@ module CoursesHelper
   end
   
   def full_status(course)
-    status = []
     if 'Active' == course.status
       if course.homeless?
-        status << "<span class='status danger'>Homeless</span>"
+        status = "<span class='status danger'>Homeless</span>"
+      else
+        stat_array = [course.claimed? ? 'Claimed' : 'Unclaimed']
+        stat_array << (course.scheduled? ? 'Scheduled' : 'Unscheduled')
+        status = "<span class='status #{(course.claimed? && course.scheduled?) ? '' : 'warning'}'>#{stat_array.join(', ')}</span>"
       end
-      status << "<span class='status #{course.claimed? ? '' : 'warning'}'>#{course.claimed? ? 'Claimed' : 'Unclaimed'}</span>"
-      status << "<span class='status #{course.scheduled? ? '' : 'warning'}'>#{course.scheduled? ? 'Scheduled' : 'Unscheduled'}</span>"
     else
-      status << "<span class='status inactive'>#{course.status}</span>"
+      status = "<span class='status inactive'>#{course.status}</span>"
     end
-    status.join("<br />\n").html_safe
+    status.html_safe
   end
 
 end

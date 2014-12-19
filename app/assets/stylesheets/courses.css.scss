@@ -91,17 +91,18 @@ ul.course-actions {
 }
 .status {
   display: inline-block;
-  margin: 2px;
-  padding: 2px 6px;
+  padding: 2px 5px;
   border-radius: 5px;
-  font-size: 0.8em;
+  color:#666;
   background-color: $pear;
   &.warning {
     background-color: $lemon;
+    font-weight: bold;
   }
   &.danger {
     color: white;
     background-color: $saffron;
+    font-weight: bold;
   }
   &.inactive {
     background-color: $shade;
