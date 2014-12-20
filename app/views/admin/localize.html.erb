@@ -7,7 +7,7 @@
     <%= f.input :tool_name, :label => 'Local Name for this Tool' %><br />
     <%= f.input :slogan, :label => 'Slogan for this Tool' %><br />
     <%= f.inputs "Banner Image", :for => [:attached_image_attributes, f.object.attached_image || AttachedImage.new] do |banner| %>
-      <%= image_tag banner.object.image.url(:banner_thumb) unless banner.object.nil? %>
+      <%= image_tag banner.object.image.url(:banner_thumb) unless (banner.object.nil? || banner.object.image.nil?) %>
       <%= banner.input :id, :as => :hidden %>
       <%= banner.input :picture_id, :as => :hidden %>
       <%= banner.input :picture_type, :as => :hidden %>
