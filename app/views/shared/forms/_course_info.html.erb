@@ -27,14 +27,14 @@
 </div>
 <div class="form_full_width">
 <% unless @course.syllabus.blank? %>
-  <%= link_to "Current Syllabus", @course.syllabus_url %><br />
-  <%= f.input :remove_file, :as => :boolean, :label => "Delete Current Syllabus? " %>
+  <%= link_to @course.syllabus.file.filename, @course.syllabus_url %><br />
+  <%= f.input :remove_syllabus, :as => :boolean, :label => "Delete Current Syllabus? " %>
 <% end %>
-<label class="control-label" for="course_file">Share Your Syllabus (Optional)</h5>
+<label class="control-label" for="course_syllabus">Share Your Syllabus (Optional)</h5>
 <span class="help-block">Providing your syllabus helps staff to tailor suggestions for teaching and to identify class themes most richly supported by the collections.</span>
 </div>
 <div class="form_full_width">
-<%= f.input :file, :as => :file, :label => "&nbsp; " %>
+<%= f.input :syllabus, :as => :file, :label => "&nbsp; " %>
 </div><div class="form_full_width">
 <div style="padding-left:5em; font-weight:bold; font-size: 1.2em;">OR</div>
 <%= f.input :external_syllabus, :label => "Enter URL: ", :input_html => { :value => @course.external_syllabus.nil? ? "http://" : @course.external_syllabus } %>

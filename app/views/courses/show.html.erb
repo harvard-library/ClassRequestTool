@@ -27,7 +27,7 @@
 	<%  if @course.syllabus.blank? && @course.external_syllabus.nil? %>
 	  None
 	<% else %>
-	  <%= link_to "Syllabus", @course.syllabus_url unless @course.syllabus.blank? %>
+	  <%= link_to @course.syllabus.file.filename, @course.syllabus_url unless @course.syllabus.blank? %>
 	  <%  unless @course.external_syllabus.nil? %>
 	  </li>
 	    <%= link_to @course.external_syllabus, @course.external_syllabus, :target => "blank" %>

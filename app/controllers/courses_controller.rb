@@ -335,7 +335,7 @@ class CoursesController < ApplicationController
       :staff_involvement,
       :number_of_students,
       :status,
-      :file,
+      :syllabus,
       :external_syllabus,
       :duration,
       :comments,
