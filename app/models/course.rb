@@ -9,7 +9,8 @@ class Course < ActiveRecord::Base
                    :status, :syllabus, :remove_syllabus, :external_syllabus, #syllabus
                    :pre_class_appt, :timeframe, :timeframe_2, :timeframe_3, :timeframe_4, :duration, #concrete schedule vals
                    :time_choice_1, :time_choice_2, :time_choice_3, :time_choice_4, # tentative schedule vals
-                   :pre_class_appt_choice_1, :pre_class_appt_choice_2, :pre_class_appt_choice_3 #unused
+                   :pre_class_appt_choice_1, :pre_class_appt_choice_2, :pre_class_appt_choice_3, #unused
+                   :section_count, :session_count, :total_attendance  # stats
                    )
 
   has_and_belongs_to_many :users
@@ -41,6 +42,10 @@ class Course < ActiveRecord::Base
   scope :with_status, ->(status) { where(status: status) }
   scope :upcoming,    ->{ joins(:sections).where("MAX(actual_date) IS NOT NULL AND MAX(actual_date) > ?", DateTime.now) }
   scope :past,        ->{ joins(:sections).where("MAX(actual_date) IS NOT NULL AND MAX(actual_date) < ?", DateTime.now) }
+  
+  
+  after_save :update_stats
+
   
   STATUS = ['Active', 'Cancelled', 'Closed']
   
@@ -122,6 +127,31 @@ class Course < ActiveRecord::Base
   
   def homeless?
     self.repository.blank?
+  end
+  
+  # Quick update of course stats with direct db query
+  def update_stats
+    nsections   = self.sections.select{ |s| 1 == s.session }.count
+    nsessions   = self.session_count = self.sections.map{ |s| s.session }.max.to_i
+    nattendance  = self.sections.inject(0){ |sum, s| sum + s.headcount.to_i }
+   
+    connection = ActiveRecord::Base.connection
+    sql = %Q(UPDATE "courses" SET section_count=#{nsections}, session_count=#{nsessions}, total_attendance=#{nattendance} WHERE courses.id=#{self.id})
+    connection.execute( sql )
+
+# 
+#     self.update_columns({ 
+#       :section_count    => self.sections.select{ |s| 1 == s.session }.count,            # Assumes that the first session gives the correct section count
+#       :session_count    => self.session_count = self.sections.map{ |s| s.session }.max, # Looks for the max session number to give the number of unique sessions
+#       :total_attendance => self.sections.inject{ |sum, s| sum + s.headcount }           # Just sums the headcount for each section/sesssion 
+#     })
+  end
+  
+  # Class functions
+  def self.update_all_stats
+    Course.all.each do |course|
+      course.update_stats
+    end
   end
   
   # Internal class for attaching functions to sessions

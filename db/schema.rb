@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141219215207) do
+ActiveRecord::Schema.define(:version => 20141222164106) do
 
   add_extension "fuzzystrmatch"
 
@@ -86,7 +86,6 @@ ActiveRecord::Schema.define(:version => 20141219215207) do
     t.string   "external_syllabus"
     t.string   "duration"
     t.text     "comments"
-    t.string   "session_count"
     t.text     "goal"
     t.string   "instruction_session"
     t.datetime "created_at",                             :null => false
@@ -95,6 +94,9 @@ ActiveRecord::Schema.define(:version => 20141219215207) do
     t.string   "contact_last_name",       :limit => 100
     t.string   "contact_username",        :limit => 100
     t.integer  "primary_contact_id"
+    t.integer  "session_count"
+    t.integer  "section_count"
+    t.integer  "total_attendance"
   end
 
   add_index "courses", ["affiliation"], :name => "index_courses_on_affiliation"
@@ -104,7 +106,7 @@ ActiveRecord::Schema.define(:version => 20141219215207) do
   add_index "courses", ["duration"], :name => "index_courses_on_duration"
   add_index "courses", ["instruction_session"], :name => "index_courses_on_instruction_session"
   add_index "courses", ["pre_class_appt"], :name => "index_courses_on_pre_class_appt"
-  add_index "courses", ["session_count"], :name => "index_courses_on_session_count"
+  add_index "courses", ["session_count", "section_count", "total_attendance"], :name => "courses_index_sessions_sections_attendance"
   add_index "courses", ["staff_involvement"], :name => "index_courses_on_staff_involvement"
   add_index "courses", ["status"], :name => "index_courses_on_status"
   add_index "courses", ["subject"], :name => "index_courses_on_subject"

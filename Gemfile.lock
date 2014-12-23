@@ -80,7 +80,6 @@ GEM
     ckeditor (4.0.4)
       mime-types
       orm_adapter
-    cocoon (1.2.6)
     coderay (1.1.0)
     coffee-rails (3.2.2)
       coffee-script (>= 2.2.0)
@@ -106,6 +105,7 @@ GEM
     database_cleaner (0.6.6)
     debug_inspector (0.0.2)
     debugger-linecache (1.2.0)
+    descriptive_statistics (2.5.1)
     devise (3.1.1)
       bcrypt-ruby (~> 3.0)
       orm_adapter (~> 0.1)
@@ -269,11 +269,11 @@ DEPENDENCIES
   capistrano-rvm (~> 0.1.1)
   carrierwave
   ckeditor
-  cocoon
   coffee-rails (~> 3.2.1)
   css_splitter
   cucumber-rails
   database_cleaner
+  descriptive_statistics
   devise (= 3.1.1)
   devise_harvard_auth_proxy!
   dotenv-rails (~> 0.10.0)

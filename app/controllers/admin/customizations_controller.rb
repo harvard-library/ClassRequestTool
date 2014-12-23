@@ -7,7 +7,9 @@ class Admin::CustomizationsController < Admin::AdminController
         format.html { redirect_to admin_localize_path, notice: 'Local customization was successfully updated.' }
         format.json { head :no_content }
       else
-        logger.error @custom.errors
+        logger.error '*** Error saving customization'
+        logger.error @custom.errors.inspect
+        logger.error '*** End customization save error'
         format.html { redirect_to admin_localize_path, alert: 'There was a problem saving the local customization.' }
         format.json { render json: @custom.errors, status: :unprocessable_entity }
       end

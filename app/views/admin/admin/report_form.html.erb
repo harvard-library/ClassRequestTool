@@ -1,0 +1,64 @@
+<div class="row">
+  <div class="col-md-12">
+    <h3>Create a Report</h3>
+    <%= form_tag '/admin/build_report' do %>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">Filters</h4>
+        </div>
+        <div class="panel-body">
+          <table class="table">
+            <tr>
+              <td><label>Closed classes only:</label></td><td><%= check_box_tag :close_only, 1, true %></td>
+            </tr>
+            <tr>
+              <td><label>Library/archive:</label></td><td><%= select_tag :repo, options_from_collection_for_select(Repository.order("name ASC").all, :id, :name), :include_blank => "-- All --", :style => "width: 40em" %></td>
+            <tr>
+              <td><label>Affiliate:</label></td><td><%= select_tag :affiliate, options_for_select($affiliates.map{ |a| a.name}), :include_blank => "-- All --", :style => "width: 40em" %></li>
+            </tr>
+            <tr>
+              <td><label>Start date:</label></td><td><%= text_field_tag :start_date, '',
+                              :label => "Start",
+                              :size => 20,
+                              :maxlength => 20,
+                              :class => 'start_date date',
+                              :placeholder => "Click to select date" %>
+              </td>
+            </tr>
+            <tr>
+              <td><label>End date:</label></td><td><%= text_field_tag :end_date,'', 
+                              :label => "End",
+                              :size => 20,
+                              :maxlength => 20,
+                              :class => 'end_date date',
+                              :placeholder => "Click to select date" %>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">Select Report Sections</h4>
+        </div>
+        <div class="panel-body">
+          <table class="table">
+            <thead>
+              <th>Select</th>
+              <th>Description</th>
+            </thead>
+            <tbody>
+              <% Report.stat_types.each do |type, description| %>
+                <tr>
+                  <td><%= check_box_tag type, 1, true %></td><td><label><%= description %></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <%= submit_tag 'Build report', :class => 'btn btn-primary' %>
+    <% end %>
+  </div>
+</div>
+  

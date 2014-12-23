@@ -1,0 +1,21 @@
+<h3>Superadmin Dashboard</h3>
+<div class="panel panel-default">
+  <div class="panel-body">
+    <h4 class="panel-title">Update Course Stats</h4>
+    <p><%= link_to 'Update', admin_update_stats_path, :class => 'btn btn-primary' %> Recalculates session, section, and attendance counts</p>
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-body">
+    <h4 class="panel-title">Localization</h4>
+    <p><%= link_to "Go", admin_localize_path, :class => 'btn btn-primary' %> Set local site variables</p>
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-body">
+    <h4 class="panel-title">Display Harvard Colors</h4>
+    <p><%= link_to "Harvard Colors", admin_harvard_colors_path, :class => 'btn btn-primary' %> View sanctioned Harvard color branding</p>
+  </div>
+</div>

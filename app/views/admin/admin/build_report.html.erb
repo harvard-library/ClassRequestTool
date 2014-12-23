@@ -1,0 +1,55 @@
+<div class="row">
+  <div class="col-md-12">
+    <h3>Reporting for <%= $local_config[:tool_name] %></h3>
+    <p>Prepared by <%= current_user.full_name %>
+    <p>Date: <%= Time.now.strftime('%d %B %Y') %>
+    
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4>Active filters</h4>
+      </div>
+      <div class="panel-body">
+        <ul class="no-bullets">
+          <% @filters.each do |filter| %>
+            <li><%= filter.html_safe %></li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4>Statistics</h4>
+      </div>
+      <div class="panel-body">
+        <table class="table">
+          <% @data.each do |k, v| %>
+            <tr>
+              <td><label><%= k.to_s.gsub('_', ' ').capitalize %></label></td>
+              <td>
+                <% if v == 'No data' %>
+                  <p>NO DATA</p>
+                <% else %>
+                  <table class="table">
+                    <thead>
+                      <% v.keys.each do |k2| %>
+                        <th><%= k2.to_s.gsub('_', ' ').capitalize %></th>
+                      <% end %>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <% v.each do |k2, v2| %>
+                          <td> <%= /number|records/.match(k2) ? v2 : number_with_precision(v2, precision: 2) %></td>
+                        <% end %>
+                      </tr>
+                    </tbody>
+                  </table>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

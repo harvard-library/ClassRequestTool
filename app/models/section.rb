@@ -30,4 +30,5 @@ class Section < ActiveRecord::Base
                   :room_id,
                   :course,
                   :headcount)       # actual number of people in room, recorded after the fact
+
 end
