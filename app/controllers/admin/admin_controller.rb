@@ -5,9 +5,14 @@ class Admin::AdminController < ApplicationController
   def report_form
   end
   
-  def build_report  
-    @report = Report.new
+  def build_report
+    if params[:selected_reports].blank?
+      flash[:alert] = "You must select at least one report item"
+      redirect_to :back
+      return
+    end
     
+    @report = Report.new    
     @filters = @report.build_filters(params)[:displays]
     session[:report] = @report
     @data = @report.stats(params)

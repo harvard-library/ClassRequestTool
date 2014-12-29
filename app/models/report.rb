@@ -14,18 +14,27 @@ class Report
       @report_filters[:displays] << "Only closed classes"
     else
       @report_filters[:clauses] << "status!='Cancelled'"
-      @report_filters[:displays] << "Active and closed classes"
+      @report_filters[:displays] << "Active and closed classes (all except cancelled)"
    end
     
     unless params[:repo].blank?
       repo = Repository.find(params[:repo].to_i)
-      @report_filters[:clauses] << "repository.id=#{params[:repo]}"
+      @report_filters[:clauses] << "repository_id=#{params[:repo]}"
       @report_filters[:displays] << "For #{repo.name} only"    
     end
     
-    unless params[:start_date].blank? || params[:end_date].blank? || (params[:end_date].to_time < params[:start_date].to_time)
-      @report_filters[:clauses] << "updated_at > #{params[:start_date]} AND updated_at > #{params[:end_date]}"
-      @report_filters[:displays] << "<ul class='no-bullets'><li>From: #{params[:start_date]}</li><li>To: #{params[:end_date]}</li>"    
+    unless params[:affiliate].blank?
+      @report_filters[:clauses] << "affiliation='#{params[:affiliate]}'"
+      @report_filters[:displays] << "Requests from #{params[:affiliate]} only"
+    end
+    
+    unless params[:start_date].blank? || params[:end_date].blank?
+      start_date = to_time_format(params[:start_date])
+      end_date = to_time_format(params[:end_date])
+      unless end_date.to_time < start_date.to_time
+        @report_filters[:clauses] << "created_at <@ tsrange('#{start_date}','#{end_date}')"
+        @report_filters[:displays] << "Request created between <b>#{params[:start_date]}</b> and <b>#{params[:end_date]}</b>"
+      end    
     end
     @report_filters
   end
@@ -102,4 +111,13 @@ class Report
     false
   end
   
+private
+  def to_time_format(string)
+    unless /\d{1,2}\/\d{1,2}\/\d{2,4}/.match(string)
+      raise 'Format of the string must be ##/##/####'
+      return
+    end
+    x = string.split('/')
+    "#{x[2]}-#{x[0]}-#{x[1]}"
+  end
 end

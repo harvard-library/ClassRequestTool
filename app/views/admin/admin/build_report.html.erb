@@ -10,7 +10,7 @@
         <h4>Active filters</h4>
       </div>
       <div class="panel-body">
-        <ul class="no-bullets">
+        <ul>
           <% @filters.each do |filter| %>
             <li><%= filter.html_safe %></li>
           <% end %>
@@ -39,7 +39,12 @@
                 <tr>
                   <% v.each do |row| %>
                     <% reports_config[k]['data'].keys.each do |key| %>
-                      <td><%= (/number|records/.match(key)) ? row[key] : number_with_precision(row[key], precision: 2) %></td>
+                      <% if 0 == row['number_of_classes'].to_i %>
+                        <td>(NO DATA)</td>
+                        <% break %>
+                      <% else %>
+                        <td><%= (/number|records/.match(key)) ? row[key] : number_with_precision(row[key], precision: 2) %></td>
+                      <% end %>
                     <% end %>
                   <% end %>
                 </tr>

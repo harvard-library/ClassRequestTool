@@ -9,7 +9,7 @@
         <div class="panel-body">
           <table class="table">
             <tr>
-              <td><label>Closed classes only:</label></td><td><%= check_box_tag :close_only, 1, true %></td>
+              <td><label>Closed classes only:</label></td><td><%= check_box_tag :closed_only, 1, true %></td>
             </tr>
             <tr>
               <td><label>Library/archive:</label></td><td><%= select_tag :repo, options_from_collection_for_select(Repository.order("name ASC").all, :id, :name), :include_blank => "-- All --", :style => "width: 40em" %></td>
@@ -21,7 +21,7 @@
                               :label => "Start",
                               :size => 20,
                               :maxlength => 20,
-                              :class => 'start_date date',
+                              :class => 'start_date datepicker',
                               :placeholder => "Click to select date" %>
               </td>
             </tr>
@@ -30,7 +30,7 @@
                               :label => "End",
                               :size => 20,
                               :maxlength => 20,
-                              :class => 'end_date date',
+                              :class => 'end_date datepicker',
                               :placeholder => "Click to select date" %>
               </td>
             </tr>
@@ -44,13 +44,13 @@
         <div class="panel-body">
           <table class="table">
             <thead>
-              <th>Select</th>
+              <th><%= check_box_tag 'toggle', 1, true, :class => 'report-toggle' %> Toggle All</th>
               <th>Description</th>
             </thead>
             <tbody>
               <% Rails.configuration.crt_reports.each do |report, options| %>
                 <tr>
-                  <td><%= check_box_tag "selected_reports[#{report}]", 1, true %></td><td><label><%= "#{options['description']} (#{Rails.configuration.crt_reports[report]['type']})" %></td>
+                  <td><%= check_box_tag "selected_reports[#{report}]", 1, true, :class => 'include-report' %></td><td><label><%= "#{options['description']} (#{Rails.configuration.crt_reports[report]['type']})" %></td>
                 </tr>
               <% end %>
             </tbody>
