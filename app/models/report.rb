@@ -77,7 +77,8 @@ class Report
         output['options']['xAxis']['categories'] << cat_keys.map { |k| row[k] }[0]
       end
       if series
-        output['options']['series'][0]['data'] << ser_keys.map { |k| row[k].to_i }[0]
+        point = ser_keys.length == 1 ? row[ser_keys.first].to_i : ser_keys.map { |k| row[k].to_i }
+        output['options']['series'][0]['data'] << point
       end
     end
     output
