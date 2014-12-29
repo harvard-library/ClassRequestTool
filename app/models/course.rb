@@ -2,10 +2,10 @@ class Course < ActiveRecord::Base
   include ActionDispatch::Routing::UrlFor
   include Rails.application.routes.url_helpers
 
-  attr_accessible( :room_id, :repository_id, :user_ids, :item_attribute_ids, :primary_contact_id, :staff_involvement_ids, :sections_attributes, # associations
+  attr_accessible( :room_id, :repository_id, :user_ids, :item_attribute_ids, :primary_contact_id, :staff_involvement_ids, :sections_attributes, :additional_patrons_attributes, # associations
                    :title, :subject, :course_number, :affiliation, :number_of_students, :session_count,  #values
                    :comments,  :staff_involvement, :instruction_session, :goal,
-                   :contact_username, :contact_first_name, :contact_last_name, :contact_email, :contact_phone, #contact info
+                   :contact_username, :contact_first_name, :contact_last_name, :contact_email, :contact_phone,  #contact info
                    :status, :syllabus, :remove_syllabus, :external_syllabus, #syllabus
                    :pre_class_appt, :timeframe, :timeframe_2, :timeframe_3, :timeframe_4, :duration, #concrete schedule vals
                    :time_choice_1, :time_choice_2, :time_choice_3, :time_choice_4, # tentative schedule vals
@@ -23,7 +23,9 @@ class Course < ActiveRecord::Base
   has_many :assessments, :dependent => :destroy
   has_and_belongs_to_many :staff_involvements
   belongs_to :primary_contact, :class_name => 'User'
-
+  has_many :additional_patrons, :dependent => :destroy, :autosave => true
+  accepts_nested_attributes_for :additional_patrons, :reject_if => ->(ap){ap.blank?}, :allow_destroy => true
+  
   validates_presence_of :title, :message => "can't be empty"
   validates_presence_of :contact_first_name, :contact_last_name
   validates_presence_of :contact_email, :with => /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i, :message => "Invalid email"

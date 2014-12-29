@@ -108,3 +108,9 @@ ul.course-actions {
     background-color: $shade;
   }
 }
+.bordered {
+  border: solid 1px #ccc;
+  padding: 10px;
+  margin: 3px 0;
+  border-radius: 5px;
+}

@@ -25,7 +25,7 @@
   
   factory :course do
     title 'Test Course Title'
-    status 'Scheduled, Claimed'
+    status 'Active'
     contact_email 'course_contact@example.com'
     contact_phone '617-492-TEST'
     contact_first_name 'Jolene'
@@ -36,30 +36,15 @@
     repository
     association :primary_contact, factory: :user, admin: true, staff: true
     users { create_list :user, 1, :staff }
+    additional_patrons { create_list :additional_patron, 1 }
     
     trait :homeless do
-      status 'Homeless'
+      status 'Active'
       repository nil
       primary_contact nil
       users []
     end
 
-    trait :su do
-      status 'Scheduled, Unclaimed'
-    end
-    
-    trait :sc do
-      status 'Scheduled, Claimed'
-    end
-    
-    trait :cu do
-      status 'Claimed, Unscheduled'
-    end
-    
-    trait :uu do
-      status 'Unclaimed, Unscheduled'
-    end
-    
     trait :cancelled do
       status 'Cancelled'
     end
@@ -145,5 +130,11 @@
       staff true
       sequence(:email) { |n| "staff_#{n}@example.com" }
     end    
+  end
+  
+  factory :additional_patron do
+    first_name 'Additional'
+    last_name 'Patron'
+    email 'additional_patron@example.com'
   end  
  end

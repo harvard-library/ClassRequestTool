@@ -136,7 +136,7 @@ class CoursesController < ApplicationController
     course = Course.find(params[:id])
     course.status = 'Cancelled'
     if course.save(validate: false)         # Don't bother with validation since the class is being cancelled
-      Notification.cancellation(course).deliver
+#      Notification.cancellation(course).deliver
       flash[:notice] = "The class <em>#{course.title}</em> was successfully cancelled.".html_safe
     else
       flash[:alert] = "There was an error cancelling the class."
@@ -152,7 +152,7 @@ class CoursesController < ApplicationController
     course.status = 'Active'
     
     if course.save(validate: false)         # Don't bother with validation since the class is being recovered
-      Notification.uncancellation(course).deliver
+#      Notification.uncancellation(course).deliver
       flash[:notice] = "The class <em>#{course.title}</em> was successfully uncancelled.".html_safe
     else
       flash[:alert] = "There was an error uncancelling the class."
@@ -174,6 +174,11 @@ class CoursesController < ApplicationController
     # strip out empty sections
     if params.has_key?(:course) && params[:course].has_key?(:sections_attributes)
       params[:course][:sections_attributes].delete_if{|k,v| v[:requested_dates] && v[:requested_dates].reject(&:nil?).blank? && v[:actual_date].blank?}
+    end
+    
+    # Remove empty additional patrons
+    if params.has_key?(:course) && params[:course].has_key?(:additional_patrons_attributes)
+      params[:course][:additional_patrons_attributes].delete_if{|k,v| v[:email].blank?}
     end
     
     # set affiliation

@@ -45,6 +45,13 @@
     <li><span class="summary-label">Primary Contact Email:</span> <%= @course.contact_email unless @course.contact_email.nil? %></li>
     <li><span class="summary-label">Primary Contact Phone:</span> <%= @course.contact_phone unless @course.contact_phone.nil? %></li>
     </ul>
+    <h5>Additional Contacts</h5>
+    <ul class="summary-info">
+      <% @course.additional_patrons.each do |ap| %>
+        <li><%= "#{ap.first_name} #{ap.last_name}, #{ap.email}" %></li>
+      <% end %>
+    </ul>
+    
   <% end %>
 	<h4>Staff Services</h4>
   <ul class="summary-info">

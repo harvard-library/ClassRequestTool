@@ -1,8 +1,12 @@
 require 'test_helper'
+require 'pry'
+require 'pry-byebug'
 
 class NotificationTest < ActionMailer::TestCase
   
   include FactoryGirl::Syntax::Methods
+
+  ENV['NOTIFICATIONS_STATUS'] = 'ON'
 
   def setup
     ActionMailer::Base.delivery_method    = :test
@@ -40,8 +44,9 @@ class NotificationTest < ActionMailer::TestCase
       end
   
       # Destination email
-      should 'send to the correct recipient' do
-        assert_equal([@course.contact_email], ActionMailer::Base.deliveries.first.to, "The recipient email is incorrect")
+      should 'send to the requesting patron and additional contacts' do
+        recipients = [@course.contact_email] + @course.additional_patrons.map { |ap| ap.email }
+        assert_equal(recipients.sort, ActionMailer::Base.deliveries.first.to.sort, "The recipient email is incorrect")
       end
       
       # Subject
@@ -50,63 +55,64 @@ class NotificationTest < ActionMailer::TestCase
       end  
     end
 
-    context 'cancellation' do
-      setup do
-        Notification.cancellation(@course).deliver
-      end
-      
-      # Number of emails
-      should 'send one email' do
-        assert_equal(1, ActionMailer::Base.deliveries.count, "Sends the wrong number of emails")
-      end
-  
-      # Sender email
-      should 'use the default sender email' do
-        assert_equal([DEFAULT_MAILER_SENDER], ActionMailer::Base.deliveries.first.from, "The sender email is wrong")
-      end
-  
-      # Destination email
-      should 'send to the correct recipients' do
-        recipients = [@course.primary_contact.email]
-        recipients += @course.users.map {|e| e.email }
-        recipients
-        assert_equal(recipients.uniq.sort, ActionMailer::Base.deliveries.first.to.uniq.sort, "The recipient email is incorrect")
-      end
-      
-      # Subject
-      should 'set the subject correctly' do
-        assert_equal("[ClassRequestTool] Class cancellation confirmation", ActionMailer::Base.deliveries.last.subject, "The subject is incorrect")
-      end  
-    end
+      # No emails for cancellations or uncancellations
+#     context 'cancellation' do
+#       setup do
+#         Notification.cancellation(@course).deliver
+#       end
+#       
+#       # Number of emails
+#       should 'send one email' do
+#         assert_equal(1, ActionMailer::Base.deliveries.count, "Sends the wrong number of emails")
+#       end
+#   
+#       # Sender email
+#       should 'use the default sender email' do
+#         assert_equal([DEFAULT_MAILER_SENDER], ActionMailer::Base.deliveries.first.from, "The sender email is wrong")
+#       end
+#   
+#       # Destination email
+#       should 'send to the correct recipients' do
+#         recipients = [@course.primary_contact.email]
+#         recipients += @course.users.map {|e| e.email }
+#         recipients
+#         assert_equal(recipients.uniq.sort, ActionMailer::Base.deliveries.first.to.uniq.sort, "The recipient email is incorrect")
+#       end
+#       
+#       # Subject
+#       should 'set the subject correctly' do
+#         assert_equal("[ClassRequestTool] Class cancellation confirmation", ActionMailer::Base.deliveries.last.subject, "The subject is incorrect")
+#       end  
+#     end
 
-    context 'uncancellation' do
-      setup do
-        Notification.uncancellation(@course).deliver
-      end
-      
-      # Number of emails
-      should 'send one email' do
-        assert_equal(1, ActionMailer::Base.deliveries.count, "Sends the wrong number of emails")
-      end
-  
-      # Sender email
-      should 'use the default sender email' do
-        assert_equal([DEFAULT_MAILER_SENDER], ActionMailer::Base.deliveries.first.from, "The sender email is wrong")
-      end
-  
-      # Destination email
-      should 'send to the correct recipients' do
-        recipients = [@course.primary_contact.email]
-        recipients += @course.users.map {|e| e.email }
-        recipients
-        assert_equal(recipients.uniq.sort, ActionMailer::Base.deliveries.first.to.uniq.sort, "The recipient email is incorrect")
-      end
-      
-      # Subject
-      should 'set the subject correctly' do
-        assert_equal("[ClassRequestTool] Class uncancellation confirmation", ActionMailer::Base.deliveries.last.subject, "The subject is incorrect")
-      end  
-    end
+#     context 'uncancellation' do
+#       setup do
+#         Notification.uncancellation(@course).deliver
+#       end
+#       
+#       # Number of emails
+#       should 'send one email' do
+#         assert_equal(1, ActionMailer::Base.deliveries.count, "Sends the wrong number of emails")
+#       end
+#   
+#       # Sender email
+#       should 'use the default sender email' do
+#         assert_equal([DEFAULT_MAILER_SENDER], ActionMailer::Base.deliveries.first.from, "The sender email is wrong")
+#       end
+#   
+#       # Destination email
+#       should 'send to the correct recipients' do
+#         recipients = [@course.primary_contact.email]
+#         recipients += @course.users.map {|e| e.email }
+#         recipients
+#         assert_equal(recipients.uniq.sort, ActionMailer::Base.deliveries.first.to.uniq.sort, "The recipient email is incorrect")
+#       end
+#       
+#       # Subject
+#       should 'set the subject correctly' do
+#         assert_equal("[ClassRequestTool] Class uncancellation confirmation", ActionMailer::Base.deliveries.last.subject, "The subject is incorrect")
+#       end  
+#     end
     
     context 'new_request_to_requestor' do
       setup do
@@ -124,8 +130,9 @@ class NotificationTest < ActionMailer::TestCase
       end
   
       # Destination email
-      should 'send to the correct recipient' do
-        assert_equal([@course.contact_email], ActionMailer::Base.deliveries.first.to, "The recipient email is incorrect")
+      should 'send to the requesting patron and additional contacts' do
+        recipients = [@course.contact_email] + @course.additional_patrons.map { |ap| ap.email }
+        assert_equal(recipients.sort, ActionMailer::Base.deliveries.first.to.sort, "The recipient email is incorrect")
       end
       
       # Subject
@@ -151,7 +158,7 @@ class NotificationTest < ActionMailer::TestCase
       end
   
       # Destination email
-      should 'send to the correct recipients' do
+      should 'send to all repository staff and superadmins' do
         recipients = @course.repository.users.map{ |u| u.email }
         recipients += User.where(superadmin: true).pluck(:email)
         assert_equal(recipients.uniq.sort, ActionMailer::Base.deliveries.first.to.uniq.sort, "The recipient email is incorrect")
@@ -179,7 +186,7 @@ class NotificationTest < ActionMailer::TestCase
       end
   
       # Destination email
-      should 'send to the correct recipients' do
+      should 'send to all repository staff and superadmins' do
         recipients = @course.repository.users.map {|e| e.email }
         recipients += User.where(superadmin: true).pluck(:email)
         recipients
@@ -208,7 +215,7 @@ class NotificationTest < ActionMailer::TestCase
       end
   
       # Destination email
-      should 'send to the correct recipients' do
+      should 'send to assigned staff and the primary staff contact' do
         recipients = @course.users.map {|u| u.email }
         recipients << @course.primary_contact.email
         recipients
@@ -237,9 +244,9 @@ class NotificationTest < ActionMailer::TestCase
       end
   
       # Destination email
-      should 'send to the correct recipients' do
-        recipient = [@course.contact_email]
-        assert_equal(recipient, ActionMailer::Base.deliveries.first.to.uniq.sort, "The recipient email is incorrect")
+      should 'send to the requesting patron and additional contacts' do
+        recipients = [@course.contact_email] + @course.additional_patrons.map { |ap| ap.email }
+        assert_equal(recipients.sort, ActionMailer::Base.deliveries.first.to.sort, "The recipient email is incorrect")
       end
       
       # Subject
@@ -268,7 +275,7 @@ class NotificationTest < ActionMailer::TestCase
       end
   
       # Destination email
-      should 'send to the correct recipients' do
+      should 'send to all admins and superadmins' do
         recipients = User.where('superadmin = true OR admin = true').pluck(:email)
         assert_equal(recipients.uniq.sort, ActionMailer::Base.deliveries.first.to.uniq.sort, "The recipient email is incorrect")
       end
@@ -305,7 +312,7 @@ class NotificationTest < ActionMailer::TestCase
       end
 
       # Destination email
-      should 'send to the correct recipient' do
+      should 'send to assigned staff and the primary staff contact' do
         recipients = []
         recipients += @assessment.course.users.map{ |u| u.email }
         recipients << @assessment.course.primary_contact.email
@@ -316,7 +323,7 @@ class NotificationTest < ActionMailer::TestCase
     context '(for course with no assigned users)' do
 
       # Destination email
-      should 'send to the correct recipient' do
+      should 'send to all admins and superadmins' do
         @assessment = create(:assessment)
         @assessment.course.primary_contact = nil
         @assessment.course.users = []
@@ -345,7 +352,7 @@ class NotificationTest < ActionMailer::TestCase
           recipients = []
           case (course)
             when :no_users_course, :homeless_course
-              recipients=  User.where('admin = ? OR superadmin = ?', true, true).pluck(:email)
+              recipients =  User.where('admin = ? OR superadmin = ?', true, true).pluck(:email)
      
             when :attached_course
               recipients << @note.course.primary_contact.email
@@ -353,6 +360,8 @@ class NotificationTest < ActionMailer::TestCase
           end
         
           recipients << @note.course.contact_email
+          recipients += @note.course.additional_patrons.map { |ap| ap.email }
+
           
           # Remove the current user's email if in the recipients list
           recipients -= [@current_user.email]
@@ -363,7 +372,7 @@ class NotificationTest < ActionMailer::TestCase
         
         next if person == :by_patron
 
-        should "send to the correct recipient for a staff-only comment when #{person.to_s.sub('by_','')} writes the note for a(n) #{course.to_s.gsub('_',' ')}" do
+        should "send only to staff for a staff-only comment when #{person.to_s.sub('by_','')} writes the note for a(n) #{course.to_s.gsub('_',' ')}" do
 
           @note = create(:note, person, course, :staff_only)
           @current_user = create(:user, person.to_s.sub('by_', '').to_sym)

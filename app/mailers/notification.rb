@@ -17,19 +17,27 @@ class Notification < ActionMailer::Base
   def assessment_received_to_users(assessment)
     @assessment = assessment
     
-    # Sends to assigned users
+    # Sends to assigned staff
     recipients = @assessment.course.users.map{|u| u.email }
+
+    # Sends to primary staff contact(s)
     unless @assessment.course.primary_contact.blank?
       recipients << @assessment.course.primary_contact.email
-    end
+    end    
     mail(to: recipients, subject: "[ClassRequestTool] Class Assessment Received")
   end
 
   def assessment_requested(course)
     @course = course
 
-    # send email to requester    
-    mail(to: course.contact_email, subject: "[ClassRequestTool] Please Assess your Recent Class at #{course.repo_name}")
+    # send email to requester and additional contacts
+    recipients = [course.contact_email]
+    
+    unless course.additional_patrons.blank?
+      recipients += course.additional_patrons.map { |p| p.email }
+    end
+   
+    mail(to: recipients, subject: "[ClassRequestTool] Please Assess your Recent Class at #{course.repo_name}")
   end
   
   def cancellation(course)
@@ -71,7 +79,8 @@ class Notification < ActionMailer::Base
     # Otherwise send to all users assigned to course
     else
       recipients += @note.course.users.map{|u| u.email}
-      unless @note.course.primary_contact.nil?
+
+      unless @note.course.primary_contact.blank?
         recipients << @note.course.primary_contact.email
       end
     end
@@ -79,6 +88,9 @@ class Notification < ActionMailer::Base
     # If it's not a comment for staff, send to the patron, too
     unless @note.staff_comment
       recipients << @note.course.contact_email
+      unless @note.course.additional_patrons.blank?
+        recipients += @note.course.additional_patrons.map { |p| p.email }
+      end
     end
     
     # Remove the current user's email
@@ -91,7 +103,11 @@ class Notification < ActionMailer::Base
     @course = course
        
     # send email to requester
-    mail(to: course.contact_email, subject: "[ClassRequestTool] Class Request Successfully Submitted for #{course.title}")
+    recipients = [course.contact_email]
+    unless course.additional_patrons.blank?
+      recipients += course.additional_patrons.map { |p| p.email }
+    end
+    mail(to: recipients, subject: "[ClassRequestTool] Class Request Successfully Submitted for #{course.title}")
   end
   
   def new_request_to_admin(course)
@@ -159,7 +175,11 @@ class Notification < ActionMailer::Base
     end
 
     # send email to requester
-    mail(to: course.contact_email, subject: "[ClassRequestTool] You have been assigned a class")
+    recipients = [course.contact_email]
+    unless course.additional_patrons.blank?
+      recipients += course.additional_patrons.map { |p| p.email }
+    end
+    mail(to: recipients, subject: "[ClassRequestTool] You have been assigned a class")
   end
 
   def uncancellation(course)

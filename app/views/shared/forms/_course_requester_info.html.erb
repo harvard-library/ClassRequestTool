@@ -1,20 +1,43 @@
 <div class="form_wrapper">
 <h4>Requester Information</h4>
-<div class="form_col1">
+<h5>Primary Contact</h5>
 <% if current_user.can_admin? || current_user.staff? %>
-  <%= f.input :contact_username, :label => "Primary Contact Username: ", :input_html => { :value => @course.contact_username.nil? ? current_user.username : @course.contact_username } %>
+  <div class="form_col1">
+    <%= f.input :contact_username, :label => "Username: ", :input_html => { :value => @course.contact_username.nil? ? current_user.username : @course.contact_username } %>
+  </div>
+  <div class="clearfix"></div>
 <% else %>
   <%= f.hidden_field :contact_username, :value => @course.contact_username.nil? ? current_user.username : @course.contact_username %>
 <% end %>
 
-<%= f.input :contact_first_name, :label => "Primary Contact First Name: ", :input_html => { :value => @course.contact_first_name.nil? ? current_user.first_name : @course.contact_first_name, :class => 'fl' } %>
-</div>
-<div class="form_col2">
-<%= f.input :contact_last_name, :label => "Primary Contact Last Name: ", :input_html => { :value => @course.contact_last_name.nil? ? current_user.last_name : @course.contact_last_name, :class => 'fl' } %>
+<div class="form_col1">
+  <%= f.input :contact_first_name, :label => "Primary Contact First Name: ", :input_html => { :value => @course.contact_first_name.nil? ? current_user.first_name : @course.contact_first_name, :class => 'fl' } %>
 </div>
 <div class="form_col1">
-<%= f.input :contact_phone, :label => "Primary Contact Phone: " %>
+  <%= f.input :contact_last_name, :label => "Primary Contact Last Name: ", :input_html => { :value => @course.contact_last_name.nil? ? current_user.last_name : @course.contact_last_name, :class => 'fl' } %>
 </div>
 <div class="form_col2">
-<%= f.input :contact_email, :label => "Primary Contact Email: ", :input_html => { :value => @course.contact_email.nil? ? current_user.email : @course.contact_email } %>
+  <%= f.input :contact_phone, :label => "Primary Contact Phone: " %>
 </div>
+<div class="form_col2">
+  <%= f.input :contact_email, :label => "Primary Contact Email: ", :input_html => { :value => @course.contact_email.nil? ? current_user.email : @course.contact_email } %>
+</div>
+<div class="clearfix"></div>
+<h5>Additional Contacts</h5>
+<% (0..2).each do |i| %>
+  <div class="bordered">
+    <div class="form_col1">
+      <label>First Name:</label><br />
+      <%= text_field_tag "course[additional_patrons_attributes][#{i}][first_name]", nil, :class => 'fl' %>
+    </div>
+    <div class="form_col1">
+      <label>Last Name:</label><br />
+      <%= text_field_tag "course[additional_patrons_attributes][#{i}][last_name]", nil, :class => 'fl'  %>
+    </div>
+    <div class="form_col2">
+      <label>Email:</label><br />
+      <%= text_field_tag "course[additional_patrons_attributes][#{i}][email]", nil, :class => 'f2' %>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+<% end %>
