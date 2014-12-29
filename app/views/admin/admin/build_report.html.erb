@@ -1,3 +1,4 @@
+<% reports_config = Rails.configuration.crt_reports %>
 <div class="row">
   <div class="col-md-12">
     <h3>Reporting for <%= $local_config[:tool_name] %></h3>
@@ -16,40 +17,39 @@
         </ul>
       </div>
     </div>
-    
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h4>Statistics</h4>
-      </div>
-      <div class="panel-body">
-        <table class="table">
-          <% @data.each do |k, v| %>
-            <tr>
-              <td><label><%= k.to_s.gsub('_', ' ').capitalize %></label></td>
-              <td>
-                <% if v == 'No data' %>
-                  <p>NO DATA</p>
-                <% else %>
-                  <table class="table">
-                    <thead>
-                      <% v.keys.each do |k2| %>
-                        <th><%= k2.to_s.gsub('_', ' ').capitalize %></th>
-                      <% end %>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <% v.each do |k2, v2| %>
-                          <td> <%= /number|records/.match(k2) ? v2 : number_with_precision(v2, precision: 2) %></td>
-                        <% end %>
-                      </tr>
-                    </tbody>
-                  </table>
-                <% end %>
-              </td>
-            </tr>
+
+    <% @data.each do |k, v| %>
+
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+          <h4><%= reports_config[k]['title'] %></h4>
+        </div>
+        <div class="panel-body">
+          <% if 'stat' == reports_config[k]['type'] %>
+        
+            <table class="table">
+              <thead>
+                <tr>
+                  <% reports_config[k]['data'].values.each do |title| %>      
+                    <th><%= title %></th>
+                  <% end %>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <% v.each do |row| %>
+                    <% reports_config[k]['data'].keys.each do |key| %>
+                      <td><%= (/number|records/.match(key)) ? row[key] : number_with_precision(row[key], precision: 2) %></td>
+                    <% end %>
+                  <% end %>
+                </tr>
+              </tbody>
+            </table>
+          <% elsif 'graph' == reports_config[k]['type'] %>
+            <div id='<%= k.to_s %>' class='highcharts-graph'>Loading...</div><!-- Loaded via ajax once page is loaded -->
           <% end %>
-        </table>
-      </div>
-    </div>
+        </div><!-- panel-body -->
+      </div><!-- panel -->
+    <% end %>
   </div>
 </div>

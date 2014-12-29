@@ -138,6 +138,10 @@ div.ui-datepicker{
   background-color: $slate;
   border-color: darken($slate, 10%);
 }
+.panel-primary > .panel-heading {
+  background-color: $slate;
+  border-color: $slate;
+}
 
 /* Notifications */
 .notifications-status {
