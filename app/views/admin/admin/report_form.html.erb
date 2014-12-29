@@ -48,9 +48,9 @@
               <th>Description</th>
             </thead>
             <tbody>
-              <% Report.stat_types.each do |type, description| %>
+              <% Rails.configuration.crt_reports.each do |report, options| %>
                 <tr>
-                  <td><%= check_box_tag type, 1, true %></td><td><label><%= description %></td>
+                  <td><%= check_box_tag "selected_reports[#{report}]", 1, true %></td><td><label><%= "#{options['description']} (#{Rails.configuration.crt_reports[report]['type']})" %></td>
                 </tr>
               <% end %>
             </tbody>

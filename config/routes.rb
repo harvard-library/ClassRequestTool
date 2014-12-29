@@ -44,17 +44,18 @@ ClassRequestTool::Application.routes.draw do
   end
   
   namespace :admin do
-    get 'reports',                              to: 'admin#report_form'
-    post 'build_report',                         to: 'admin#build_report'
-    get 'dashboard',                            to: 'admin#dashboard'
-    get 'localize',                             to: 'admin#localize'
-    get 'update_stats',                         to: 'admin#update_stats'
     resources :customizations,                  only: [:update]
     resources :affiliates,                      only: [:create, :update, :destroy]
-    get 'harvard_colors',                       to: 'admin#harvard_colors'
+    get   'reports',                            to: 'admin#report_form'
+    post  'build_report',                       to: 'admin#build_report'
+    get   'create-graph',                       to: 'admin#create_graph'
+    get   'dashboard',                          to: 'admin#dashboard'
+    get   'localize',                           to: 'admin#localize'
+    get   'update_stats',                       to: 'admin#update_stats'
+    get   'harvard_colors',                     to: 'admin#harvard_colors'
     namespace :notifications do
-      match 'preview(/:action(/:id(.format)))', to: 'notification#:action'
-      get 'toggle',                             to: 'notification#toggle_notifications'   # AJAX route 
+      match 'preview(/:action(/:id(.format)))',     to: 'notification#:action'
+      get 'toggle',                                 to: 'notification#toggle_notifications'   # AJAX route 
     end
   end
 

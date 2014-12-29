@@ -1,0 +1,145 @@
+--- 
+unique_class_requests:
+  type: "stat"
+  title: "Unique Class Requests"
+  description: "The number of unique class requests"
+  data: 
+    number_of_classes: "Number of Class Requests"
+  returns: single_row
+  select: "SELECT COUNT(*) AS number_of_classes FROM courses"
+
+one_group_one_session: 
+  type: "stat"
+  title: "Single-session, Single-section Classes"
+  description: "The number of classes where one group meets once"
+  data: 
+    number_of_classes: "Number of Classes"
+  returns: single_row
+  select: "SELECT COUNT(*) AS number_of_classes FROM courses"
+  where: "session_count=1 AND section_count=1"
+    
+multiple_sessions_one_group:
+  type: "stat"
+  title: "Multiple-session Classes for One Group"
+  description: "The number of classes where one group meets several times and the number of sessions requested"
+  data: 
+    max_number_of_sessions: "Max Sessions"
+    average_sessions: "Average Number of Sessions"
+    std_dev: "std. dev."
+    number_of_classes: "Number of Classes"
+  returns: single_row
+  select: "SELECT COUNT(*) AS number_of_classes, AVG(session_count) AS average_sessions, STDDEV(session_count) AS std_dev, MAX(session_count) AS max_number_of_sessions FROM courses"
+  where: "session_count>1 AND section_count=1"
+    
+multiple_groups_one_session:
+  type: "stat"
+  title: "Single Sessions, Multiple Sections"
+  description: "The number of classes where several subgroups each meet once and the number of groups"
+  data: 
+    max_number_of_sections: "Max Sections"
+    average_sections: "Average Number of Sections"
+    std_dev: "std. dev."
+    number_of_classes: "Number of Classes"
+  returns: single_row
+  select: "SELECT COUNT(*) AS number_of_classes, AVG(section_count) AS average_sections, STDDEV(section_count) AS std_dev, MAX(section_count) AS max_number_of_sections FROM courses"
+  where: "session_count=1 AND section_count>1"
+
+multiple_groups_multiple_sessions: 
+  type: "graph"
+  title: "Multiple Sessions, Multiple Sections"
+  description: "The number of classes where several subgroups each meet several times and the number of groups"
+  data_model:
+    series: 
+      data: "session_count,section_count,number"
+  highchart_options: 
+    chart: 
+      type: bubble
+    title: 
+      text: "Frequency of Class Sections and Sessions"
+    xAxis: 
+      title: 
+        text: Sessions
+    yAxis: 
+      title: 
+        text: Sections
+    plotOptions:
+      bubble:
+        color: "#A51C30"
+  returns: multiple_rows
+  select:   "SELECT section_count, session_count, COUNT(*) AS number FROM courses"
+  where:    "session_count>1 AND section_count>1"
+  group_by: "GROUP BY section_count, session_count"
+
+attendance: 
+  type: "stat"
+  title: Class Attendance
+  description: "Projected and actual class attendance and number of aggregate student visits"
+  data: 
+    average_actual: "Average Actual Attendance"
+    average_projected: "Average Projected Attendance"
+    total_number_of_attendees: "Total Actual Attendance"
+    number_of_classes: "Classes Counted"
+  returns: single_row
+  select: "SELECT COUNT(*) AS number_of_classes, AVG(number_of_students) AS average_projected, AVG(total_attendance) AS average_actual, SUM(total_attendance) AS total_number_of_attendees FROM courses"
+
+patron_distribution:
+  type: "graph"
+  title: Patron Data
+  description: "Top patrons requesting classes"
+  data_model:
+    xAxis:
+      categories: "name"
+    series:
+      data: "course_count"
+  highchart_options: 
+    chart: 
+      type: bar
+    title: 
+      text: "Patron Course Requests"
+    xAxis:       
+      title: 
+        text: "Requesting Patron"
+    yAxis: 
+      title:
+        text: "Classes Requested"
+        align: 'high'
+    plotOptions:
+      bar:
+        color: "#A51C30"
+  returns: multiple_rows
+  select:   "SELECT CONCAT(contact_first_name,' ',contact_last_name) AS name, COUNT(*) AS course_count FROM courses"
+  group_by: "GROUP BY name"
+  order_by: "ORDER BY COUNT(*) DESC"
+  limit:    "LIMIT 15"
+
+staff_distribution:
+  type: "graph"
+  title: "Staff Data"
+  description: "Top staff staffing courses"
+  data_model:
+    xAxis:
+      categories: "name"
+    series:
+      data: "course_count"
+  highchart_options: 
+    chart: 
+      type: bar
+    title: 
+      text: "Course Staffing"
+    xAxis:       
+      title: 
+        text: "Staff Member"
+    yAxis: 
+      title:
+        text: "Classes Assigned"
+        align: 'high'
+    plotOptions:
+      bar:
+        color: "#A51C30"
+  returns: multiple_rows
+  select:   "SELECT CONCAT(u.first_name,' ', u.last_name) AS name, COUNT(*) as course_count FROM courses c INNER JOIN users u ON c.primary_contact_id=u.id"
+  group_by: "GROUP BY name"
+  order_by: "ORDER BY COUNT(*) DESC"
+  limit:    "LIMIT 15"
+
+

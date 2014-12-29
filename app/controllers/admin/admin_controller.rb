@@ -9,7 +9,13 @@ class Admin::AdminController < ApplicationController
     @report = Report.new
     
     @filters = @report.build_filters(params)[:displays]
-    @data = @report.display(params)
+    session[:report] = @report
+    @data = @report.stats(params)
+  end
+  
+  def create_graph
+    @report = session[:report]
+    render :json => @report.graph(params).to_json
   end
 
   
