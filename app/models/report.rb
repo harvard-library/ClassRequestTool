@@ -65,34 +65,85 @@ class Report
   
   def graph(params)
     graph = Rails.configuration.crt_reports[params[:id].to_sym]
-    where_clause = @report_filters[:clauses].clone
+    where_clause = @report_filters[:clauses].clone unless 'ignore' == graph['where']
     output = {}
     output['id'] = params[:id]
-    output['options'] = graph['highchart_options']
-    sql = "#{graph['select']} WHERE #{where_clause.join(' AND ')} #{graph['group_by']} #{graph['order_by']} #{graph['limit']}"
+#   sql = "#{graph['select']} #{graph['group_by']} #{graph['order_by']} #{graph['limit']}"
+    sql = graph['select']
+    sql += ('ignore' == graph['where']) ? '' : " WHERE #{where_clause.join(' AND ')}" 
+    sql += " #{graph['group_by']} #{graph['order_by']} #{graph['limit']}"
+    
+    data_hash = {}
+    data_hash['series'] = []
+    scatter_plot = ['scatter', 'bubble'].include? graph['highchart_options']['chart']['type']
+    if scatter_plot
+      datapoint_keys = graph['data_model']['series'][0]['data']
+    end    
+    if graph['data_model']['categories']
+      data_hash['categories'] = []
+      category_key = graph['data_model']['categories']
+    end
     result = do_query(sql)
-    if graph['data_model']['xAxis'] && graph['data_model']['xAxis']['categories']
-      cat = true
-      cat_keys = graph['data_model']['xAxis']['categories'].split(',')
-      output['options']['xAxis']['categories'] = []
-    end
-    if graph['data_model']['series'] && graph['data_model']['series']['data']
-      series = true
-      ser_keys = graph['data_model']['series']['data'].split(',')
-      output['options']['series'] = [{ 'data' => [] }]
-    end
     result.each do |row|
-      if cat
-        output['options']['xAxis']['categories'] << cat_keys.map { |k| row[k] }[0]
+      if category_key
+        data_hash['categories'] << row[category_key]
       end
-      if series
-        point = ser_keys.length == 1 ? row[ser_keys.first].to_i : ser_keys.map { |k| row[k].to_i }
-        output['options']['series'][0]['data'] << point
+      graph['data_model']['series'].each_with_index do |series, i|
+        if data_hash['series'][i].nil?            
+          data_hash['series'][i] = {
+            'name' => graph['data_model']['series'][i]['name'],
+            'data' => []
+          }
+        end
+
+        if scatter_plot
+          data_hash['series'][i]['data'] << [ row[datapoint_keys['x']].to_i, row[datapoint_keys['y']].to_i, row[datapoint_keys['z']].to_i ]
+        else 
+          series_key = graph['data_model']['series'][i]['data']['y']
+          data_hash['series'][i]['data'] << row[series_key].to_i
+        end
       end
     end
+    
+    data_hash = sort_multiseries(data_hash) if (!scatter_plot && data_hash['series'].length > 1)
+
+    output['options'] = build_highcharts_options(data_hash, graph['highchart_options'])
     output
   end
   
+  # This method will sort the data hash based on a vertical sum of the series data
+  def sort_multiseries(data_hash)
+    series_column_sum = []
+    series_column_sum.fill(0,0,data_hash['categories'].length)
+    data_hash['series'].each do |series|
+      series['data'].each_with_index do |v, i|
+        series_column_sum[i] += v
+      end
+    end
+    sorted_indices = series_column_sum.each_with_index.map { |x, i| [x,i] }.sort_by{ |x| x[0] }.reverse.map{ |x| x[1] }
+    data_hash['categories'] = sort_like_source(sorted_indices, data_hash['categories'])
+    data_hash['series'].each_with_index do |series, i|
+      data_hash['series'][i]['data'] = sort_like_source(sorted_indices, data_hash['series'][i]['data'])
+    end
+    data_hash
+  end
+  
+  def sort_like_source(source_array, array)
+    new_array = []
+    source_array.each do |x|
+      new_array << array[x]
+    end
+    new_array
+  end
+
+  def build_highcharts_options(data, options)
+    if data['categories']
+      options['xAxis']['categories'] = data['categories'].clone
+    end
+    options['series'] = data['series'].clone
+    options
+  end
+    
   def do_query(sql)
     connection = ActiveRecord::Base.connection
     result = connection.execute( sql )
