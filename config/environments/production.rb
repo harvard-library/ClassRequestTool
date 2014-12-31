@@ -55,12 +55,12 @@ ClassRequestTool::Application.configure do
   # Set up action mailer
   mailer_config = YAML::load(File.open("#{Rails.root}/config/mailer.yml"))
   config.action_mailer.raise_delivery_errors = true
-  mailconf = mailer_config['mailer']['production']
-  config.action_mailer.delivery_method = mailconf['delivery_method']
-  config.action_mailer.smtp_settings = mailconf['settings']
-  config.action_mailer.default_url_options = { :protocol => 'http://', :host => mailconf['settings']['domain'] }
-  config.action_mailer.smtp_settings = { :enable_starttls_auto => false }
+  mailconf = mailer_config[:mailer][:production]
+  config.action_mailer.delivery_method = mailconf[:delivery_method]
+  config.action_mailer.smtp_settings = mailconf[:settings].clone
+  config.action_mailer.default_url_options = { :protocol => 'http://', :host => mailconf[:settings][:domain] }
 
+    
   # Enable threaded mode
   # config.threadsafe!
 
