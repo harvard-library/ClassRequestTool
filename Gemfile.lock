@@ -102,9 +102,15 @@ GEM
       cucumber (>= 1.2.0)
       nokogiri (>= 1.5.0)
       rails (>= 3.0.0)
+    daemons (1.1.9)
     database_cleaner (0.6.6)
     debug_inspector (0.0.2)
     debugger-linecache (1.2.0)
+    delayed_job (4.0.6)
+      activesupport (>= 3.0, < 5.0)
+    delayed_job_active_record (4.0.3)
+      activerecord (>= 3.0, < 5.0)
+      delayed_job (>= 3.0, < 4.1)
     descriptive_statistics (2.5.1)
     devise (3.1.1)
       bcrypt-ruby (~> 3.0)
@@ -274,7 +280,9 @@ DEPENDENCIES
   coffee-rails (~> 3.2.1)
   css_splitter
   cucumber-rails
+  daemons
   database_cleaner
+  delayed_job_active_record
   descriptive_statistics
   devise (= 3.1.1)
   devise_harvard_auth_proxy!

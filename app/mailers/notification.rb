@@ -61,6 +61,12 @@ class Notification < ActionMailer::Base
     mail(to: recipients, subject: "[ClassRequestTool] Class cancellation confirmation")
   end
   
+  def homeless_courses_reminder
+    @courses = Course.where("repository_id IS NULL AND created_at <= ?", Time.now - 2.days)
+    admins = User.where('admin = ? OR superadmin = ?', true, true).pluck(:email)
+    
+    mail(to: admins, subject: "[ClassRequestTool] Homeless classes are languishing!")
+  end
   
   def new_note(note, current_user)
     @note = note
@@ -201,6 +207,10 @@ class Notification < ActionMailer::Base
     
     # Send email
     mail(to: recipients, subject: "[ClassRequestTool] Class uncancellation confirmation")
+  end
+  
+  def send_test_email(email, send_method)
+    mail(to: email, subject: "[ClassRequestTool] Test email (#{send_method})")
   end
     
   private

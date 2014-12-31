@@ -25,6 +25,7 @@ class Admin::AdminController < ApplicationController
 
   
   def dashboard
+    @delayed_jobs = Delayed::Job.all
   end
 
   def harvard_colors
@@ -34,6 +35,19 @@ class Admin::AdminController < ApplicationController
     @custom = Customization.last
     @affiliates = Affiliate.all
     render 'admin/localize', :locals => { :custom => @custom, :affiliates => @affiliates }
+  end
+  
+  # This sends a test email to the current user
+  def send_test_email
+    @delayed_jobs = Delayed::Job.all
+    if 'true' == params[:queued]
+      Notification.delay(:queue => 'test').send_test_email(current_user.email, 'queued')
+    else
+      Notification.send_test_email(current_user.email, 'unqueued').deliver
+    end
+    
+    flash[:notice] = "You should receive an email shortly"
+    redirect_to :back
   end
   
   def update_stats

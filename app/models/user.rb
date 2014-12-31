@@ -4,7 +4,9 @@ class User < ActiveRecord::Base
   # :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :harvard_auth_proxy_authenticatable
-  #devise :harvard_auth_proxy_authenticatable
+
+  # Use delayed_job to send devise emails
+  handle_asynchronously :send_devise_notification, :queue => 'devise'
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me, :first_name, :last_name, :repository_ids, :username

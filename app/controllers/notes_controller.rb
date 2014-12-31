@@ -21,10 +21,10 @@ class NotesController < ApplicationController
     @note = Note.new(params[:note])
     respond_to do |format|
       if @note.save
-        Notification.new_note(@note, current_user).deliver
+        Notification.delay(:queue => 'notes').new_note(@note, current_user)
 #        @note.new_note_email(current_user)
 #        unless @note.staff_comment || @note.course.contact_email == current_user.email
-#          Notification.new_note(@note).deliver
+#          Notification.delay(:queue => 'notes').new_note(@note)
 #          @note.new_patron_note_email
 #        end
         format.html { redirect_to course_url(@note.course), notice: 'Note was successfully created.' }

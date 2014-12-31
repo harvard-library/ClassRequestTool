@@ -77,7 +77,7 @@ namespace :crt do
   end
 
   namespace :cron_task do
-    @per_minutes = [:send_queued_emails]
+#    @per_minutes = [:send_queued_emails]
     @per_diems = [:send_homeless_notices]
 
     desc "Send email to admins when a class is still homeless after two days."
@@ -106,24 +106,24 @@ namespace :crt do
       puts "Successfully delivered homeless notices!"
     end
 
-    desc "Send emails that are queued up"
-    task :send_queued_emails => :environment do
-      emails = Email.to_send
-      emails.each do |email|
-        begin
-          Notification.send_queued(email).deliver
-          email.message_sent = true
-          email.date_sent = Time.now
-          email.save
-        rescue Exception => e
-          #FAIL!
-          email.error_message = e.inspect[0..4999]
-          email.to_send = false
-          email.save
-        end
-      end
-      puts "Successfully sent queued emails!"
-    end
+#     desc "Send emails that are queued up"
+#     task :send_queued_emails => :environment do
+#       emails = Email.to_send
+#       emails.each do |email|
+#         begin
+#           Notification.send_queued(email).deliver
+#           email.message_sent = true
+#           email.date_sent = Time.now
+#           email.save
+#         rescue Exception => e
+#           #FAIL!
+#           email.error_message = e.inspect[0..4999]
+#           email.to_send = false
+#           email.save
+#         end
+#       end
+#       puts "Successfully sent queued emails!"
+#     end
 
     desc "Set up crontab"
     task :setup_crontab do
@@ -140,9 +140,9 @@ namespace :crt do
       preamble = "cd #{ENV['RAKE_ROOT'] || Rails.root} && #{env} #{`which rvm`.chomp} default do bundle exec #{`which rake`.chomp} crt:cron_task:"
       redirect = '> /dev/null 2>&1'
 
-      @per_minutes.each do |pm|
-        tmp.write "#{per_min_time} #{preamble}#{pm} #{redirect}\n"
-      end
+#       @per_minutes.each do |pm|
+#         tmp.write "#{per_min_time} #{preamble}#{pm} #{redirect}\n"
+#       end
       @per_diems.each do |pm|
         tmp.write "#{per_diem_time} #{preamble}#{pm} #{redirect}\n"
       end

@@ -51,6 +51,7 @@ ClassRequestTool::Application.routes.draw do
     get   'create-graph',                       to: 'admin#create_graph'
     get   'dashboard',                          to: 'admin#dashboard'
     get   'localize',                           to: 'admin#localize'
+    get   'send_test_email',                    to: 'admin#send_test_email'
     get   'update_stats',                       to: 'admin#update_stats'
     get   'harvard_colors',                     to: 'admin#harvard_colors'
     namespace :notifications do

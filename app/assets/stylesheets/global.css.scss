@@ -144,7 +144,10 @@ div.ui-datepicker{
   margin-right:1em;
 }
 
-/* Branded color overrides */
+/* Branded overrides */
+.btn {
+  border-radius: 20px;
+}
 .btn-primary, .btn-primary.disabled, .btn-primary[disabled]  {
   color: $creme;
   background-color: $crimson;

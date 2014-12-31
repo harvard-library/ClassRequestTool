@@ -44,6 +44,16 @@ class Admin::Notifications::NotificationController < Admin::AdminController
       ENV['NOTIFICATIONS_STATUS'] = 'OFF'
     else
       ENV['NOTIFICATIONS_STATUS'] = 'ON'
+      
+      # If any jobs are in the queue, send them
+      Delayed::Job.all.each do |job|
+        if job.run_at < Time.now
+          job.run_at = Time.now
+          job.last_error = nil
+          job.failed_at = nil
+          job.save!
+        end
+      end
     end
     
     render :text => ENV['NOTIFICATIONS_STATUS']

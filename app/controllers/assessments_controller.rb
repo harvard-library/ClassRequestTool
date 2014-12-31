@@ -89,9 +89,9 @@ class AssessmentsController < ApplicationController
     respond_to do |format|
       if @assessment.save
         if @assessment.course.primary_contact.blank? && @assessment.course.users.blank?
-          Notification.assessment_received_to_admins(@assessment).deliver
+          Notification.delay(:queue => 'assessments').assessment_received_to_admins(@assessment)
         else
-          Notification.assessment_received_to_users(@assessment).deliver
+          Notification.delay(:queue => 'assessments').assessment_received_to_users(@assessment)
         end
         format.html { redirect_to course_url(@assessment.course), notice: 'assessment was successfully created.' }
         format.json { render json: @assessment, status: :created, assessment: @assessment }

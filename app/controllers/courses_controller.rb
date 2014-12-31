@@ -136,7 +136,7 @@ class CoursesController < ApplicationController
     course = Course.find(params[:id])
     course.status = 'Cancelled'
     if course.save(validate: false)         # Don't bother with validation since the class is being cancelled
-#      Notification.cancellation(course).deliver
+#      Notification.delay.cancellation(course)
       flash[:notice] = "The class <em>#{course.title}</em> was successfully cancelled.".html_safe
     else
       flash[:alert] = "There was an error cancelling the class."
@@ -152,7 +152,7 @@ class CoursesController < ApplicationController
     course.status = 'Active'
     
     if course.save(validate: false)         # Don't bother with validation since the class is being recovered
-#      Notification.uncancellation(course).deliver
+#      Notification.delay.uncancellation(course)
       flash[:notice] = "The class <em>#{course.title}</em> was successfully uncancelled.".html_safe
     else
       flash[:alert] = "There was an error uncancelling the class."
@@ -198,8 +198,8 @@ class CoursesController < ApplicationController
     respond_to do |format|
       if @course.save
         unless @backdated
-          Notification.new_request_to_requestor(@course).deliver
-          Notification.new_request_to_admin(@course).deliver
+          Notification.delay(:queue => 'new_requests').new_request_to_requestor(@course)
+          Notification.delay(:queue => 'new_requests').new_request_to_admin(@course)
         end
         if user_signed_in?
           format.html { redirect_to summary_course_url(@course), notice: 'Class was successfully created.' }
@@ -249,20 +249,20 @@ class CoursesController < ApplicationController
     if @course.save
       if params[:course][:status] == "Closed" # check params because editing closed courses should not create notes
         @course.notes.create(:note_text => "Class has marked as closed.", :user_id => current_user.id)
-        Notification.assessment(@course).deliver
+        Notification.delay(:queue => 'assessments').assessment(@course)
         @course.notes.create(:note_text => "Assessment email sent.", :user_id => current_user.id)
       end
 
       if repo_change
         # FIX INFO_NEEDED Should "changed from" repos get email? Inquiring Bobbis want to know
-        Notification.repo_change(@course).deliver unless @course.repository.blank?
+        Notification.delay(:queue => 'changes').repo_change(@course) unless @course.repository.blank?
         @course.notes.create(:note_text => "Library/Archive changed to #{@course.repository.blank? ? "none" : @course.repository.name + "Email sent"}.",
                              :user_id => current_user.id)
       end
 
       if staff_change
         # FIX INFO_NEEDED Should "dropped" staff members get this email?
-        Notification.staff_change(@course, current_user).deliver
+        Notification.delay(:queue => 'changes').staff_change(@course, current_user)
         @course.notes.create(:note_text => "Staff change email sent.", :user_id => current_user.id)
       end
 
