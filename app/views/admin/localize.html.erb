@@ -15,6 +15,10 @@
       <%= banner.input :image, :as => :file, :label => 'Banner Image' %>
     <% end %>
     <fieldset>
+      <legend>Notifications</legend>
+      <%= f.input :notifications_on, :label => 'Notifications ON' %><br />
+    </fieldset>
+    <fieldset>
       <legend>Content Admin</legend>
       <%= f.input :tool_content_admin_name, :label => 'Name' %><br />
       <%= f.input :tool_content_admin_email, :label => 'Email' %><br />

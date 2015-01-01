@@ -2,9 +2,7 @@ class Notification < ActionMailer::Base
 
   include  AbstractController::Callbacks    # Includes the after_filter
 
-  default from: DEFAULT_MAILER_SENDER
-  
-  after_filter :deliver_notifications
+  default from: $local_config.default_email_sender
   
   def assessment_received_to_admins(assessment)
     @assessment = assessment
@@ -209,14 +207,7 @@ class Notification < ActionMailer::Base
     mail(to: recipients, subject: "[ClassRequestTool] Class uncancellation confirmation")
   end
   
-  def send_test_email(email, send_method)
-    mail(to: email, subject: "[ClassRequestTool] Test email (#{send_method})")
-  end
-    
-  private
-    def deliver_notifications
-      if ENV['NOTIFICATIONS_STATUS'] != 'ON'
-        mail.perform_deliveries = false
-      end
-    end
+  def test_email(email, queued_or_unqueued)
+    mail(:to => email, :subject => "[ClassRequestTool] Test email (#{queued_or_unqueued})")
+  end    
 end

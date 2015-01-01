@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141230135926) do
+ActiveRecord::Schema.define(:version => 20141231222313) do
 
   add_extension "fuzzystrmatch"
 
@@ -148,6 +148,7 @@ ActiveRecord::Schema.define(:version => 20141230135926) do
     t.datetime "created_at",               :null => false
     t.datetime "updated_at",               :null => false
     t.string   "slogan"
+    t.boolean  "notifications_on"
   end
 
   create_table "delayed_jobs", :force => true do |t|

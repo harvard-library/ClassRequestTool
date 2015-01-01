@@ -4,7 +4,7 @@
     <h4 class="panel-title">Email Status</h4>
   </div>
   <div class="panel-body">
-    <p><button class="toggle-notification-status btn btn-<%= ENV['NOTIFICATIONS_STATUS'] == 'OFF' ? 'warning' : 'danger' %>">Turn notifications <%= ENV['NOTIFICATIONS_STATUS'] == 'OFF' ? 'ON' : 'OFF' %></button></p>
+    <p><button class="toggle-notification-status btn btn-<%= $local_config.notifications_on? ? 'danger' : 'warning' %>">Turn notifications <%= $local_config.notifications_on? ? 'OFF' : 'ON' %></button></p>
     <p>Send a test email to <%= current_user.email %>. You can send queued using delayed_job or unqueued.</p>
     <p>
       <%= link_to 'Send Queued', admin_send_test_email_path(:queued => true), :class => 'btn btn-warning' %>

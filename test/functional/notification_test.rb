@@ -3,7 +3,7 @@ class NotificationTest < ActionMailer::TestCase
   
   include FactoryGirl::Syntax::Methods
 
-  ENV['NOTIFICATIONS_STATUS'] = 'ON'
+  $notifications_status = 'ON'
 
   def setup
     ActionMailer::Base.delivery_method    = :test

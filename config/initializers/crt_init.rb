@@ -6,7 +6,7 @@ DEFAULT_MAILER_SENDER = ENV['DEFAULT_MAILER_SENDER'] || "LibraryCRT@harvard.edu"
 EMAIL_BATCH_LIMIT = ENV['EMAIL_BATCH_LIMIT'].try(:to_i) || 100
 
 # Email notifications global on or off
-ENV['NOTIFICATIONS_STATUS'] = 'OFF'
+$notifications_status = 'OFF'
 
 # Customization
 # @custom = Customization.last

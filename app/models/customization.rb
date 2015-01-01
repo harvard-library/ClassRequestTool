@@ -1,5 +1,5 @@
 class Customization < ActiveRecord::Base
-  attr_accessible :institution, :institution_long, :tool_name, :slogan, :tool_tech_admin_name, :tool_tech_admin_email, 
+  attr_accessible :institution, :institution_long, :tool_name, :slogan, :tool_tech_admin_name, :tool_tech_admin_email, :notifications_on,
                   :tool_content_admin_name, :tool_content_admin_email, :default_email_sender, :attached_image, :attached_image_attributes
                   
   validates_presence_of :institution, message: 'Please enter the short name for your institution (i.e. Harvard)'

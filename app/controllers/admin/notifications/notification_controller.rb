@@ -40,11 +40,14 @@ class Admin::Notifications::NotificationController < Admin::AdminController
   end
   
   def toggle_notifications
-    if ENV['NOTIFICATIONS_STATUS'] == 'ON'
-      ENV['NOTIFICATIONS_STATUS'] = 'OFF'
-    else
-      ENV['NOTIFICATIONS_STATUS'] = 'ON'
-      
+    if $local_config.notifications_on?
+      $local_config.notifications_on = false
+      status = 'OFF'
+      Rails.configuration.action_mailer.perform_deliveries = false
+    else  
+      $local_config.notifications_on = true
+      status = 'ON'      
+      Rails.configuration.action_mailer.perform_deliveries = true
       # If any jobs are in the queue, send them
       Delayed::Job.all.each do |job|
         if job.run_at < Time.now
@@ -56,6 +59,10 @@ class Admin::Notifications::NotificationController < Admin::AdminController
       end
     end
     
-    render :text => ENV['NOTIFICATIONS_STATUS']
+    if $local_config.save
+      render :text => status
+    else
+      render :nothing
+    end
   end
 end
