@@ -2,7 +2,7 @@ class Notification < ActionMailer::Base
 
   include  AbstractController::Callbacks    # Includes the after_filter
 
-  default from: $local_config.default_email_sender
+  default from: $local_config.nil? ? ENV['DEFAULT_MAILER_SENDER'] : $local_config.default_email_sender
   
   def assessment_received_to_admins(assessment)
     @assessment = assessment
