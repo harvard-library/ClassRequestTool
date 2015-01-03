@@ -6,7 +6,7 @@ unique_class_requests:
   data: 
     number_of_classes: "Number of Class Requests"
   returns: single_row
-  select: "SELECT COUNT(*) AS number_of_classes FROM courses"
+  select: "SELECT COUNT(*) AS number_of_classes FROM courses c"
 
 one_group_one_session: 
   type: "stat"
@@ -15,7 +15,7 @@ one_group_one_session:
   data: 
     number_of_classes: "Number of Classes"
   returns: single_row
-  select: "SELECT COUNT(*) AS number_of_classes FROM courses"
+  select: "SELECT COUNT(*) AS number_of_classes FROM courses c"
   where: "session_count=1 AND section_count=1"
     
 multiple_sessions_one_group:
@@ -28,7 +28,7 @@ multiple_sessions_one_group:
     std_dev: "std. dev."
     number_of_classes: "Number of Classes"
   returns: single_row
-  select: "SELECT COUNT(*) AS number_of_classes, AVG(session_count) AS average_sessions, STDDEV(session_count) AS std_dev, MAX(session_count) AS max_number_of_sessions FROM courses"
+  select: "SELECT COUNT(*) AS number_of_classes, AVG(session_count) AS average_sessions, STDDEV(session_count) AS std_dev, MAX(session_count) AS max_number_of_sessions FROM courses c"
   where: "session_count>1 AND section_count=1"
     
 multiple_groups_one_session:
@@ -41,7 +41,7 @@ multiple_groups_one_session:
     std_dev: "std. dev."
     number_of_classes: "Number of Classes"
   returns: single_row
-  select: "SELECT COUNT(*) AS number_of_classes, AVG(section_count) AS average_sections, STDDEV(section_count) AS std_dev, MAX(section_count) AS max_number_of_sections FROM courses"
+  select: "SELECT COUNT(*) AS number_of_classes, AVG(section_count) AS average_sections, STDDEV(section_count) AS std_dev, MAX(section_count) AS max_number_of_sections FROM courses c"
   where: "session_count=1 AND section_count>1"
 
 multiple_groups_multiple_sessions: 
@@ -70,7 +70,7 @@ multiple_groups_multiple_sessions:
         text: Sections
       allowDecimals: false
   returns: multiple_rows
-  select:   "SELECT section_count, session_count, COUNT(*) AS number FROM courses"
+  select:   "SELECT section_count, session_count, COUNT(*) AS number FROM courses c"
   where:    "session_count>1 AND section_count>1"
   group_by: "GROUP BY section_count, session_count"
 
@@ -84,7 +84,7 @@ attendance:
     total_number_of_attendees: "Total Actual Attendance"
     number_of_classes: "Classes Counted"
   returns: single_row
-  select: "SELECT COUNT(*) AS number_of_classes, AVG(number_of_students) AS average_projected, AVG(total_attendance) AS average_actual, SUM(total_attendance) AS total_number_of_attendees FROM courses"
+  select: "SELECT COUNT(*) AS number_of_classes, AVG(number_of_students) AS average_projected, AVG(total_attendance) AS average_actual, SUM(total_attendance) AS total_number_of_attendees FROM courses c"
 
 patron_distribution:
   type: "graph"
@@ -111,14 +111,14 @@ patron_distribution:
         align: 'high'
       allowDecimals: false
   returns: multiple_rows
-  select:   "SELECT CONCAT(contact_first_name,' ',contact_last_name) AS name, COUNT(*) AS course_count FROM courses"
+  select:   "SELECT CONCAT(contact_first_name,' ',contact_last_name) AS name, COUNT(*) AS course_count FROM courses c"
   group_by: "GROUP BY name"
   order_by: "ORDER BY COUNT(*) DESC"
   limit:    "LIMIT 15"
 
 staff_distribution:
   type: "graph"
-  title: "Staff Data (all classes - unfiltered)"
+  title: "Staff Data"
   description: "Top staff staffing courses"
   data_model:
     categories: "name"
@@ -151,10 +151,10 @@ staff_distribution:
   returns: multiple_rows
   select:   >
     SELECT CONCAT(u.first_name,' ',u.last_name) AS name, 
-    (SELECT COUNT(u1.id) FROM users u1 JOIN courses c ON u1.id=c.primary_contact_id GROUP BY (u1.id) HAVING u1.id=u.id) AS as_primary,
-    (SELECT COUNT(u2.id) FROM users u2 JOIN courses_users cu ON u2.id=cu.user_id GROUP BY (u2.id) HAVING u2.id=u.id) AS as_staff
+    (SELECT COUNT(u1.id) FROM users u1 JOIN courses c ON u1.id=c.primary_contact_id !WHERE_FILTER! GROUP BY (u1.id) HAVING u1.id=u.id) AS as_primary,
+    (SELECT COUNT(u2.id) FROM users u2 JOIN courses_users cu ON u2.id=cu.user_id JOIN courses c ON cu.course_id=c.id !WHERE_FILTER! GROUP BY (u2.id) HAVING u2.id=u.id) AS as_staff
     FROM users AS u
-  where:    "ignore"
+  where:    "none"
   group_by: "GROUP BY u.id"
 
 

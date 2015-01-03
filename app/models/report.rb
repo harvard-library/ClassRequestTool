@@ -10,21 +10,21 @@ class Report
       :displays => []
     }
     if params[:closed_only]
-      @report_filters[:clauses] << "status='Closed'"
+      @report_filters[:clauses] << "c.status='Closed'"
       @report_filters[:displays] << "Only closed classes"
     else
-      @report_filters[:clauses] << "status!='Cancelled'"
+      @report_filters[:clauses] << "c.status!='Cancelled'"
       @report_filters[:displays] << "Active and closed classes (all except cancelled)"
    end
     
     unless params[:repo].blank?
       repo = Repository.find(params[:repo].to_i)
-      @report_filters[:clauses] << "repository_id=#{params[:repo]}"
+      @report_filters[:clauses] << "c.repository_id=#{params[:repo]}"
       @report_filters[:displays] << "For #{repo.name} only"    
     end
     
     unless params[:affiliate].blank?
-      @report_filters[:clauses] << "affiliation='#{params[:affiliate]}'"
+      @report_filters[:clauses] << "c.affiliation='#{params[:affiliate]}'"
       @report_filters[:displays] << "Requests from #{params[:affiliate]} only"
     end
     
@@ -32,7 +32,7 @@ class Report
       start_date = to_time_format(params[:start_date])
       end_date = to_time_format(params[:end_date])
       unless end_date.to_time < start_date.to_time
-        @report_filters[:clauses] << "created_at <@ tsrange('#{start_date}','#{end_date}')"
+        @report_filters[:clauses] << "c.created_at <@ tsrange('#{start_date}','#{end_date}')"
         @report_filters[:displays] << "Request created between <b>#{params[:start_date]}</b> and <b>#{params[:end_date]}</b>"
       end    
     end
@@ -68,9 +68,10 @@ class Report
     where_clause = @report_filters[:clauses].clone unless 'ignore' == graph['where']
     output = {}
     output['id'] = params[:id]
-#   sql = "#{graph['select']} #{graph['group_by']} #{graph['order_by']} #{graph['limit']}"
-    sql = graph['select']
-    sql += ('ignore' == graph['where']) ? '' : " WHERE #{where_clause.join(' AND ')}" 
+
+    # The gsub takes care of subqueries in the select statement
+    sql = graph['select'].gsub('!WHERE_FILTER!', "WHERE #{where_clause.join(' AND ')}")
+    sql += ('none' == graph['where']) ? '' : " WHERE #{where_clause.join(' AND ')}" 
     sql += " #{graph['group_by']} #{graph['order_by']} #{graph['limit']}"
     
     data_hash = {}
@@ -140,7 +141,18 @@ class Report
     if data['categories']
       options['xAxis']['categories'] = data['categories'].clone
     end
-    options['series'] = data['series'].clone
+    
+    no_result = true
+    data['series'].each do |series|
+      if series['data'].uniq.count > 1 || series['data'][0] != 0
+        no_result = false
+      end
+    end
+    if no_result
+      options['series'] = {}
+    else
+      options['series'] = data['series'].clone
+    end
     options
   end
     

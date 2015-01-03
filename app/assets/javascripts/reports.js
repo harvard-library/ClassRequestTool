@@ -19,7 +19,7 @@ $(function() {
     var graph = { id: $(this).attr('id') }
     $.getJSON('/admin/create-graph', graph, function(data) {
         console.log(typeof data.options.series)
-        if (typeof data.options.series === undefined) {
+        if ($.isEmptyObject(data.options.series)) {
           $('#' + data.id).text("(NO DATA)");
         } else {
           $('#' + data.id).highcharts($.extend({},data.options, options))
