@@ -1,0 +1,34 @@
+.form_wrapper
+  %h4 Requester Information
+  %h5 Primary Contact
+  - if current_user.can_admin? || current_user.staff?
+    .form_col1
+      = f.input :contact_username, :label => "Username: ", :input_html => { :value => @course.contact_username.nil? ? current_user.username : @course.contact_username }
+    .clearfix
+  - else
+    = f.hidden_field :contact_username, :value => @course.contact_username.nil? ? current_user.username : @course.contact_username
+  .form_col1
+    = f.input :contact_first_name, :label => "Primary Contact First Name: ", :input_html => { :value => @course.contact_first_name.nil? ? current_user.first_name : @course.contact_first_name, :class => 'fl' }
+  .form_col1
+    = f.input :contact_last_name, :label => "Primary Contact Last Name: ", :input_html => { :value => @course.contact_last_name.nil? ? current_user.last_name : @course.contact_last_name, :class => 'fl' }
+  .form_col2
+    = f.input :contact_phone, :label => "Primary Contact Phone: "
+  .form_col2
+    = f.input :contact_email, :label => "Primary Contact Email: ", :input_html => { :value => @course.contact_email.nil? ? current_user.email : @course.contact_email }
+  .clearfix
+  %h5 Additional Contacts
+  - (0..2).each do |i|
+    .bordered
+      .form_col1
+        %label First Name:
+        %br/
+        = text_field_tag "course[additional_patrons_attributes][#{i}][first_name]", nil, :class => 'fl'
+      .form_col1
+        %label Last Name:
+        %br/
+        = text_field_tag "course[additional_patrons_attributes][#{i}][last_name]", nil, :class => 'fl'
+      .form_col2
+        %label Email:
+        %br/
+        = text_field_tag "course[additional_patrons_attributes][#{i}][email]", nil, :class => 'f2'
+      .clearfix

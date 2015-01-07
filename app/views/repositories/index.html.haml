@@ -1,0 +1,25 @@
+%h3 Libraries/Archives
+%div
+  %table#repositories-table.table.table-striped.table-condensed.tablesorter
+    %thead
+      %tr
+        %th Name
+        - if current_user.can_admin?
+          %th Actions
+        - else
+          %th
+    %tbody
+      - @repositories.each do |repo|
+        %tr
+          %td= link_to repo.name, repo
+          %td
+            - if current_user.can_admin?
+              = link_to('Edit', edit_repository_path(repo), :class => "action-edit")
+            - if current_user.superadmin?
+              | #{link_to('Delete', repository_path(repo), :confirm => "Are you sure?", :method => :delete)}
+  %br/
+  = render :partial => '/shared/tablesorter_pager', :locals => {:pager_id => "repositories-table" }
+  %br/
+  %br/
+  - if current_user.can_admin?
+    = link_to("Add New Library/Archive", new_repository_path, :class => "btn btn-primary" )

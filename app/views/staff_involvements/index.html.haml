@@ -1,0 +1,30 @@
+%h3 Staff Services
+%div
+  %table#involvement-table.table.table-striped.table-condensed.tablesorter
+    %thead
+      %tr
+        %th Text
+        %th Libraries/Archives
+        - if current_user.admin?
+          %th Actions
+        - else
+          %th
+    %tbody
+      - @staff_involvements.each do |si|
+        %tr
+          %td= si.involvement_text
+          %td
+            - si.repositories.each do |repo|
+              = repo.name
+              %br/
+          %td
+            - if current_user.can_admin?
+              = link_to('Edit', edit_staff_involvement_path(si), :class => "action-edit")
+            - if current_user.superadmin?
+              | #{link_to('Delete', staff_involvement_path(si), :confirm => "Are you sure?", :method => :delete)}
+  %br/
+  = render :partial => '/shared/tablesorter_pager', :locals => {:pager_id => "involvement-table" }
+  %br/
+  %br/
+  - if current_user.can_admin?
+    = link_to("Add New Staff Service", new_staff_involvement_path, :class => "btn btn-primary" )

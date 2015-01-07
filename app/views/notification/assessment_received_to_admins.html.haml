@@ -1,0 +1,5 @@
+%p
+  Review the feedback for
+  %em= @assessment.course.title
+  = succeed "." do
+    %a{:href => "http://#{"#{ROOT_URL}#{assessment_path(@assessment)}"}"} here

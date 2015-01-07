@@ -1,0 +1,51 @@
+%h3 Assessment
+%div
+  %strong Class Title:
+  = @assessment.course.title
+  %br/
+  %strong How did using collection materials complement your teaching goals?
+  = @assessment.using_materials
+  %br/
+  %br/
+  %strong
+    In what ways was #{@repository_name} involved in your class?
+  %ul
+    - @assessment.involvement.split(',').each do |i|
+      %li= i
+  %strong Please evaluate how well the following met your teaching needs:
+  %br/
+  %strong Reference staff expertise:
+  = @assessment.staff_experience
+  %br/
+  %strong Reference staff availability:
+  = @assessment.staff_availability
+  %br/
+  %strong Instructional space:
+  = @assessment.space
+  %br/
+  %strong Online request system for class:
+  = @assessment.request_course
+  %br/
+  %strong Online request system for materials:
+  = @assessment.request_materials
+  %br/
+  %strong Library catalogs (online catalogs of books, manuscripts, images, etc.):
+  = @assessment.catalogs
+  %br/
+  %strong Digital collections:
+  = @assessment.digital_collections
+  %br/
+  %br/
+  %strong
+    Do you plan to involve #{@repository_name} in your teaching again?
+  = @assessment.involve_again
+  %br/
+  %strong If no, please tell us why not:
+  = @assessment.not_involve_again
+  %br/
+  %strong
+    What could #{@repository_name} do to make your teaching with special collections better in the future?
+  = @assessment.better_future
+  %br/
+%p
+  = link_to "Return to Course Details", course_path(@assessment.course)

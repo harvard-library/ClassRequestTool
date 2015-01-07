@@ -1,0 +1,34 @@
+- if user_signed_in?
+  %h3
+    Welcome, #{current_user.display_name}
+- else
+  %h3 Welcome
+= render :partial => 'shared/welcome_text'
+.row
+  #welcome-left
+    %h4 Participating Special Collections Libraries/Archives
+    %p
+      Select a Participating Special Collections Library/Archive
+    %p{:style => "margin-bottom:0;"}
+      = link_to "Not Sure - Help me Choose", new_course_path
+      %br/
+    %div{:style => "font-size: .85em; margin-left:1em; margin-bottom:0.3em;"}
+      Select this option if you would like us to match your class with a library/archive.
+      %br/
+    - @repositories.each do |repo|
+      = link_to repo.name, repo
+      %br/
+    %p
+      Are you a Special Collections Library/Archive at #{$local_config[:institution]}?
+      %br/
+      Would you like to participate?
+    %p.email
+      %span.glyphicon.glyphicon-envelope
+      %a{:href => "mailto:#{$local_config[:tool_content_admin_email]}"} Join us!
+  #welcome-right
+    %h4 Recent Classes
+    - unless @courses.nil?
+      - @courses.each do |course|
+        %li= link_to(course.title, recent_show_course_url(course) )
+    - else
+      None yet.

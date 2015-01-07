@@ -1,0 +1,63 @@
+!!!
+%html
+  %head
+    %title Class Request Tool
+    %meta{:content => "width=device-width, initial-scale=1.0", :name => "viewport"}/
+    = stylesheet_link_tag    'application', :media => "all"
+    /
+      [if lt IE 9]>
+      <haml:loud> stylesheet_link_tag &amp;#39;iefix&amp;#39;, :media =&amp;gt; &amp;quot;all&amp;quot; </haml:loud>
+      <![endif]
+    /
+      [if lt IE 10]>
+      <haml:loud> stylesheet_link_tag &amp;#39;application_split2&amp;#39;, :media =&amp;gt; &amp;#39;all&amp;#39; </haml:loud>
+      <![endif]
+    = javascript_include_tag 'application'
+    = csrf_meta_tags
+    = yield :header_tags
+    /
+      [if IE]>
+      <script type="text/javascript">
+      document.createElement("article");
+      document.createElement("nav");
+      document.createElement("section");
+      document.createElement("header");
+      document.createElement("aside");
+      document.createElement("figure");
+      document.createElement("legend");
+      document.createElement("footer");
+      </script>
+      <![endif]
+  %body{:class => "c_#{controller.controller_name} a_#{controller.action_name} u_#{current_user ? current_user.user_type : "anon"}"}
+    #wrap
+      - if current_user && ( current_user.admin? || current_user.superadmin? )
+        %div{:class => "notifications-status #{$local_config.notifications_on? ? 'ON' : 'OFF'}"}
+          Notifications are
+          %b= $local_config.notifications_on? ? 'ON' : 'OFF'
+      %nav.navbar.navbar-inverse.navbar-static-top{:role => "navigation"}
+        = render :partial => 'shared/user'
+        .container
+          .nav.navbar-header.row
+            %p.slogan= $local_config[:slogan]
+            %h1.tool-title= $local_config[:tool_name]
+            = $local_config.attached_image.nil? ? ('<p>(Banner image missing)</p>'.html_safe) : image_tag($local_config.attached_image.image_url, :class => " banner img-responsive col-xs-12")
+            %button.navbar-toggle.col-xs-12{"data-target" => "#main-nav", "data-toggle" => "collapse", :type => "button"}
+              %span.sr-only Toggle navigation
+              %span.icon-bar{:style => "margin-left: auto;margin-right:auto;"}
+              %span.icon-bar{:style => "margin-left: auto;margin-right:auto;"}
+              %span.icon-bar{:style => "margin-left: auto;margin-right:auto;"}
+          = render :partial => 'shared/navigation'
+      #main{:role => "main"}
+        .container
+          .content
+            .row
+              .col-md-12
+                = render :partial => 'shared/messages'
+                = yield
+        / ! end of .container
+      / ! end of #main
+      #push
+    / ! end of #wrap
+    #footer
+      .container
+        = render :partial => 'shared/footer'

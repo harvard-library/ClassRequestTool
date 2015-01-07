@@ -1,0 +1,18 @@
+%h3 Assessments
+%h4= link_to 'Download as CSV', export_assessments_path(:format => :csv)
+%table#assessment-table-current.table.table-striped.table-condensed.tablesorter.tablesorter-default
+  %thead
+    %th Course Title
+    - @fields.each_pair do |attribute, text|
+      %th{:title => text[:title]}= text[:slug]
+    %th Text Fields
+  %tbody
+    - @assessments.each do |a|
+      %tr
+        %td= a.course ? link_to(a.course.title, a.course) : ''
+        - @fields.keys.each do |name|
+          %td= a.send name
+        %td
+          - @text_fields.each do |attribute, text|
+            - unless a.send(attribute).blank?
+              %button.btn.btn-primary{"data-content" => a.send attribute, "data-placement" => "left", "data-title" => text[:title], "data-toggle" => "popover", :type => "button"}= text[:slug]

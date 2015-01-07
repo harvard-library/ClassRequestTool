@@ -1,0 +1,8 @@
+%p
+  The class request for
+  %em= @course.title
+  has been uncancelled.
+%p
+  If you have any questions or additional details to share, please add a note to the
+  = succeed "." do
+    %a{:href => "http://#{ROOT_URL}#{course_path(@course)}"} class request

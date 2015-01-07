@@ -1,0 +1,8 @@
+%td.section-times
+  - unless course.sections.first.try(:actual_date).nil?
+    %ul.list-unstyled
+      - course.sections.each do |s|
+        - if s.try(:actual_date).nil?
+          %li.unscheduled - Unscheduled -
+        - else
+          %li{:class => (s.try(:actual_date) > DateTime.now) ? 'future' : 'past'}= s.try(:actual_date).try(:strftime, '%m/%d/%Y %I:%M %P')

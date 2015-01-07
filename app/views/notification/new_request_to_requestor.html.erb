@@ -1,9 +1,0 @@
-<p>Your class request has been successfully submitted for <em><%= @course.title %></em>.</p>
-<p>You may review your request <a href='<%= "http://#{ROOT_URL}#{course_path(@course)}" %>'>here</a> and update it with any new details or comments by leaving a note for staff.</p>
-<% unless @course.repository.blank? || @course.repository.email_details.blank? %>
-  <p>You have requested a class at the <%= @course.repository.name %>, which has the following specific details and/or instructions:</p>
-  <%= @course.repository.email_details %>
-<% end %>
-<br />
-<p>Thank you for your request. We look forward to working with you.</p>
-

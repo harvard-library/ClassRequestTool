@@ -1,0 +1,37 @@
+%h3 Rooms
+%div
+  %table#rooms-table.table.table-striped.table-condensed.tablesorter
+    %thead
+      %tr
+        %th Name
+        %th Limit
+        %th Libraries/Archives Associated
+        %th Technology Available
+        - if current_user.can_admin?
+          %th Actions
+        - else
+          %th
+    %tbody
+      - @rooms.each do |room|
+        %tr
+          %td= room.name
+          %td= room.class_limit
+          %td
+            - room.repositories.each do |x|
+              = x.name
+              %br/
+          %td
+            - room.item_attributes.each do |x|
+              = x.name
+              %br/
+          %td
+            - if current_user.can_admin?
+              = link_to('Edit', edit_room_path(room), :class => "action-edit")
+            - if current_user.superadmin?
+              | #{link_to('Delete', room_path(room), :confirm => "Are you sure?", :method => :delete)}
+  %br/
+  = render :partial => '/shared/tablesorter_pager', :locals => {:pager_id => "rooms-table" }
+  %br/
+  %br/
+  - if current_user.can_admin?
+    = link_to("Add New Room", new_room_path, :class => "btn btn-primary" )

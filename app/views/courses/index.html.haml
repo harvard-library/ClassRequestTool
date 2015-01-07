@@ -1,0 +1,102 @@
+- if current_user.patron?
+  %div
+    %h3 My Classes
+    To submit a new class, choose a Library/Archive:
+    = form_tag new_course_path, :method => :get do
+      .row
+        = select_tag :repository, options_from_collection_for_select(@repositories, "id", "name"), :class => 'input select form-control', :prompt => "Not Sure - Help me Choose"
+        = submit_tag "Go", :class => 'btn btn-primary'
+    %h4 Current Classes
+    - unless @courses_mine_current.empty?
+      %table#course-table-current.table.table-striped.table-condensed.tablesorter
+        %thead
+          %tr
+            %th Name
+            %th Submission Date
+            %th Class Date(s)
+            %th Repository
+            %th.hidden Search fodder
+        %tbody
+          - @courses_mine_current.each do |course|
+            %tr
+              %td= link_to(course.title, course )
+              %td= course.created_at.strftime('%m/%d/%Y')
+              = render :partial => '/shared/course_sections_td', :locals => {:course => course }
+              / <td><haml:loud> course.sections.first.try(:actual_date).try(:strftime, &amp;#39;%m/%d/%Y %I:%M %P&amp;#39;) unless course.sections.first.try(:actual_date).nil? </haml:loud></td>
+              %td= course.repo_name
+              %td.hidden= searchable_fields(course)
+      %br/
+      = render :partial => '/shared/tablesorter_pager', :locals => {:pager_id => "course-table-current" }
+      %br/
+      %br/
+    - else
+      None yet.
+  %div
+    %h4 Past Classes
+    - unless @courses_mine_past.empty?
+      %table#course-table-past.table.table-striped.table-condensed.tablesorter
+        %thead
+          %tr
+            %th Name
+            %th Submission Date
+            %th Class Date
+            %th Repository
+            %th.hidden Search fodder
+        %tbody
+          - @courses_mine_past.each do |course|
+            %tr
+              %td= link_to(course.title, course )
+              %td= course.created_at.strftime('%m/%d/%Y')
+              = render :partial => '/shared/course_sections_td', :locals => {:course => course }
+              / <td><haml:loud> course.sections.first.try(:actual_date).try(:strftime, &amp;#39;%m/%d/%Y %I:%M %P&amp;#39;) unless course.sections.first.try(:actual_date).nil? </haml:loud></td>
+              %td= course.repo_name
+              %td.hidden= searchable_fields(course)
+      %br/
+      = render :partial => '/shared/tablesorter_pager', :locals => {:pager_id => "course-table-past" }
+      %br/
+      %br/
+    - else
+      None yet.
+- else
+  %div
+    %h3 All Classes
+    - if current_user.can_admin?
+      %h4= link_to('Export Courses to CSV', export_courses_path(:format => :csv))
+    - unless @courses_all.empty?
+      %table#course-table-all.table.table-striped.table-condensed.tablesorter
+        %thead
+          %tr
+            %th Name
+            %th Submission Date
+            %th Class Date
+            %th Repository
+            %th Status
+            %th Requester
+            %th Actions
+            %th.hidden Search fodder
+        %tbody
+          - @courses_all.each do |course|
+            %tr
+              %td= link_to(course.title, course )
+              %td= course.created_at.strftime('%m/%d/%Y')
+              = render :partial => '/shared/course_sections_td', :locals => {:course => course }
+              / <td><haml:loud> course.sections.first.try(:actual_date).try(:strftime, &amp;#39;%m/%d/%Y %I:%M %P&amp;#39;) unless course.sections.first.try(:actual_date).nil? </haml:loud></td>
+              %td= course.repo_name
+              %td= full_status(course)
+              %td= course.contact_last_name
+              %td
+                = render :partial => 'shared/course_actions', :locals => { :course => course }
+              %td.hidden= searchable_fields(course)
+      %br/
+      = render :partial => '/shared/tablesorter_pager', :locals => {:pager_id => "course-table-all" }
+      %br/
+      %br/
+    - else
+      None yet.
+    %br/
+    %br/
+    To submit a new class, choose a Library/Archive:
+    = form_tag new_course_path, :method => :get do
+      %p
+        = select_tag :repository, options_from_collection_for_select(@repositories, "id", "name"), :prompt => "Not Sure - Help me Choose"
+        = submit_tag "Go"

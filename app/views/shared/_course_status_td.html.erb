@@ -1,5 +1,0 @@
-<% if course.status == 'Active' %>
-  <td><%= "#{course.homeless? ? 'Homeless ' : ''}" %><%= "#{course.claimed? ? 'Claimed' : 'Unclaimed'}" %> <%= "#{course.scheduled? ? 'Scheduled' : 'Unscheduled'}" %></td>
-<% else %>
-  <td><%= course.status %></td>
-<% end %>

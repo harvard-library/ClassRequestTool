@@ -1,0 +1,13 @@
+%div{:class => "session session-#{index}  col-xs-12", "data-session_index" => index, :id => "session-#{index}"}
+  %h5.section-header.hidden Sections
+  .sections
+    = render :partial => 'shared/forms/section_block', |
+      :locals => {                                     |
+      :session_i => index,                             |
+      :section_index => section_index,                 |
+      :admin => admin}                                 |
+  / END .sections
+  .add_section-button-block
+    %button.add_section.btn.btn-primary Add Section
+    %span.help-block Sections are subgroups of a class that will meet at different times but consult the same materials.
+/ END .session

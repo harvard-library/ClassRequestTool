@@ -1,0 +1,41 @@
+%div{:class => "form_full_width section section-#{section_index}", "data-section_index" => section_index}
+  %input.session_val{:name => "course[sections_attributes][#{section_index}][session]", :type => "hidden", :value => session_i}/
+  - (0..1).each do |i|
+    .form_date
+      .string.input.optional.stringish.form-group{:id => "course_sections_attributes_#{section_index}_input"}
+        %label.control-label{:for => "course_sections_attributes_#{section_index}_requested_dates_#{i}"}
+          = (i + 1).ordinalize
+          choice
+        %span.form-wrapper
+          %input.date.requested_date.form-control{:id => "course_sections_attributes_#{section_index}_requested_dates_#{i}", :maxlength => "26", :name => "course[sections_attributes][#{section_index}][requested_dates][]", :placeholder => "Click to select date/time", :size => "26", :type => "text"}/
+      - if admin
+        %button.btn.btn-primary.date-setter Set as Actual Date
+    / END form_date
+  .delete-button
+    %button.btn.btn-primary.delete_section.glyphicon.glyphicon-minus
+  - if admin
+    .form_full_width.admin-box{:style => "clear:both;"}
+      .string.input.optional.stringish.form-group{:id => "course_sections_attributes_#{section_index}_actual_date_input"}
+        %label.control-label{:for => "course_sections_attributes_#{section_index}_actual_date"} Actual Date
+        %span.form-wrapper
+          %input.date.actual-date.form-control{:id => "course_sections_attributes_#{section_index}_actual_date", :maxlength => "26", :name => "course[sections_attributes][#{section_index}][actual_date]", :placeholder => "Click to select date/time", :size => "26", :type => "text"}/
+      .number.input.optional.numeric.stringish.form-group{:id => "course_sections_attributes_#{section_index}_headcount_input"}
+        %label.control-label{:for => "course_sections_attributes_#{section_index}_headcount"} Headcount
+        %span.form-wrapper
+          %input.form-control{:id => "course_sections_attributes_#{section_index}_headcount", :min => "0", :name => "course[sections_attributes][#{section_index}][headcount]", :step => "1", :type => "number"}/
+          %span.help-block Actual number of students that attended.
+      .select.input.optional.form-group{:id => "course_sections_attributes_#{section_index}_room_input"}
+        %label.control-label{:for => "course_sections_attributes_#{section_index}_room_id"} Room Assignment:
+        = select_tag :room_id,                                              |
+          option_groups_from_collection_for_select(                         |
+            Repository.order(:name),                                        |
+            :rooms,                                                         |
+            :name,                                                          |
+            :id,                                                            |
+            :name),                                                         |
+          :class => 'form-control',                                         |
+          :include_blank => true,                                           |
+          :id => "course_sections_attributes_#{section_index}_room_id",     |
+          :name => "course[sections_attributes][#{section_index}][room_id]" |
+        %span.help-block Room that section is scheduled in.
+/ END .section

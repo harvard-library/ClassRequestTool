@@ -1,0 +1,41 @@
+- reports_config = Rails.configuration.crt_reports
+.row
+  .col-md-12
+    %h3
+      Reporting for #{$local_config[:tool_name]}
+    %p
+      Prepared by #{current_user.full_name}
+    %p
+      Date: #{Time.now.strftime('%d %B %Y')}
+    .panel.panel-default
+      .panel-heading
+        %h4 Active filters
+      .panel-body
+        %ul
+          - @filters.each do |filter|
+            %li= filter.html_safe
+    - @data.each do |k, v|
+      .panel.panel-primary
+        .panel-heading
+          %h4= reports_config[k]['title']
+        .panel-body
+          - if 'stat' == reports_config[k]['type']
+            %table.table
+              %thead
+                %tr
+                  - reports_config[k]['data'].values.each do |title|
+                    %th= title
+              %tbody
+                %tr
+                  - v.each do |row|
+                    - reports_config[k]['data'].keys.each do |key|
+                      - if 0 == row['number_of_classes'].to_i
+                        %td (NO DATA)
+                        - break
+                      - else
+                        %td= (/number|records/.match(key)) ? row[key] : number_with_precision(row[key], precision: 2)
+          - elsif 'graph' == reports_config[k]['type']
+            .highcharts-graph{:id => k.to_s} Loading...
+            / Loaded via ajax once page is loaded
+        / panel-body
+      / panel

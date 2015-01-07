@@ -1,0 +1,8 @@
+%ul.course-actions
+  - if course.status == 'Cancelled'
+    %li= link_to('Uncancel', "#{course_path(course)}/uncancel", :confirm => "Are you sure? This well reset the course to its last known status.")
+  - else
+    %li= link_to('Edit', edit_course_path(course), :class => "action-edit")
+    %li= link_to('Cancel', "#{course_path(course)}/cancel", :confirm => "Are you sure?")
+  - if current_user.superadmin?
+    %li= link_to('Delete', course_path(course), :confirm => "Are you sure?", :method => :delete)

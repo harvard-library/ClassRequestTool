@@ -1,0 +1,7 @@
+- if course.status == 'Active'
+  %td
+    = "#{course.homeless? ? 'Homeless ' : ''}"
+    = "#{course.claimed? ? 'Claimed' : 'Unclaimed'}"
+    = "#{course.scheduled? ? 'Scheduled' : 'Unscheduled'}"
+- else
+  %td= course.status

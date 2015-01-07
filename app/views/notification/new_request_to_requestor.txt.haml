@@ -1,0 +1,10 @@
+Your class request has been successfully submitted for #{@course.title}.
+
+You may review your request and update it with any new details or comments by leaving a note for staff here:
+
+\#{"http://#{ROOT_URL}#{course_path(@course)}"}
+- unless @course.repository.blank? || @course.repository.email_details.blank?
+  You have requested a class at the #{@course.repository.name}, which has the following specific details and/or instructions:
+  
+  \#{@course.repository.email_details.raw}
+Thank you for your request. We look forward to working with you.
