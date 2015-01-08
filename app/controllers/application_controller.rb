@@ -6,7 +6,15 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
   
   def after_sign_in_path_for(user)
-    cookies[:login_destination]
+    if cookies[:login_destination].nil?
+      cookies[:login_destination]
+    else
+      root_url
+    end
+  end
+  
+  def after_sign_out_path_for(user)
+    root_url
   end
   
   private 
@@ -46,7 +54,7 @@ class ApplicationController < ActionController::Base
       cookies[:login_destination] = request.path
       redirect_to(login_welcome_index_url)
     elsif ! (current_user.can_admin? || current_user.staff? )
-      flash[:alert] = "You must be an admin to view that page"
+      flash[:alert] = "You must be an admin to view that page."
       redirect_to(root_url)
     end  
   end

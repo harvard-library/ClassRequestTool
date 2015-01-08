@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_filter :authenticate_admin_or_staff!, :except => [:edit, :update]
+  before_filter :authenticate_admin_or_staff!, :only => [:edit, :update]
   
   def index
     @users = User.order('username')
@@ -13,15 +13,17 @@ class UsersController < ApplicationController
   end
   
   def create
-    if params[:role] == "Superadmin"
-      superadmin = true
-    elsif params[:role] == "Admin"
-      admin = true
-    elsif params[:role] == "Staff"  
-      staff = true
-    elsif params[:role] == "Patron"  
-      patron = true
+    case params[:role]
+      when "Superadmin"
+        superadmin = true
+      when "Admin"
+        admin = true
+      when "Staff"  
+        staff = true
+      when "Patron"  
+        patron = true
     end
+    
     params[:user] = params[:user].delete_if{|key, value| key == "superadmin" || key == "admin" || key == "staff" || key == "patron" }
     @user = User.new(params[:user])
     @user.password = User.random_password
@@ -50,13 +52,14 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     @options = ["Choose One...", "Admin", "Staff", "Patron"]
     @options_super = ["Choose One...", "Superadmin", "Admin", "Staff", "Patron"]
-    if @user.superadmin == true
+    
+    if @user.superadmin?
       @selected = "Superadmin"
-    elsif @user.admin == true
+    elsif @user.admin?
       @selected = "Admin"
-    elsif @user.staff == true
+    elsif @user.staff?
       @selected = "Staff"
-    elsif @user.patron == true
+    elsif @user.patron?
       @selected = "Patron"
     end
     
@@ -86,14 +89,16 @@ class UsersController < ApplicationController
     unless current_user.can_admin? || @user.email == current_user.email
        redirect_to('/') and return
     end
-    if params[:role] == "Superadmin"
-      superadmin = true
-    elsif params[:role] == "Admin"
-      admin = true
-    elsif params[:role] == "Staff"  
-      staff = true
-    elsif params[:role] == "Patron"  
-      patron = true
+
+    case params[:role]
+      when "Superadmin"
+        superadmin = true
+      when "Admin"
+        admin = true
+      when "Staff"  
+        staff = true
+      when "Patron"  
+        patron = true
     end
       
     params[:user] = params[:user].delete_if{|key, value| key == "superadmin" || key == "admin" || key == "staff" || key == "patron" }
