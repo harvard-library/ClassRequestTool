@@ -3,9 +3,11 @@ $(function() {
     e.preventDefault();
     var $affiliate = $(this)
     var affiliate_name = $affiliate.parent().prev().children('input').val();
-    console.log(affiliate_name);
     var action, object, id;
-    [action, object, id] = $(this).attr('id').split('-');
+    var temp = $(this).attr('id').split('-');
+    action  = temp[0]; 
+    object  = temp[1];
+    id      = temp[2]; 
     var url = '/admin/affiliates/' + id;
     switch (action) {
       case 'update':

@@ -39,7 +39,6 @@ $(function () {
   /* Delete an image */
   $('body').delegate('button.delete', 'click', function(e) {
     e.preventDefault();
-    console.log('Responded to click')
     var id = $(this).attr('id').replace('delete-pic_id-','')
     $.ajax({
       url:      '/attached_images/' + id,
