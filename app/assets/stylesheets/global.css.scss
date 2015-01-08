@@ -145,6 +145,11 @@ div.ui-datepicker{
 }
 
 /* Branded overrides */
+.icheckbox_flat,
+.iradio_flat {
+  background-image: image-url('check_flat_crimson.png');
+}
+
 .btn {
   border-radius: 20px;
 }
