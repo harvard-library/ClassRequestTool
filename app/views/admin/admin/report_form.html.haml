@@ -56,4 +56,4 @@
                   %td= check_box_tag "selected_reports[#{report}]", 1, true, :class => 'include-report'
                   %td= Rails.configuration.crt_reports[report]['type'].capitalize + ':'
                   %td= options['description']
-= submit_tag 'Build report', :class => 'btn btn-primary'
+      = submit_tag 'Build report', :class => 'btn btn-primary'
