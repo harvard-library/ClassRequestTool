@@ -2,21 +2,8 @@ $(function () {
   /* Set up global namespace */
   crt = window['crt'] || {}
 
-  
-  
-  crt.setup_datetimepicker = function (input, options) {
-    var $input = $(input);
-    var actual = $input.hasClass('actual-date')
-
-    $input.datetimepicker(options);
-  }
-
-  crt.setup_datepicker = function (input, options) {
-    var $input = $(input);
-    $input.datepicker(options);
-  }
-
   $('body.c_courses').on('click', ' input.date:not(.hasDatepicker)', function (e) {
+    console.log('GOT HERE!');
     var options = {
       controlType: 'select',
       dateFormat: 'yy-mm-dd',
@@ -26,10 +13,10 @@ $(function () {
       hourMin: 9,
       hourMax: 17,
       beforeShowDay: $.datepicker.noWeekends,
-      minDate: (actual ? null : 3),
+      minDate: ($(this).hasClass('actual-date') ? null : 3),
       numberOfMonths: 2
     }
-    crt.setup_datetimepicker(this, options);
+    $(this).datepicker(options);
     $(this).datetimepicker('show');
   });
 
@@ -39,7 +26,7 @@ $(function () {
       dateFormat: 'yy-mm-dd',
       buttonImage: "/assets/calendar_icon.png"
     }
-    crt.setup_datepicker(this, options);
+    $(this).datepicker(options);
     $(this).datepicker('show');
   });
 });

@@ -1,40 +1,42 @@
 .form_wrapper
   %h4 Class Information
-  .form_col1
-    = f.input :title, :label => "Class Title: "
-  .form_col2
-    = f.input :subject, :label => "Class Topic: "
-  .form_col1
-    = f.input :course_number, :label => "Course Number: "
-  .form_col2
-    #affiliation.form-group
-      %label.control-label{:for => "affiliation"}
-        = $local_config[:institution]
-        Affiliate?
-      %p
-        = radio_button_tag :affiliation_selection, 'yes', flash[:affiliation_selection] == 'yes'
-        Yes
-        \#{radio_button_tag :affiliation_selection, 'no', flash[:affiliation_selection] == 'no'} No
-      #local_yes.affiliation_field
-        = select_tag :local_affiliation, $affiliates.map{ |opt| "<option#{opt == flash[:local_affiliation] ? ' selected' : ''}>#{opt.name}</option>" }.join("\n").html_safe, :prompt => '-- Select one --'
-      #local_no_or_other.affiliation_field
-        %label.control-label Other Affiliate
-        %br/
-        = text_field_tag :other_affiliation, flash[:other_affiliation], class: 'form-control'
-  .form_full_width
-    - unless @course.syllabus.blank?
-      = link_to @course.syllabus.file.filename, @course.syllabus_url
-      %br/
-      = f.input :remove_syllabus, :as => :boolean, :label => "Delete Current Syllabus? "
-    %label.control-label{:for => "course_syllabus"}
-      Share Your Syllabus (Optional)
-      %span.help-block Providing your syllabus helps staff to tailor suggestions for teaching and to identify class themes most richly supported by the collections.
-  .form_full_width
-    = f.input :syllabus, :as => :file, :label => "&nbsp; "
-  .form_full_width
-    %div{:style => "padding-left:5em; font-weight:bold; font-size: 1.2em;"} OR
-    = f.input :external_syllabus, :label => "Enter URL: ", :input_html => { :value => @course.external_syllabus.nil? ? "http://" : @course.external_syllabus }
-  .form_col1
-    = f.input :number_of_students, :as => :number, :min => 0, :step => 1, :label => "Number of Students: ", :hint => !@course.repository.nil? && !@course.repository.class_limit.nil? && @course.repository.class_limit != 0 ? "Room capacity is #{@course.repository.class_limit unless @course.repository.nil?}. Larger groups can often be accommodated. Staff will be in touch with options." : ""
-  .form_full_width
-    = f.input :goal, :label => "What is your goal for this class session? ", :input_html => { :rows => 5, :columns => 100 }
+  .panel.panel-default
+    .panel-body
+      .form_col1
+        = f.input :title, :label => "Class Title: "
+      .form_col2
+        = f.input :subject, :label => "Class Topic: "
+      .form_col1
+        = f.input :course_number, :label => "Course Number: "
+      .form_col2
+        #affiliation.form-group
+          %label.control-label{:for => "affiliation"}
+            = $local_config[:institution]
+            Affiliate?
+          %p
+            = radio_button_tag :affiliation_selection, 'yes', flash[:affiliation_selection] == 'yes'
+            Yes
+            \#{radio_button_tag :affiliation_selection, 'no', flash[:affiliation_selection] == 'no'} No
+          #local_yes.affiliation_field
+            = select_tag :local_affiliation, $affiliates.map{ |opt| "<option#{opt == flash[:local_affiliation] ? ' selected' : ''}>#{opt.name}</option>" }.join("\n").html_safe, :prompt => '-- Select one --'
+          #local_no_or_other.affiliation_field
+            %label.control-label Other Affiliate
+            %br/
+            = text_field_tag :other_affiliation, flash[:other_affiliation], class: 'form-control'
+      .form_full_width
+        - unless @course.syllabus.blank?
+          = link_to @course.syllabus.file.filename, @course.syllabus_url
+          %br/
+          = f.input :remove_syllabus, :as => :boolean, :label => "Delete Current Syllabus? "
+        %label.control-label{:for => "course_syllabus"}
+          Share Your Syllabus (Optional)
+          %span.help-block Providing your syllabus helps staff to tailor suggestions for teaching and to identify class themes most richly supported by the collections.
+      .form_full_width
+        = f.input :syllabus, :as => :file, :label => "&nbsp; "
+      .form_full_width
+        %div{:style => "padding-left:5em; font-weight:bold; font-size: 1.2em;"} OR
+        = f.input :external_syllabus, :label => "Enter URL: ", :input_html => { :value => @course.external_syllabus.nil? ? "http://" : @course.external_syllabus }
+      .form_col1
+        = f.input :number_of_students, :as => :number, :min => 0, :step => 1, :label => "Number of Students: ", :hint => !@course.repository.nil? && !@course.repository.class_limit.nil? && @course.repository.class_limit != 0 ? "Room capacity is #{@course.repository.class_limit unless @course.repository.nil?}. Larger groups can often be accommodated. Staff will be in touch with options." : ""
+      .form_full_width
+        = f.input :goal, :label => "What is your goal for this class session? ", :input_html => { :rows => 5, :columns => 100 }

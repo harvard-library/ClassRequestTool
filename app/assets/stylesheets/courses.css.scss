@@ -4,16 +4,20 @@ div.deleted {
 
 div.session {
   @include clearfix();
-  border: 1px solid #999;
   padding:16px;padding: 1rem;
+/*
+  border: 1px solid #999;
   border-radius: 10px;
+*/
   margin-bottom: 1em;
   &:last-child {
     margin-bottom: 0;
   }
+/*
   &:nth-child(even) {
     background-color: #dfefff;
   }
+*/
   .sections {
     .section {
       padding: 1em;

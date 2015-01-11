@@ -1,4 +1,15 @@
 module CoursesHelper
+
+  def formtastic_wrapper(type, label, input_tag)
+    id = /id="([a-z_0-9]*)"/.match(input_tag)[1]
+    wrapper_id = "#{id}_input"
+    type += ' numeric' if type == 'number'
+    wrapper_class = "#{type} input stringish optional form-group"
+    label = "<label class=' control-label' for='#{id}'>#{label}</label>"
+    label_class = 'control-label'
+    "<div id='#{wrapper_id}' class='#{wrapper_class}'>#{label}<span class='form-wrapper'>" + input_tag + "</span></div>"
+  end
+  
   def display_with_tz(date)
     date
       .try(:in_time_zone, Rails.configuration.time_zone)

@@ -1,21 +1,8 @@
 $(function () {
   var today = new Date();
 
-  /* Get next valid section index, based on what's on the page */
-  var getSectIndex = function () {
-    var section_index = 0;
-    var sections = $('.section').get();
-    var i = sections.length;
-
-    while (i--) {
-      section_index = Math.max(section_index, +sections[i].attributes['data-section_index'].value)
-    }
-
-    return section_index + 1;
-  };
-
   /* courses#(new|edit) */
-  if (window.location.href.match(/courses\/(\d+\/)?(new|edit)(?:\?.+)?/)){
+  if ($('body').hasClass('c_courses') &&  ($('body').hasClass('a_edit') || $('body').hasClass('a_new'))) {
     /* Sets a particular requested date as actual date */
     $('body').on('click', 'button.date-setter', function (e) {
       e.preventDefault();
@@ -28,15 +15,14 @@ $(function () {
       e.preventDefault();
 
       // Make SURE it can't end up with the same number
-      var index = +$('.session').last().data('session_index') + 1;
-      var section_index = getSectIndex();
+      var next_session = +$('.session').last().data('session_index') + 1;
 
-      $.get('/courses/session_block',
-            {index: index,
-             section_index: section_index})
-        .done(function (data, status, jqXHR) {
+//      $.get('/courses/session_block', {session_index: session_index, section_index: section_index}, 
+      $.get('/courses/session_block', {session_index: next_session}, 
+        function (data) {
           $('.sessions').append(data);
-        });
+        }
+      );
     });
 
     /* Add sections to session in form */
@@ -44,15 +30,15 @@ $(function () {
       e.preventDefault();
 
       var $this_session = $(e.currentTarget).closest('.session');
-      var session_i = +$this_session.find('.session_val').val();
-      var section_index = getSectIndex();
+      var next_section = parseInt($this_session.find('.section').last().attr('class').replace('section section-', '')) + 1
+      var session_index = $this_session.data('session_index');
 
       $this_session.find('.section-header').removeClass('hidden');
 
-      $.get('/courses/section_block', {session_i: session_i, section_index:section_index})
-        .done(function (data) {
+      $.get('/courses/section_block', {session_index: session_index, section_index: next_section}, function (data) {
           $this_session.find('.sections').append(data);
-        });
+        }
+      );
     });
 
     /* Delete sections, either by adding _destroy input (for sections in DB) *

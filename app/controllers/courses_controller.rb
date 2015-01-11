@@ -380,23 +380,23 @@ class CoursesController < ApplicationController
   end
 
   def session_block
-    index = params[:index].try(:to_i) || 1
+    session_index = params[:session_index].try(:to_i) || 1
     section_index = params[:section_index].try(:to_i) || 1
     respond_to do |format|
       format.html do
-        render :partial => 'shared/forms/session_block',
-               :locals => { :index => index, :section_index => section_index, :admin => current_user.can_schedule?}
+        render :partial => 'shared/forms/session_block2',
+               :locals => { :session_index => session_index, :section_index => section_index, :admin => current_user.can_schedule?}
       end
     end
   end
 
   def section_block
-    session_i = params[:session_i].try(:to_i) || 1
+    session_i = params[:session_index].try(:to_i) || 1
     section_index = params[:section_index].try(:to_i) || 1
     respond_to do |format|
       format.html do
-        render :partial => 'shared/forms/section_block',
-               :locals => { :session_i => session_i, :section_index => section_index, :admin => current_user.can_schedule?}
+        render :partial => 'shared/forms/section_block2',
+               :locals => { :session_index => session_i, :section_counter => section_index, :admin => current_user.can_schedule?}
       end
     end
   end
