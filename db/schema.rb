@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141231222313) do
+ActiveRecord::Schema.define(:version => 20150108195043) do
 
   add_extension "fuzzystrmatch"
 
@@ -22,6 +22,7 @@ ActiveRecord::Schema.define(:version => 20141231222313) do
     t.integer  "course_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.string   "role"
   end
 
   create_table "affiliates", :force => true do |t|
@@ -255,18 +256,20 @@ ActiveRecord::Schema.define(:version => 20141231222313) do
   add_index "rooms", ["name"], :name => "index_rooms_on_name"
 
   create_table "sections", :force => true do |t|
-    t.datetime "requested_dates",                                :array => true
+    t.datetime "requested_dates",                                 :array => true
     t.datetime "actual_date"
-    t.integer  "session",         :default => 1, :null => false
+    t.integer  "session",          :default => 1, :null => false
     t.integer  "course_id"
     t.integer  "room_id"
-    t.datetime "created_at",                     :null => false
-    t.datetime "updated_at",                     :null => false
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
     t.integer  "headcount"
+    t.integer  "session_duration"
   end
 
   add_index "sections", ["actual_date"], :name => "index_sections_on_actual_date"
   add_index "sections", ["course_id"], :name => "index_sections_on_course_id"
+  add_index "sections", ["session_duration"], :name => "index_sections_on_session_duration"
 
   create_table "staff_involvements", :force => true do |t|
     t.string   "involvement_text"

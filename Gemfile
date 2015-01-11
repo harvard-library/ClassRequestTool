@@ -23,6 +23,7 @@ gem 'ckeditor'
 gem 'devise_harvard_auth_proxy', :git => 'https://github.com/berkmancenter/devise_harvard_auth_proxy.git', :ref => '2a58ea07a8'
 gem 'css_splitter'
 gem 'haml-rails'
+gem 'cocoon'
 
 # Gems used only for assets and not required
 # in production environments by default.
