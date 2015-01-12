@@ -18,37 +18,36 @@
     %li
       %span.summary-label Title:
       %span#title= @course.title unless @course.title.nil?
-  %span.summary-label Subject:
-  %span#subject= @course.subject unless @course.subject.nil?
-  %br/
-  %li
-    %span.summary-label Course Number:
-    %span#class= @course.course_number unless @course.course_number.nil?
-  %li
-    %span.summary-label Affiliation:
-    %span#affiliation= @course.affiliation unless @course.affiliation.nil?
-  %li
-    %span.summary-label Number of Students:
-    %span#studentNo= @course.number_of_students unless @course.number_of_students.nil?
-  %li
-    %span.summary-label Actual Attendance (So far):
-    %span#headcount
-      = @course.headcount || 'None recorded'
-      </span
-  %li
-    %span.summary-label Average Attendance per section:
-    %span#avgHeadcount= @course.avg_headcount || 'None recorded'
-  %li
-    %span.summary-label Syllabus:
-    - if @course.syllabus.blank? && @course.external_syllabus.nil?
-      None
-    - else
-      = link_to @course.syllabus.file.filename, @course.syllabus_url unless @course.syllabus.blank?
-      - unless @course.external_syllabus.nil?
-  = link_to @course.external_syllabus, @course.external_syllabus, :target => "blank"
-  %li
-    %span.summary-label Goal for Class Visit:
-    = @course.goal unless @course.goal.nil?
+      %span.summary-label Subject:
+      %span#subject= @course.subject unless @course.subject.nil?
+      %br/
+    %li
+      %span.summary-label Course Number:
+      %span#class= @course.course_number unless @course.course_number.nil?
+    %li
+      %span.summary-label Affiliation:
+      %span#affiliation= @course.affiliation unless @course.affiliation.nil?
+    %li
+      %span.summary-label Number of Students:
+      %span#studentNo= @course.number_of_students unless @course.number_of_students.nil?
+    %li
+      %span.summary-label Actual Attendance (So far):
+      %span#headcount
+        = @course.headcount || 'None recorded'
+    %li
+      %span.summary-label Average Attendance per section:
+      %span#avgHeadcount= @course.avg_headcount || 'None recorded'
+    %li
+      %span.summary-label Syllabus:
+      - if @course.syllabus.blank? && @course.external_syllabus.nil?
+        None
+      - else
+        = link_to @course.syllabus.file.filename, @course.syllabus_url unless @course.syllabus.blank?
+        - unless @course.external_syllabus.nil?
+          = link_to @course.external_syllabus, @course.external_syllabus, :target => "blank"
+    %li
+      %span.summary-label Goal for Class Visit:
+      = @course.goal unless @course.goal.nil?
   - unless !user_signed_in? || current_user.patron?
     %h4 Requester Information
     %ul.summary-info
@@ -66,10 +65,11 @@
       %li
         %span.summary-label Primary Contact Phone:
         = @course.contact_phone unless @course.contact_phone.nil?
-    %h5 Additional Contacts
-    %ul.summary-info
-      - @course.additional_patrons.each do |ap|
-        %li= "#{ap.first_name} #{ap.last_name}, #{ap.email}"
+      %li
+        %h5 Additional Contacts
+        %ul.summary-info
+          - @course.additional_patrons.each do |ap|
+            %li= "#{ap.first_name} #{ap.last_name}, #{ap.email}, (#{ap.role})"
   %h4 Staff Services
   %ul.summary-info
     %li
@@ -108,41 +108,44 @@
     %li
       %span.summary-label
         Number of Class Visits: #{@course.sessions.count}
-  %h4 Date/Time of Class
-  - if !@course.sections.map(&:actual_date).reject(&:nil?).blank? ||
-  - !@course.sections.map(&:requested_dates).reject(&:nil?).blank?
+  %h4 Class Dates & Times
+  - if !@course.sections.map(&:actual_date).reject(&:nil?).blank? || !@course.sections.map(&:requested_dates).reject(&:nil?).blank?
     %div
       - aeon_timeframe_emitted = nil # Has the first timeframe been emitted for Aeon's sake?
       - @course.sessions.each.with_index(1) do |sesh, i|
-        %h5
-          Session #{i}
-        %h6 Dates/Times
-        %ul.summary-info
-          - sesh.each do |sect|
-            - if sect.actual_date
+        %h5 Session #{i}
+        - sort_sections(sesh).each.with_index(1) do |sect, j|
+          .well.well-sm
+            %h6 Section #{j}
+            %ul.summary-info.no-bullet
+              - if sect.actual_date
+                %li
+                  %span.summary-label Actual Date:
+                  = aeon_timeframe_emitted ? '' : '<span id="timeframe">'
+                  = sect.try(:actual_date).try(:in_time_zone, Rails.configuration.time_zone).try(:strftime, '%m/%d/%Y %l:%M %P')
+                  = aeon_timeframe_emitted ? '' : '</span>'
+                - aeon_timeframe_emitted = true
+              - elsif sect.requested_dates
+                %li
+                  %span.summary-label 
+                    Requested Times:
+                  = sect.requested_dates.map {|rd| rd.in_time_zone(Rails.configuration.time_zone).strftime('%m/%d/%Y %l:%M %P') }.join(', ')
+              - if 'Closed' == @course.status
+                %li
+                  %span.summary-label Headcount:
+                  = sect.headcount ? sect.headcount : "Not Recorded"
               %li
-                %span.summary-label Actual Date:
-                = aeon_timeframe_emitted ? '' : '<span id="timeframe">'
-                = sect.try(:actual_date).try(:in_time_zone, Rails.configuration.time_zone).try(:strftime, '%m/%d/%Y %l:%M %P')
-                = aeon_timeframe_emitted ? '' : '</span>'
-              - aeon_timeframe_emitted = true
-            - elsif sect.requested_dates
+                %span.summary-label Room:
+                = sect.room ? sect.room.name : 'No room assigned'
               %li
-                %span.summary-label Requested Times:
-                = '<ul><li>' + sect.requested_dates.map {|rd| display_with_tz rd }.join("</li><li>") + '</li></ul>'
-            %li
-              %span.summary-label Headcount:
-              = sect.headcount ? sect.headcount : "Not Recorded"
-            %li
-              %span.summary-label Room:
-              = sect.room ? sect.room.name : 'No room assigned'
+                %span.summary-label Session duration:
+                #{pluralize(sect.session_duration, 'hour')}
   - else
     %div No class dates selected.
   %ul.summary-info
     %li
       %span.summary-label Class Duration:
-      %span#duration= @course.duration unless @course.duration.nil?
-      hour(s)
+      %span#duration= pluralize(@course.duration, 'hour') unless @course.duration.nil?
     %li
       %span.summary-label Comments:
       = @course.comments unless @course.comments.nil?

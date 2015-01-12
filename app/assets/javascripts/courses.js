@@ -1,21 +1,11 @@
 $(function () {
   var today = new Date();
 
-  /* Get next valid section index, based on what's on the page */
-  var getSectIndex = function () {
-    var section_index = 0;
-    var sections = $('.section').get();
-    var i = sections.length;
-
-    while (i--) {
-      section_index = Math.max(section_index, +sections[i].attributes['data-section_index'].value)
-    }
-
-    return section_index + 1;
-  };
-
   /* courses#(new|edit) */
-  if (window.location.href.match(/courses\/(\d+\/)?(new|edit)(?:\?.+)?/)){
+  if ($('body').hasClass('c_courses') &&  ($('body').hasClass('a_edit') || $('body').hasClass('a_new'))) {
+
+    var courseId = $('#info-left').attr('class').replace('course_', '');
+
     /* Sets a particular requested date as actual date */
     $('body').on('click', 'button.date-setter', function (e) {
       e.preventDefault();
@@ -28,73 +18,96 @@ $(function () {
       e.preventDefault();
 
       // Make SURE it can't end up with the same number
-      var index = +$('.session').last().data('session_index') + 1;
-      var section_index = getSectIndex();
+      var nextSession = parseInt($('.session').last().data('session_index')) + 1;
 
-      $.get('/courses/session_block',
-            {index: index,
-             section_index: section_index})
-        .done(function (data, status, jqXHR) {
+      $.get('/courses/section_session_block', { to_render: 'session', course_id: courseId, session_index: nextSession}, 
+        function (data) {
           $('.sessions').append(data);
-        });
+        }
+      );
     });
-
+    
     /* Add sections to session in form */
     $('body').on('click', 'button.add_section', function (e) {
       e.preventDefault();
 
-      var $this_session = $(e.currentTarget).closest('.session');
-      var session_i = +$this_session.find('.session_val').val();
-      var section_index = getSectIndex();
+      var $thisSession = $(e.currentTarget).closest('.session');
+      var nextSection = parseInt($thisSession.find('.section').last().attr('class').match(/section-(.*\d+)/)[1]) + 1
+      var session_index = $thisSession.data('session_index');
 
-      $this_session.find('.section-header').removeClass('hidden');
+      $thisSession.find('.section-header').removeClass('hidden');
 
-      $.get('/courses/section_block', {session_i: session_i, section_index:section_index})
-        .done(function (data) {
-          $this_session.find('.sections').append(data);
-        });
+      $.get('/courses/section_session_block', { to_render: 'section', course_id: courseId, session_index: session_index, section_index: nextSection}, function (data) {
+          $thisSession.find('.sections').append(data);
+          
+          // Set duration of added section to that of first section in this session
+          $sessionDurations = $thisSession.find('.session_duration_val');
+          $sessionDurations.last().val($sessionDurations.first().val());
+        }
+      );
     });
 
     /* Delete sections, either by adding _destroy input (for sections in DB) *
      *   or by deleting section from the page if not.                        *
      * If this is the last section in a session, and that session is not the *
      *   last section on the page, delete that.                    */
-    $('body').on('click', '.section:not(.deleted) button.delete_section', function (e) {
+    $('body').on('click', '.section:not(.deleted) button.delete', function (e) {
       e.preventDefault();
-
-      var $this_session = $(e.currentTarget).closest('.session');
-      var $section = $(e.currentTarget).closest('.section');
-
-      var persisted = $section.find('.id_val').length;
-      var num_sections = $this_session.find('.section').length;
+      
+      var deleting = $(this).data('to_delete');
+      
+      var $thisSession = $(e.currentTarget).closest('.session');
+      var $thisSection = $(e.currentTarget).closest('.section');
+      
+      var persisted;
+      if (deleting == 'session') {
+        persisted = $thisSession.find('.id_val').length > 0;
+      } else {
+        persisted = $thisSection.find('.id_val').length > 0;
+      }
+      
+      var numSections = $thisSession.find('.section').length;
       var name;
 
+      // If a session to delete is persisted (i.e. has at least one section in the database), mark all sections for that session for deletion
+      // If a section to delete is persisted, mark that section for deletion
       if (persisted) {
-        name = $section.find('input.id_val').attr('name').replace(/\[id\]$/, '[_destroy]');
-        $section.addClass('deleted');
-        $section.find('button.delete_section').removeClass('glyphicon-minus').addClass('glyphicon-plus');
-        $section.append('<input type="hidden" class="destroy" name="' + name + '" value="1">');
+        $thisSession.find('.id_val').each(function(i) {
+          $section = $(this).closest('.section');
+          if ( deleting == 'session' || (deleting == 'section' && $section.data('section_index') == $thisSection.data('section_index'))) {
+            name = $section.find('input.id_val').attr('name').replace(/\[id\]$/, '[_destroy]');
+            $section.addClass('deleted'); 
+            $section.append('<input type="hidden" class="destroy" name="' + name + '" value="1">');
+            $section.find('button.delete').text('Restore');
+          }
+        }); 
       }
       else {
-        $section.remove();
-        if (num_sections == 1) {
-          $this_session.remove();
+        if (deleting == 'session') {
+          $thisSession.remove();
+        } else {
+          $thisSection.remove();
         }
-        else if (num_sections == 2) {
-          $this_session.find('.section-header').addClass('hidden');
-        }
-      }
+       }
     });
 
     /* Undelete section */
-    $('body').on('click', '.section.deleted button.delete_section', function (e) {
+    $('body').on('click', '.section.deleted button.delete', function (e) {
       e.preventDefault();
 
-      var $section = $(e.currentTarget).closest('.section');
+      var undeleting = $(this).data('to_delete');
 
-      $section.find('input.destroy').remove();
-      $section.removeClass('deleted');
-      $section.find('button.delete_section').removeClass('glyphicon-plus').addClass('glyphicon-minus');
+      var $thisSession = $(e.currentTarget).closest('.session');
+      var $thisSection = $(e.currentTarget).closest('.section');
+      
+      $thisSession.find('input.destroy').each(function(i) {
+        $section = $(this).closest('.section');
+        if ( undeleting == 'session' || (undeleting == 'section' && $section.data('section_index') == $thisSection.data('section_index'))) {
+          $section.find('input.destroy').remove();
+          $section.removeClass('deleted');
+          $section.find('button.delete').text('Remove');
+        }
+      });
     });
 
 
@@ -104,8 +117,9 @@ $(function () {
       var backdated = []; var postdated = [];
       var confstring = "You have actual dates in both the past and future, is this correct?\n\n";
 
-      /* We need the datetimepickers definitely set up, so we can call the API function on them */
+      /* We need the datetimepickers definitely set up, so we can call the API function on them
       $('.actual-date:not(.hasDatepicker)').each(function (i, el) { crt.setup_datetimepicker(el) });
+      */
 
       $('.datetime_picker .actual-date')
         .filter(function (i,el) { return $(el).parents('.deleted').length == 0})

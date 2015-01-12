@@ -1,4 +1,15 @@
 module CoursesHelper
+
+  def formtastic_wrapper(type, label, input_tag)
+    id = /id="([a-z_0-9]*)"/.match(input_tag)[1]
+    wrapper_id = "#{id}_input"
+    type += ' numeric' if type == 'number'
+    wrapper_class = "#{type} input stringish optional form-group"
+    label = "<label class=' control-label' for='#{id}'>#{label}</label>"
+    label_class = 'control-label'
+    "<div id='#{wrapper_id}' class='#{wrapper_class}'>#{label}<span class='form-wrapper'>" + input_tag + "</span></div>"
+  end
+  
   def display_with_tz(date)
     date
       .try(:in_time_zone, Rails.configuration.time_zone)
@@ -22,6 +33,12 @@ module CoursesHelper
       status = "<span class='status inactive'>#{course.status}</span>"
     end
     status.html_safe
+  end
+  
+  # Sorts sections based first on actual date, then first requested date
+  def sort_sections(sections, direction = 'ASC')
+    sections.sort! { |a, b| a.actual_date <=> b.actual_date }
+    sections.sort! { |a, b| a.requested_dates[0] <=> b.requested_dates[0] }
   end
 
 end

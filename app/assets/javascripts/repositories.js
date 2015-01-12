@@ -37,7 +37,7 @@ $(function () {
   });
   
   /* Delete an image */
-  $('body').delegate('button.delete', 'click', function(e) {
+  $('body').delegate('button.delete-image', 'click', function(e) {
     e.preventDefault();
     var id = $(this).attr('id').replace('delete-pic_id-','')
     $.ajax({

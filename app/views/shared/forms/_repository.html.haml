@@ -36,6 +36,6 @@
               = pic.input :image_cache, :as => :hidden
               = pic.input :caption, :value => pic.object.caption, :placholder => 'Caption'
           %td.delete
-            %button.btn.btn-warning.delete{:id => "delete-pic_id-#{pic.object.id}"} Delete
+            %button.btn.btn-warning.delete-image{:id => "delete-pic_id-#{pic.object.id}"} Delete
   = f.actions do
     = f.action :submit, :as => :button, :button_html => {:class => 'btn btn-primary'}

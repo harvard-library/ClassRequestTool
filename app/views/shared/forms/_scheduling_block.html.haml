@@ -1,0 +1,14 @@
+.col-xs-12.calendar
+  - if (@course.repository.nil? || @course.repository.blank?) || (@course.repository.calendar.nil? || @course.repository.calendar.blank?)
+    %p This Library/Archive does not have a publicly available calendar. Please submit your request with your preferred times and a staff member will get back to you.
+  - else
+    %p
+      = link_to image_tag('calendar_icon.png', :class => "cal-icon")+ " View Calendar to see availability", "#{@course.repository.calendar}", |
+        :onclick=>"window.open(this.href,'view_calendar', 'height=600, width=600');return false;"                                             |
+.form_full_width.sessions
+  - sessions = @course.sections.blank? ? @substitute_session : @course.sessions
+  - sessions.each.with_index(1) do |sesh, i|    
+    = render :partial => 'shared/forms/session_block', :locals => { :sesh => sesh, :session_index => i }
+
+.form_full_width
+  %button.add_session.btn.btn-primary Add A Session

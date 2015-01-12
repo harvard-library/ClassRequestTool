@@ -1,105 +1,17 @@
 .form_wrapper
-  %h4 Scheduling Class Visit(s)
+  %h4 Scheduling
   .form_full_width
+    %p Depending on your teaching needs and class sizes, we offer the following class options:
+    %ul
+      %li Single class sessions
+      %li Single sessions split into multiple sections (if class size is larger than room size)
+      %li Multiple class sessions (if content requires multiple time blocks)
+      %li Multiple class session, each with multiple sections
     %p Please enter your preferred date and time for each class visit. If your only options for scheduling fall outside normal business hours, please use the note field to detail your availability.
     %p Final scheduling of a class visit is subject to both room and staff availability.
-  .col-xs-12.calendar
-    - if (@course.repository.nil? || @course.repository.blank?) || (@course.repository.calendar.nil? || @course.repository.calendar.blank?)
-      %p This Library/Archive does not have a publicly available calendar. Please submit your request with your preferred times and a staff member will get back to you.
-    - else
-      %p
-        = link_to image_tag('calendar_icon.png', :class => "cal-icon")+ " View Calendar to see availability", "#{@course.repository.calendar}", |
-          :onclick=>"window.open(this.href,'view_calendar', 'height=600, width=600');return false;"                                             |
-  - section_counter = 1
-  .form_full_width.sessions
-    - sessions = @course.sections.blank? ? @substitute_session : @course.sessions
-    - sessions.each.with_index(1) do |sesh, i|
-      %div{:class => "session session-#{i} col-xs-12", "data-session_index" => i, :id => "session-#{i}"}
-        %h5{:class => "section-header#{" hidden" if sesh.count <= 1}"} Sections
-        .sections
-          - sesh.each.with_index(1) do |sect, sect_i|
-            - name_prefix = "course[sections_attributes][#{section_counter}]"
-            - id_prefix = "course_sections_attributes_#{section_counter}"
-            %div{:class => "form_full_width section section-#{section_counter}", "data-section_index" => section_counter}
-              - if sect.id
-                = f.input :id,                                    |
-                  :as => :hidden,                                 |
-                  :value => sect.id,                              |
-                  :input_html => {:id => "#{id_prefix}_id_input", |
-                  :name => "#{name_prefix}[id]",                  |
-                  :class => 'id_val'}                             |
-              - if sect.session
-                = f.input :id,                                         |
-                  :as => :hidden,                                      |
-                  :value => sect.session,                              |
-                  :input_html => {:id => "#{id_prefix}_session_input", |
-                  :name => "#{name_prefix}[session]",                  |
-                  :class => 'session_val'}                             |
-              - (0..1).each do |rd_i|
-                .form_date
-                  = f.input :requested_dates,                                          |
-                    :as => :string,                                                    |
-                    :label => "#{(rd_i+1).ordinalize} choice",                         |
-                    :wrapper_html => { :id => "#{id_prefix}_input"},                   |
-                    :size => 26,                                                       |
-                    :maxlength => 26,                                                  |
-                    :input_html => {:id => "#{id_prefix}_requested_dates_#{rd_i}",     |
-                    :name => "#{name_prefix}[requested_dates][]",                      |
-                    :class => 'requested_date date',                                   |
-                    :placeholder => "Click to select date/time",                       |
-                    :value => display_with_tz(sect.requested_dates.try(:slice, rd_i))} |
-                  - if current_user.can_schedule?
-                    %button.btn.btn-primary.date-setter Set as Actual Date
-                / END form_date
-              - unless !sect.persisted? && sect_i == 1
-                .delete-button
-                  %button.btn.btn-primary.delete_section.glyphicon.glyphicon-minus
-              - if current_user.can_schedule?
-                .form_full_width.admin-box{:style => "clear:both;"}
-                  = f.input :actual_date,                                       |
-                    :as => :string,                                             |
-                    :label => "Actual Date",                                    |
-                    :wrapper_html => {:id => "#{id_prefix}_actual_date_input"}, |
-                    :input_html => {:id => "#{id_prefix}_actual_date",          |
-                    :name => "#{name_prefix}[actual_date]",                     |
-                    :placeholder => "Click to select date/time",                |
-                    :class => 'actual-date date',                               |
-                    :value => display_with_tz(sect.actual_date)}                |
-                  -#
-                  = f.input :headcount,                                       |
-                    :as => :number,                                           |
-                    :hint => "Actual number of students that attended.",      |
-                    :only_integer => true,                                    |
-                    :min => 0,                                                |
-                    :step => 1,                                               |
-                    :wrapper_html => {:id => "#{id_prefix}_headcount_input"}, |
-                    :input_html => {:id => "#{id_prefix}_headcount",          |
-                    :name => "#{name_prefix}[headcount]",                     |
-                    :value => sect.headcount}                                 |
-                  .select.input.optional.form-group{:id => "#{id_prefix}_room_input"}
-                    %label.control-label{:for => "#{id_prefix}_room_id"} Room Assignment:
-                    = select_tag :room_id,                      |
-                      option_groups_from_collection_for_select( |
-                        Repository.order(:name),                |
-                        :rooms,                                 |
-                        :name,                                  |
-                        :id,                                    |
-                        :name,                                  |
-                        sect.room_id),                          |
-                      :include_blank => true,                   |
-                      :id => "#{id_prefix}_room_id",            |
-                      :name => "#{name_prefix}[room_id]",       |
-                      :class => "form-control"                  |
-                    %span.help-block Room that section is scheduled in.
-            / END .section
-            - section_counter += 1
-        / END .sections
-        .add_section-button-block
-          %button.add_section.btn.btn-primary Add Section
-          %span.help-block Sections are subgroups of a class that will meet at different times but consult the same materials.
-      / END .session
-  .form_full_width
-    %button.add_session.btn.btn-primary Add Class Visit
+
+  = render :partial => 'shared/forms/scheduling_block'
+
   .form_full_width
     = f.input :duration,                                             |
       :as => :number,                                                |

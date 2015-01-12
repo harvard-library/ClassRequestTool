@@ -1,0 +1,7 @@
+= f.inputs do
+  .well.nested-fields
+    = f.input :first_name
+    = f.input :last_name
+    = f.input :email
+    = f.input :role
+    = link_to_remove_association "Remove contact", f

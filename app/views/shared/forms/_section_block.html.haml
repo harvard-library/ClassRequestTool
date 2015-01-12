@@ -1,41 +1,44 @@
-%div{:class => "form_full_width section section-#{section_index}", "data-section_index" => section_index}
-  %input.session_val{:name => "course[sections_attributes][#{section_index}][session]", :type => "hidden", :value => session_i}/
-  - (0..1).each do |i|
-    .form_date
-      .string.input.optional.stringish.form-group{:id => "course_sections_attributes_#{section_index}_input"}
-        %label.control-label{:for => "course_sections_attributes_#{section_index}_requested_dates_#{i}"}
-          = (i + 1).ordinalize
-          choice
-        %span.form-wrapper
-          %input.date.requested_date.form-control{:id => "course_sections_attributes_#{section_index}_requested_dates_#{i}", :maxlength => "26", :name => "course[sections_attributes][#{section_index}][requested_dates][]", :placeholder => "Click to select date/time", :size => "26", :type => "text"}/
-      - if admin
-        %button.btn.btn-primary.date-setter Set as Actual Date
-    / END form_date
-  .delete-button
-    %button.btn.btn-primary.delete_section.glyphicon.glyphicon-minus
-  - if admin
-    .form_full_width.admin-box{:style => "clear:both;"}
-      .string.input.optional.stringish.form-group{:id => "course_sections_attributes_#{section_index}_actual_date_input"}
-        %label.control-label{:for => "course_sections_attributes_#{section_index}_actual_date"} Actual Date
-        %span.form-wrapper
-          %input.date.actual-date.form-control{:id => "course_sections_attributes_#{section_index}_actual_date", :maxlength => "26", :name => "course[sections_attributes][#{section_index}][actual_date]", :placeholder => "Click to select date/time", :size => "26", :type => "text"}/
-      .number.input.optional.numeric.stringish.form-group{:id => "course_sections_attributes_#{section_index}_headcount_input"}
-        %label.control-label{:for => "course_sections_attributes_#{section_index}_headcount"} Headcount
-        %span.form-wrapper
-          %input.form-control{:id => "course_sections_attributes_#{section_index}_headcount", :min => "0", :name => "course[sections_attributes][#{section_index}][headcount]", :step => "1", :type => "number"}/
-          %span.help-block Actual number of students that attended.
-      .select.input.optional.form-group{:id => "course_sections_attributes_#{section_index}_room_input"}
-        %label.control-label{:for => "course_sections_attributes_#{section_index}_room_id"} Room Assignment:
-        = select_tag :room_id,                                              |
-          option_groups_from_collection_for_select(                         |
-            Repository.order(:name),                                        |
-            :rooms,                                                         |
-            :name,                                                          |
-            :id,                                                            |
-            :name),                                                         |
-          :class => 'form-control',                                         |
-          :include_blank => true,                                           |
-          :id => "course_sections_attributes_#{section_index}_room_id",     |
-          :name => "course[sections_attributes][#{section_index}][room_id]" |
-        %span.help-block Room that section is scheduled in.
+-# To be usable with ajax, this must use standard form markup and not formtastic
+-  @course = Course.find(course_id) if (@course.nil? && !course_id.blank?)
+- sect = Section.new if sect.nil?
+- name_prefix = "course[sections_attributes][#{section_index}]"
+- id_prefix = "course_sections_attributes_#{section_index}"
+%div{:class => "panel panel-default section section-#{section_index}", "data-section_index" => section_index }
+  .panel-heading.clearfix
+    %h6{ :class => "panel-title pull-left", :style => "padding-top: 7.5px" }= "Section #{section_index}"
+    - unless section_index == 1
+      %div{ :class => "delete-button pull-right", :style => "padding-top: 0; padding-right: 70px;" }
+        %button.btn.btn-primary.delete{ "data-to_delete" => 'section' } Remove
+  .panel-body
+    .form_full_width
+      - if sect.id
+        = hidden_field_tag :id, sect.id, :name => "#{name_prefix}[id]", :id => "#{id_prefix}_id_input", :class => 'id_val'
+      - if sect.session
+        = hidden_field_tag :id, sect.session, :name => "#{name_prefix}[session]", :id => "#{id_prefix}_session_input", :class => 'session_val'
+
+      .form_session_duration
+        = formtastic_wrapper('number', "Session Duration (hours): ", (text_field_tag :session_duration, (sect.session_duration.blank? ? '' : sect.session_duration), :name => "#{name_prefix}[session_duration]", :type => 'number', :id => "#{id_prefix}_session_duration", :class => 'session_duration_val form-control', :maxlength => 4, :placeholder => "e.g. 1.5", :min => 0, :max => 3, :step => 0.5, :only_integer => false)).html_safe
+
+      - (0..1).each do |rd_i|
+        .form_date
+          = formtastic_wrapper('string', "#{(rd_i+1).ordinalize} choice", (text_field_tag :requested_dates, display_with_tz(sect.requested_dates.try(:slice, rd_i)), :name => "#{name_prefix}[requested_dates][]", :id => "#{id_prefix}_requested_dates_#{rd_i}", :class => 'requested_date date form-control', :placeholder => "Click to select date/time")).html_safe
+
+          - if current_user.can_schedule?
+            %button.btn.btn-primary.date-setter Set as Actual Date
+        / END form_date
+
+      - if current_user.can_schedule?
+        .form_full_width.admin-box{:style => "clear:both;"}
+          = formtastic_wrapper('string', "Actual Date", (text_field_tag :actual_date, display_with_tz(sect.actual_date), :name => "#{name_prefix}[actual_date]", :id => "#{id_prefix}_actual_date", :class => 'actual-date date form-control')).html_safe
+          = formtastic_wrapper('number', "Headcount (number of students attended): ", (text_field_tag :headcount, sect.headcount, :type => 'number', :name => "#{name_prefix}[headcount]", :id => "#{id_prefix}_headcount", :class => 'headcount_val form-control', :min => 0, :step => 1, :only_integer => true)).html_safe
+          .select.input.optional.form-group{:id => "#{id_prefix}_room_input"}
+            - unless @course.nil?
+              %label.control-label{:for => "#{id_prefix}_room_id"} Room Assignment (#{@course.repository.name}):
+              = select_tag :room_id,                      |
+                options_from_collection_for_select(@course.repository.rooms.order(:name), :id, :name, sect.room_id), |
+                :include_blank => true,                   |
+                :id => "#{id_prefix}_room_id",            |
+                :name => "#{name_prefix}[room_id]",       |
+                :class => "form-control"                  |
+              %span.help-block Room that section is scheduled in.
 / END .section

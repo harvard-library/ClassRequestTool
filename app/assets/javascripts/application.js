@@ -22,4 +22,5 @@
 //= require highcharts
 //= require highcharts/highcharts-more
 //= require ckeditor/init
+//= require cocoon
 //= require_tree .

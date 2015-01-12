@@ -1,13 +1,19 @@
-%div{:class => "session session-#{index}  col-xs-12", "data-session_index" => index, :id => "session-#{index}"}
-  %h5.section-header.hidden Sections
-  .sections
-    = render :partial => 'shared/forms/section_block', |
-      :locals => {                                     |
-      :session_i => index,                             |
-      :section_index => section_index,                 |
-      :admin => admin}                                 |
-  / END .sections
-  .add_section-button-block
-    %button.add_section.btn.btn-primary Add Section
-    %span.help-block Sections are subgroups of a class that will meet at different times but consult the same materials.
-/ END .session
+- sesh = [Section.new] if sesh.nil?
+-  @course = Course.find(course_id) if @course.nil?
+.col-xs-12
+  %div{:class => "session session-#{session_index} panel panel-primary", "data-session_index" => session_index, :id => "session-#{session_index}"}
+    .panel-heading.clearfix
+      %h4{ :class => "panel-title pull-left", :style => "padding-top: 7.5px" }= "Session #{session_index}"
+      - unless session_index == 1
+        %div{ :class => "delete-button pull-right", :style => "padding-top: 0; padding-right: 70px;" }
+          %button.btn.btn-primary.delete{ "data-to_delete" => 'session' }  Remove
+    .panel-body
+      %h5{:class => "section-header #{sesh.count <= 1 ? 'hidden' : ''}"} Sections
+      .sections
+        - sesh = [Section.new] if sesh.nil?
+        - sort_sections(sesh).each.with_index(1) do |sect, section_index|
+          = render :partial => 'shared/forms/section_block', :locals => { :sesh => sesh, :session_index => session_index, :sect => sect, :section_index => section_index }       
+      / END .sections
+      .add_section-button-block
+        %button.add_section.btn.btn-primary Add A Section
+        %span.help-block Sections are subgroups of a class that will meet at different times but consult the same materials.
