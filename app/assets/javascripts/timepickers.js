@@ -3,7 +3,6 @@ $(function () {
   crt = window['crt'] || {}
 
   $('body.c_courses').on('click', ' input.date:not(.hasDatepicker)', function (e) {
-    console.log('GOT HERE!');
     var options = {
       controlType: 'select',
       dateFormat: 'yy-mm-dd',

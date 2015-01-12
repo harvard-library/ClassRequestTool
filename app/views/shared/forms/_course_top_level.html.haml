@@ -22,7 +22,7 @@
   }
   });
 %noscript Please enable Javascript.
-#info-left
+#info-left{ :class => "course_#{@course.id}" }
   = semantic_form_for(@course, :html => {:multipart => true}) do |f|
     = f.inputs do
       .form_wrapper

@@ -34,5 +34,11 @@ module CoursesHelper
     end
     status.html_safe
   end
+  
+  # Sorts sections based first on actual date, then first requested date
+  def sort_sections(sections, direction = 'ASC')
+    sections.sort! { |a, b| a.actual_date <=> b.actual_date }
+    sections.sort! { |a, b| a.requested_dates[0] <=> b.requested_dates[0] }
+  end
 
 end

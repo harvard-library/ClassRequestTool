@@ -228,17 +228,18 @@ class CoursesController < ApplicationController
       params[:course][:sections_attributes].delete_if{|k,v| v[:requested_dates] && v[:requested_dates].reject(&:nil?).blank? && v[:actual_date].blank? && v[:_destroy].blank?}
     end
 
-    repo_change = false
-    staff_change = false
+    send_repo_change_notification = false
+    send_staff_change_notification = false
 
     # Begin gross status manipulation *&!%
+    # Set notification statuses
     if !params[:course][:repository_id].blank? && @course.repository_id != params[:course][:repository_id].to_i
-      repo_change = true
+      send_repo_change_notification = true
     end
 
     if (@course.primary_contact.blank? && !params[:course][:primary_contact_id].blank?) ||
-        (@course.users.blank? && !params[:course][:user_ids].blank?)
-      staff_change = true unless current_user.id == params[:course][:primary_contact_id].to_i
+        (@course.users.blank? && !(params[:course][:user_ids].length == 1 && params[:course][:user_ids][0].blank?))
+      send_staff_change_notification = true unless current_user.id == params[:course][:primary_contact_id].to_i
     end
 
     params[:course][:status] = adjust_status(params[:course])
@@ -253,14 +254,14 @@ class CoursesController < ApplicationController
         @course.notes.create(:note_text => "Assessment email sent.", :user_id => current_user.id)
       end
 
-      if repo_change
+      if send_repo_change_notification
         # FIX INFO_NEEDED Should "changed from" repos get email? Inquiring Bobbis want to know
         Notification.delay(:queue => 'changes').repo_change(@course) unless @course.repository.blank?
         @course.notes.create(:note_text => "Library/Archive changed to #{@course.repository.blank? ? "none" : @course.repository.name + "Email sent"}.",
                              :user_id => current_user.id)
       end
 
-      if staff_change
+      if send_staff_change_notification
         # FIX INFO_NEEDED Should "dropped" staff members get this email?
         Notification.delay(:queue => 'changes').staff_change(@course, current_user)
         @course.notes.create(:note_text => "Staff change email sent.", :user_id => current_user.id)
@@ -378,26 +379,42 @@ class CoursesController < ApplicationController
     end
     render :text => csv
   end
-
-  def session_block
+  
+  def section_session_block
     session_index = params[:session_index].try(:to_i) || 1
     section_index = params[:section_index].try(:to_i) || 1
+    locals = { :course_id => params[:course_id], :session_index => session_index, :section_index => section_index, :admin => current_user.can_schedule?}
     respond_to do |format|
       format.html do
-        render :partial => 'shared/forms/session_block2',
-               :locals => { :session_index => session_index, :section_index => section_index, :admin => current_user.can_schedule?}
+        if params[:to_render] == 'session'
+          render :partial => 'shared/forms/session_block', :locals => locals
+        elsif params[:to_render] == 'section'
+          render :partial => 'shared/forms/section_block', :locals => locals
+        end
       end
     end
   end
+  
 
-  def section_block
-    session_i = params[:session_index].try(:to_i) || 1
-    section_index = params[:section_index].try(:to_i) || 1
-    respond_to do |format|
-      format.html do
-        render :partial => 'shared/forms/section_block2',
-               :locals => { :session_index => session_i, :section_counter => section_index, :admin => current_user.can_schedule?}
-      end
-    end
-  end
+#   def session_block
+#     session_index = params[:session_index].try(:to_i) || 1
+#     section_index = params[:section_index].try(:to_i) || 1
+#     respond_to do |format|
+#       format.html do
+#         render :partial => 'shared/forms/session_block',
+#                :locals => { :course_id => params[:course_id], :session_index => session_index, :section_index => section_index, :admin => current_user.can_schedule?}
+#       end
+#     end
+#   end
+# 
+#   def section_block
+#     session_i = params[:session_index].try(:to_i) || 1
+#     section_index = params[:section_index].try(:to_i) || 1
+#     respond_to do |format|
+#       format.html do
+#         render :partial => 'shared/forms/section_block',
+#                :locals => { :course_id => params[:course_id], :session_index => session_i, :section_index => section_index, :admin => current_user.can_schedule?}
+#       end
+#     end
+#   end
 end

@@ -8,7 +8,7 @@
 .form_full_width.sessions
   - sessions = @course.sections.blank? ? @substitute_session : @course.sessions
   - sessions.each.with_index(1) do |sesh, i|    
-    = render :partial => 'shared/forms/session_block2', :locals => {:sesh => sesh, :session_index => i }
+    = render :partial => 'shared/forms/session_block', :locals => { :sesh => sesh, :session_index => i }
 
 .form_full_width
   %button.add_session.btn.btn-primary Add A Session

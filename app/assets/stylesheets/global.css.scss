@@ -176,6 +176,24 @@ div.ui-datepicker{
   border-color: $slate;
 }
 
+h4.panel-title, h5.panel-title, h6.panel-title {
+  font-family: Roboto, Helvetica, Arial, sans-serif;
+  font-weight: bold;
+  font-style: italic;
+}
+h4.panel-title {
+  font-size: 20px;
+}
+h5.panel-title {
+  font-size: 16px;
+}
+h6.panel-title {
+  font-size: 14px;
+}
+.well {
+  background-color: #efefef;
+}
+
 /* Notifications */
 .notifications-status {
   width: 100%;

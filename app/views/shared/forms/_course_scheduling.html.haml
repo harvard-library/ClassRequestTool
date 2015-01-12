@@ -10,7 +10,7 @@
     %p Please enter your preferred date and time for each class visit. If your only options for scheduling fall outside normal business hours, please use the note field to detail your availability.
     %p Final scheduling of a class visit is subject to both room and staff availability.
 
-  = render :partial => 'shared/forms/scheduling_block', :locals => { :f => f }
+  = render :partial => 'shared/forms/scheduling_block'
 
   .form_full_width
     = f.input :duration,                                             |
