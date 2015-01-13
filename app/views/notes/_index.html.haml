@@ -6,6 +6,6 @@
       %p
         %em #{note.user.full_name unless note.user.nil?}(#{note.user.user_type unless note.user.nil?}) on: #{note.created_at.strftime('%m/%d/%Y %I:%M %P')}
       - if current_user.staff? || current_user.can_admin?
-        %p
-          = link_to "Edit", edit_note_path(note.id)
-          | #{link_to('Delete', note_path(note), :confirm => "Are you sure?", :method => :delete)}
+        %br/
+        = link_to "Edit", edit_note_path(note.id)
+        | #{link_to('Delete', note_path(note), :confirm => "Are you sure?", :method => :delete)}
