@@ -81,57 +81,6 @@ class CoursesController < ApplicationController
     end
   end
 
-  def substitute_session_if_necessary
-    @substitute_session = @course.sections.blank? ? [Course::Session[Section.new(:course => @course)]] : nil
-  end
-
-  def index
-    @courses_all = Course.ordered_by_last_section.all #.all required due to AR inelegance (count drops the select off of ordered_by_last_section)
-    @courses_mine_current = current_user.mine_current
-    @courses_mine_past = current_user.mine_past
-    @repositories = Repository.order('name ASC')
-    @csv = params[:csv]
-  end
-
-  def show
-    @course = Course.find(params[:id])
-    unless current_user.staff? || current_user.can_admin? || @course.contact_email == current_user.email
-       redirect_to('/') and return
-    end
-    @note = Note.new
-    notes = Note.where(:course_id => @course.id).order("created_at DESC").group_by(&:staff_comment)
-    @staff_only_notes = notes[true]
-    @notes = notes[false]
-  end
-
-  def new
-    unless params[:repository].blank?
-      @course = Course.new(:repository_id => Repository.find(params[:repository]).id)
-      @repository = Repository.find(params[:repository])
-    else
-      @course = Course.new
-    end
-
-    @additional_staff = additional_staff
-
-    substitute_session_if_necessary
-
-    @uploader = SyllabusUploader.new
-  end
-
-  def edit
-    @course = Course.find(params[:id])
-    unless current_user.staff? || current_user.can_admin? || @course.contact_email == current_user.email
-       redirect_to('/') and return
-    end
-
-    @additional_staff = additional_staff
-
-    substitute_session_if_necessary
-
-    @staff_involvement = @course.staff_involvement.split(',')
-  end
-  
   def cancel
     course = Course.find(params[:id])
     course.status = 'Cancelled'
@@ -147,24 +96,8 @@ class CoursesController < ApplicationController
     end
   end
   
-  def uncancel
-    course = Course.find(params[:id])
-    course.status = 'Active'
-    
-    if course.save(validate: false)         # Don't bother with validation since the class is being recovered
-#      Notification.delay.uncancellation(course)
-      flash[:notice] = "The class <em>#{course.title}</em> was successfully uncancelled.".html_safe
-    else
-      flash[:alert] = "There was an error uncancelling the class."
-    end
-    
-    respond_to do |format|
-      format.html { redirect_to :back }
-    end
-  end
-
   def create
-    
+  
     unless params[:course][:repository_id].blank?
       @repository = Repository.find(params[:course][:repository_id])
     end
@@ -209,11 +142,165 @@ class CoursesController < ApplicationController
       else
         flash.now[:error] = "Please correct the errors in the form."
 
-        substitute_session_if_necessary
-
         format.html { render :action => :new }
         format.json { render json: @course.errors, status: :unprocessable_entity }
       end
+    end
+  end
+
+  def destroy
+    @course = Course.find(params[:id])
+    unless current_user.staff? || current_user.can_admin? || @course.contact_email == current_user.email
+      redirect_to('/') and return
+    end
+    @course.destroy
+
+    respond_to do |format|
+      format.html { redirect_to courses_url }
+      format.json { head :no_content }
+    end
+  end
+
+  def edit
+    @course = Course.find(params[:id])
+    unless current_user.staff? || current_user.can_admin? || @course.contact_email == current_user.email
+       redirect_to('/') and return
+    end
+
+    @additional_staff = additional_staff
+
+    @staff_involvement = @course.staff_involvement.split(',')
+  end
+
+  def export
+    exportable = [
+      :title,
+      :subject,
+      :course_number,
+      :affiliation,
+      :contact_email,
+      :contact_phone,
+      :pre_class_appt,
+      :repository,
+      :staff_involvement,
+      :number_of_students,
+      :status,
+      :syllabus,
+      :external_syllabus,
+      :duration,
+      :comments,
+      :session_count,
+      :goal,
+      :instruction_session,
+      :contact_first_name,
+      :contact_last_name,
+      :contact_username,
+      :primary_contact,
+      :staff
+    ]
+      
+    @sections = Section.joins(:course).order('course_id ASC NULLS LAST, session ASC NULLS LAST, actual_date ASC NULLS LAST')
+    csv = CSV.generate(:encoding => 'utf-8') do |csv|
+      csv << (exportable + [:session, :section_id, :date, :headcount]).map { |c| c.to_s.gsub(/_/, ' ').titlecase }
+      @sections.each do |section|
+        course = section.course
+        values = []
+        exportable.each do |c|
+          case (c)
+            when :repository
+              values << (course.repository.blank? ? '' : course.repository.name)
+            when :primary_contact
+              values << (course.primary_contact.blank? ? '' : course.primary_contact.full_name)
+            when :staff
+              values << (course.users.count > 0 ? course.users.map{ |u| u.full_name }.join('!') : '')
+            else
+              values << course.send("#{c}")
+          end
+        end
+        values += [section.session, section.id, section.actual_date, (section.headcount || 'Not Entered')]
+        csv << values
+      end
+    end
+    render :text => csv
+  end  
+
+  def index
+    @courses_all = Course.ordered_by_last_section.all #.all required due to AR inelegance (count drops the select off of ordered_by_last_section)
+    @courses_mine_current = current_user.mine_current
+    @courses_mine_past = current_user.mine_past
+    @repositories = Repository.order('name ASC')
+    @csv = params[:csv]
+  end
+
+  def new
+  
+    # Automatically create with new session/section
+    
+    @course = Course.new()
+    
+    unless params[:repository].blank?
+      @repository = Repository.find(params[:repository])
+      @course.repository_id = @repository.id
+    end
+    
+    @course.sections = []
+    @course.sections << Section.new()
+
+    @additional_staff = additional_staff
+
+    @uploader = SyllabusUploader.new
+    
+  end
+
+  def new_section_or_session_block
+    session_count = params[:session_count].try(:to_i) || 1
+    section_count = params[:section_count].try(:to_i) || 1
+    
+    # This requires a new section
+    locals = { 
+      :course_id => params[:course_id], 
+      :session_count => session_count, 
+      :section_count => section_count, 
+      :admin => current_user.can_schedule?, 
+      :section_index => params[:section_index],
+    }
+    respond_to do |format|
+      format.html do
+        if params[:to_render] == 'session'
+          locals[:sesh] = [Section.new(:session => params[:session_count])]
+          render :partial => 'session_block', :locals => locals
+        elsif params[:to_render] == 'section'
+          locals[:sect] = Section.new(:session => params[:session_count])
+          render :partial => 'section_block', :locals => locals
+        end
+      end
+    end
+  end
+  
+  def show
+    @course = Course.find(params[:id])
+    unless current_user.staff? || current_user.can_admin? || @course.contact_email == current_user.email
+       redirect_to('/') and return
+    end
+    @note = Note.new
+    notes = Note.where(:course_id => @course.id).order("created_at DESC").group_by(&:staff_comment)
+    @staff_only_notes = notes[true]
+    @notes = notes[false]
+  end
+
+  def uncancel
+    course = Course.find(params[:id])
+    course.status = 'Active'
+    
+    if course.save(validate: false)         # Don't bother with validation since the class is being recovered
+#      Notification.delay.uncancellation(course)
+      flash[:notice] = "The class <em>#{course.title}</em> was successfully uncancelled.".html_safe
+    else
+      flash[:alert] = "There was an error uncancelling the class."
+    end
+    
+    respond_to do |format|
+      format.html { redirect_to :back }
     end
   end
 
@@ -222,7 +309,7 @@ class CoursesController < ApplicationController
     unless current_user.staff? || current_user.can_admin? || @course.contact_email == current_user.email
       redirect_to('/') and return
     end
-
+    
     if params.has_key?(:course) && params[:course].has_key?(:sections_attributes)
       # strip out empty sections
       params[:course][:sections_attributes].delete_if{|k,v| v[:requested_dates] && v[:requested_dates].reject(&:nil?).blank? && v[:actual_date].blank? && v[:_destroy].blank?}
@@ -282,26 +369,6 @@ class CoursesController < ApplicationController
     end
   end
 
-  def destroy
-    @course = Course.find(params[:id])
-    unless current_user.staff? || current_user.can_admin? || @course.contact_email == current_user.email
-      redirect_to('/') and return
-    end
-    @course.destroy
-
-    respond_to do |format|
-      format.html { redirect_to courses_url }
-      format.json { head :no_content }
-    end
-  end
-
-  def summary
-    @course = Course.find(params[:id])
-    unless current_user.staff? || current_user.can_admin? || @course.contact_email == current_user.email
-       redirect_to('/') and return
-    end
-  end
-
   def recent_show
     @course = Course.find(params[:id])
   end
@@ -316,6 +383,13 @@ class CoursesController < ApplicationController
     redirect_to new_course_path(:repository => @repository)
   end
 
+  def summary
+    @course = Course.find(params[:id])
+    unless current_user.staff? || current_user.can_admin? || @course.contact_email == current_user.email
+       redirect_to('/') and return
+    end
+  end
+
   def take
     @course = Course.find(params[:id])
     @course.users << current_user
@@ -327,94 +401,4 @@ class CoursesController < ApplicationController
       format.html { redirect_to dashboard_welcome_index_url, notice: 'Class was successfully claimed.' }
     end
   end
-
-  def export
-    exportable = [
-      :title,
-      :subject,
-      :course_number,
-      :affiliation,
-      :contact_email,
-      :contact_phone,
-      :pre_class_appt,
-      :repository,
-      :staff_involvement,
-      :number_of_students,
-      :status,
-      :syllabus,
-      :external_syllabus,
-      :duration,
-      :comments,
-      :session_count,
-      :goal,
-      :instruction_session,
-      :contact_first_name,
-      :contact_last_name,
-      :contact_username,
-      :primary_contact,
-      :staff
-    ]
-      
-    @sections = Section.joins(:course).order('course_id ASC NULLS LAST, session ASC NULLS LAST, actual_date ASC NULLS LAST')
-    csv = CSV.generate(:encoding => 'utf-8') do |csv|
-      csv << (exportable + [:session, :section_id, :date, :headcount]).map { |c| c.to_s.gsub(/_/, ' ').titlecase }
-      @sections.each do |section|
-        course = section.course
-        values = []
-        exportable.each do |c|
-          case (c)
-            when :repository
-              values << (course.repository.blank? ? '' : course.repository.name)
-            when :primary_contact
-              values << (course.primary_contact.blank? ? '' : course.primary_contact.full_name)
-            when :staff
-              values << (course.users.count > 0 ? course.users.map{ |u| u.full_name }.join('!') : '')
-            else
-              values << course.send("#{c}")
-          end
-        end
-        values += [section.session, section.id, section.actual_date, (section.headcount || 'Not Entered')]
-        csv << values
-      end
-    end
-    render :text => csv
-  end
-  
-  def section_session_block
-    session_index = params[:session_index].try(:to_i) || 1
-    section_index = params[:section_index].try(:to_i) || 1
-    locals = { :course_id => params[:course_id], :session_index => session_index, :section_index => section_index, :admin => current_user.can_schedule?}
-    respond_to do |format|
-      format.html do
-        if params[:to_render] == 'session'
-          render :partial => 'shared/forms/session_block', :locals => locals
-        elsif params[:to_render] == 'section'
-          render :partial => 'shared/forms/section_block', :locals => locals
-        end
-      end
-    end
-  end
-  
-
-#   def session_block
-#     session_index = params[:session_index].try(:to_i) || 1
-#     section_index = params[:section_index].try(:to_i) || 1
-#     respond_to do |format|
-#       format.html do
-#         render :partial => 'shared/forms/session_block',
-#                :locals => { :course_id => params[:course_id], :session_index => session_index, :section_index => section_index, :admin => current_user.can_schedule?}
-#       end
-#     end
-#   end
-# 
-#   def section_block
-#     session_i = params[:session_index].try(:to_i) || 1
-#     section_index = params[:section_index].try(:to_i) || 1
-#     respond_to do |format|
-#       format.html do
-#         render :partial => 'shared/forms/section_block',
-#                :locals => { :course_id => params[:course_id], :session_index => session_i, :section_index => section_index, :admin => current_user.can_schedule?}
-#       end
-#     end
-#   end
 end

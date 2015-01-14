@@ -164,12 +164,12 @@ div.ui-datepicker{
   border-color: darken($crimson, 10%);
 }
 .btn-primary:active, .btn-primary.active {
-  background-color: $ink;
-  border-color: lighten($ink, 10%);
+  background-color: lighten($crimson, 10%);
+  border-color: $crimson;
 }
 .btn-primary:hover, .btn-primary:focus {
-  background-color: $slate;
-  border-color: darken($slate, 10%);
+  background-color: lighten($crimson, 10%);
+  border-color: $crimson;
 }
 .panel-primary > .panel-heading {
   background-color: $slate;

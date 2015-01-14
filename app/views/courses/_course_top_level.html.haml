@@ -22,7 +22,7 @@
   }
   });
 %noscript Please enable Javascript.
-#info-left{ :class => "course_#{@course.id}" }
+#info-left{ "data-course_id" => @course.id }
   = semantic_form_for(@course, :html => {:multipart => true}) do |f|
     = f.inputs do
       .form_wrapper
@@ -33,9 +33,9 @@
               = f.input :repository_id, :as => :select, :collection => Repository.all, :label => "Assign Library/Archive: "
           - else
             = f.hidden_field :repository_id, :value => @course.repository_id
-      #requester_info= render :partial => 'shared/forms/course_requester_info', :locals=>{:f=>f}
-      #course_info= render :partial => 'shared/forms/course_info', :locals=>{:f=>f}
-      #involvement_info= render :partial => 'shared/forms/course_staff_involvement', :locals=>{:f=>f}
-      #scheduling_info= render :partial => 'shared/forms/course_scheduling', :locals=>{:f=>f}
+      #requester_info= render :partial => 'course_requester_info', :locals=>{:f=>f}
+      #course_info= render :partial => 'course_info', :locals=>{:f=>f}
+      #involvement_info= render :partial => 'course_staff_involvement', :locals=>{:f=>f}
+      #scheduling_info= render :partial => 'course_scheduling', :locals=>{:f=>f}
     = f.actions do
-      = f.action :submit, :as => :button, :label => 'Update Request ',  :button_html =>{:class => "btn btn-primary"}
+      = f.action :submit, :as => :button, :label => 'new' == controller.action_name ? 'Create Request' : 'Update Request',  :button_html =>{:class => "btn btn-primary"}

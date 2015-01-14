@@ -37,7 +37,9 @@ module CoursesHelper
   
   # Sorts sections based first on actual date, then first requested date
   def sort_sections(sections, direction = 'ASC')
-    sections.sort! { |a, b| a.actual_date <=> b.actual_date }
+    unless sections.map { |section| section.actual_date.blank? }.include?(true)
+      sections.sort! { |a, b| a.actual_date <=> b.actual_date }
+    end
     sections.sort! { |a, b| a.requested_dates[0] <=> b.requested_dates[0] }
   end
 

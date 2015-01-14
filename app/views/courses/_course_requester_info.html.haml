@@ -26,6 +26,6 @@
     .panel-body
       %p.help_text Please add anyone else who should receive communications about this course.
       = f.semantic_fields_for :additional_patrons do |additional_patron|
-        = render :partial => 'shared/forms/additional_patron_fields', :locals => { :f => additional_patron }
+        = render :partial => 'additional_patron_fields', :locals => { :f => additional_patron }
       .links
-        = link_to_add_association 'Add additional contact', f, :additional_patrons, :partial => 'shared/forms/additional_patron_fields'
+        = link_to_add_association 'Add additional contact', f, :additional_patrons, :partial => 'additional_patron_fields'

@@ -15,7 +15,7 @@ $(function () {
       minDate: ($(this).hasClass('actual-date') ? null : 3),
       numberOfMonths: 2
     }
-    $(this).datepicker(options);
+    $(this).datetimepicker(options);
     $(this).datetimepicker('show');
   });
 

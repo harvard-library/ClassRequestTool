@@ -9,7 +9,7 @@
 %br/
 #welcome-left
   - if current_user.can_schedule?
-    %p= button_to('Edit Class Info', edit_course_path(@course), :class => "action-edit", :method => :get)
+    %p= link_to 'Edit Class Info', edit_course_path(@course), :class => "btn btn-warning"
   %h4 Course Information
   %ul.summary-info
     %li
@@ -112,7 +112,7 @@
   - if !@course.sections.map(&:actual_date).reject(&:nil?).blank? || !@course.sections.map(&:requested_dates).reject(&:nil?).blank?
     %div
       - aeon_timeframe_emitted = nil # Has the first timeframe been emitted for Aeon's sake?
-      - @course.sessions.each.with_index(1) do |sesh, i|
+      - @course.sessions.each do |i, sesh|
         %h5 Session #{i}
         - sort_sections(sesh).each.with_index(1) do |sect, j|
           .well.well-sm
@@ -121,9 +121,9 @@
               - if sect.actual_date
                 %li
                   %span.summary-label Actual Date:
-                  = aeon_timeframe_emitted ? '' : '<span id="timeframe">'
-                  = sect.try(:actual_date).try(:in_time_zone, Rails.configuration.time_zone).try(:strftime, '%m/%d/%Y %l:%M %P')
-                  = aeon_timeframe_emitted ? '' : '</span>'
+                  - if aeon_timeframe_emitted
+                    %span#timeframe
+                      = sect.try(:actual_date).try(:in_time_zone, Rails.configuration.time_zone).try(:strftime, '%m/%d/%Y %l:%M %P')
                 - aeon_timeframe_emitted = true
               - elsif sect.requested_dates
                 %li
@@ -181,8 +181,12 @@
       = link_to "View Assessment", assessment_path(assessment)
       %br/
     %h4 Notes
-    = render :partial => 'notes/all_notes', :locals => {:notes => @notes }
-    = render :partial => 'notes/staff_only_notes', :locals => {:notes => @staff_only_notes }
+    - unless @notes.blank?
+      %h5 Patron Notes
+      = render :partial => 'notes/index', :locals => {:notes => @notes }
+    - if !@staff_only_notes.blank? && (current_user.staff? || current_user.can_admin?)
+      %h5 Staff Notes
+      = render :partial => 'notes/index', :locals => {:notes => @staff_only_notes }
     = render :partial => 'shared/forms/note', :locals => {:note => @note, :course => @course }
     - unless @course.status == "Closed"
       .admin-box
@@ -214,5 +218,5 @@
       = link_to "View Assessment", assessment_path(assessment)
       %br/
     %h4 Notes
-    = render :partial => 'notes/all_notes', :locals => {:notes => @notes }
+    = render :partial => 'notes/index', :locals => {:notes => @notes }
     = render :partial => 'shared/forms/note', :locals => {:note => @note, :course => @course }

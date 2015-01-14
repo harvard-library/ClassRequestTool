@@ -99,8 +99,11 @@ class Course < ActiveRecord::Base
 
   # Returns an array of sessions, ordered by session number
   def sessions
-    sesh = sections.group_by(&:session)
-    sesh.keys.sort.reduce([]) {|result, key| result << Session.new(sesh[key]);result}
+    if sections.blank? || (sections.length == 1 && sections[0].id.nil?)      # This handles the case of a new course with a new session & section
+      sesh = { sections[0].session => [sections[0]] }
+    else
+      sesh = sections.order(:session).group_by(&:session)
+    end
   end
   
   # Returns a repo name, whether the course repo is defined yet or not

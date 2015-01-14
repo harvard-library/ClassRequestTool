@@ -26,7 +26,7 @@ ClassRequestTool::Application.routes.draw do
       get 'repo_select'
       get 'export'
       # AJAX helpers for course new/edit form
-      get 'section_session_block'
+      get 'new_section_or_session_block'
     end
   end
   get "/courses/:id/cancel",    to: 'courses#cancel'

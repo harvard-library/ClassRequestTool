@@ -1,21 +1,20 @@
 -# To be usable with ajax, this must use standard form markup and not formtastic
 -  @course = Course.find(course_id) if (@course.nil? && !course_id.blank?)
-- sect = Section.new if sect.nil?
 - name_prefix = "course[sections_attributes][#{section_index}]"
 - id_prefix = "course_sections_attributes_#{section_index}"
-%div{:class => "panel panel-default section section-#{section_index}", "data-section_index" => section_index }
+- section_index = section_index.blank? ? 0 : section_index.to_i
+- this_session = sect.id.nil? ? session_count : sect.session
+%div{:class => "panel panel-default section", "data-session_count" => this_session, "data-section_count" => section_count, "data-section_index" => section_index }
   .panel-heading.clearfix
-    %h6{ :class => "panel-title pull-left", :style => "padding-top: 7.5px" }= "Section #{section_index}"
-    - unless section_index == 1
+    %h6{ :class => "panel-title pull-left", :style => "padding-top: 7.5px" }= "Section #{section_count}"
+    - unless section_count == 1
       %div{ :class => "delete-button pull-right", :style => "padding-top: 0; padding-right: 70px;" }
         %button.btn.btn-primary.delete{ "data-to_delete" => 'section' } Remove
   .panel-body
     .form_full_width
       - if sect.id
         = hidden_field_tag :id, sect.id, :name => "#{name_prefix}[id]", :id => "#{id_prefix}_id_input", :class => 'id_val'
-      - if sect.session
-        = hidden_field_tag :id, sect.session, :name => "#{name_prefix}[session]", :id => "#{id_prefix}_session_input", :class => 'session_val'
-
+      = hidden_field_tag :session, this_session, :name => "#{name_prefix}[session]", :id => "#{id_prefix}_session_input", :class => 'session_val'
       .form_session_duration
         = formtastic_wrapper('number', "Session Duration (hours): ", (text_field_tag :session_duration, (sect.session_duration.blank? ? '' : sect.session_duration), :name => "#{name_prefix}[session_duration]", :type => 'number', :id => "#{id_prefix}_session_duration", :class => 'session_duration_val form-control', :maxlength => 4, :placeholder => "e.g. 1.5", :min => 0, :max => 3, :step => 0.5, :only_integer => false)).html_safe
 

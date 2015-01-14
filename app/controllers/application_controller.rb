@@ -4,19 +4,7 @@ class ApplicationController < ActionController::Base
   before_filter :set_local
   
   protect_from_forgery
-  
-  def after_sign_in_path_for(user)
-    if cookies[:login_destination].nil?
-      cookies[:login_destination]
-    else
-      root_url
-    end
-  end
-  
-  def after_sign_out_path_for(user)
-    root_url
-  end
-  
+    
   private 
   def authenticate_login!
     if !user_signed_in?
