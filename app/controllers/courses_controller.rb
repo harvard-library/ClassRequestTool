@@ -71,7 +71,7 @@ class CoursesController < ApplicationController
   end
 
   # Helper for update, used to determine status
-  def adjust_status(c_params)
+  def set_status(c_params)
     if c_params[:status] == "Closed" || @course && @course.status == "Closed"
       "Closed"
     elsif c_params[:status] == "Cancelled" || @course && @course.status == "Cancelled"
@@ -97,12 +97,12 @@ class CoursesController < ApplicationController
   end
   
   def create
-  
+
     unless params[:course][:repository_id].blank?
       @repository = Repository.find(params[:course][:repository_id])
     end
 
-    params[:course][:status] = adjust_status(params[:course])
+    params[:course][:status] = set_status(params[:course])
 
     # strip out empty sections
     if params.has_key?(:course) && params[:course].has_key?(:sections_attributes)
@@ -121,11 +121,11 @@ class CoursesController < ApplicationController
       params[:course][:affiliation] = "#{params[:harvard_affiliation] == 'Other' ? 'Other: ' : ''} #{params[:harvard_affiliation]}"
     end
     
-    # save affiliation parameters in case there is a form error
-    flash[:harvard_affiliation]   = params[:harvard_affiliation]
-    flash[:other_affiliation]     = params[:other_affiliation]
-    flash[:affiliation_selection] = params[:affiliation_selection]
-    
+    # Use flash to save affiliation parameters in case there is a form error
+    flash[:harvard_affiliation] = params[:harvard_affiliation]
+    flash[:other_affiliation]   = params[:other_affiliation]
+    flash[:harvard_affiliation] = params[:harvard_affiliation]
+            
     @course = Course.new(params[:course])
 
     respond_to do |format|
@@ -142,7 +142,7 @@ class CoursesController < ApplicationController
       else
         flash.now[:error] = "Please correct the errors in the form."
 
-        format.html { render :action => :new }
+        format.html { render :new }
         format.json { render json: @course.errors, status: :unprocessable_entity }
       end
     end
@@ -234,8 +234,6 @@ class CoursesController < ApplicationController
 
   def new
   
-    # Automatically create with new session/section
-    
     @course = Course.new()
     
     unless params[:repository].blank?
@@ -243,8 +241,10 @@ class CoursesController < ApplicationController
       @course.repository_id = @repository.id
     end
     
-    @course.sections = []
-    @course.sections << Section.new()
+    # Automatically create with 1 section
+    if params[:course].blank? || params[:course][:sections_attributes].blank?
+      @course.sections.build
+    end
 
     @additional_staff = additional_staff
 
@@ -329,7 +329,7 @@ class CoursesController < ApplicationController
       send_staff_change_notification = true unless current_user.id == params[:course][:primary_contact_id].to_i
     end
 
-    params[:course][:status] = adjust_status(params[:course])
+    params[:course][:status] = set_status(params[:course])
     # End gross status manipulation
 
     @course.attributes = params[:course]

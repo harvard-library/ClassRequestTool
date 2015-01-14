@@ -20,7 +20,7 @@ $(function () {
   var today = new Date();
 
   /* courses#(new|edit) */
-  if ($('body').hasClass('c_courses') &&  ($('body').hasClass('a_edit') || $('body').hasClass('a_create'))) {
+  if ($('body').hasClass('c_courses') &&  ($('body').hasClass('a_edit') || $('body').hasClass('a_new'))) {
 
 
     var courseId = $('#info-left').data('course_id');
@@ -46,6 +46,8 @@ $(function () {
     /* Add sections to session in form */
     $('body').on('click', 'button.add_section', function (e) {
       e.preventDefault();
+      
+      console.log('GOT HERE');
       
       var target = e.currentTarget
 

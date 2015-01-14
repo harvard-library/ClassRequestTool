@@ -1,7 +1,6 @@
--# sesh = [Section.new] if sesh.nil?
 - course_id = course_id.blank? ? '' : course_id
 - @course = Course.find(course_id) if (@course.nil? && !course_id.blank?)
-- section_index = section_index.blank? ? 0 : section_index.to_i 
+- section_index = section_index.blank? ? 0 : section_index.to_i
 .col-xs-12
   %div{:class => "session session-#{session_count} panel panel-primary", "data-session_count" => session_count, :id => "session-#{session_count}"}
     .panel-heading.clearfix

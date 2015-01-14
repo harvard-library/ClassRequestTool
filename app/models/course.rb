@@ -17,7 +17,6 @@ class Course < ActiveRecord::Base
   belongs_to :room
   belongs_to :repository
   has_many :sections, :dependent => :destroy
-  accepts_nested_attributes_for :sections, :reject_if => ->(s){s.blank?}, :allow_destroy => true
   has_many :notes, :dependent => :destroy
   has_and_belongs_to_many :item_attributes
   has_many :assessments, :dependent => :destroy
@@ -25,6 +24,7 @@ class Course < ActiveRecord::Base
   belongs_to :primary_contact, :class_name => 'User'
   has_many :additional_patrons, :dependent => :destroy, :autosave => true
   accepts_nested_attributes_for :additional_patrons, :reject_if => ->(ap){ap.blank?}, :allow_destroy => true
+  accepts_nested_attributes_for :sections, :reject_if => ->(s){s.nil?}, :allow_destroy => true
   
   validates_presence_of :title, :message => "can't be empty"
   validates_presence_of :contact_first_name, :contact_last_name
@@ -43,8 +43,7 @@ class Course < ActiveRecord::Base
   scope :scheduled,   ->{ joins(:sections).where('actual_date IS NOT NULL') }
   scope :with_status, ->(status) { where(status: status) }
   scope :upcoming,    ->{ joins(:sections).where("MAX(actual_date) IS NOT NULL AND MAX(actual_date) > ?", DateTime.now) }
-  scope :past,        ->{ joins(:sections).where("MAX(actual_date) IS NOT NULL AND MAX(actual_date) < ?", DateTime.now) }
-  
+  scope :past,        ->{ joins(:sections).where("MAX(actual_date) IS NOT NULL AND MAX(actual_date) < ?", DateTime.now) }  
   
   after_save :update_stats
 
@@ -99,7 +98,7 @@ class Course < ActiveRecord::Base
 
   # Returns an array of sessions, ordered by session number
   def sessions
-    if sections.blank? || (sections.length == 1 && sections[0].id.nil?)      # This handles the case of a new course with a new session & section
+    if (sections.length == 1 && sections[0].course_id.nil?)      # This handles the case of a new unattached session
       sesh = { sections[0].session => [sections[0]] }
     else
       sesh = sections.order(:session).group_by(&:session)

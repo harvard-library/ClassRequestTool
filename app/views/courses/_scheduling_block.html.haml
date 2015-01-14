@@ -6,7 +6,7 @@
       = link_to image_tag('calendar_icon.png', :class => "cal-icon")+ " View Calendar to see availability", "#{@course.repository.calendar}", |
         :onclick=>"window.open(this.href,'view_calendar', 'height=600, width=600');return false;"                                             |
 .form_full_width.sessions
-  - @course.sessions.each do |i, sesh|    
+  - @course.sessions.each do |i, sesh|
     = render :partial => 'session_block', :locals => { :sesh => sesh, :session_count => i }
 
 .form_full_width
