@@ -19,6 +19,14 @@ $(function () {
 
   var today = new Date();
 
+  /* Set up required content warnings */
+  $('.required input').each(function(i) {
+    $('#missing-fields').append('<div class="alert alert-danger" id="warning_' + $(this).attr('id') + '">Missing field: ' + $(this).closest('.required').find('label').text().replace(': *','') + '</div>');
+    if ($(this).val()) {
+      $('#missing-fields #warning_' + $(this).attr('id')).hide();
+    }
+  });
+
   /* courses#(new|edit) */
   if ($('body').hasClass('c_courses') &&  ($('body').hasClass('a_edit') || $('body').hasClass('a_new'))) {
 
@@ -206,6 +214,17 @@ $(function () {
     } else {
       $('#local_no_or_other').slideUp();
       $('#other_affiliation').val('')    
+    }
+  });
+  
+  /* Check required fields to make sure they have something in them */
+  $('body').on('change', '.required input', function(e) {
+    $input = $(e.currentTarget);
+    console.log(e.currentTarget);
+    if ($input.val()) {
+      $('#missing-fields #warning_' + $input.attr('id')).hide();
+    } else {
+      $('#missing-fields #warning_' + $input.attr('id')).show();  
     }
   });
   

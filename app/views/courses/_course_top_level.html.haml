@@ -37,5 +37,6 @@
       #course_info= render :partial => 'course_info', :locals=>{:f=>f}
       #involvement_info= render :partial => 'course_staff_involvement', :locals=>{:f=>f}
       #scheduling_info= render :partial => 'course_scheduling', :locals=>{:f=>f}
+    #missing-fields
     = f.actions do
       = f.action :submit, :as => :button, :label => 'new' == controller.action_name ? 'Create Request' : 'Update Request',  :button_html =>{:class => "btn btn-primary"}
