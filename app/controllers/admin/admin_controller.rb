@@ -61,6 +61,14 @@ class Admin::AdminController < ApplicationController
     flash[:alert] = flash[:alert].html_safe
     redirect_to :back
   end
+  
+  def clear_mail_queue
+    if Delayed::Job.destroy_all
+      render :json => { ok: true }
+    else
+      render :nothing
+    end
+  end
 
   private
     def admins_only

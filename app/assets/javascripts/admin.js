@@ -53,4 +53,14 @@ $(function() {
         break;
     } 
   });
+  $('body').on('click', '#clear-mail-queue', function(e) {
+    e.preventDefault();
+    $.get('/admin/clear_mail_queue', function(data) {
+      if (data.ok) {
+        $('#mail-queue-info').fadeOut(function() {
+          $('#mail-queue-info').html('<p>There are no jobs in the mail queue.</p>').fadeIn();
+        });
+      }
+    });
+  }); 
 });

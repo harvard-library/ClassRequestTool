@@ -60,7 +60,7 @@ module CoursesHelper
     if date.nil?
       "<span class='glyphicon glyphicon-minus-sign nil'></span>"
     else
-      "<span class='glyphicon #{date > DateTime.now ? 'glyphicon-arrow-up upcoming' : 'glyphicon-arrow-down past'}'></span>"
+      "<span class='glyphicon #{date > DateTime.now ? 'glyphicon-upload upcoming' : 'glyphicon-download past'}'></span>"
     end
   end
 end

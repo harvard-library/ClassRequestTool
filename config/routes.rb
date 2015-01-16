@@ -53,6 +53,7 @@ ClassRequestTool::Application.routes.draw do
     get   'send_test_email',                    to: 'admin#send_test_email'
     get   'update_stats',                       to: 'admin#update_stats'
     get   'harvard_colors',                     to: 'admin#harvard_colors'
+    get   'clear_mail_queue',                   to: 'admin#clear_mail_queue'
     namespace :notifications do
       match 'preview(/:action(/:id(.format)))',     to: 'notification#:action'
       get 'toggle',                                 to: 'notification#toggle_notifications'   # AJAX route 

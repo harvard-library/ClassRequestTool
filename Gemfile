@@ -58,6 +58,7 @@ group :development do
   gem 'capistrano-bundler','~> 1.1.2'
   gem 'better_errors'
   gem 'binding_of_caller'
+  gem 'puma'
 end
 
 gem 'jquery-rails', '~> 3.1.0'
