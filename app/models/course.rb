@@ -10,7 +10,8 @@ class Course < ActiveRecord::Base
                    :pre_class_appt, :timeframe, :timeframe_2, :timeframe_3, :timeframe_4, :duration, #concrete schedule vals
                    :time_choice_1, :time_choice_2, :time_choice_3, :time_choice_4, # tentative schedule vals
                    :pre_class_appt_choice_1, :pre_class_appt_choice_2, :pre_class_appt_choice_3, #unused
-                   :section_count, :session_count, :total_attendance  # stats
+                   :section_count, :session_count, :total_attendance,  # stats
+                   :first_date, :last_date, :scheduled
                    )
 
   has_and_belongs_to_many :users

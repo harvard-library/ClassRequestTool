@@ -225,11 +225,15 @@ class CoursesController < ApplicationController
   end  
 
   def index
-    @courses_all = Course.ordered_by_last_section.all #.all required due to AR inelegance (count drops the select off of ordered_by_last_section)
-    @courses_mine_current = Course.user_is_patron(current_user.email).upcoming.ordered_by_last_section
-    @courses_mine_past = Course.user_is_patron(current_user.email).past.ordered_by_last_section
+    if current_user.can_admin?
+      @courses = Course.ordered_by_last_section #.all required due to AR inelegance (count drops the select off of ordered_by_last_section)
+      @csv = params[:csv]
+    elsif current_user.patron?
+      @courses = Course.user_is_patron(current_user.email).ordered_by_last_section
+    end
     @repositories = Repository.order('name ASC')
-    @csv = params[:csv]
+    @admin = current_user.can_admin?
+    @patron = current_user.patron?
   end
 
   def new
