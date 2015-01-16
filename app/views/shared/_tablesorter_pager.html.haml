@@ -5,9 +5,5 @@
     %span.pagedisplay
     = image_tag "pager/next.png", :class => "next"
     = image_tag "pager/last.png", :class => "last"
-    - if pager_id == "users-table"
-      Per Page: #{select_tag "people", "<option>5</option><option>10</option><option>20</option><option>30</option><option selected='selected'>40</option>".html_safe, class: 'pagesize'}
-    - elsif pager_id == "your-repo-courses-table" || pager_id == "homeless-table" || pager_id == "your-unscheduled-table" || pager_id == "unassigned-table" || pager_id == "your-upcoming-table" || pager_id == "roomless-table" || pager_id == "your-to-close-table" || pager_id == "your-past-table"
-      Per Page: #{select_tag "people", "<option selected='selected'>5</option><option>10</option><option>20</option><option>30</option><option>40</option>".html_safe, class: 'pagesize'}
-    - else
-      Per Page: #{select_tag "people", "<option>5</option><option selected='selected'>10</option><option>20</option><option>30</option><option>40</option>".html_safe, class: 'pagesize'}
+    Per page:
+    = pager_options_select(pager_id)

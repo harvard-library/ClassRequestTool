@@ -37,21 +37,18 @@ class Course < ActiveRecord::Base
 
   mount_uploader :syllabus, SyllabusUploader
   
-  scope :unclaimed,   ->{ where(primary_contact_id: nil) }
-  scope :claimed,     ->{ where('primary_contact_id IS NOT NULL') }
-  scope :unscheduled, ->{ where(:scheduled => true) }
-  scope :scheduled,   ->{ where(:scheduled => true) }
-  scope :with_status, ->(status) { where(status: status) }
-  scope :upcoming,    ->{ where("last_date > ?", DateTime.now) }
-  scope :past,        ->{ where("last_date < ?", DateTime.now) }  
-  scope :user_is_patron,
-                        ->(email){ where(:contact_email => email) }
-  scope :user_is_primary_staff,
-                        ->(id){ where(:primary_contact_id => id) }
-  scope :user_is_staff,
-                        ->(id_array){ where(:repository_id => id_array) }
-  scope :ordered_by_last_section
-                        ->{ order(:last_date => :desc) }  
+  scope :unclaimed,             ->{ where(primary_contact_id: nil) }
+  scope :claimed,               ->{ where('primary_contact_id IS NOT NULL') }
+  scope :unscheduled,           ->{ where(:scheduled => false) }
+  scope :scheduled,             ->{ where(:scheduled => true) }
+  scope :with_status,           ->(status) { where(status: status) }
+  scope :upcoming,              ->{ where("last_date > ?", DateTime.now) }
+  scope :past,                  ->{ where("last_date < ?", DateTime.now) }  
+  scope :user_is_patron,        ->(email){ where(:contact_email => email) }
+  scope :user_is_primary_staff, ->(id){ where(:primary_contact_id => id) }
+  scope :user_is_staff,         ->(id_array){ where(:repository_id => id_array) }
+  scope :order_by_first_date,   ->{ order('first_date DESC NULLS LAST') }  
+  scope :order_by_last_date,    ->{ order('last_date DESC NULLS LAST') }  
 
 
   after_save :update_stats
@@ -72,19 +69,19 @@ class Course < ActiveRecord::Base
   #    or an error will be thrown, because actual_date doesn't exist in the final relation/select
   #    .limit is affected for performance reasons.
   # e.g.
-  #    You should prefer Course.limit(10).ordered_by_last_section to Course.ordered_by_last_section.limit(10)
+  #    You should prefer Course.limit(10).order_by_last_date to Course.order_by_last_date.limit(10)
   # and
-  #    Course.ordered_by_last_section.having('ANY_SQL_REFERENCING(actual_date)') will throw an exception,
-  def self.ordered_by_last_section
-    inner_scope = joins('LEFT OUTER JOIN sections ON sections.course_id = courses.id').
-      group('courses.id').order('MAX(actual_date) DESC NULLS LAST, courses.created_at DESC')
-    self.unscoped do
-      from(inner_scope.as(table_name))
-    end
-  end
+  #    Course.order_by_last_date.having('ANY_SQL_REFERENCING(actual_date)') will throw an exception,
+#   def self.order_by_last_date
+#     inner_scope = joins('LEFT OUTER JOIN sections ON sections.course_id = courses.id').
+#       group('courses.id').order('MAX(actual_date) DESC NULLS LAST, courses.created_at DESC')
+#     self.unscoped do
+#       from(inner_scope.as(table_name))
+#     end
+#   end
 
   def self.homeless
-    where(:status => 'Homeless').ordered_by_last_section
+    where(:status => 'Homeless').order_by_last_date
   end
 
   # Headcounts represent after-the-fact, definite attendance numbers

@@ -42,5 +42,25 @@ module CoursesHelper
     end
     sections.sort! { |a, b| a.requested_dates[0] <=> b.requested_dates[0] }
   end
-
+  
+  def date_range(course)
+    if course.first_date.blank?
+      range = '(Not set)'
+    else 
+      range = course.first_date.strftime('%m/%d/%Y')
+    end
+    
+    unless course.last_date.blank? || (course.last_date == course.first_date)
+      range += "&mdash;#{course.last_date.strftime('%m/%d/%Y')}"
+    end
+    range
+  end
+  
+  def upcoming_or_past(date)
+    if date.nil?
+      "<span class='glyphicon glyphicon-minus-sign nil'></span>"
+    else
+      "<span class='glyphicon #{date > DateTime.now ? 'glyphicon-arrow-up upcoming' : 'glyphicon-arrow-down past'}'></span>"
+    end
+  end
 end

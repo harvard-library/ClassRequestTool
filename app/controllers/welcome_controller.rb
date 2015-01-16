@@ -3,11 +3,7 @@ class WelcomeController < ApplicationController
 
   def index
     @repositories = Repository.order(:name)
-    @courses = Course.
-      where(:status => 'Closed').
-      having("MAX(actual_date) IS NOT NULL AND MAX(actual_date) < ?", DateTime.now).
-      limit(10).
-      ordered_by_last_section
+    @courses = Course.with_status('Closed').past.limit(10).order_by_last_date
   end
 
   def dashboard
@@ -16,9 +12,9 @@ class WelcomeController < ApplicationController
     @scheduled_unclaimed = Course.scheduled.unclaimed
 
     @your_upcoming         = Course.user_is_primary_staff(current_user.id).scheduled.claimed.upcoming
-    @your_past             = Course.user_is_primary_staff(current_user.id).with_status('Closed').ordered_by_last_section
-    @your_unscheduled      = Course.user_is_primary_staff(current_user.id).scheduled.unclaimed.upcoming.ordered_by_last_section
-    @your_repo_courses     = Course.user_is_primary_staff(current_user.id).upcoming.ordered_by_last_section
+    @your_past             = Course.user_is_primary_staff(current_user.id).with_status('Closed').order_by_last_date
+    @your_unscheduled      = Course.user_is_primary_staff(current_user.id).scheduled.unclaimed.upcoming.order_by_last_date
+    @your_repo_courses     = Course.user_is_primary_staff(current_user.id).upcoming.order_by_last_date
     @your_classes_to_close = Course.user_is_primary_staff(current_user.id).with_status('Active').past
   end  
 end

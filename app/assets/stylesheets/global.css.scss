@@ -245,3 +245,17 @@ h1.tool-title {
   margin: 0 0 3px 4px;
   padding: 0;
 }
+.glyphicon {
+  &.upcoming {
+    color: $ivy;
+    font-size: 1.2em
+  }
+  &.past {
+    color: $shade;
+    font-size: 1.2em
+  }
+  &.nil {
+    color: red;
+    font-size: 1.2em
+  }
+}

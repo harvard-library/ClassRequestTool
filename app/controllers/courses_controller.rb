@@ -226,14 +226,19 @@ class CoursesController < ApplicationController
 
   def index
     if current_user.can_admin?
-      @courses = Course.ordered_by_last_section #.all required due to AR inelegance (count drops the select off of ordered_by_last_section)
+      @course_list = Course.order_by_first_date 
+      @nil_date_warning = false
+      @course_list.reverse.each do |c|
+        if c.last_date.nil?
+          @nil_date_warning = true
+          break
+        end
+      end
       @csv = params[:csv]
     elsif current_user.patron?
-      @courses = Course.user_is_patron(current_user.email).ordered_by_last_section
+      @course_list = Course.user_is_patron(current_user.email).order_by_last_date
     end
     @repositories = Repository.order('name ASC')
-    @admin = current_user.can_admin?
-    @patron = current_user.patron?
   end
 
   def new

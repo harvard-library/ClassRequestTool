@@ -1,11 +1,13 @@
-- today = Time.now
+- today = DateTime.now
 %div
-  - if @patron
+  - if current_user.patron?
     %h3 My Classes
   - else
     %h3 All Classes
-    - if @admin
+    - if current_user.can_admin?
       %h4= link_to('Export Courses to CSV', export_courses_path(:format => :csv))
+      - if @nil_date_warning
+        .alert.alert-warning There are classes without requested or actual dates at the end of this list.
       
   %p To submit a new class, choose a Library/Archive:
   = form_tag new_course_path, :method => :get do
@@ -13,36 +15,52 @@
       = select_tag :repository, options_from_collection_for_select(@repositories, "id", "name"), :class => 'input select form-control', :prompt => "Not Sure - Help me Choose"
       = submit_tag "Go", :class => 'btn btn-primary'
       
-  - unless @courses.empty?  
+  %br/
+  - unless @course_list.empty?
+    - if current_user.can_admin?
+      %p
+        %em
+          (
+          Upcoming course:
+          %span.glyphicon.glyphicon-arrow-up.upcoming
+          &nbsp;&nbsp;&nbsp;&nbsp;Past course:
+          %span.glyphicon.glyphicon-arrow-down.past
+          &nbsp;&nbsp;&nbsp;&nbsp;Course with no dates:
+          %span.glyphicon.glyphicon-minus-sign.nil
+          )
+       
     %table#course-table-current.table.table-striped.table-condensed.tablesorter
       %thead
         %tr
+          %th
           %th Name
           %th Submission Date
-          %th Class Date(s)
+          %th Date Range
           %th Repository
-          - if @admin
+          - if current_user.can_admin?
             %th Status
             %th Requester
             %th Actions
           %th.hidden Search fodder
       %tbody
-        - @courses.each do |course|
-          %tr{ :class => (course.last_date.nil? || (course.last_date > today)) ? 'upcoming' : 'past' }
-            %td= link_to(course.title, course )
-            %td= course.created_at.strftime('%m/%d/%Y')
-            = render :partial => '/shared/course_sections_td', :locals => {:course => course }
-            / <td><haml:loud> course.sections.first.try(:actual_date).try(:strftime, &amp;#39;%m/%d/%Y %I:%M %P&amp;#39;) unless course.sections.first.try(:actual_date).nil? </haml:loud></td>
-            %td= course.repo_name
-            - if @admin
-              %td= full_status(course)
-              %td= course.contact_last_name
+        - @course_list.each do |c|
+          %tr
+            %td= upcoming_or_past(c.last_date).html_safe
+            %td= link_to(c.title, c )
+            %td= c.created_at.strftime('%m/%d/%Y')
+            %td= date_range(c).html_safe
+            %td= c.repo_name
+            - if current_user.admin?
+              %td= full_status(c)
+              %td= c.contact_last_name
               %td
-                = render :partial => 'shared/course_actions', :locals => { :course => course }
-            %td.hidden= searchable_fields(course)
-      %br/
-      = render :partial => '/shared/tablesorter_pager', :locals => {:pager_id => "course-table-current" }
-      %br/
-      %br/
+                = render :partial => 'shared/course_actions', :locals => { :course => c }
+            %td.hidden= searchable_fields(c)
+    = render :partial => '/shared/tablesorter_pager', :locals => {:pager_id => "course-table-current" }
+    %br/
+    %br/
   - else
-    None yet.
+    - if current_user.can_admin?
+      %p There are no classes yet.
+    - elsif current_user.patron?
+      %p You have no classes yet.

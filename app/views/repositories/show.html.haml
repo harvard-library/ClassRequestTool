@@ -87,7 +87,7 @@
         %th Class Date
         - if current_user.can_admin?
           %th Actions
-      - @repository.courses.ordered_by_last_section.limit(20).each do |course|
+      - @repository.courses.order_by_last_date.limit(20).each do |course|
         %tr
           %td= link_to(course.title, course )
           = render :partial => '/shared/course_sections_td', :locals => {:course => course }
