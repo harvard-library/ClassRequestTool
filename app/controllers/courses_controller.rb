@@ -226,8 +226,8 @@ class CoursesController < ApplicationController
 
   def index
     @courses_all = Course.ordered_by_last_section.all #.all required due to AR inelegance (count drops the select off of ordered_by_last_section)
-    @courses_mine_current = current_user.mine_current
-    @courses_mine_past = current_user.mine_past
+    @courses_mine_current = Course.user_is_patron(current_user.email).upcoming.ordered_by_last_section
+    @courses_mine_past = Course.user_is_patron(current_user.email).past.ordered_by_last_section
     @repositories = Repository.order('name ASC')
     @csv = params[:csv]
   end
@@ -400,5 +400,5 @@ class CoursesController < ApplicationController
     respond_to do |format|
       format.html { redirect_to dashboard_welcome_index_url, notice: 'Class was successfully claimed.' }
     end
-  end
+  end  
 end

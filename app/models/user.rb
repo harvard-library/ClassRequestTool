@@ -75,45 +75,6 @@ class User < ActiveRecord::Base
     chars = (('a'..'z').to_a + ('0'..'9').to_a) - %w(i o 0 1 l 0)
     (1..size).collect{|a| chars[rand(chars.size)] }.join
   end
-
-  def upcoming_courses
-    (Course.where(:status => 'Scheduled, Claimed', :primary_contact_id => id).ordered_by_last_section +
-     courses.where(:status => 'Scheduled, Claimed').ordered_by_last_section).uniq
-  end
-
-  def past_courses
-    (Course.where(:status => 'Closed', :primary_contact_id => id).ordered_by_last_section +
-     courses.where(:status => 'Closed').ordered_by_last_section).uniq
-  end
-
-  def unscheduled_courses
-    (Course.where(:status => 'Claimed, Unscheduled', :primary_contact_id => id).ordered_by_last_section +
-     courses.where(:status => "Claimed, Unscheduled").ordered_by_last_section).uniq
-  end
-
-  def mine_current
-    Course.where(:contact_email => self.email).
-      having('MAX(actual_date) >= ?', DateTime.now).
-      ordered_by_last_section
-  end
-
-  def mine_past
-    Course.where(:contact_email => self.email).
-      having('MAX(actual_date) IS NOT NULL and MAX(actual_date) < ?', DateTime.now).
-      ordered_by_last_section
-  end
-
-  def upcoming_repo_courses
-    Course.where(:repository_id => self.repository_ids).
-      having('MAX(actual_date) IS NOT NULL AND MAX(actual_date) >= ?', DateTime.now).
-      ordered_by_last_section
-  end
-
-  def classes_to_close
-    Course.where("status <> 'Closed' AND primary_contact_id = ?", self.id).
-      having("MAX(actual_date) IS NOT NULL AND MAX(actual_date) < ?", DateTime.now).
-      ordered_by_last_section
-  end
   
   def can_admin?
     admin? || superadmin?

@@ -15,10 +15,10 @@ class WelcomeController < ApplicationController
     @unscheduled_unclaimed = Course.unscheduled.unclaimed
     @scheduled_unclaimed = Course.scheduled.unclaimed
 
-   @your_upcoming = current_user.upcoming_courses
-   @your_past = current_user.past_courses
-   @your_unscheduled = current_user.unscheduled_courses
-   @your_repo_courses = current_user.upcoming_repo_courses
-   @your_classes_to_close = current_user.classes_to_close
-  end
+    @your_upcoming         = Course.user_is_primary_staff(current_user.id).scheduled.claimed.upcoming
+    @your_past             = Course.user_is_primary_staff(current_user.id).with_status('Closed').ordered_by_last_section
+    @your_unscheduled      = Course.user_is_primary_staff(current_user.id).scheduled.unclaimed.upcoming.ordered_by_last_section
+    @your_repo_courses     = Course.user_is_primary_staff(current_user.id).upcoming.ordered_by_last_section
+    @your_classes_to_close = Course.user_is_primary_staff(current_user.id).with_status('Active').past
+  end  
 end
