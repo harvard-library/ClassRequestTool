@@ -36,21 +36,27 @@ class Course < ActiveRecord::Base
 
   mount_uploader :syllabus, SyllabusUploader
   
-  default_scope group('courses.id').order('courses.created_at DESC')
   scope :unclaimed,   ->{ where(primary_contact_id: nil) }
   scope :claimed,     ->{ where('primary_contact_id IS NOT NULL') }
-  scope :unscheduled, ->{ joins(:sections).where('sections.actual_date IS NULL') }
-  scope :scheduled,   ->{ joins(:sections).where('actual_date IS NOT NULL') }
+  scope :unscheduled, ->{ where(:scheduled => true) }
+  scope :scheduled,   ->{ where(:scheduled => true) }
   scope :with_status, ->(status) { where(status: status) }
-  scope :upcoming,    ->{ joins(:sections).where("MAX(actual_date) IS NOT NULL AND MAX(actual_date) > ?", DateTime.now) }
-  scope :past,        ->{ joins(:sections).where("MAX(actual_date) IS NOT NULL AND MAX(actual_date) < ?", DateTime.now) }  
-  
+  scope :upcoming,    ->{ where("last_date > ?", DateTime.now) }
+  scope :past,        ->{ where("last_date < ?", DateTime.now) }  
+  scope :user_is_patron,
+                        ->(email){ where(:contact_email => email) }
+  scope :user_is_primary_staff,
+                        ->(id){ where(:primary_contact_id => id) }
+  scope :user_is_staff,
+                        ->(id_array){ where(:repository_id => id_array) }
+  scope :ordered_by_last_section
+                        ->{ order(:last_date => :desc) }  
+
+
   after_save :update_stats
 
   
-  STATUS = ['Active', 'Cancelled', 'Closed']
-  
-#  STATUS = ['Scheduled, Unclaimed', 'Scheduled, Claimed', 'Claimed, Unscheduled', 'Unclaimed, Unscheduled', 'Homeless', 'Cancelled', 'Closed']
+  STATUS = ['Active', 'Cancelled', 'Closed']  
   validates_inclusion_of :status, :in => STATUS
 
   # Note: DO NOT replace MAX(actual_date) with alias, .count will error out
@@ -109,22 +115,7 @@ class Course < ActiveRecord::Base
   def repo_name
     self.repository.blank? ? 'Unassigned' : self.repository.name
   end
-  
-  def scheduled?
-    if self.sections.blank?
-      secheduled = false
-    else
-      scheduled = true
-      self.sections.each do |section|
-        if section.actual_date.blank?
-          scheduled = false
-          break;
-        end
-      end
-    end
-    scheduled
-  end
-  
+    
   def claimed?
     not(self.primary_contact.blank?)
   end
@@ -135,29 +126,49 @@ class Course < ActiveRecord::Base
   
   # Quick update of course stats with direct db query
   def update_stats
-    nsections   = self.sections.select{ |s| 1 == s.session }.count
-    nsessions   = self.session_count = self.sections.map{ |s| s.session }.max.to_i
-    nattendance  = self.sections.inject(0){ |sum, s| sum + s.headcount.to_i }
-   
-    connection = ActiveRecord::Base.connection
-    sql = %Q(UPDATE "courses" SET section_count=#{nsections}, session_count=#{nsessions}, total_attendance=#{nattendance} WHERE courses.id=#{self.id})
-    connection.execute( sql )
-
-# 
-#     self.update_columns({ 
-#       :section_count    => self.sections.select{ |s| 1 == s.session }.count,            # Assumes that the first session gives the correct section count
-#       :session_count    => self.session_count = self.sections.map{ |s| s.session }.max, # Looks for the max session number to give the number of unique sessions
-#       :total_attendance => self.sections.inject{ |sum, s| sum + s.headcount }           # Just sums the headcount for each section/sesssion 
-#     })
+  
+    # Update section and session numbers
+    nsections = nsessions = nattendance = 0
+    
+    # First and last dates
+    first_date = last_date = nil
+    
+    # Scheduled
+    scheduled = true
+    self.sections.each do |s|
+      nsections += 1 if s.session == 1
+      nsessions = s.session.to_i if s.session > nsessions
+      nattendance += s.headcount.to_i
+      if s.actual_date
+        first_date = s.actual_date if (first_date.nil? || s.actual_date < first_date)
+        last_date = s.actual_date if (last_date.nil? || s.actual_date > last_date)
+      elsif s.requested_dates
+        scheduled = false
+        requested_dates = s.requested_dates.reject { |d| d.blank? }.sort        
+        first_date  = requested_dates.first if (first_date.nil? || requested_dates.first < first_date)
+        last_date   = requested_dates.last if (last_date.nil? || requested_dates.last > last_date)
+      else
+        scheduled = false
+      end
+    end
+    
+    # Use update_column to avoid autosave issues
+    self.update_column(:section_count, nsections)
+    self.update_column(:session_count, nsessions)
+    self.update_column(:total_attendance, nattendance)
+    self.update_column(:first_date, first_date) unless first_date.nil?
+    self.update_column(:last_date, last_date) unless first_date.nil?
+    self.update_column(:scheduled, scheduled)
   end
   
   # Class functions
   def self.update_all_stats
-    Course.all.each do |course|
+    courses = Course.all
+    courses.each do |course|
       course.update_stats
     end
   end
-  
+    
   # Internal class for attaching functions to sessions
   class Session < Array
     def headcount
