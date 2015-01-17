@@ -9,4 +9,4 @@
   %br/
   Course Number: #{@course.course_number unless @course.course_number.nil?}
   %br/
-  Date of Class: #{@course.sections.first.try(:actual_date).try(:strftime, '%m/%d/%Y') unless @course.sections.first.try(:actual_date).nil?}
+  Date of Class: #{@course.sections.first.try(:actual_date).try(:strftime, DATE_FORMAT) unless @course.sections.first.try(:actual_date).nil?}

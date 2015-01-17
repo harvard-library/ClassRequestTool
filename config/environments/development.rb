@@ -44,4 +44,18 @@ ClassRequestTool::Application.configure do
 
   BetterErrors::Middleware.allow_ip! '127.0.0.1' 
 
+  config.after_initialize do
+    Bullet.enable = true
+    Bullet.alert = true
+    Bullet.bullet_logger = true
+    Bullet.console = true
+    Bullet.growl = true
+    Bullet.xmpp = false
+    Bullet.rails_logger = false
+    Bullet.bugsnag = false
+    Bullet.airbrake = false
+    Bullet.add_footer = true
+    Bullet.stacktrace_includes = false
+  end
 end
+

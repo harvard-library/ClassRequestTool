@@ -235,4 +235,18 @@ $(function () {
     $('#course_users_input .checkbox').show();
     $('.checkbox input#course_user_ids_' + userId).parent().parent().parent().hide();
   });
+  
+  /* qtip for classes with multiple sections */
+  var tooltips = $('.section-times .glyphicon-th-list').each (function() {
+    var html = $(this).data('section_list');
+    $(this).qtip({
+      content: {
+        title: '<b>All scheduled sections<b>',
+        text: html
+      },
+      style: {
+        classes: 'qtip-bootstrap'
+      }
+    });
+  });
 });

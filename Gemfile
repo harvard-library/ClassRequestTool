@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'rails', '3.2.20'
-
+gem 'stackprof'                  # For ruby 2.1
 gem 'dotenv-rails', '~> 0.10.0'
 gem 'therubyracer'
 gem 'devise', '3.1.1'
@@ -24,6 +24,7 @@ gem 'devise_harvard_auth_proxy', :git => 'https://github.com/berkmancenter/devis
 gem 'css_splitter'
 gem 'haml-rails'
 gem 'cocoon'
+gem 'jquery-qtip2-rails'
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -59,6 +60,12 @@ group :development do
   gem 'better_errors'
   gem 'binding_of_caller'
   gem 'puma'
+  
+  # Performance analysis
+  gem 'bullet'
+  gem 'rack-mini-profiler', require: false
+  gem 'flamegraph'
+  gem 'ruby-growl'
 end
 
 gem 'jquery-rails', '~> 3.1.0'

@@ -13,7 +13,7 @@ module CoursesHelper
   def display_with_tz(date)
     date
       .try(:in_time_zone, Rails.configuration.time_zone)
-      .try(:strftime, "%Y-%m-%d %I:%M %P")
+      .try(:strftime, "#{DATE_FORMAT} #{TIME_FORMAT}")
   end
 
   def searchable_fields(course)
@@ -47,11 +47,11 @@ module CoursesHelper
     if course.first_date.blank?
       range = '(Not set)'
     else 
-      range = course.first_date.strftime('%m/%d/%Y')
+      range = course.first_date.strftime(DATE_FORMAT)
     end
     
     unless course.last_date.blank? || (course.last_date == course.first_date)
-      range += "&mdash;#{course.last_date.strftime('%m/%d/%Y')}"
+      range += "&mdash;#{course.last_date.strftime(DATE_FORMAT)}"
     end
     range
   end
@@ -63,4 +63,27 @@ module CoursesHelper
       "<span class='glyphicon #{date > DateTime.now ? 'glyphicon-upload upcoming' : 'glyphicon-download past'}'></span>"
     end
   end
+  
+  def first_plus_multiple_sections(sections)
+    if sections.nil?
+      return "<div class='alert alert-danger'>No sections!</div>"
+    end
+    multiple_sections = []
+    scheduled_sections = sections.reject { |s| s.actual_date.blank? }
+    scheduled_sections.sort_by!{ |s| [s.session, s.actual_date]  }
+
+    # Always list first scheduled section date
+    html = "#{scheduled_sections[0].nil? ? '(Unscheduled)' : scheduled_sections[0].actual_date.strftime("#{DATE_FORMAT} #{TIME_FORMAT}")}\n"
+    if scheduled_sections.count > 1
+      html += '<span class="glyphicon glyphicon-th-list" '
+      scheduled_sections.each do |s|
+        multiple_sections << "<li class='list-group-item'>Session #{s.session}: #{s.actual_date.strftime("#{DATE_FORMAT} #{TIME_FORMAT}")}</li>"
+      end
+      html += "data-section_list=\"<ul class='list-group'>\n#{multiple_sections.join("\n")}\n</ul>\"></span>\n"
+    end
+    if sections.count > 1 && (sections.count - scheduled_sections.count > 0) 
+      html += "<div class='alert alert-warning'>#{pluralize(sections.count - scheduled_sections.count, 'section')} of #{sections.count} unscheduled</div>"
+    end
+    html
+  end  
 end

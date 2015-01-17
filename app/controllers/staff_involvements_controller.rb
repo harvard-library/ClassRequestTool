@@ -4,7 +4,7 @@ class StaffInvolvementsController < ApplicationController
   before_filter :authenticate_admin_or_staff!
   
   def index
-    @staff_involvements = StaffInvolvement.order('involvement_text')
+    @staff_involvements = StaffInvolvement.order('involvement_text').includes(:repositories)
   end  
   
   def new

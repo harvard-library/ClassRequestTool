@@ -87,10 +87,10 @@
         %th Class Date
         - if current_user.can_admin?
           %th Actions
-      - @repository.courses.order_by_last_date.limit(20).each do |course|
+      - @repository.courses.order_by_last_date.limit(20).includes(:sections).each do |course|
         %tr
           %td= link_to(course.title, course )
-          = render :partial => '/shared/course_sections_td', :locals => {:course => course }
+          %td.section-times= first_plus_multiple_sections(course.sections).html_safe
           %td= link_to('Edit', edit_course_path(course), :class => "action-edit")
           - if current_user.can_admin?
             %td

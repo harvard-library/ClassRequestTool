@@ -23,4 +23,5 @@
 //= require highcharts/highcharts-more
 //= require ckeditor/init
 //= require cocoon
+//= require jquery.qtip.js
 //= require_tree .

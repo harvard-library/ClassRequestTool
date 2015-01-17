@@ -226,7 +226,7 @@ class CoursesController < ApplicationController
 
   def index
     if current_user.can_admin?
-      @course_list = Course.order_by_first_date 
+      @course_list = Course.order_by_first_date.includes(:repository, :sections)
       @nil_date_warning = false
       @course_list.reverse.each do |c|
         if c.last_date.nil?
@@ -236,7 +236,7 @@ class CoursesController < ApplicationController
       end
       @csv = params[:csv]
     elsif current_user.patron?
-      @course_list = Course.user_is_patron(current_user.email).order_by_last_date
+      @course_list = Course.user_is_patron(current_user.email).order_by_last_date.includes(:repository)
     end
     @repositories = Repository.order('name ASC')
   end

@@ -7,14 +7,31 @@ class WelcomeController < ApplicationController
   end
 
   def dashboard
-    @homeless = Course.homeless
-    @unscheduled_unclaimed = Course.unscheduled.unclaimed
-    @scheduled_unclaimed = Course.scheduled.unclaimed
-
-    @your_upcoming         = Course.user_is_primary_staff(current_user.id).scheduled.claimed.upcoming
-    @your_past             = Course.user_is_primary_staff(current_user.id).with_status('Closed').order_by_last_date
-    @your_unscheduled      = Course.user_is_primary_staff(current_user.id).scheduled.unclaimed.upcoming.order_by_last_date
-    @your_repo_courses     = Course.user_is_primary_staff(current_user.id).upcoming.order_by_last_date
-    @your_classes_to_close = Course.user_is_primary_staff(current_user.id).with_status('Active').past
+    @homeless               = []
+    @unscheduled_unclaimed  = []
+    @scheduled_unclaimed    = []
+    @your_upcoming          = []
+    @your_past              = []
+    @your_unscheduled       = []
+    @your_repo_courses      = []
+    @your_classes_to_close  = []
+    
+    Course.order_by_last_date.includes(:repository, :sections).each do |c|
+      @homeless               << c if c.homeless?
+      @unscheduled_unclaimed  << c if !( c.scheduled? || c.claimed? )
+      @scheduled_unclaimed    << c if  ( c.scheduled? || !c.claimed? )
+      @your_upcoming          << c if  ( c.primary_contact_id == current_user.id &&
+                                         c.scheduled?                          && 
+                                         c.claimed?                            &&
+                                         c.last_date > DateTime.now
+                                       )
+      @your_past              << c if ( c.primary_contact_id == current_user.id && c.status == 'Closed' )     
+      @your_unscheduled       << c if ( c.primary_contact_id == current_user.id && !c.scheduled? )                                  
+      @your_repo_courses      << c if ( !c.repository.nil? && c.repository.user_ids.include?(current_user.id) )
+      @your_classes_to_close  << c if ( c.primary_contact_id == current_user.id &&
+                                        c.status == 'Active' &&
+                                        c.last_date < DateTime.now
+                                      )
+    end
   end  
 end

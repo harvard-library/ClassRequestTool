@@ -35,7 +35,7 @@
           %th
           %th Name
           %th Submission Date
-          %th Date Range
+          %th Date(s)
           %th Repository
           - if current_user.can_admin?
             %th Status
@@ -47,10 +47,10 @@
           %tr
             %td= upcoming_or_past(c.last_date).html_safe
             %td= link_to(c.title, c )
-            %td= c.created_at.strftime('%m/%d/%Y')
-            %td= date_range(c).html_safe
+            %td= c.created_at.strftime(DATE_FORMAT)
+            %td.section-times= first_plus_multiple_sections(c.sections).html_safe
             %td= c.repo_name
-            - if current_user.admin?
+            - if current_user.can_admin?
               %td= full_status(c)
               %td= c.contact_last_name
               %td

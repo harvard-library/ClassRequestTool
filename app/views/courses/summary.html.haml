@@ -75,7 +75,7 @@
               - elsif sect.requested_dates
                 %li
                   %span.summary-label Requested Times:
-                  = sect.requested_dates.map {|rd| rd.in_time_zone(Rails.configuration.time_zone).strftime('%m/%d/%Y %l:%M %P') }.join(', ')
+                  = sect.requested_dates.map {|rd| rd.in_time_zone(Rails.configuration.time_zone).strftime("#{DATE_FORMAT} #{TIME_FORMAT}") }.join(', ')
 
   %br/
   Class Duration: #{pluralize(@course.duration, 'hour') unless @course.duration.nil?}

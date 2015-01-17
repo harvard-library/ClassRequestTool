@@ -37,6 +37,7 @@ class Course < ActiveRecord::Base
 
   mount_uploader :syllabus, SyllabusUploader
   
+  scope :includes,              ->(association) { includes(association) }
   scope :unclaimed,             ->{ where(primary_contact_id: nil) }
   scope :claimed,               ->{ where('primary_contact_id IS NOT NULL') }
   scope :unscheduled,           ->{ where(:scheduled => false) }
@@ -115,7 +116,7 @@ class Course < ActiveRecord::Base
   end
     
   def claimed?
-    not(self.primary_contact.blank?)
+    not(self.primary_contact_id.blank?)
   end
   
   def homeless?

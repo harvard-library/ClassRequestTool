@@ -90,17 +90,17 @@
     - if !@course.pre_class_appt.nil?
       %li
         %span.summary-label Pre-Class Appt:
-        = @course.pre_class_appt.strftime('%m/%d/%Y %I:%M %P') unless @course.pre_class_appt.nil?
+        = @course.pre_class_appt.strftime("#{DATE_FORMAT} #{TIME_FORMAT}") unless @course.pre_class_appt.nil?
     - elsif !@course.pre_class_appt_choice_1.nil? || !@course.pre_class_appt_choice_2.nil? || !@course.pre_class_appt_choice_3.nil?
       %li
         %span.summary-label Choice 1:
-        = @course.pre_class_appt_choice_1.strftime('%m/%d/%Y %I:%M %P') unless @course.pre_class_appt_choice_1.nil?
+        = @course.pre_class_appt_choice_1.strftime("#{DATE_FORMAT} #{TIME_FORMAT}") unless @course.pre_class_appt_choice_1.nil?
       %li
         %span.summary-label Choice 2:
-        = @course.pre_class_appt_choice_2.strftime('%m/%d/%Y %I:%M %P') unless @course.pre_class_appt_choice_2.nil?
+        = @course.pre_class_appt_choice_2.strftime("#{DATE_FORMAT} #{TIME_FORMAT}") unless @course.pre_class_appt_choice_2.nil?
       %li
         %span.summary-label Choice 3:
-        = @course.pre_class_appt_choice_3.strftime('%m/%d/%Y %I:%M %P') unless @course.pre_class_appt_choice_3.nil?
+        = @course.pre_class_appt_choice_3.strftime("#{DATE_FORMAT} #{TIME_FORMAT}") unless @course.pre_class_appt_choice_3.nil?
     - else
       %li To be scheduled, if required.
   %h4 Scheduling
@@ -123,13 +123,13 @@
                   %span.summary-label Actual Date:
                   - if aeon_timeframe_emitted
                     %span#timeframe
-                      = sect.try(:actual_date).try(:in_time_zone, Rails.configuration.time_zone).try(:strftime, '%m/%d/%Y %l:%M %P')
+                      = sect.try(:actual_date).try(:in_time_zone, Rails.configuration.time_zone).try(:strftime, "#{DATE_FORMAT} #{TIME_FORMAT}")
                 - aeon_timeframe_emitted = true
               - elsif sect.requested_dates
                 %li
                   %span.summary-label 
                     Requested Times:
-                  = sect.requested_dates.map {|rd| rd.in_time_zone(Rails.configuration.time_zone).strftime('%m/%d/%Y %l:%M %P') }.join(', ')
+                  = sect.requested_dates.map {|rd| rd.in_time_zone(Rails.configuration.time_zone).strftime("#{DATE_FORMAT} #{TIME_FORMAT}") }.join(', ')
               - if 'Closed' == @course.status
                 %li
                   %span.summary-label Headcount:

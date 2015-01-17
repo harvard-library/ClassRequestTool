@@ -4,7 +4,7 @@ class RoomsController < ApplicationController
   before_filter :authenticate_admin_or_staff!
   
   def index
-    @rooms = Room.order('name')
+    @rooms = Room.order('name').includes(:repositories, :item_attributes)
   end  
   
   def new

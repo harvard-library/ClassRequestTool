@@ -4,7 +4,7 @@
       %p
         = note.note_text
       %p
-        %em #{note.user.full_name unless note.user.nil?}(#{note.user.user_type unless note.user.nil?}) on: #{note.created_at.strftime('%m/%d/%Y %I:%M %P')}
+        %em #{note.user.full_name unless note.user.nil?}(#{note.user.user_type unless note.user.nil?}) on: #{note.created_at.strftime("#{DATE_FORMAT} #{TIME_FORMAT}")}
       - if current_user.staff? || current_user.can_admin?
         %br/
         = link_to "Edit", edit_note_path(note.id)
