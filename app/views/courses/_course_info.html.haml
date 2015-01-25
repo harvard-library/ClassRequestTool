@@ -10,12 +10,9 @@
         = f.input :number_of_students, :as => :number, :min => 0, :step => 1, :label => "Number of Students: ", :hint => !@course.repository.nil? && !@course.repository.class_limit.nil? && @course.repository.class_limit != 0 ? "Room capacity is #{@course.repository.class_limit unless @course.repository.nil?}. Larger groups can often be accommodated. Staff will be in touch with options." : ""
       .form_col1
         = f.input :course_number, :label => "Course Number: "
-      .form_col2
+      .form_col2.clearfix
         #affiliation.form-group
-          %label.control-label{:for => "affiliation"}
-            Is this for a
-            = $local_config[:institution]
-            class?
+          %label.control-label{:for => "affiliation"} Is this for a class at #{$local_config[:institution]}?
           %p
             = radio_button_tag :affiliation_selection, 'yes', flash[:affiliation_selection] == 'yes'
             Yes
