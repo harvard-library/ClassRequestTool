@@ -32,11 +32,12 @@
     %table#course-table-current.table.table-striped.table-condensed.tablesorter
       %thead
         %tr
-          %th
+          - if current_user.can_admin?
+            %th
           %th Name
           %th Submission Date
           %th Date(s)
-          %th Repository
+          %th Library/Archive
           - if current_user.can_admin?
             %th Status
             %th Requester
@@ -45,7 +46,8 @@
       %tbody
         - @course_list.each do |c|
           %tr
-            %td= upcoming_or_past(c.last_date).html_safe
+            - if current_user.can_admin?
+              %td= upcoming_or_past(c.last_date).html_safe
             %td= link_to(c.title, c )
             %td= c.created_at.strftime(DATE_FORMAT)
             %td.section-times= first_plus_multiple_sections(c.sections).html_safe

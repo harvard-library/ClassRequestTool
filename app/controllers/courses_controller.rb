@@ -134,11 +134,9 @@ class CoursesController < ApplicationController
           Notification.delay(:queue => 'new_requests').new_request_to_requestor(@course)
           Notification.delay(:queue => 'new_requests').new_request_to_admin(@course)
         end
-        if user_signed_in?
-          format.html { redirect_to summary_course_url(@course), notice: 'Class was successfully created.' }
-        else
-          format.html { redirect_to summary_course_url(:id => @course.id), notice: 'Class was successfully submitted for approval.' }
-        end
+        
+        format.html { redirect_to @course, notice: 'The class request was successfully submitted.' }
+        format.json { render json: @course, status: :created, location: @course }
       else
         flash.now[:error] = "Please correct the errors in the form."
 
@@ -226,7 +224,7 @@ class CoursesController < ApplicationController
 
   def index
     if current_user.can_admin?
-      @course_list = Course.order_by_first_date.includes(:repository, :sections)
+      @course_list = Course.order_by_first_date.includes(:sections, :repository)
       @nil_date_warning = false
       @course_list.reverse.each do |c|
         if c.last_date.nil?
@@ -236,7 +234,7 @@ class CoursesController < ApplicationController
       end
       @csv = params[:csv]
     elsif current_user.patron?
-      @course_list = Course.user_is_patron(current_user.email).order_by_last_date.includes(:repository)
+      @course_list = Course.user_is_patron(current_user.email).order_by_last_date.includes(:sections, :repository)
     end
     @repositories = Repository.order('name ASC')
   end
@@ -390,13 +388,6 @@ class CoursesController < ApplicationController
     end
     #render :partial => "shared/forms/course_staff_involvement"
     redirect_to new_course_path(:repository => @repository)
-  end
-
-  def summary
-    @course = Course.find(params[:id])
-    unless current_user.staff? || current_user.can_admin? || @course.contact_email == current_user.email
-       redirect_to('/') and return
-    end
   end
 
   def take

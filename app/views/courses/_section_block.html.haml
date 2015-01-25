@@ -16,7 +16,7 @@
         = hidden_field_tag :id, sect.id, :name => "#{name_prefix}[id]", :id => "#{id_prefix}_id_input", :class => 'id_val'
       = hidden_field_tag :session, this_session, :name => "#{name_prefix}[session]", :id => "#{id_prefix}_session_input", :class => 'session_val'
       .form_session_duration
-        = formtastic_wrapper('number', "Session Duration (hours): ", (text_field_tag :session_duration, (sect.session_duration.blank? ? '' : sect.session_duration), :name => "#{name_prefix}[session_duration]", :type => 'number', :id => "#{id_prefix}_session_duration", :class => 'session_duration_val form-control', :maxlength => 4, :placeholder => "e.g. 1.5", :min => 0, :max => 3, :step => 0.5, :only_integer => false)).html_safe
+        - # formtastic_wrapper('number', "Session Duration (hours): ", (text_field_tag :session_duration, (sect.session_duration.blank? ? '' : sect.session_duration), :name => "#{name_prefix}[session_duration]", :type => 'number', :id => "#{id_prefix}_session_duration", :class => 'session_duration_val form-control', :maxlength => 4, :placeholder => "e.g. 1.5", :min => 0, :max => 3, :step => 0.5, :only_integer => false)).html_safe
 
       - (0..1).each do |rd_i|
         .form_date
@@ -31,7 +31,7 @@
           = formtastic_wrapper('string', "Actual Date", (text_field_tag :actual_date, display_with_tz(sect.actual_date), :name => "#{name_prefix}[actual_date]", :id => "#{id_prefix}_actual_date", :class => 'actual-date date form-control')).html_safe
           = formtastic_wrapper('number', "Headcount (number of students attended): ", (text_field_tag :headcount, sect.headcount, :type => 'number', :name => "#{name_prefix}[headcount]", :id => "#{id_prefix}_headcount", :class => 'headcount_val form-control', :min => 0, :step => 1, :only_integer => true)).html_safe
           .select.input.optional.form-group{:id => "#{id_prefix}_room_input"}
-            - unless @course.nil?
+            - unless @course.nil? || @course.repository.nil?
               %label.control-label{:for => "#{id_prefix}_room_id"} Room Assignment (#{@course.repository.name}):
               = select_tag :room_id,                      |
                 options_from_collection_for_select(@course.repository.rooms.order(:name), :id, :name, sect.room_id), |

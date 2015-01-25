@@ -1,5 +1,14 @@
 $(function () {
 
+  manageSectionHeader = function() {
+    if ($('.panel.section').length > 1) {
+      $('.panel.section .panel-title').css({ display: 'block' });
+    } else {
+      $('.panel.section .panel-title').css({ display: 'none' });
+    }
+  }
+    
+
   nextSectionIndex = function() {
     return $('#scheduling_info .section').length;
   }
@@ -18,6 +27,8 @@ $(function () {
   }
 
   var today = new Date();
+  
+  manageSectionHeader();
 
   /* Set up required content warnings */
   $('.required input').each(function(i) {
@@ -55,8 +66,6 @@ $(function () {
     $('body').on('click', 'button.add_section', function (e) {
       e.preventDefault();
       
-      console.log('GOT HERE');
-      
       var target = e.currentTarget
 
       var nextSectionCount = $thisSession(target).find('.section').length + 1
@@ -67,6 +76,9 @@ $(function () {
           // Set duration of added section to that of first section in this session
           $sessionDurations = $thisSession(target).find('.session_duration_val');
           $sessionDurations.last().val($sessionDurations.first().val());
+          
+          manageSectionHeader();
+          
         }
       );
     });
@@ -110,6 +122,7 @@ $(function () {
           $thisSession(target).remove();
         } else {
           $thisSection(target).remove();
+          manageSectionHeader();
         }
        }
     });
@@ -169,27 +182,7 @@ $(function () {
       }
     });
   }
-  
-  /* On index display next section date and make hoverable to show all */
-  var indigo = '#293352';
-  var normalTextColor = '#434A54';
-  $('.section-times ul').each(function() {
-    if ($(this).children('li').length > 1) {
-      $(this).parent().addClass('multiple');
-    }
-  });
-  $('.section-times.multiple li').hide();
-  $('.section-times.multiple ul').each(function() {
-    $(this).children('li.future:first').show();
-  });
-  $('.section-times.multiple').append('<span class="glyphicon glyphicon-th-list"></span>');
-  $('.section-times.multiple .glyphicon').mouseenter(
-    function() { $(this).siblings().children().slideDown(); $(this).siblings().children('.future').css({'font-weight':'bold', 'color': indigo}); }
-  );
-  $('.section-times.multiple').mouseleave(
-    function() { $(this).children('ul').children('li').not('li.future:first').slideUp(); $(this).children('ul').children('li').css({'font-weight':'normal', 'color':normalTextColor}); }
-  );
-  
+    
   /* Handle affiliation code on course request form */
   $('#affiliation .affiliation_field').hide();
   $('#affiliation input[type=radio]:checked').val();

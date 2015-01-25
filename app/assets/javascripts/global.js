@@ -41,4 +41,14 @@ $(function () {
       }
     });
   };
+  
+  //Information qtips
+  $('[data-help_info]').qtip({
+      content: {
+      attr: 'data-help_info'
+    },
+    style: {
+      classes: 'qtip-bootstrap'
+    }
+  });
 });
