@@ -18,7 +18,6 @@ ClassRequestTool::Application.routes.draw do
 
   resources :courses do
     member do
-      get 'summary'
       get 'recent_show'
       get 'take'
     end
@@ -44,7 +43,10 @@ ClassRequestTool::Application.routes.draw do
   
   namespace :admin do
     resources :customizations,                  only: [:update]
+
     resources :affiliates,                      only: [:create, :update, :destroy]
+    post      'affiliates/update_positions',    to: 'affiliates#update_positions'               # AJAX route
+
     get   'reports',                            to: 'admin#report_form'
     post  'build_report',                       to: 'admin#build_report'
     get   'create-graph',                       to: 'admin#create_graph'

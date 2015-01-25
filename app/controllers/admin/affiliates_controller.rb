@@ -20,6 +20,18 @@ class Admin::AffiliatesController < Admin::AdminController
     end
   end
   
+  def update_positions
+    @affiliates = Affiliate.all
+    @affiliates.each do |a|
+      a.position = params["affiliate-#{a.id}"]
+      unless a.save
+        render json: { status: 'error', msg: 'There was a problem updating the affiliate order.' }
+        return       
+      end
+    end
+    render json: { status: 'success', msg: 'The affiliate order was successfully updated.' }
+  end
+  
   def destroy
     @affiliate = Affiliate.find(params[:id])
     @affiliate.destroy

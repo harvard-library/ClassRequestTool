@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150116033313) do
+ActiveRecord::Schema.define(:version => 20150125170507) do
 
   add_extension "fuzzystrmatch"
 
@@ -32,7 +32,10 @@ ActiveRecord::Schema.define(:version => 20150116033313) do
     t.integer  "customization_id"
     t.datetime "created_at",       :null => false
     t.datetime "updated_at",       :null => false
+    t.integer  "position"
   end
+
+  add_index "affiliates", ["position"], :name => "index_affiliates_on_position"
 
   create_table "assessments", :force => true do |t|
     t.text     "using_materials"
