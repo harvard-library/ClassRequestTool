@@ -8,6 +8,7 @@ class RepositoriesController < ApplicationController
 
   def show
     @repository = Repository.find(params[:id])
+    @courses = Course.where( repository_id: @repository.id ).order_by_last_date.limit(10).includes(:sections)
   end
 
   def new

@@ -80,21 +80,22 @@
 .row.classes
   %h4
     Classes for the #{@repository.name}
-  - unless @repository.courses.blank?
+  - unless @courses.blank?
     %table.table
       %tr
         %th Name
-        %th Class Date
+        %th Date(s)
         - if current_user.can_admin?
           %th Actions
-      - @repository.courses.order_by_last_date.limit(20).includes(:sections).each do |course|
-        %tr
-          %td= link_to(course.title, course )
-          %td.section-times= first_plus_multiple_sections(course.sections).html_safe
-          %td= link_to('Edit', edit_course_path(course), :class => "action-edit")
-          - if current_user.can_admin?
-            %td
-              | #{link_to('Delete', course_path(course), :confirm => "Are you sure?", :method => :delete)}
+      - @courses.each do |course|
+        - if course.scheduled? || current_user.can_admin?
+          %tr
+            %td= link_to(course.title, course )
+            %td.section-times= first_plus_multiple_sections(course.sections).html_safe
+            - if current_user.can_admin?
+              %td= link_to('Edit', edit_course_path(course), :class => "action-edit")
+              %td
+                | #{link_to('Delete', course_path(course), :confirm => "Are you sure?", :method => :delete)}
   - else
     None yet.
 .row.return-to-list
