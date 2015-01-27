@@ -8,10 +8,6 @@
  * You're free to add application-wide styles to this file and they'll appear at the top of the
  * compiled file, but it's generally better to create a new file per style scope.
  *
- *= require_self
- *= require jquery.ui.all
- *= require jquery-tablesorter/theme.dark
- *= require jquery.qtip.css
  */
 
  /* Header font: Vollkorn. Only normal style is supported. No italic. */
@@ -56,15 +52,27 @@
    font-weight: bold;
    font-style: italic;
  }
- @import "harvard";
- @import "bootstrap";
- @import "bootflat";
- @import "bootstrap_and_overrides";
- @import "formtastic-changes";
- @import "jquery-ui-timepicker-addon";
- @import "global";
- @import "courses";
- @import "repositories";
- @import "dashboard";
- @import "welcome";
- @import "affiliates";
+ 
+@import "ie/iefix";
+
+/* Vendor styles */
+@import "bootstrap";
+@import "bootflat";
+@import "jquery.ui.all";
+@import "jquery-tablesorter/theme.bootstrap";
+@import "jquery-ui-timepicker-addon";
+@import "jquery.qtip.css";
+
+/* Local and overrides */
+@import "bootstrap_and_overrides";
+@import "formtastic-changes";
+@import "local_branding";
+@import "global";
+
+/* model/controller styles */
+@import "courses";
+@import "repositories";
+@import "dashboard";
+@import "welcome";
+@import "affiliates";
+

@@ -16,7 +16,7 @@
       = submit_tag "Go", :class => 'btn btn-primary'
       
   %br/
-  - unless @course_list.empty?
+  - unless @courses.empty?
     - if current_user.can_admin?
       %p
         %em
@@ -44,7 +44,7 @@
             %th Actions
           %th.hidden Search fodder
       %tbody
-        - @course_list.each do |c|
+        - @courses.each do |c|
           %tr
             - if current_user.can_admin?
               %td= upcoming_or_past(c.last_date).html_safe
