@@ -6,15 +6,17 @@ $(document).ready(function(){
     widgets: ['uitheme', 'filter'],
     icons: 'glyphicon glyphicon-{name}',
     headerTemplate: "{content} {icon}",
+    widthFixed: true,
     widgetOptions: {
       uitheme: 'bootstrap',
-      filter_columnFilters: false
+      filter_columnFilters: true,
+      filter_placeholder: { search: 'Filter...' }
      }
   };
   
   var pagerDefaults = {
     removeRows: false, 
-    output: "Page {page} of {filteredPages} with filters (All: {totalPages})", 
+    output: "Page {page}/{filteredPages} (filtered) (Unfiltered: {totalPages})", 
     pagesize: 10
   }
   
@@ -23,20 +25,24 @@ $(document).ready(function(){
   
   $.each($tables, function(i) {
     var tableId = $(this).attr('id');
-    var columns = $(this).find('th').length;
-    var ts_options = $.extend(true, tablesorterDefaults, {
-      widgetOptions: {
-        filter_external: '#search-' + tableId,
-        filter_placeholder: { search: 'Search...' }
+    var headerControls = {};
+    $(this).find('th').each(function(i) {
+      if ($(this).hasClass('no-controls')) {
+        headerControls[i] = { sorter: false, filter: false };
       }
     });
-    var pg_options = $.extend(pagerDefaults, { container: $('#pager-' + tableId) })
+    var ts_options = $.extend(true, tablesorterDefaults, { headers: headerControls });
+//     widgetOptions: {
+//        filter_external: '#search-' + tableId,
+//     }
+
+    var pg_options = $.extend(pagerDefaults, { container: $('.pager-' + tableId) })
     if ($(this).hasClass('2-up')) {
       pg_options = $.extend(pagerDefaults, { positionFixed: false });
     }
     $(this).tablesorter(ts_options);
     $(this).tablesorterPager(pg_options);
-    $(this).before('Search: <input id="search-' + tableId + '" type="search" class="search" data-column="all" />');
+//    $(this).before('Search: <input id="search-' + tableId + '" type="search" class="search" data-column="all" />');
   });
 });
     

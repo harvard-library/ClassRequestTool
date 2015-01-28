@@ -1,5 +1,7 @@
 %h3 Classroom Technologies Available
 %div
+  .pager-attributes
+    = render :partial => '/shared/tablesorter_pager'
   %table#attributes.sortable
     %thead
       %tr
@@ -18,7 +20,7 @@
             - if current_user.superadmin?
               | #{link_to('Delete', item_attribute_path(attribute), :confirm => "Are you sure?", :method => :delete)}
   %br/
-  #pager-attributes
+  .pager-attributes
     = render :partial => '/shared/tablesorter_pager'
   %br/
   %br/

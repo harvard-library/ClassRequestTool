@@ -1,5 +1,7 @@
 %h3 Libraries/Archives
 %div
+  .pager-repositories
+    = render :partial => '/shared/tablesorter_pager'
   %table#repositories.sortable
     %thead
       %tr
@@ -18,7 +20,7 @@
             - if current_user.superadmin?
               | #{link_to('Delete', repository_path(repo), :confirm => "Are you sure?", :method => :delete)}
   %br/
-  #pager-repositories
+  .pager-repositories
     = render :partial => '/shared/tablesorter_pager'
   %br/
   %br/

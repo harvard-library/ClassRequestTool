@@ -1,5 +1,7 @@
 %h3 Users
 %div
+  .pager-users
+    = render :partial => '/shared/tablesorter_pager'
   %table#users.sortable
     %thead
       %tr
@@ -32,7 +34,7 @@
             - if current_user.superadmin?
               | #{link_to('Delete', user_path(user), :confirm => "Are you sure?", :method => :delete)}
   %br/
-  #pager-users
+  .pager-users
     = render :partial => '/shared/tablesorter_pager'
   %br/
   %br/

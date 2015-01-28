@@ -3,7 +3,7 @@ class AssessmentsController < ApplicationController
   before_filter :authenticate_admin_or_staff!, :except => [:new, :create]
 
   def index
-    @assessments = Assessment.joins(:course).order('assessments.created_at DESC')
+    @assessments = Assessment.joins(:course).order('assessments.created_at DESC').includes(:course)
     @fields = {
       "staff_experience" => {
         :title => 'Reference Staff expertise',

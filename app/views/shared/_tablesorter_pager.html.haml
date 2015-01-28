@@ -1,11 +1,11 @@
 .pager
-  = form_tag do
+  = form_tag nil, class: 'form-inline' do
     = image_tag "pager/first.png", :class => "first"
     = image_tag "pager/prev.png", :class => "prev"
     %span.pagedisplay
     = image_tag "pager/next.png", :class => "next"
     = image_tag "pager/last.png", :class => "last"
-    %select.pagesize
+    %select.pagesize.form-control
       %option 5
       %option 10
       %option 20

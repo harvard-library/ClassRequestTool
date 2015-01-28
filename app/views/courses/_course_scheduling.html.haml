@@ -25,7 +25,7 @@
         :as => :string,                                                                                     |
         :input_html => {                                                                                    |
         :size => 30,                                                                                        |
-        :value => @course.pre_class_appt.nil? ? nil : @course.pre_class_appt.strftime("#{DATE_FORMAT} #{TIME_FORMAT}"), |
+        :value => @course.pre_class_appt.nil? ? nil : @course.pre_class_appt.strftime(DATETIME_AT_FORMAT), |
         :readonly => true,                                                                                  |
         :class => 'pre-class-date date',                                                                    |
         :placeholder => "Click to select date/time" }                                                       |

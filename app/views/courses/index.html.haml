@@ -17,23 +17,25 @@
       
   %br/
   - unless @courses.empty?
-    - if current_user.can_admin?
-      %p
-        %em
-          (
-          Upcoming course:
+    %p
+      %em
+        %span.glyphicon.glyphicon-th-list
+        &mdash; Hover to see multiple meeting times&nbsp;&nbsp;&nbsp;&nbsp;
+        - if current_user.can_admin?
           %span.glyphicon.glyphicon-upload.upcoming
-          &nbsp;&nbsp;&nbsp;&nbsp;Past course:
+          &mdash; Upcoming course&nbsp;&nbsp;&nbsp;&nbsp;
           %span.glyphicon.glyphicon-download.past
-          &nbsp;&nbsp;&nbsp;&nbsp;Course with no dates:
+          &mdash; Past course&nbsp;&nbsp;&nbsp;&nbsp;
           %span.glyphicon.glyphicon-minus-sign.nil
-          )
+          &mdash; Course with no dates&nbsp;&nbsp;&nbsp;&nbsp;
        
-    %table#course-table-current.sortable
+    .pager-courses-current
+      = render 'shared/tablesorter_pager'
+    %table#courses-current.sortable
       %thead
         %tr
           - if current_user.can_admin?
-            %th
+            %th.no-controls
           %th Name
           %th Submission Date
           %th Date(s)
@@ -41,15 +43,15 @@
           - if current_user.can_admin?
             %th Status
             %th Requester
-            %th Actions
-          %th.hidden Search fodder
+            %th.no-controls Actions
+          / %th.hidden Search fodder
       %tbody
         - @courses.each do |c|
           %tr
             - if current_user.can_admin?
               %td= upcoming_or_past(c.last_date).html_safe
             %td= link_to(c.title, c )
-            %td= c.created_at.strftime(DATE_FORMAT)
+            %td= c.created_at.strftime(DATETIME_2_LINE_FORMAT).html_safe
             %td.section-times= first_plus_multiple_sections(c.sections).html_safe
             %td= c.repo_name
             - if current_user.can_admin?
@@ -57,8 +59,8 @@
               %td= c.contact_last_name
               %td
                 = render :partial => 'shared/course_actions', :locals => { :course => c }
-            %td.hidden= searchable_fields(c)
-    #pager-course-table-current
+            / %td.hidden= searchable_fields(c)
+    .pager-courses-current
       = render 'shared/tablesorter_pager'
     %br/
     %br/

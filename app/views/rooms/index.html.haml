@@ -1,5 +1,7 @@
 %h3 Rooms
 %div
+  .pager-rooms
+    = render :partial => '/shared/tablesorter_pager'
   %table#rooms.sortable
     %thead
       %tr
@@ -30,7 +32,7 @@
             - if current_user.superadmin?
               | #{link_to('Delete', room_path(room), :confirm => "Are you sure?", :method => :delete)}
   %br/
-  #pager-rooms
+  .pager-rooms
     = render :partial => '/shared/tablesorter_pager'
   %br/
   %br/

@@ -7,17 +7,17 @@
           %th Name
           %th Submission Date
           %th Class Date
-          %th
-          %th.hidden Search fodder
+          %th.no-controls
+          / %th.hidden Search fodder
       %tbody
         - courses.each do |course|
           %tr
             %td= link_to(course.title, course )
             %td= course.created_at.strftime(DATE_FORMAT)
             %td.section-times= first_plus_multiple_sections(course.sections).html_safe
-            %td
+            %td.no-controls
               = render :partial => 'shared/course_actions', :locals => { :course => course }
-            %td.hidden= searchable_fields(course)
+            / %td.hidden= searchable_fields(course)
     %div{ id: "pager-#{id}" }
       = render :partial => '/shared/tablesorter_pager'
   - else
