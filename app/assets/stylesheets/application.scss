@@ -57,9 +57,10 @@
 
 /* Vendor styles */
 @import "bootstrap";
-@import "bootflat";
 @import "jquery.ui.all";
 @import "jquery-tablesorter/theme.bootstrap";
+@import "jquery-tablesorter/addons/pager/jquery.tablesorter.pager";
+@import "bootflat";
 @import "jquery-ui-timepicker-addon";
 @import "jquery.qtip.css";
 

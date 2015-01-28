@@ -26,6 +26,9 @@ public/uploads/*
 config/deploy.rb
 config/deploy/*.rb
 
+# Ignore any bower componenets
+bower_components
+
 # various editor/config files
 \#*
 .#*

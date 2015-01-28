@@ -1,6 +1,6 @@
 %h3 Libraries/Archives
 %div
-  %table#repositories-table.table.table-striped.table-condensed.tablesorter
+  %table#repositories.sortable
     %thead
       %tr
         %th Name
@@ -18,7 +18,8 @@
             - if current_user.superadmin?
               | #{link_to('Delete', repository_path(repo), :confirm => "Are you sure?", :method => :delete)}
   %br/
-  = render :partial => '/shared/tablesorter_pager', :locals => {:pager_id => "repositories-table" }
+  #pager-repositories
+    = render :partial => '/shared/tablesorter_pager'
   %br/
   %br/
   - if current_user.can_admin?

@@ -1,6 +1,6 @@
 %h3 Users
 %div
-  %table#users-table.table.table-striped.table-condensed.tablesorter
+  %table#users.sortable
     %thead
       %tr
         %th First Name
@@ -32,6 +32,7 @@
             - if current_user.superadmin?
               | #{link_to('Delete', user_path(user), :confirm => "Are you sure?", :method => :delete)}
   %br/
-  = render :partial => '/shared/tablesorter_pager', :locals => {:pager_id => "users-table" }
+  #pager-users
+    = render :partial => '/shared/tablesorter_pager'
   %br/
   %br/

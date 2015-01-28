@@ -1,6 +1,6 @@
 %h3 Staff Services
 %div
-  %table#involvement-table.table.table-striped.table-condensed.tablesorter
+  %table#involvement.sortable
     %thead
       %tr
         %th Text
@@ -23,7 +23,8 @@
             - if current_user.superadmin?
               | #{link_to('Delete', staff_involvement_path(si), :confirm => "Are you sure?", :method => :delete)}
   %br/
-  = render :partial => '/shared/tablesorter_pager', :locals => {:pager_id => "involvement-table" }
+  #pager-involvement
+    = render :partial => '/shared/tablesorter_pager'
   %br/
   %br/
   - if current_user.can_admin?

@@ -13,8 +13,9 @@
 //= require jquery
 //= require jquery_ujs
 //= require jquery.ui.all
-//= require jquery-tablesorter
 //= require bootstrap
+//= require jquery-tablesorter
+//= require jquery-tablesorter/addons/pager/jquery.tablesorter.pager
 //= require icheck.min
 //= require highcharts
 //= require highcharts/highcharts-more

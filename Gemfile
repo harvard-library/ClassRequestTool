@@ -12,19 +12,15 @@ gem 'postgres_ext'
 gem 'carrierwave'
 gem 'descriptive_statistics', :require => 'descriptive_statistics/safe'
 gem 'mini_magick'
-gem 'bootstrap-sass'
-gem 'bootflat-rails'
-gem 'formtastic-bootstrap'
-gem 'jquery-tablesorter'
-gem 'highcharts-rails'
 gem 'delayed_job_active_record'
 gem 'daemons'
 gem 'ckeditor'
 gem 'devise_harvard_auth_proxy', :git => 'https://github.com/berkmancenter/devise_harvard_auth_proxy.git', :ref => '2a58ea07a8'
 gem 'css_splitter'
 gem 'haml-rails'
+gem 'formtastic-bootstrap'
 gem 'cocoon'
-gem 'jquery-qtip2-rails'
+gem 'bootstrap-sass'
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -33,6 +29,12 @@ group :assets do
   gem 'coffee-rails', '~> 3.2.1'
   gem 'uglifier', '>= 1.0.3'
   gem 'turbo-sprockets-rails3'
+  gem 'jquery-rails', '~> 3.1.0'
+  gem 'jquery-ui-rails', '~> 4.2.0'
+  gem 'bootflat-rails'
+  gem 'jquery-tablesorter'
+  gem 'jquery-qtip2-rails'
+  gem 'highcharts-rails'
 end
 
 group :test, :development do
@@ -41,7 +43,6 @@ group :test, :development do
   gem 'pry-remote'
   gem 'pry-doc'
   gem 'pry-byebug'
-  gem 'erb2haml'
 end
 
 group :test do
@@ -68,5 +69,3 @@ group :development do
   gem 'ruby-growl'
 end
 
-gem 'jquery-rails', '~> 3.1.0'
-gem 'jquery-ui-rails', '~> 4.2.0'

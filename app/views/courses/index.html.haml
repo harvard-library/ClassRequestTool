@@ -29,7 +29,7 @@
           %span.glyphicon.glyphicon-minus-sign.nil
           )
        
-    %table#course-table-current.table.table-striped.table-condensed.tablesorter
+    %table#course-table-current.sortable
       %thead
         %tr
           - if current_user.can_admin?
@@ -58,7 +58,8 @@
               %td
                 = render :partial => 'shared/course_actions', :locals => { :course => c }
             %td.hidden= searchable_fields(c)
-    = render :partial => '/shared/tablesorter_pager', :locals => {:pager_id => "course-table-current" }
+    #pager-course-table-current
+      = render 'shared/tablesorter_pager'
     %br/
     %br/
   - else

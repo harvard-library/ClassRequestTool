@@ -20,39 +20,39 @@
 .dash-wrap.tab-content
   #upcoming.tab-pane.active.row
     = render :partial => 'shared/dashboard_table',   |
-      :locals => { :id => 'your-unscheduled-table',  |
+      :locals => { :id => 'user-unscheduled',  |
       :title => 'Your Claimed, Unscheduled Classes', |
-      :courses => @your_unscheduled }                |
+      :courses => @user_unscheduled }                |
     -#
     = render :partial => 'shared/dashboard_table', |
-      :locals => { :id => 'your-upcoming-table',   |
+      :locals => { :id => 'user-upcoming',   |
       :title => 'Your Scheduled, Claimed Classes', |
-      :courses => @your_upcoming }                 |
+      :courses => @user_upcoming }                 |
   / END #upcoming
   #homeless.tab-pane.row
     .clearfix
       = render :partial => 'shared/dashboard_table', |
-        :locals => { :id => 'homeless-table',        |
+        :locals => { :id => 'homeless',        |
         :title => 'Homeless Classes',                |
         :courses => @homeless }                      |
   / END homeless
   #unclaimed.tab-pane.row
     .clearfix
       = render :partial => 'shared/dashboard_table', |
-        :locals => { :id => 'unassigned-table',      |
+        :locals => { :id => 'unassigned',      |
         :title => 'Classes to be Scheduled',         |
         :courses => @unscheduled_unclaimed }         |
       -#
       = render :partial => 'shared/dashboard_table', |
-        :locals => { :id => 'roomless-table',        |
+        :locals => { :id => 'roomless',        |
         :title => 'Scheduled Classes',               |
         :courses => @scheduled_unclaimed }           |
   / END unclaimed
   #closed.tab-pane.row
     = render :partial => 'shared/dashboard_table', |
-      :locals => { :id => 'your-to-close-table',   |
+      :locals => { :id => 'user-to-close',   |
       :title => 'Your Classes To Close',           |
-      :courses => @your_classes_to_close }         |
+      :courses => @user_to_close }         |
     -#
     = render :partial => 'shared/dashboard_table', |
       :locals => { :id => 'your-past-table',       |

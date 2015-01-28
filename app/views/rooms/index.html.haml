@@ -1,6 +1,6 @@
 %h3 Rooms
 %div
-  %table#rooms-table.table.table-striped.table-condensed.tablesorter
+  %table#rooms.sortable
     %thead
       %tr
         %th Name
@@ -30,7 +30,8 @@
             - if current_user.superadmin?
               | #{link_to('Delete', room_path(room), :confirm => "Are you sure?", :method => :delete)}
   %br/
-  = render :partial => '/shared/tablesorter_pager', :locals => {:pager_id => "rooms-table" }
+  #pager-rooms
+    = render :partial => '/shared/tablesorter_pager'
   %br/
   %br/
   - if current_user.can_admin?
