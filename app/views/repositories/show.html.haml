@@ -6,6 +6,9 @@
       = submit_tag "Request a class at the #{@repository.name}", :class => 'btn btn-primary'
 .row.description
   = raw @repository.description unless @repository.description.nil?
+  - unless @recent_courses.empty?
+    %p #{the_recent_courses(@recent_courses, @repository.name).html_safe}
+
 - unless @repository.attached_images.blank?
   .row.repo-images
     %table.table
@@ -13,15 +16,17 @@
         - @repository.attached_images.each do |pic|
           %td
             = image_tag pic.image_url(:display)
-            %p.caption= pic.caption
+            %p.caption= pic.caption.html_safe
 .row
   .col-md-4.collections
     .info
       %h4.column-head Collections
-      - if true
-        %p (None listed)
+      - unless @repository.collections.empty?
+        %ul.list-group
+        - @repository.collections.each do |c|
+          %li.list-group-item #{link_to c.name, c.url, target: '_blank'}
       - else
-        = @repository.collections
+        %p (none)
   .col-md-4.technology
     .info
       %h4.column-head Technology Available
@@ -35,34 +40,33 @@
         (None)
   .col-md-4.facilities
     .info
-      %h4.column-head Available Rooms
-      - unless @repository.rooms.blank?
-        %ul.no-bullets
-          - @repository.rooms.each do |room|
-            %li= room.name
-      - else
-        %p (None. Please notify the repository.)
-    .info
-      %h4
-        Class Limit:
+      %h4.column-head Administrative Info
+       
+      %p
+        %span.glyphicon.glyphicon-user &nbsp
+        Class limit:
         %span.class-limit= @repository.class_limit.blank? ? '(none)' : @repository.class_limit
     - unless @repository.landing_page.blank?
       .info
         %p
-          = link_to "View more details", @repository.landing_page, :target => "_blank"
-          on teaching at the #{@repository.name}
+          %span.glyphicon.glyphicon-eye-open &nbsp
+          = link_to  @repository.landing_page, :target => "_blank" do
+            More on teaching at the #{@repository.name}
     .info
       - unless @repository.calendar.blank?
         %p
-          = link_to image_tag('calendar_icon.png', :class => 'cal-icon' ) + " View Calendar", "#{@repository.calendar}", :onclick=>"window.open(this.href,'view_calendar', 'height=600, width=600');return false;"
+          %span.glyphicon.glyphicon-calendar &nbsp
+          = link_to @repository.calendar, :onclick=>"window.open(this.href,'view_calendar', 'height=600, width=600');return false;" do
+            View calendar &nbsp;
+            #{image_tag('calendar_icon.png', :class => 'cal-icon' )}
       - else
         %p
           The #{@repository.name} does not have a publicly available calendar. When making a request, please submit with your preferred times and a staff member will get back to you.
     - unless @repository.class_policies.blank?
       .info
         %p
+          %span.glyphicon.glyphicon-list-alt &nbsp
           = link_to "Class policies", @repository.landing_page, :target => "_blank"
-          for the #{@repository.name}
 - if current_user.can_admin?
   .row
     .admin-box
@@ -77,26 +81,5 @@
         %h4 Edit this repository
         = link_to('Edit', edit_repository_path(@repository), :class => "action-edit")
         | #{link_to('Delete', repository_path(@repository), :confirm => "Are you sure?", :method => :delete)}
-.row.classes
-  %h4
-    Classes for the #{@repository.name}
-  - unless @courses.blank?
-    %table.table
-      %tr
-        %th Name
-        %th Date(s)
-        - if current_user.can_admin?
-          %th Actions
-      - @courses.each do |course|
-        - if course.scheduled? || current_user.can_admin?
-          %tr
-            %td= link_to(course.title, course )
-            %td.section-times= first_plus_multiple_sections(course.sections).html_safe
-            - if current_user.can_admin?
-              %td= link_to('Edit', edit_course_path(course), :class => "action-edit")
-              %td
-                | #{link_to('Delete', course_path(course), :confirm => "Are you sure?", :method => :delete)}
-  - else
-    None yet.
 .row.return-to-list
   = link_to "Return to library/archive list", root_url, :class => 'btn btn-primary'

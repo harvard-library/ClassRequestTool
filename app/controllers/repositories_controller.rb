@@ -7,17 +7,19 @@ class RepositoriesController < ApplicationController
   end
 
   def show
-    @repository = Repository.find(params[:id])
-    @courses = Course.where( repository_id: @repository.id ).order_by_last_date.limit(10).includes(:sections)
+    @repository = Repository.where(id: params[:id]).includes(:collections).first
+    @recent_courses = Course.where( repository_id: @repository.id ).select(:title).order_by_last_date.limit(3).map { |c| c.title }
   end
 
   def new
     @repository = Repository.new
     @repository.attached_images.build
+    @repository.collections.build
   end
 
   def edit
     @repository = Repository.find(params[:id])
+    @repository.collections.build
   end
 
   def create

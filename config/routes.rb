@@ -1,6 +1,6 @@
 ClassRequestTool::Application.routes.draw do
   # Home
-  root :to => 'welcome#index'
+  root :to => 'welcome#show'
 
   resources :emails
   resources :item_attributes
