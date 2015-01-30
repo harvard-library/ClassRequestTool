@@ -14,7 +14,9 @@
 //= require jquery_ujs
 //= require jquery.ui.all
 //= require bootstrap
+//= require sugar
 //= require jquery-tablesorter
+//= require jquery-tablesorter/parsers/parser-date
 //= require jquery-tablesorter/addons/pager/jquery.tablesorter.pager
 //= require icheck.min
 //= require highcharts

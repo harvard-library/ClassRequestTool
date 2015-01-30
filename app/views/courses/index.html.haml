@@ -20,7 +20,7 @@
     %p
       %em
         %span.glyphicon.glyphicon-th-list
-        &mdash; Hover to see multiple meeting times&nbsp;&nbsp;&nbsp;&nbsp;
+        &mdash; Hover to see all meeting times&nbsp;&nbsp;&nbsp;&nbsp;
         - if current_user.can_admin?
           %span.glyphicon.glyphicon-upload.upcoming
           &mdash; Upcoming course&nbsp;&nbsp;&nbsp;&nbsp;
@@ -35,15 +35,15 @@
       %thead
         %tr
           - if current_user.can_admin?
-            %th.no-controls
+            %th{class: "{sorter: false, filter: false}"}
           %th Name
-          %th Submission Date
-          %th Date(s)
+          %th.submission-date.sorter-sugar Submission Date
+          %th.first-class-meeting.sorter-sugar First Class Meeting
           %th Library/Archive
           - if current_user.can_admin?
             %th Status
             %th Requester
-            %th.no-controls Actions
+            %th{class: "{sorter: false, filter: false}"} Actions
           / %th.hidden Search fodder
       %tbody
         - @courses.each do |c|
@@ -51,8 +51,8 @@
             - if current_user.can_admin?
               %td= upcoming_or_past(c.last_date).html_safe
             %td= link_to(c.title, c )
-            %td= c.created_at.strftime(DATETIME_2_LINE_FORMAT).html_safe
-            %td.section-times= first_plus_multiple_sections(c.sections).html_safe
+            %td= c.created_at.strftime(DATETIME_FORMAT).html_safe
+            %td.section-times  #{first_plus_multiple_sections(c).html_safe}
             %td= c.repo_name
             - if current_user.can_admin?
               %td= full_status(c)

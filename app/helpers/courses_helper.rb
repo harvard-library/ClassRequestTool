@@ -64,25 +64,26 @@ module CoursesHelper
     end
   end
   
-  def first_plus_multiple_sections(sections)
-    if sections.nil?
+  def first_plus_multiple_sections(course)
+    if course.sections.nil?
       return "<div class='alert alert-danger'>No sections!</div>"
     end
     multiple_sections = []
-    scheduled_sections = sections.reject { |s| s.actual_date.blank? }
+    scheduled_sections = course.sections.reject { |s| s.actual_date.blank? }
     scheduled_sections.sort_by!{ |s| [s.session, s.actual_date]  }
 
     # Always list first scheduled section date
-    html = "#{scheduled_sections[0].nil? ? '(Unscheduled)' : scheduled_sections[0].actual_date.strftime(DATETIME_AT_FORMAT)}\n"
+    meeting_time = course.first_date.blank? ? '' :  course.first_date.strftime(DATETIME_AT_FORMAT)
+    html = "<span class='time'>#{meeting_time}</span>#{meeting_time.blank? ?  '<span class=\"unscheduled\">(unscheduled)</span>' : ''}"
     if scheduled_sections.count > 1
-      html += '<span class="glyphicon glyphicon-th-list" '
+      html += ' <br /><span class="glyphicon glyphicon-th-list" '
       scheduled_sections.each do |s|
         multiple_sections << "<li class='list-group-item'>Session #{s.session}: #{s.actual_date.strftime(DATETIME_AT_FORMAT)}</li>"
       end
       html += "data-section_list=\"<ul class='list-group'>\n#{multiple_sections.join("\n")}\n</ul>\"></span>\n"
     end
-    if sections.count > 1 && (sections.count - scheduled_sections.count > 0) 
-      html += "<div class='alert alert-warning'>#{pluralize(sections.count - scheduled_sections.count, 'section')} of #{sections.count} unscheduled</div>"
+    if course.sections.count > 1 && (course.sections.count - scheduled_sections.count > 0) 
+      html += "<div class='alert alert-warning'>#{pluralize(course.sections.count - scheduled_sections.count, 'section')} of #{course.sections.count} unscheduled</div>"
     end
     html
   end  

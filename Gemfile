@@ -33,6 +33,7 @@ group :assets do
   gem 'jquery-ui-rails', '~> 4.2.0'
   gem 'bootflat-rails'
   gem 'jquery-tablesorter'
+  gem 'sugar-rails'
   gem 'jquery-qtip2-rails'
   gem 'highcharts-rails'
 end

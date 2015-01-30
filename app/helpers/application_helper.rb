@@ -12,10 +12,10 @@ module ApplicationHelper
   def pager_options_select(pager_id)
     options = %W(5 10 20 30 40)
     case pager_id
-      when 'users-table'
+      when 'pager-users'
         options_collection = options_for_select(options, 40) 
-      when "your-repo-courses-table", "homeless-table", "your-unscheduled-table", "unassigned-table", 
-                    "your-upcoming-table", "roomless-table", "your-to-close-table", "your-past-table"
+      when "pager-user-repo-courses", "pager-homeless", "pager-user-unscheduled", "pager-unassigned", 
+                    "pager-user-upcoming", "pager-roomless", "pager-user-to-close", "pager-user-past"
         options_collection = options_for_select(options, 5) 
       else
         options_collection = options_for_select(options, 10) 

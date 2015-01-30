@@ -1,3 +1,8 @@
+/* Extract data for tablesorts */
+var firstClassDateExtraction = function(node) {
+  console.log(node);
+  return node.childNodes[0].innerHTML;
+};
 $(function () {
 
   manageSectionHeader = function() {
@@ -234,12 +239,12 @@ $(function () {
     var html = $(this).data('section_list');
     $(this).qtip({
       content: {
-        title: '<b>All scheduled sections<b>',
+        title: '<b>All scheduled meetings<b>',
         text: html
       },
       style: {
         classes: 'qtip-bootstrap'
       }
     });
-  });
+  });  
 });
