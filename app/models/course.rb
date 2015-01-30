@@ -2,7 +2,8 @@ class Course < ActiveRecord::Base
   include ActionDispatch::Routing::UrlFor
   include Rails.application.routes.url_helpers
 
-  attr_accessible( :room_id, :repository_id, :user_ids, :item_attribute_ids, :primary_contact_id, :staff_involvement_ids, :sections_attributes, :additional_patrons_attributes, # associations
+  attr_accessible( :room_id, :repository_id, :user_ids, :item_attribute_ids, :primary_contact_id, :staff_involvement_ids, 
+                   :sections_attributes, :additional_patrons_attributes, :collections_attributes, # associations
                    :title, :subject, :course_number, :affiliation, :number_of_students, :session_count,  #values
                    :comments,  :staff_involvement, :instruction_session, :goal,
                    :contact_username, :contact_first_name, :contact_last_name, :contact_email, :contact_phone,  #contact info
@@ -17,14 +18,16 @@ class Course < ActiveRecord::Base
   has_and_belongs_to_many :users
   belongs_to :room
   belongs_to :repository
-  has_many :sections, :dependent => :destroy
   has_many :notes, :dependent => :destroy
   has_and_belongs_to_many :item_attributes
   has_many :assessments, :dependent => :destroy
   has_and_belongs_to_many :staff_involvements
   belongs_to :primary_contact, :class_name => 'User'
+
   has_many :additional_patrons, :dependent => :destroy, :autosave => true
   accepts_nested_attributes_for :additional_patrons, :reject_if => ->(ap){ap.blank?}, :allow_destroy => true
+
+  has_many :sections, :dependent => :destroy
   accepts_nested_attributes_for :sections, :reject_if => ->(s){s.nil?}, :allow_destroy => true
   
   validates_presence_of :title, :message => "can't be empty"
@@ -49,6 +52,7 @@ class Course < ActiveRecord::Base
   scope :user_is_staff,         ->(id_array){ where(:repository_id => id_array) }
   scope :order_by_first_date,   ->{ order('first_date DESC NULLS LAST') }  
   scope :order_by_last_date,    ->{ order('last_date DESC NULLS LAST') }  
+  scope :order_by_submitted,    ->{ order('created_at DESC') }  
 
 
   after_save :update_stats
@@ -111,7 +115,7 @@ class Course < ActiveRecord::Base
   
   # Returns a repo name, whether the course repo is defined yet or not
   def repo_name
-    self.repository.blank? ? 'Unassigned' : self.repository.name
+    self.homeless? ? 'Unassigned' : self.repository.name
   end
     
   def claimed?
@@ -119,7 +123,7 @@ class Course < ActiveRecord::Base
   end
   
   def homeless?
-    self.repository.blank?
+    self.repository_id.blank?
   end
   
   # Quick update of course stats with direct db query

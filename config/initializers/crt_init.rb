@@ -7,6 +7,7 @@ TIME_FORMAT = ENV['TIME_FORMAT'] || "%l:%M %P"      # 3:45 pm
 DATE_FORMAT = ENV['DATE_FORMAT'] ||  "%b %-d, %Y"    # Jan 1, 2015
 
 
+DATETIME_FORMAT = "#{DATE_FORMAT} #{TIME_FORMAT}"  # Requires .html_safe
 DATETIME_2_LINE_FORMAT = "#{DATE_FORMAT}<br />#{TIME_FORMAT}"  # Requires .html_safe
 DATETIME_AT_FORMAT = "#{DATE_FORMAT} @ #{TIME_FORMAT}"
 

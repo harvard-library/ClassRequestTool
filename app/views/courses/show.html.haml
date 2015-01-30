@@ -187,7 +187,7 @@
     - if !@staff_only_notes.blank? && (current_user.staff? || current_user.can_admin?)
       %h5 Staff Notes
       = render :partial => 'notes/index', :locals => {:notes => @staff_only_notes }
-    = render :partial => 'shared/forms/note', :locals => {:note => @note, :course => @course }
+    = render :partial => 'notes/form', :locals => {:note => @note, :course => @course }
     - unless @course.status == "Closed"
       .admin-box
         %p When class is complete, click box to send class assessment, if desired. Use button below to close class.
@@ -219,4 +219,4 @@
       %br/
     %h4 Notes
     = render :partial => 'notes/index', :locals => {:notes => @notes }
-    = render :partial => 'shared/forms/note', :locals => {:note => @note, :course => @course }
+    = render :partial => 'notes/form', :locals => {:note => @note, :course => @course }

@@ -7,7 +7,7 @@
     %th Course Title
     - @fields.each_pair do |attribute, text|
       %th{:title => text[:title]}= text[:slug]
-    %th.no-controls Text Fields
+    %th{class: "{sorter: false, filter: false}"} Text Fields
   %tbody
     - @assessments.each do |a|
       %tr
