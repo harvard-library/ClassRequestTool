@@ -5,7 +5,10 @@ ClassRequestTool::Application.routes.draw do
   resources :emails
   resources :item_attributes
   resources :notes
+  
+  get       '/repository/staff', to: 'repositories#staff'
   resources :repositories
+
   resources :rooms
   resources :staff_involvements
   resources :attached_images, :only => [:index, :create, :destroy]

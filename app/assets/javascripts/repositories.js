@@ -29,7 +29,7 @@ $(function () {
   }
   
   /* Add a new filebrowser whenever a new image is selected */
-  $('body').delegate('input[type=file].image-browser', 'change', function() {
+  $('body').on('input[type=file].image-browser', 'change', function() {
     var pictureType = "Repository"
     var pictureId = $('#repository_attached_images_attributes_0_picture_id').val()
     var n = $('table.repo-images tr').length

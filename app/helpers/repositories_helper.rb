@@ -10,4 +10,8 @@ module RepositoriesHelper
         "Recent classes at the #{repo_name} include <em>#{first.join('</em>, <em>')}</em> and <em>#{last}</em>."
     end
   end
+  
+  def repo_name_or_new(name)
+    name.blank? ? 'new library/archive' : name
+  end
 end

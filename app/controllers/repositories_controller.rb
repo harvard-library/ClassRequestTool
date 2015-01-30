@@ -7,7 +7,7 @@ class RepositoriesController < ApplicationController
   end
 
   def show
-    @repository = Repository.where(id: params[:id]).includes(:collections).first
+    @repository = Repository.includes(:collections).find(params[:id])
     @recent_courses = Course.where( repository_id: @repository.id ).select(:title).order_by_last_date.limit(3).map { |c| c.title }
   end
 
@@ -57,6 +57,16 @@ class RepositoriesController < ApplicationController
     respond_to do |format|
       format.html { redirect_to repositories_url }
       format.json { head :no_content }
+    end
+  end
+  
+  def staff
+    staff_members = Repository.find(params[:id]).users.order("last_name ASC") unless params[:id].blank?
+    staff_members = User.all_admins.order("last_name ASC") if staff_members.blank?
+    
+    respond_to do |format|
+      format.html { render partial: 'repositories/staff_list', locals: { form: params[:form], staff_members: staff_members }}
+      format.json { render json: staff_members }
     end
   end
   

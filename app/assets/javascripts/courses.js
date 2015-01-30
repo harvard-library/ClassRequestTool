@@ -234,6 +234,24 @@ $(function () {
     $('.checkbox input#course_user_ids_' + userId).parent().parent().parent().hide();
   });
   
+  /* Update repository staff and remove primary contact when changing repositories */
+  $('#course_repository_id_input select').on('change', function(e) {
+    var repoId = $(e.currentTarget).val()
+    $.get('/repository/staff/', 'id=' + repoId + '&form=true&for=course_course[user_ids][]', function(html) {
+    
+      //Update the checkboxes
+      $('#course_users_input').html(html);
+      
+      //Update the primary contact select
+      var options = '<option value = ""></option>';
+      $(html).find('label.choice').each(function(i) {
+        options += '<option value="' + $(this).find('input').val() + '">' + $(this).find('.staff').text() + "</option>\n";
+      });
+      
+      $('select#course_primary_contact_id').html(options);
+    });
+  });
+  
   /* qtip for classes with multiple sections */
   var tooltips = $('.section-times .glyphicon-th-list').each (function() {
     var html = $(this).data('section_list');

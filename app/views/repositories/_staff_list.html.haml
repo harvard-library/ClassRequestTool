@@ -1,0 +1,10 @@
+- form ||= false
+- if form
+  %label.control-label{ for: 'course_course[user_ids][]' }
+  = hidden_field_tag "", name: 'course[user_ids][]'
+  - staff_members.each do |staff|
+    = render partial: 'shared/formtastic_checkbox', locals: { _for: "course_user_ids_#{staff.id}", _name: 'course[user_ids][]', _id: staff.id, to_display: staff.full_name }
+- else
+  %ul.list-group
+    - staff_members.each do |staff|
+      %li.list-group-item #{staff.full_name}

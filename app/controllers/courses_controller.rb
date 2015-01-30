@@ -285,7 +285,7 @@ class CoursesController < ApplicationController
   end
   
   def show
-    @course = Course.find(params[:id])
+    @course = Course.includes(sections: :room).find(params[:id])
     unless current_user.staff? || current_user.can_admin? || @course.contact_email == current_user.email
        redirect_to('/') and return
     end
