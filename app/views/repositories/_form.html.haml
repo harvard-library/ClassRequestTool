@@ -1,0 +1,53 @@
+= semantic_form_for(@repository, :html => { :multipart => true }) do |f|
+  = f.inputs do
+    = f.input :name, :label => 'Name'
+    %br/
+    = f.input :description, :as => :ckeditor, :label => 'Description'
+    %br/
+    = f.input :landing_page, :label => 'Landing Page', :hint => "http://..."
+    %br/
+    = f.input :class_policies, :as => :ckeditor, :label => 'Class Policies'
+    %br/
+    = f.input :email_details, :as => :ckeditor, :label => 'Class confirmation email details (next steps, etc.)'
+    %br/
+    = f.input :calendar, :label => 'Calendar (if applicable)'
+    %br/
+    = f.input :class_limit, :label => 'Class Limit'
+    %br/
+    = f.input :can_edit, :label => 'Can Edit'
+    %br/
+    = f.input :rooms, :as => :check_boxes, :label => 'Available Rooms for this Library/Archive'
+    %br/
+    = f.input :users, :as => :check_boxes, :collection => User.where(:patron => false).order('first_name ASC'), :label => "Staff Assigned to this Library/Archive "
+    %br/
+    = f.input :item_attributes, :as => :check_boxes, :label => 'Technology Available in this Library/Archive'
+
+    .panel.panel-default
+      .panel-heading
+        %label Collections for the #{@repository.name.blank? ? 'new library/archive' : @repository.name}
+      .panel-body
+        = f.semantic_fields_for :collections do |c|
+          = render 'collection_fields', f: c
+        .links
+          = link_to_add_association 'Add a collection', f, :collections, class: 'btn btn-primary'
+
+    .panel.panel-default
+      .panel-heading
+        %label Images for the #{@repository.name.blank? ? 'new library/archive' : @repository.name}
+      .panel-body
+        %table.table.repo-images
+          = f.semantic_fields_for :attached_images do |pic|
+            %tr{:class => "pic_id-#{pic.object.id}"}
+              %td.thumb
+                = image_tag pic.object.image.url(:thumb)
+              %td
+                = pic.inputs do
+                  = pic.input :id, :as => :hidden
+                  = pic.input :picture_id, :as => :hidden
+                  = pic.input :picture_type, :as => :hidden
+                  = pic.input :image_cache, :as => :hidden
+                  = pic.input :caption, :value => pic.object.caption, :placholder => 'Caption'
+              %td.delete
+                %button.btn.btn-warning.delete-image{:id => "delete-pic_id-#{pic.object.id}"} Delete
+  = f.actions do
+    = f.action :submit, :as => :button, :button_html => {:class => 'btn btn-primary'}
