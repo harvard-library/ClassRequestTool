@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150130033842) do
+ActiveRecord::Schema.define(:version => 20150130222432) do
 
   add_extension "fuzzystrmatch"
 
@@ -76,8 +76,10 @@ ActiveRecord::Schema.define(:version => 20150130033842) do
     t.string   "picture_type"
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
+    t.boolean  "featured"
   end
 
+  add_index "attached_images", ["featured"], :name => "index_attached_images_on_featured"
   add_index "attached_images", ["picture_id", "picture_type"], :name => "index_attached_images_on_picture_id_and_picture_type"
 
   create_table "collections", :force => true do |t|

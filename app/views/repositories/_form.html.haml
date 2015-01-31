@@ -18,7 +18,7 @@
     %br/
     = f.input :rooms, :as => :check_boxes, :label => 'Available Rooms for this Library/Archive'
     %br/
-    .panel.panel-default
+    .panel.panel-primary
       .panel-heading
         %label  #{repo_name_or_new(@repository.name).humanize} Staff
       .panel-body
@@ -28,7 +28,7 @@
     %br/
     = f.input :item_attributes, :as => :check_boxes, :label => 'Technology Available in this Library/Archive'
 
-    .panel.panel-default
+    .panel.panel-primary
       .panel-heading
         %label Collections for the #{repo_name_or_new(@repository.name)}
       .panel-body
@@ -37,23 +37,14 @@
         .links
           = link_to_add_association 'Add a collection', f, :collections, class: 'btn btn-primary'
 
-    .panel.panel-default
+    .panel.panel-primary
       .panel-heading
         %label Images for the #{@repository.name.blank? ? 'new library/archive' : @repository.name}
       .panel-body
-        %table.table.repo-images
-          = f.semantic_fields_for :attached_images do |pic|
-            %tr{:class => "pic_id-#{pic.object.id}"}
-              %td.thumb
-                = image_tag pic.object.image.url(:thumb)
-              %td
-                = pic.inputs do
-                  = pic.input :id, :as => :hidden
-                  = pic.input :picture_id, :as => :hidden
-                  = pic.input :picture_type, :as => :hidden
-                  = pic.input :image_cache, :as => :hidden
-                  = pic.input :caption, :value => pic.object.caption, :placholder => 'Caption'
-              %td.delete
-                %button.btn.btn-warning.delete-image{:id => "delete-pic_id-#{pic.object.id}"} Delete
+        = f.semantic_fields_for :attached_images do |pic|
+          = render 'attached_image_fields', f: pic
+        
+        .links
+          = link_to_add_association 'Add an image', f, :attached_images, class: 'btn btn-primary'
   = f.actions do
     = f.action :submit, :as => :button, :button_html => {:class => 'btn btn-primary'}

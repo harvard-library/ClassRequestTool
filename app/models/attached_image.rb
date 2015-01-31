@@ -1,6 +1,6 @@
 class AttachedImage < ActiveRecord::Base
 
-  attr_accessible :picture_id, :picture_type, :image, :remove_image, :image_cache, :caption, :attached_image_attributes
+  attr_accessible :featured, :image, :remove_image, :image_cache, :caption, :picture_id, :picture_type
   mount_uploader :image, ImageUploader
   
   belongs_to :picture, polymorphic: true

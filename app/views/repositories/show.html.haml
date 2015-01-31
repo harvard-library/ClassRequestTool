@@ -15,8 +15,9 @@
       %tr
         - @repository.attached_images.each do |pic|
           %td
-            = image_tag pic.image_url(:display)
-            %p.caption= pic.caption.html_safe
+            .repo-image
+              = image_tag pic.image_url(:display)
+              %p.caption= pic.caption.html_safe
 .row
   .col-md-4.collections
     .info

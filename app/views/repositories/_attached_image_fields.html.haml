@@ -1,0 +1,13 @@
+.nested_fields.well.well-sm
+  - unless f.object.nil? || f.object.image.file.nil?
+    = image_tag f.object.image.url(:thumb)
+  = f.inputs do
+    = f.input :picture_id, :as => :hidden, :value => @repository.id 
+    = f.input :picture_type, :as => :hidden, :value => @repository.class.to_s
+    = f.input :image_cache, :as => :hidden
+    = f.input :featured, :as => :boolean, hint: 'A featured image may be shown on the welcome page of this site.'
+    = f.input :caption, :placholder => 'Caption'
+    = f.input :image, as: :file
+    .links
+      = link_to_remove_association 'Remove image', f, class: 'btn btn-warning'
+    %br
