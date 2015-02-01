@@ -15,9 +15,7 @@
       %tr
         - @repository.attached_images.each do |pic|
           %td
-            .repo-image
-              = image_tag pic.image_url(:display)
-              %p.caption= pic.caption.html_safe
+            = render :partial => 'shared/repo_image', :locals => { image: pic, size: :display }
 .row
   .col-md-4.collections
     .info

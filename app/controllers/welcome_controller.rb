@@ -3,7 +3,8 @@ class WelcomeController < ApplicationController
 
   def show
     @repositories = Repository.order(:name)
-    @courses = Course.with_status('Closed').past.limit(10).order_by_last_date
+    @courses = Course.with_status('Closed').past.limit(5).order_by_last_date
+    @featured_image = AttachedImage.where(:featured => true, :picture_type => 'Repository').first
   end
 
   def dashboard

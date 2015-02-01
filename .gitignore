@@ -33,3 +33,6 @@ bower_components
 \#*
 .#*
 *.swp
+
+# Ignore cache files
+*cache

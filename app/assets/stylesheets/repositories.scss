@@ -33,23 +33,27 @@ div.repo-section {
   .repo-images {
     td {
       text-align: center;
-      .repo-image {
-        margin: 0 auto;
-        width: 150px;
-        img {
-          border-radius: 3px;
-        }
-        .caption {
-          margin-top: 2px;
-          padding: 5px;
-          min-height: 100px;
-          font-size: 12px;
-          color: #fff;
-          background-color: $crimson;
-          border-radius: 3px;
-        }
-      }
+      width: 150px;
     }
   }
 }
+.repo-image {
+  margin: 0 auto;
+  width: 100%;
+  img {
+    border-radius: 3px;
+    width: 100%;
+  }
+  .caption {
+    text-align: center;
+    margin-top: 2px;
+    padding: 10px;
+    min-height: 100px;
+    font-size: $font-size-base;
+    color: $gray-dark;
+    background-color: $brand-info;
+    border-radius: 3px;
+  }
+}
+
   

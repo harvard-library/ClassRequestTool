@@ -1,39 +1,52 @@
 - if user_signed_in?
-  %h3
-    Welcome, #{current_user.display_name}
-- else
-  %h3 Welcome
-  %p
-    Teach with us. Class sessions at participating special collections libraries and archives can range from surveys of faculty-selected collection material to sessions for which our staff provide guided explorations. Bring your class in for an hour or schedule several visits for in-depth investigations of archives, manuscripts, maps, rare books, and more.
-  %p
-    To submit a class request, select a site below or let staff help you select the most appropriate host. You'll be asked to create an account which will allow you to submit requests, communicate with staff, and revisit the details of your past classes. (Please note:
-    %a{:href => "https://hcl.harvard.edu:8001/forms/requests/instruction.cfm", :target => "_new"} general library instruction sessions
-    are scheduled separately.)
+  %p Welcome back #{current_user.display_name}
 .row
-  #welcome-left
-    %h4 Participating Special Collections Libraries/Archives
-    %p
-      Select a Participating Special Collections Library/Archive
-    %p{:style => "margin-bottom:0;"}
-      = link_to "Not Sure - Help me Choose", new_course_path
-      %br/
-    %div{:style => "font-size: .85em; margin-left:1em; margin-bottom:0.3em;"}
-      Select this option if you would like us to match your class with a library/archive.
-      %br/
-    - @repositories.each do |repo|
-      = link_to repo.name, repo
-      %br/
-    %p
-      Are you a Special Collections Library/Archive at #{$local_config[:institution]}?
-      %br/
-      Would you like to participate?
-    %p.email
-      %span.glyphicon.glyphicon-envelope
-      %a{:href => "mailto:#{$local_config[:tool_content_admin_email]}"} Join us!
-  #welcome-right
-    %h4 Recent Classes
-    - unless @courses.nil?
-      - @courses.each do |course|
-        %li= link_to(course.title, recent_show_course_url(course) )
-    - else
-      None yet.
+  .col-md-4
+    .panel.panel-info
+      .panel-heading
+        %h4.panel-title Welcome
+      .panel-body
+        %p
+          Teach with us. Class sessions at participating special collections libraries and archives can range from surveys of faculty-selected collection material to sessions for which our staff provide guided explorations. Bring your class in for an hour or schedule several visits for in-depth investigations of archives, manuscripts, maps, rare books, and more.
+        %p.help-text
+          %strong NOTE: 
+          %a{:href => "https://hcl.harvard.edu:8001/forms/requests/instruction.cfm", :target => "_new"} general library instruction sessions
+          are scheduled separately.
+    
+    .panel.panel-info
+      .panel-heading
+        %h4.panel-title Recent Classes
+      .panel-body
+        %ul.list-group
+        - unless @courses.nil?
+          - @courses.each do |course|
+            %li.list-group-item= link_to(course.title, recent_show_course_url(course) )
+        - else
+          None yet.
+      
+  .col-md-4
+    = render :partial => 'shared/repo_image', :locals => { image: @featured_image, size: :welcome_page }
+    
+    .well.well-sm
+      %h4 Join Us!
+      %p
+        Are you a special collections library/archive at #{$local_config[:institution]}?
+      %p
+        Would you like to participate?
+      %p.email
+        %span.glyphicon.glyphicon-envelope
+        %a{:href => "mailto:#{$local_config[:tool_content_admin_email]}"} Let us know!
+  .col-md-4
+    .panel.panel-primary
+      .panel-heading
+        %h4.panel-title Request A Class
+      .panel-body
+        %p
+          %strong Select one of the following participating libraries or archives below request a class, or click the button if you don't know which one is right. 
+        %p.help-text (You'll be asked to create an account so we can communicate with you about your classes.)
+        %p.text-center
+          = link_to 'Help Me Choose', new_course_path, :class => 'btn btn-primary'
+        %br
+        %ul.list-group
+          - @repositories.each do |repo|
+            %li.list-group-item= link_to repo.name, repo

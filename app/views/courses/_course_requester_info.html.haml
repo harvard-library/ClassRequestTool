@@ -24,7 +24,7 @@
     .panel-heading
       %h5 Additional Contacts
     .panel-body
-      %p.help_text Please add anyone else who should receive communications about this course.
+      %p.help-text Please add anyone else who should receive communications about this course.
       = f.semantic_fields_for :additional_patrons do |additional_patron|
         = render :partial => 'additional_patron_fields', :locals => { :f => additional_patron }
       .links
