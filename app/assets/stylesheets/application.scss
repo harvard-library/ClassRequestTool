@@ -54,20 +54,23 @@
  }
  
 @import "ie/iefix";
+@import "bootstrap-sprockets";
+
+/* Local Bootstrap overrides */
+@import "bootstrap_local";
 
 /* Vendor styles */
 @import "bootstrap";
+// @import "bootflat";
 @import "jquery.ui.all";
 @import "jquery-tablesorter/theme.bootstrap";
 @import "jquery-tablesorter/addons/pager/jquery.tablesorter.pager";
-@import "bootflat";
 @import "jquery-ui-timepicker-addon";
 @import "jquery.qtip.css";
 
-/* Local and overrides */
-@import "bootstrap_and_overrides";
+/* Other local and overrides */
+@import "overrides";
 @import "formtastic-changes";
-@import "local_branding";
 @import "global";
 
 /* model/controller styles */

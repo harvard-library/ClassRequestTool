@@ -13,12 +13,12 @@
 //= require jquery
 //= require jquery_ujs
 //= require jquery.ui.all
-//= require bootstrap
+//= require bootstrap-sprockets
 //= require sugar
 //= require jquery-tablesorter
 //= require jquery-tablesorter/parsers/parser-date
 //= require jquery-tablesorter/addons/pager/jquery.tablesorter.pager
-//= require icheck.min
+//= require icheck
 //= require highcharts
 //= require highcharts/highcharts-more
 //= require ckeditor/init

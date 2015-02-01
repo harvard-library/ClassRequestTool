@@ -6,11 +6,11 @@
     = stylesheet_link_tag    'application', :media => "all"
     /
       [if lt IE 9]>
-      <haml:loud> stylesheet_link_tag &amp;#39;iefix&amp;#39;, :media =&amp;gt; &amp;quot;all&amp;quot; </haml:loud>
+      = stylesheet_link_tag 'ie/iefix', :media => 'all'
       <![endif]
     /
       [if lt IE 10]>
-      <haml:loud> stylesheet_link_tag &amp;#39;application_split2&amp;#39;, :media =&amp;gt; &amp;#39;all&amp;#39; </haml:loud>
+      = stylesheet_link_tag 'ie/application_split2', :media => 'all'
       <![endif]
     = javascript_include_tag 'application'
     = csrf_meta_tags

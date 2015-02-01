@@ -5,32 +5,6 @@ html,body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-h1,h2,h3,h4,h5,h6 {
-  font-family: Vollkorn, Georgia, "Times New Roman", Times, serif;
-  font-style: normal;
-  font-weight: normal;
-  -moz-osx-font-smoothing: grayscale;
-}
-h1 {
-  font-size: 36px;
-}
-h2 {
-  font-size: 30px;
-}
-h3 {
-  font-size: 24px;
-}
-h4 {
-  font-size: 20px;
-}
-h5 {
-  font-size: 16px;
-  font-family: Roboto, Helvetica, Arial, sans-serif;
-  font-style: italic;
-}
-label {
-  font-family: Roboto, Helvetica, Arial, sans-serif;
-}
 
 /* Wrapper for page content to push down footer */
 #wrap {
@@ -144,8 +118,8 @@ div.ui-datepicker{
   margin-right:1em;
 }
 
-.help_text {
-  font-size: 12px;
+.help-text {
+  font-size: 0.9em;
   color: #666;
 }
 
@@ -155,9 +129,7 @@ div.ui-datepicker{
   background-image: image-url('check_flat_crimson.png');
 }
 
-.btn {
-  border-radius: 20px;
-}
+/*
 .btn-primary, .btn-primary.disabled, .btn-primary[disabled]  {
   color: $creme;
   background-color: $crimson;
@@ -193,6 +165,7 @@ h6.panel-title {
 .well {
   background-color: #efefef;
 }
+*/ 
 
 /* Notifications */
 .notifications-status {

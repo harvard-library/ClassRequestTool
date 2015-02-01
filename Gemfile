@@ -20,7 +20,6 @@ gem 'css_splitter'
 gem 'haml-rails'
 gem 'formtastic-bootstrap'
 gem 'cocoon'
-gem 'bootstrap-sass'
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -31,11 +30,11 @@ group :assets do
   gem 'turbo-sprockets-rails3'
   gem 'jquery-rails', '~> 3.1.0'
   gem 'jquery-ui-rails', '~> 4.2.0'
-  gem 'bootflat-rails'
   gem 'jquery-tablesorter'
   gem 'sugar-rails'
   gem 'jquery-qtip2-rails'
   gem 'highcharts-rails'
+  gem 'bootstrap-sass'
 end
 
 group :test, :development do
