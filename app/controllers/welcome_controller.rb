@@ -4,7 +4,13 @@ class WelcomeController < ApplicationController
   def show
     @repositories = Repository.order(:name)
     @courses = Course.with_status('Closed').past.limit(5).order_by_last_date
-    @featured_image = AttachedImage.where(:featured => true, :picture_type => 'Repository').first
+    @featured_image = AttachedImage.where(:featured => true, :picture_type => 'Repository').sample
+    if @featured_image.blank?
+      @featured_image = AttachedImage.new
+      @featured_image.caption = "No image available"
+    else
+      @featured_repository = @featured_image.owner
+    end
   end
 
   def dashboard

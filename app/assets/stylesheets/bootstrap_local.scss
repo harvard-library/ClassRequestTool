@@ -64,6 +64,9 @@ label {
 }
 
 /* Components */
+//Border radius
+$radius: 7px;
+
 // Panels
 $panel-default-heading-bg:  $creme;
 $panel-primary-heading-bg:  $brand-primary;
@@ -86,7 +89,7 @@ $dropdown-color:    $gray-dark;
   .color-swatch {
     text-align: center;
     margin: 10px;
-    border-radius: 5px;
+    border-radius: $radius;
     width: 120px;
     padding: 50px 0;
     display: inline-block;

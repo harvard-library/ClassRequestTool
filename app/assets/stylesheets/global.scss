@@ -123,11 +123,29 @@ div.ui-datepicker{
   color: #666;
 }
 
-/* Branded overrides */
+/* iCheck */
 .icheckbox_flat,
 .iradio_flat {
   background-image: image-url('check_flat_crimson.png');
 }
+
+/* Default picture captions */
+.caption {
+  text-align: center;
+  margin-top: 2px;
+  padding: 10px;
+  min-height: 100px;
+  font-size: $font-size-base * 0.9;
+  color: $gray-dark;
+  background-color: $brand-info;
+  border-radius: 3px;
+  width: 100%;
+}
+.credit {
+  font-size: $font-size-base * 0.8;
+  color: $gray-light;
+}
+
 
 /*
 .btn-primary, .btn-primary.disabled, .btn-primary[disabled]  {

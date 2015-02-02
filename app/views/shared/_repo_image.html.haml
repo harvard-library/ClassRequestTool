@@ -1,3 +1,5 @@
-.repo-image
-  = image_tag image.image_url(size)
-  %p.caption= image.caption.html_safe
+= image_tag image.image_url(size)
+.caption
+  %p= image.caption.html_safe
+  %br
+%p.credit= photo_credit(source).html_safe

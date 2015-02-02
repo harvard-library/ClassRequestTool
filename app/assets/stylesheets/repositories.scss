@@ -30,29 +30,13 @@ div.repo-section {
     border-radius: 15px;
     padding: 20px;
   }
-  .repo-images {
-    td {
-      text-align: center;
-      width: 150px;
-    }
-  }
 }
-.repo-image {
+.display {
+  width: 16.66%;
   margin: 0 auto;
-  width: 100%;
   img {
     border-radius: 3px;
     width: 100%;
-  }
-  .caption {
-    text-align: center;
-    margin-top: 2px;
-    padding: 10px;
-    min-height: 100px;
-    font-size: $font-size-base;
-    color: $gray-dark;
-    background-color: $brand-info;
-    border-radius: 3px;
   }
 }
 

@@ -23,4 +23,19 @@ module ApplicationHelper
       
     select_tag :people, options_collection, :class => 'pagesize'
   end
+  
+  def photo_credit(source)
+  
+    if source.is_a? Repository
+      "From the <a href='#{repository_path(source)}'>#{source.name}</a>"
+      
+    elsif source.is_a? String
+      "Credit: #{sourse}"
+        
+    elsif source.respond_to? :to_s
+      "Credit: #{source.to_s}"
+    else
+      ''
+    end
+  end
 end

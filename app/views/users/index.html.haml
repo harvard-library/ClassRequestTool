@@ -13,7 +13,7 @@
         %th Admin?
         %th Staff?
         %th Patron?
-        - if current_user.can_admin?
+        - if current_user && current_user.can_admin?
           %th Actions
         - else
           %th
@@ -29,7 +29,7 @@
           %td= user.staff ? "Yes" : "No"
           %td= user.patron ? "Yes" : "No"
           %td
-            - if current_user.can_admin?
+            - if current_user && current_user.can_admin?
               = link_to('Edit', edit_user_path(user), :class => "action-edit")
             - if current_user.superadmin?
               | #{link_to('Delete', user_path(user), :confirm => "Are you sure?", :method => :delete)}

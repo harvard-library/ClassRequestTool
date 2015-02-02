@@ -18,5 +18,9 @@ class AttachedImage < ActiveRecord::Base
       "delete_type" => "DELETE"
     }
   end
+  
+  def owner
+    self.picture_type.constantize.find(self.picture_id)
+  end
 end
 

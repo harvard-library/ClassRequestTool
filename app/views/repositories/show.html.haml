@@ -11,11 +11,9 @@
 
 - unless @repository.attached_images.blank?
   .row.repo-images
-    %table.table
-      %tr
-        - @repository.attached_images.each do |pic|
-          %td
-            = render :partial => 'shared/repo_image', :locals => { image: pic, size: :display }
+    - @repository.attached_images.each do |pic|
+      .display
+        = render :partial => 'shared/repo_image', :locals => { image: pic, size: :display }
 .row
   .col-md-4.collections
     .info
@@ -66,7 +64,7 @@
         %p
           %span.glyphicon.glyphicon-list-alt &nbsp
           = link_to "Class policies", @repository.landing_page, :target => "_blank"
-- if current_user.can_admin?
+- if current_user && current_user.can_admin?
   .row
     .admin-box
       .staff

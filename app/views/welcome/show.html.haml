@@ -4,7 +4,7 @@
   .col-md-4
     .panel.panel-info
       .panel-heading
-        %h4.panel-title Welcome
+        %h1.panel-title Welcome
       .panel-body
         %p
           Teach with us. Class sessions at participating special collections libraries and archives can range from surveys of faculty-selected collection material to sessions for which our staff provide guided explorations. Bring your class in for an hour or schedule several visits for in-depth investigations of archives, manuscripts, maps, rare books, and more.
@@ -25,7 +25,8 @@
           None yet.
       
   .col-md-4
-    = render :partial => 'shared/repo_image', :locals => { image: @featured_image, size: :welcome_page }
+    .featured-image
+      = render :partial => 'shared/repo_image', :locals => { image: @featured_image, size: :welcome_page, source: @featured_repository  }
     
     .well.well-sm
       %h4 Join Us!
@@ -39,7 +40,7 @@
   .col-md-4
     .panel.panel-primary
       .panel-heading
-        %h4.panel-title Request A Class
+        %h2.panel-title Request A Class
       .panel-body
         %p
           %strong Select one of the following participating libraries or archives below request a class, or click the button if you don't know which one is right. 
