@@ -1,5 +1,5 @@
 class Repository < ActiveRecord::Base
-  attr_accessible :name, :description, :class_limit, :can_edit, :room_ids, :user_ids, :item_attribute_ids, :calendar, 
+  attr_accessible :name, :description, :class_limit, :room_ids, :user_ids, :item_attribute_ids, :calendar, 
       :landing_page, :class_policies, :picture, :attached_images_attributes, :email_details, :collections_attributes
   
 

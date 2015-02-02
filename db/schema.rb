@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150130222432) do
+ActiveRecord::Schema.define(:version => 20150202215128) do
 
   add_extension "fuzzystrmatch"
 
@@ -238,16 +238,14 @@ ActiveRecord::Schema.define(:version => 20150130222432) do
     t.text     "description"
     t.integer  "class_limit",    :default => 0
     t.integer  "user_id"
-    t.boolean  "can_edit",       :default => false, :null => false
-    t.datetime "created_at",                        :null => false
-    t.datetime "updated_at",                        :null => false
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
     t.text     "calendar"
     t.string   "landing_page"
     t.text     "class_policies"
     t.text     "email_details"
   end
 
-  add_index "repositories", ["can_edit"], :name => "index_repositories_on_can_edit"
   add_index "repositories", ["class_limit"], :name => "index_repositories_on_class_limit"
   add_index "repositories", ["description"], :name => "index_repositories_on_description"
   add_index "repositories", ["name"], :name => "index_repositories_on_name"
