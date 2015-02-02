@@ -16,7 +16,7 @@ ClassRequestTool::Application.configure do
 
   # Don't fallback to assets pipeline if a precompiled asset is missed
   config.assets.compile = true
-  config.assets.precompile += %w( application_split2_ie.css iefix.css jquery-ui-timepicker-addon.css jquery-ui-timepicker-addon.js )
+  config.assets.precompile += %w( jquery.qtip.css application_split2_ie.css iefix.css jquery-ui-timepicker-addon.css jquery-ui-timepicker-addon.js )
 
   # Generate digests for assets URLs
   config.assets.digest = true
