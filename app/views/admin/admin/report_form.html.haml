@@ -1,5 +1,26 @@
 .row
   .col-md-12
+    %h3 Export to CSV
+    .panel.panel-default
+      .panel-body
+        .well.well-md
+          = form_tag '/admin/csv/export' do
+            = hidden_field_tag :klass, 'Course'
+            %p
+              = submit_tag 'Export Course Data', :class => 'btn btn-primary'
+              %label Repository:
+              = select_tag 'filters[0][repository][value]', options_from_collection_for_select(@repositories, :id, :name), :include_blank => '-- All --', :style => "width: 40 em"
+              = hidden_field_tag 'filters[0][repository][column]', 'id'
+              = hidden_field_tag 'filters[0][repository][comparison]', 'eq'
+          = form_tag '/admin/csv/export' do
+            = hidden_field_tag :klass, 'Assessment'
+            %p
+              = submit_tag 'Export Assessment Data', :class => 'btn btn-primary'
+              %label Repository: 
+              = select_tag 'filters[0][repository][value]', options_from_collection_for_select(@repositories, :id, :name), :include_blank => '-- All --', :style => "width: 40 em"
+              = hidden_field_tag 'filters[0][repository][column]', 'id'
+              = hidden_field_tag 'filters[0][repository][comparison]', 'eq'
+              
     %h3 Create a Report
     = form_tag '/admin/build_report' do
       .panel.panel-default
@@ -14,7 +35,7 @@
             %tr
               %td
                 %label Library/archive:
-              %td= select_tag :repo, options_from_collection_for_select(Repository.order("name ASC").all, :id, :name), :include_blank => "-- All --", :style => "width: 40em"
+              %td= select_tag :repo, options_from_collection_for_select(@repositories, :id, :name), :include_blank => "-- All --", :style => "width: 40em"
             %tr
               %td
                 %label Affiliate:

@@ -1,8 +1,34 @@
 class Admin::AdminController < ApplicationController
 
+  require 'csv'
+
   before_filter :admins_only
 
   def report_form
+    @repositories = Repository.select([:id, :name]).order("name ASC").all      # Add CSV options   
+  end
+  
+  def csv_export
+    klass = params[:klass].constantize
+    
+    filters = []
+    params[:filters].each do |i, filter|
+      unless filter.values.first['value'].blank?
+        filter_string = filter.collect { |k,v| "#{k[0]}.#{v['column']}#{op(v['comparison'])}#{v['value']}" }.first
+        filters << filter_string
+      end
+    end
+    
+    if klass.respond_to? :csv_data
+      csv_export = CSVExport.new(klass, filters)
+    else
+      flash[:alert] = "It's not possible to export data for that."
+      return_to :back
+    end
+    
+    csv_export.build
+    
+    send_data csv_export.output, :type => 'text/csv', :filename => "#{params[:klass].downcase}_data_export.csv"
   end
   
   def build_report
@@ -75,6 +101,23 @@ class Admin::AdminController < ApplicationController
       unless current_user && (current_user.admin? || current_user.superadmin?)
         flash[:alert] = 'Sorry, only admins have permission to do that.'
         redirect_to '/'
+      end
+    end
+    
+    def op(comparison)
+      case comparison
+      when 'eq'
+        '='
+      when 'gt'
+        '>'
+      when 'lt'
+        '<'
+      when 'gte'
+        '>='
+      when 'lte'
+        '<='
+      when 'ne'
+        '!='
       end
     end
 end

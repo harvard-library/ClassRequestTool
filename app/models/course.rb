@@ -164,6 +164,78 @@ class Course < ActiveRecord::Base
   end
   
   # Class functions
+  # Implemented for the CSVExport class
+  def self.csv_data(filters = [])
+    fields = ["to_char(c.created_at, 'YYYY-MM-DD HH:MIam')",
+              'title',
+              'subject',
+              'course_number',
+              'affiliation',
+              'contact_email',
+              'contact_phone',
+              'pre_class_appt',
+              'r.name',               # Repositories column
+              'u.first_name || u.last_name',
+              'staff_involvement',
+              'number_of_students',
+              'status',
+              'syllabus',
+              'external_syllabus',
+              'duration',
+              'comments',
+              'session_count',
+              'goal',
+              'contact_first_name',
+              'contact_last_name',
+              'contact_username',
+              's.session',                                            # Sections column 
+              's.id',                                                 # Sections column
+              "to_char(s.actual_date, 'YYYY-MM-DD HH:MIam')",         # Sections column 
+              's.headcount'                                           # Sections column
+            ]
+    
+    header_row = []
+    fields.each do |field|
+      case field
+      when "to_char(c.created_at, 'YYYY-MM-DD HH:MIam')"
+        heading = 'Submitted'
+      when 'r.name'
+        heading = 'Repository'
+      when 'u.first_name || u.last_name'
+        heading = 'Primary staff contact'
+      when 's.session'
+        heading = 'Session'
+      when 's.id'
+        heading = 'Section ID'
+      when "to_char(s.actual_date, 'YYYY-MM-DD HH:MIam')"
+        heading = 'Section date'
+      when 's.headcount'
+        heading = 'Attendance'
+      else
+        heading = field.humanize
+      end
+      
+      header_row << heading
+    end
+    
+    select = "SELECT #{fields.join(',')} FROM courses c "
+    joins = [
+      "LEFT JOIN repositories r ON c.repository_id = r.id",
+      "LEFT JOIN sections s ON s.course_id = c.id",
+      "LEFT JOIN users u ON u.id = c.primary_contact_id"
+    ]
+    
+    order = 'ORDER BY c.created_at ASC, s.session ASC NULLS LAST, s.actual_date ASC NULLS LAST'
+    
+    if filters.empty?
+      sql = "#{select} #{joins.join(' ')} #{order}"
+    else
+      sql = "#{select} #{joins.join(' ')} WHERE #{filters.join(' AND ')} #{order}"
+    end
+    
+    [header_row, sql]    
+  end
+  
   def self.update_all_stats
     courses = Course.all
     courses.each do |course|
@@ -186,5 +258,15 @@ class Course < ActiveRecord::Base
       end
     end
   end
-
+  
+  private
+  
+    # Convert form parameters to where clauses
+    def where_filters(filters)
+      where_filters = []
+      
+      unless filters[:repository.blank?]
+        where_filters << "repositories.id = #{filters[:repository_id]}"
+      end
+    end
 end

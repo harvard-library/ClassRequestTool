@@ -52,6 +52,8 @@ ClassRequestTool::Application.routes.draw do
 
     get   'reports',                            to: 'admin#report_form'
     post  'build_report',                       to: 'admin#build_report'
+    post  'build_report',                       to: 'admin#build_report'
+    post  'csv/export',                         to: 'admin#csv_export'
     get   'create-graph',                       to: 'admin#create_graph'
     get   'dashboard',                          to: 'admin#dashboard'
     get   'localize',                           to: 'admin#localize'
