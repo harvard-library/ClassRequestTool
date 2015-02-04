@@ -64,6 +64,33 @@ module CoursesHelper
     end
   end
   
+  def scheduling_status(sections)
+    return "<span class='status danger'>No sections!</span>" if sections.blank?
+    
+    all_scheduled = true
+    no_request = false
+    sections.each do |s|
+      if s.actual_date.blank?
+        all_scheduled = false
+      end
+      
+      if s.requested_dates.blank?
+        no_request = true
+      end      
+    end
+    if all_scheduled
+      "<span>Scheduled</span>"
+    elsif no_request
+      "<span class='status warning'>No date requested</span>"
+    else
+      "<span class='status warning'>Unscheduled</span>"
+    end
+  end
+  
+  def first_class(course)
+    course.first_date.blank? ? '' :  course.first_date.strftime(SORTTIME_FORMAT)
+  end
+  
   def first_plus_multiple_sections(course)
     if course.sections.nil?
       return "<div class='alert alert-danger'>No sections!</div>"
@@ -74,7 +101,7 @@ module CoursesHelper
 
     # Always list first scheduled section date
     meeting_time = course.first_date.blank? ? '' :  course.first_date.strftime(DATETIME_AT_FORMAT)
-    html = "<span class='time'>#{meeting_time}</span>#{meeting_time.blank? ?  '<span class=\"unscheduled\">(unscheduled)</span>' : ''}"
+    html = "<span class='time'>#{meeting_time}</span>#{meeting_time.blank? ?  '<span class=\"status danger\">No dates</span>' : ''}"
     if scheduled_sections.count > 1
       html += ' <br /><span class="glyphicon glyphicon-th-list" '
       scheduled_sections.each do |s|

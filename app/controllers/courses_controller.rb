@@ -224,7 +224,7 @@ class CoursesController < ApplicationController
 
   def index
     if current_user.can_admin?
-      @courses = Course.order_by_submitted.includes(:sections, :repository)
+      @courses = Course.order_by_submitted.includes(:sections, :repository, :primary_contact)
       @nil_date_warning = false
       @courses.reverse.each do |c|
         if c.last_date.nil?

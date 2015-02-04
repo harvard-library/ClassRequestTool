@@ -98,14 +98,15 @@ ul.course-actions {
   padding: 2px 5px;
   border-radius: 5px;
   color:#666;
-  background-color: $pear;
+  background-color: $brand-info;
   &.warning {
-    background-color: $lemon;
+    color: white;
+    background-color: $brand-warning;
     font-weight: bold;
   }
   &.danger {
     color: white;
-    background-color: $saffron;
+    background-color: $brand-danger;
     font-weight: bold;
   }
   &.inactive {

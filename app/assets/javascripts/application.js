@@ -16,7 +16,7 @@
 //= require bootstrap-sprockets
 //= require sugar
 //= require jquery-tablesorter
-//= require jquery-tablesorter/parsers/parser-date
+//= require jquery-tablesorter/parsers/parser-date-two-digit-year
 //= require jquery-tablesorter/addons/pager/jquery.tablesorter.pager
 //= require jquery-tablesorter/jquery.tablesorter.widgets-filter-formatter
 //= require icheck

@@ -33,32 +33,49 @@
       = render 'shared/tablesorter_pager'
     %table#courses-current.sortable
       %thead
-        %tr
+        %tr.active-headers
+          %th Course Title
           - if current_user.can_admin?
-            %th{class: "{sorter: false, filter: false}"}
-          %th Name
-          %th.submission-date.date.filter-parsed.sorter-sugar Submission Date
-          %th.first-class-meeting.date.filter-parsed.sorter-sugar First Class Meeting
-          %th.filter-select{'data-placeholder' => 'Select...'}  Library/Archive
+            %th.status-column.filter-select{'data-placeholder' => 'Select...'} Library/Archive
+            %th.status-column.filter-select{'data-placeholder' => 'Select...', :class => "{sorter: false, filter: false}"} Scheduling
+            %th.status-column Owner
+          %th.submission-date.date Submission Date
+          %th.first-class-meeting.date First Class Meeting
           - if current_user.can_admin?
-            %th.filter-select{'data-placeholder' => 'Select...'} Status
             %th Requester
-            %th{class: "{sorter: false, filter: false}"} Actions
+          / %th{class: "{sorter: false, filter: false}"} Actions
           / %th.hidden Search fodder
       %tbody
         - @courses.each do |c|
           %tr
-            - if current_user.can_admin?
-              %td= upcoming_or_past(c.last_date).html_safe
-            %td= link_to(c.title, c )
-            %td= c.created_at.strftime(DATETIME_FORMAT).html_safe
-            %td.section-times  #{first_plus_multiple_sections(c).html_safe}
-            %td= c.repo_name
-            - if current_user.can_admin?
-              %td= full_status(c)
-              %td= c.contact_last_name
-              %td
+            %td
+              #{link_to(c.title, c )}
+              - if current_user.can_admin?
+                %br
+                %br
                 = render :partial => 'shared/course_actions', :locals => { :course => c }
+            - if current_user.can_admin?
+              %td.status-column.starts_with
+                - if c.homeless?
+                  %span.status.danger Homeless
+                - else
+                  %span #{c.repository.name}
+              %td.status-column.starts_with #{scheduling_status(c.sections).html_safe}
+              %td.status-column
+                - if c.claimed? && !c.primary_contact.nil?
+                  %span #{c.primary_contact.full_name}
+                  = mail_to c.primary_contact.email, "<span class='glyphicon glyphicon-envelope'></span>".html_safe
+                - elsif c.claimed? && c.primary_contact.nil?
+                  %span.status.danger Erroneous claim: unknown user with ID: #{c.primary_contact_id}
+                - else
+                  %span.status.warning Unclaimed
+            %td{'data-date' =>  c.created_at.strftime(SORTTIME_FORMAT)} #{c.created_at.strftime(DATE_FORMAT).html_safe}
+            %td.section-times{'data-date' =>  first_class(c)}  #{first_plus_multiple_sections(c).html_safe}
+            - if current_user.can_admin?
+              %td
+                #{c.contact_first_name} #{c.contact_last_name}
+                %br
+                = mail_to c.contact_email, "<span class='glyphicon glyphicon-envelope'></span>".html_safe
             / %td.hidden= searchable_fields(c)
     .pager-courses-current
       = render 'shared/tablesorter_pager'

@@ -115,11 +115,11 @@ class Course < ActiveRecord::Base
   
   # Returns a repo name, whether the course repo is defined yet or not
   def repo_name
-    self.homeless? ? 'Unassigned' : self.repository.name
+    self.homeless? ? 'Homeless' : self.repository.name
   end
     
   def claimed?
-    not(self.primary_contact_id.blank?)
+    !self.primary_contact_id.blank?
   end
   
   def homeless?

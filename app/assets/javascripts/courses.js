@@ -1,6 +1,5 @@
 /* Extract data for tablesorts */
 var firstClassDateExtraction = function(node) {
-  console.log(node);
   return node.childNodes[0].innerHTML;
 };
 $(function () {
@@ -218,7 +217,6 @@ $(function () {
   /* Check required fields to make sure they have something in them */
   $('body').on('change', '.required input', function(e) {
     $input = $(e.currentTarget);
-    console.log(e.currentTarget);
     if ($input.val()) {
       $('#missing-fields #warning_' + $input.attr('id')).hide();
     } else {

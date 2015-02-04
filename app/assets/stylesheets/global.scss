@@ -24,6 +24,9 @@ html,body {
   padding: 20px 0px 20px 0px;
   text-align: center;
 }
+.navbar {
+  font-weight: bold;
+}
 
 #welcome-left {
   @include make-md-column(6);
@@ -184,6 +187,14 @@ h6.panel-title {
   background-color: #efefef;
 }
 */ 
+
+/* Class status columns */
+th.status-column {
+  background-color: $gray-lighter;
+}
+td.status-column {
+  background-color: $gray-lighter;
+}
 
 /* Notifications */
 .notifications-status {
