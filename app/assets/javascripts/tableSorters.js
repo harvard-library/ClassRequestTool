@@ -1,7 +1,7 @@
 $(document).ready(function(){    
   var $tables = $('table.sortable')
  
-  var tablesorterDefaults = {
+  var tablesorterOptions = {
     theme: 'bootstrap',
     widgets: ['uitheme', 'filter'],
     icons: 'glyphicon glyphicon-{name}',
@@ -9,12 +9,15 @@ $(document).ready(function(){
     widthFixed: true,
     widgetOptions: {
       uitheme: 'bootstrap',
-      filter_columnFilters: true,
-      filter_placeholder: { search: 'Filter...' }
+      filter_placeholder: { 
+        search: 'Filter...',
+        from: 'From...',
+        to: 'To...'
+      }
      }
   };
   
-  var pagerDefaults = {
+  var pagerOptions = {
     removeRows: false, 
     output: "page {page} of {filteredPages}", 
     pagesize: 10
@@ -25,20 +28,50 @@ $(document).ready(function(){
     
     // Add text extraction for first meeting date columns
     var textExtractions = {}
-    var col = $('table').find('th').index($('th.first-class-meeting'));
+    var filterFormatters = {}
+    var col = $(this).find('th').index($('th.first-class-meeting'));
     if (col) {
       textExtractions[col] = function(node) {
-        return $(node).find('.time').text().replace('@', ' ');
+        return $(node).find('.time').text().replace('@', ' ').replace('(unscheduled)', '');
       }
-      var ts_options = $.extend(true, tablesorterDefaults, { textExtraction: textExtractions });
+      tablesorterOptions = $.extend(true, tablesorterOptions, 
+        { 
+          widgetOptions: {
+            textExtraction: textExtractions, 
+          }
+        }
+      );
     }
-    var pg_options = $.extend(true, pagerDefaults, { container: $('.pager-' + tableId) })
+    
+    //Add range filter for all date columns
+    filterFormatters = {}
+    $(this).find('th').each(function(i) {
+      if ($(this).hasClass('date')) {
+        filterFormatters[i] = function($cell, indx) {
+          return $.tablesorter.filterFormatter.uiDatepicker( $cell, indx, {
+            textFrom: 'From:',
+            textTo: 'To:',
+            changeMonth: true,
+            changeYear: true
+          });
+        }
+      }
+    });
+    
+    tablesorterOptions = $.extend(true, tablesorterOptions, 
+      {
+        widgetOptions: {
+          filter_formatter: filterFormatters
+        }
+    });
+            
+    pagerOptions = $.extend(true, pagerOptions, { container: $('.pager-' + tableId) });
 
     if ($(this).hasClass('2-up')) {
-      pg_options = $.extend(true, pagerDefaults, { positionFixed: false });
+      pagerOptions = $.extend(true, pagerOptions, { positionFixed: false });
     }
 
-    $(this).tablesorter(ts_options);
-    $(this).tablesorterPager(pg_options);
+    $(this).tablesorter(tablesorterOptions);
+    $(this).tablesorterPager(pagerOptions);
   });
 });

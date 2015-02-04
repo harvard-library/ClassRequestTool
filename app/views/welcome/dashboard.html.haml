@@ -19,42 +19,42 @@
     %a{"data-toggle" => "tab", :href => "#closed", :role => "tab"} Completed Classes
 .dash-wrap.tab-content
   #upcoming.tab-pane.active.row
-    = render :partial => 'shared/dashboard_table',   |
+    = render :partial => 'dashboard_table',   |
       :locals => { :id => 'user-unscheduled',  |
       :title => 'Your Claimed, Unscheduled Classes', |
       :courses => @user_unscheduled }                |
     -#
-    = render :partial => 'shared/dashboard_table', |
+    = render :partial => 'dashboard_table', |
       :locals => { :id => 'user-upcoming',   |
       :title => 'Your Scheduled, Claimed Classes', |
       :courses => @user_upcoming }                 |
   / END #upcoming
   #homeless.tab-pane.row
     .clearfix
-      = render :partial => 'shared/dashboard_table', |
+      = render :partial => 'dashboard_table', |
         :locals => { :id => 'homeless',        |
         :title => 'Homeless Classes',                |
         :courses => @homeless }                      |
   / END homeless
   #unclaimed.tab-pane.row
     .clearfix
-      = render :partial => 'shared/dashboard_table', |
+      = render :partial => 'dashboard_table', |
         :locals => { :id => 'unassigned',      |
         :title => 'Classes to be Scheduled',         |
         :courses => @unscheduled_unclaimed }         |
       -#
-      = render :partial => 'shared/dashboard_table', |
+      = render :partial => 'dashboard_table', |
         :locals => { :id => 'roomless',        |
         :title => 'Scheduled Classes',               |
         :courses => @scheduled_unclaimed }           |
   / END unclaimed
   #closed.tab-pane.row
-    = render :partial => 'shared/dashboard_table', |
+    = render :partial => 'dashboard_table', |
       :locals => { :id => 'user-to-close',   |
       :title => 'Your Classes To Close',           |
       :courses => @user_to_close }         |
     -#
-    = render :partial => 'shared/dashboard_table', |
+    = render :partial => 'dashboard_table', |
       :locals => { :id => 'user-past-table',       |
       :title => 'Your Closed Classes',             |
       :courses => @user_past }                     |

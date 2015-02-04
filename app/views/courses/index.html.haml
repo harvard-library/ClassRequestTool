@@ -37,11 +37,11 @@
           - if current_user.can_admin?
             %th{class: "{sorter: false, filter: false}"}
           %th Name
-          %th.submission-date.sorter-sugar Submission Date
-          %th.first-class-meeting.sorter-sugar First Class Meeting
-          %th Library/Archive
+          %th.submission-date.date.filter-parsed.sorter-sugar Submission Date
+          %th.first-class-meeting.date.filter-parsed.sorter-sugar First Class Meeting
+          %th.filter-select{'data-placeholder' => 'Select...'}  Library/Archive
           - if current_user.can_admin?
-            %th Status
+            %th.filter-select{'data-placeholder' => 'Select...'} Status
             %th Requester
             %th{class: "{sorter: false, filter: false}"} Actions
           / %th.hidden Search fodder

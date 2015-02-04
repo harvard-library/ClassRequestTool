@@ -18,6 +18,7 @@
 //= require jquery-tablesorter
 //= require jquery-tablesorter/parsers/parser-date
 //= require jquery-tablesorter/addons/pager/jquery.tablesorter.pager
+//= require jquery-tablesorter/jquery.tablesorter.widgets-filter-formatter
 //= require icheck
 //= require highcharts
 //= require highcharts/highcharts-more
