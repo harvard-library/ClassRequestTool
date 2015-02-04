@@ -44,6 +44,7 @@ class Course < ActiveRecord::Base
   scope :claimed,               ->{ where('primary_contact_id IS NOT NULL') }
   scope :unscheduled,           ->{ where(:scheduled => false) }
   scope :scheduled,             ->{ where(:scheduled => true) }
+  scope :homeless,               ->{ where(:repository_id => nil) }
   scope :with_status,           ->(status) { where(status: status) }
   scope :upcoming,              ->{ where("last_date > ?", DateTime.now) }
   scope :past,                  ->{ where("last_date < ?", DateTime.now) }  

@@ -1,5 +1,9 @@
 %p
-  An assessment has been received for one of your classes. Review the feedback for
-  %em= @assessment.course.title
+  An assessment has been received for one of your classes: 
+
+= render :partial => 'shared/notification_course_info'}, :locals => { course: @assessment.course }
+
+%p
+  Review the feedback
   = succeed "." do
-    %a{:href => "http://#{"#{ROOT_URL}#{assessment_path(@assessment)}"}"} here
+    %a{:href => "http://#{"#{site_url}#{assessment_path(@assessment)}"}"} here

@@ -1,3 +1,7 @@
-Review the feedback for #{@assessment.course.title} here:
+Please review the feedback for:
 
-\#{"#{ROOT_URL}#{assessment_path(@assessment)}"}
+= render :partial => 'shared/notification_course_info'}, :locals => { course: @assessment.course }
+
+here:
+
+\#{"#{site_url}#{assessment_path(@assessment)}"}

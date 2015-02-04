@@ -2,7 +2,7 @@
   Thank you for submitting your request for a class session at #{@course.repo_name}. The request has been reviewed and confirmed.
 %p
   Title:
-  %a{:href => "http://#{ROOT_URL}#{course_path(@course)}"}= @course.title
+  %a{:href => "http://#{site_url}#{course_path(@course)}"}= @course.title
   %br/
   Confirmed Date: #{@course.sections.first.try(:actual_date)}
   %br/
@@ -14,6 +14,6 @@
 %p
   If you have any questions or additional details to share, please add a note to the
   = succeed "." do
-    %a{:href => "http://#{ROOT_URL}#{course_path(@course)}"} class request
+    %a{:href => "http://#{site_url}#{course_path(@course)}"} class request
 - unless @pre_class.blank?
   %p= @pre_class

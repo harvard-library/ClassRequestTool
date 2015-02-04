@@ -38,4 +38,13 @@ module ApplicationHelper
       ''
     end
   end
+  
+  def site_url
+    config = Rails.configuration.action_mailer[:default_url_options]
+    if config[:port].blank?
+      config[:host]
+    else
+      "#{config[:host]}:#{config[:port]}"
+    end
+  end
 end

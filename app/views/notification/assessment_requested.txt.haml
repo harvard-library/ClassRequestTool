@@ -1,12 +1,12 @@
 Your class session
 
-\#{render :partial => 'shared/notification_course_info'}
+= render :partial => 'shared/notification_course_info'}, :locals => { course: @course }
 
 was recently completed.
 
 If you would consider taking five minutes to help us improve our services by filling out a short assessment about your experience, we would greatly appreciate it:
 
-\#{"http://#{ROOT_URL}#{new_assessment_path(:course_id => @course.id)}"}
+\#{"http://#{site_url}#{new_assessment_path(:course_id => @course.id)}"}
 
 Thank you for utilizing
 - #{@course.repo_name}

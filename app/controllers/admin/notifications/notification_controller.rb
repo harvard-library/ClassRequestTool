@@ -2,6 +2,7 @@ class Admin::Notifications::NotificationController < Admin::AdminController
 
   # By default list links to all emails
   def action_missing(m, *args, &block)
+   #  binding.pry
   
     case (m)
       when 'assessment_received_to_admins'
@@ -15,6 +16,16 @@ class Admin::Notifications::NotificationController < Admin::AdminController
 
       when 'cancellation'
         @course = Course.where("status != 'Cancelled'").last
+        
+      when 'homeless_courses_reminder'
+        @courses = Course.homeless.limit(3).includes(:repository)
+        if @courses.empty?
+          @courses = Course.unclaimed.limit(3).includes(:repository)
+        end
+
+      when 'new_note'
+        @course = Course.where("status = 'Active'").last
+        @note = Note.new(:staff_comment => false, :note_text => 'I have something to say about this!')
 
       when 'new_request_to_admin', 'new_request_to_requestor'
         @course = Course.where("status != 'Homeless'").last
@@ -25,10 +36,7 @@ class Admin::Notifications::NotificationController < Admin::AdminController
       when 'repo_change', 'staff_change', 'timeframe_change'
         @course = Course.where(status: 'Active').last
         
-      when 'new_note'
-        @note = Note.new(:staff_comment => false, :note_text => 'I have something to say about this!')
-                
-      else
+      when ':action'
         all_notifications = 'admin/notifications/all_notifications'
     end
     

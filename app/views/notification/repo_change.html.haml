@@ -4,4 +4,4 @@
 %p
   If you wish to manage or confirm details, claim this class or assign it to another staff member at #{@course.repository.name}, please
   = succeed "." do
-    %a{:href => "http://#{ROOT_URL}#{edit_course_path(@course)}"} edit the course
+    %a{:href => "http://#{site_url}#{edit_course_path(@course)}"} edit the course

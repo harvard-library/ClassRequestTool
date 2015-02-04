@@ -1,12 +1,12 @@
 <Thank you for submitting your request for a class session at #{@course.repo_name}. The request has been reviewed and confirmed.
 
-Title: #{@course.title} (#{"http://#{ROOT_URL}#{course_path(@course)}"}
+Title: #{@course.title} (#{"http://#{site_url}#{course_path(@course)}"}
 Confirmed Date: #{@course.sections.first.try(:actual_date)}
 Duration: #{@course.duration} hours
 Staff contact: #{@staff_name} (#{@staff_email})
 
 If you have any questions or additional details to share, please add a note to the class request:
 
-\#{"http://#{ROOT_URL}#{course_path(@course)}"}
+\#{"http://#{site_url}#{course_path(@course)}"}
 - unless @pre_class.blank?
   %p= @pre_class

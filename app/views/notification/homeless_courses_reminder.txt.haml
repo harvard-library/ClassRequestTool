@@ -1,5 +1,5 @@
 The following homeless classes have yet to be assigned a location. If any of them are appropriate for your library or archive, please edit the course and assign it.
 - @courses.each do |course|
-  = render :partial => 'shared/notification_course_info'
-  %a{:href => "http://\#{ROOT_URL}\#{edit_course_path(course.id)}"}
+  = render :partial => 'shared/notification_course_info', :locals => { course: course }
+  %a{:href => "http://\#{site_url}\#{edit_course_path(course.id)}"}
     Edit this course
