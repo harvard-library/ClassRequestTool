@@ -9,7 +9,7 @@ class User < ActiveRecord::Base
   handle_asynchronously :send_devise_notification, :queue => 'devise'
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :remember_me, :first_name, :last_name, :repository_ids, :username
+  attr_accessible :email, :password, :password_confirmation, :remember_me, :first_name, :last_name, :repository_ids, :username, :patron, :staff, :superadmin, :admin
 
   validates_uniqueness_of :username
   validates_presence_of :username, :unless => :pinuser

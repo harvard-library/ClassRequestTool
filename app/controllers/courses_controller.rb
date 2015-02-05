@@ -167,7 +167,7 @@ class CoursesController < ApplicationController
 
     @additional_staff = additional_staff
 
-    @staff_involvement = @course.staff_involvement.split(',')
+    # @staff_involvement = @course.staff_involvement.split(',')
   end
 
   def export

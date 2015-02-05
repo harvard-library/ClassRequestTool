@@ -3,7 +3,7 @@
   .panel.panel-default
     .panel-body
       .form_full_width
-        = f.input :staff_involvements, :label => "Please select or suggest ways our staff can be of assistance for this class: ", :as => :check_boxes, :collection => @course.repository.nil? ? Repository.find(:first, :conditions => ("name like '%Houghton%'")).staff_involvements : @course.repository.staff_involvements
+        = f.input :staff_involvements, :label => "How can our staff assist you for this class? ", :as => :check_boxes, :collection => @course.repository.nil? ? Repository.find(:first, :conditions => ("name like '%Houghton%'")).staff_involvements : @course.repository.staff_involvements
         = f.input :staff_involvement, :label => "Additional Services: ", :input_html => { :rows => 5, :columns => 100 }
       - if current_user.can_admin? || current_user.staff?
         .form_full_width.admin-box

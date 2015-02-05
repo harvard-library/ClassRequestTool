@@ -1,27 +1,21 @@
-%script{:charset => "utf-8", :type => "text/javascript"}
-  function change_repo_items(repo_id)
-  {
-  $.ajax('<haml:loud> url_for(:action =&gt; &quot;repo_select&quot;) </haml:loud>?repo='+repo_id,
-  {
-  method: 'get',
-  success: function(data) {
-  $("#repo_info").html(data);
+:javascript
+  function change_repo_items(repo_id) {
+    $.get("#{url_for(:action => 'repo_select')}?repo=repo_id", function(data) {
+      $("#repo_info").html(data);
+    });
   }
+  $(function() {
+    $('form').on('submit', function (e) {
+      history.replaceState({submitted: "yes"}, '', "");
+    });
+    if (history && history.state && history.state.submitted == "yes"){
+      $('form').on('submit', function (e) {
+      e.preventDefault();
+      alert("You've already submitted this form. Redirecting to the Class Request Tool's homepage!");
+      location.href = "/";
+    });
+    }
   });
-  }
-  $(function () {
-  $('form').on('submit', function (e) {
-  history.replaceState({submitted: "yes"}, '', "");
-  });
-  if (history && history.state && history.state.submitted == "yes"){
-  $('form').on('submit', function (e) {
-  e.preventDefault();
-  alert("You've already submitted this form. Redirecting to the Class Request Tool's homepage!");
-  location.href = "/";
-  });
-  }
-  });
-%noscript Please enable Javascript.
 #info-left{ "data-course_id" => @course.id }
   = semantic_form_for(@course, :html => {:multipart => true}) do |f|
     = f.inputs do

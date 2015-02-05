@@ -59,6 +59,9 @@ module ClassRequestTool
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
+    
+    # Skip validation of locale
+    config.i18n.enforce_available_locales = false
 
     config.crt_reports = YAML::load(File.open("#{Rails.root}/config/reports.yml")).symbolize_keys
   end

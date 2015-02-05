@@ -17,6 +17,22 @@ namespace :crt do
         end
       end
     end
-
   end
 end
+
+# Custom seed files (custom_seeds directory)  
+namespace :db do
+  desc 'A custom seed of the database for QA testing'
+  task :custom_seed do
+    Dir[File.join(Rails.root, 'db', 'custom_seeds', '*.rb')].each do |filename|
+      load(filename) if File.exist?(filename)
+#       puts "Loading #{File.basename(filename, '.rb').to_sym}"
+#       task_name = File.basename(filename, '.rb').intern
+#       puts task_name
+#       puts File.exist?(filename)
+#       task task_name => :environment do
+#         load(filename) if File.exist?(filename)
+#       end
+    end
+  end
+end      
