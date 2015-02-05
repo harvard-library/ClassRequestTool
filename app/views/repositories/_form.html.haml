@@ -16,7 +16,7 @@
     %br/
     = f.input :rooms, :as => :check_boxes, :label => 'Available Rooms for this Library/Archive'
     %br/
-    .panel.panel-primary
+    .panel.panel-info
       .panel-heading
         %label  #{repo_name_or_new(@repository.name).humanize} Staff
       .panel-body
@@ -26,7 +26,7 @@
     %br/
     = f.input :item_attributes, :as => :check_boxes, :label => 'Technology Available in this Library/Archive'
 
-    .panel.panel-primary
+    .panel.panel-info
       .panel-heading
         %label Collections for the #{repo_name_or_new(@repository.name)}
       .panel-body
@@ -35,7 +35,7 @@
         .links
           = link_to_add_association 'Add a collection', f, :collections, class: 'btn btn-primary'
 
-    .panel.panel-primary
+    .panel.panel-info
       .panel-heading
         %label Images for the #{@repository.name.blank? ? 'new library/archive' : @repository.name}
       .panel-body

@@ -2,7 +2,7 @@
 - @course = Course.find(course_id) if (@course.nil? && !course_id.blank?)
 - section_index = section_index.blank? ? 0 : section_index.to_i
 .col-xs-12
-  %div{:class => "session session-#{session_count} panel panel-primary", "data-session_count" => session_count, :id => "session-#{session_count}"}
+  %div{:class => "session session-#{session_count} panel panel-info", "data-session_count" => session_count, :id => "session-#{session_count}"}
     .panel-heading.clearfix
       %h4{ :class => "panel-title pull-left", :style => "padding-top: 7.5px" }= "Session #{session_count}"
       - unless session_count == 1
