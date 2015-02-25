@@ -25,7 +25,8 @@ class Course < ActiveRecord::Base
 
   validates_presence_of :title, :message => "can't be empty"
   validates_presence_of :contact_first_name, :contact_last_name
-  validates_presence_of :contact_email, :with => /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i, :message => "Invalid email"
+  validates_presence_of :contact_email, :message => "contact email is required"
+  validates_format_of :contact_email, :with => /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i, :message => "Invalid email"
   validates_presence_of :contact_phone
   validates_presence_of :number_of_students, :message => "please enter a number"
   validates_presence_of :goal, :message => "please enter a goal"
