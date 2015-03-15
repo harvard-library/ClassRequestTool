@@ -10,25 +10,25 @@ $(function () {
     } else {
       $('.panel.section .panel-title').css({ display: 'none' });
     }
-  }
+  };
     
 
   nextSectionIndex = function() {
     return $('#scheduling_info .section').length;
-  }
+  };
   thisSessionCount = function() {
-    return $('#scheduling_info .session').length
-  }
+    return $('#scheduling_info .session').length;
+  };
   nextSessionCount = function() {
     return thisSessionCount() + 1;
-  }
+  };
   
   $thisSession = function(target) {
     return $(target).closest('.session');
-  }
+  };
   $thisSection = function(target) {
     return $(target).closest('.section');
-  }
+  };
 
   var today = new Date();
   
@@ -70,9 +70,9 @@ $(function () {
     $('body').on('click', 'button.add_section', function (e) {
       e.preventDefault();
       
-      var target = e.currentTarget
+      var target = e.currentTarget;
 
-      var nextSectionCount = $thisSession(target).find('.section').length + 1
+      var nextSectionCount = $thisSession(target).find('.section').length + 1;
 
       $.get('/courses/new_section_or_session_block', { to_render: 'section', course_id: courseId, session_count: thisSessionCount(), section_count: nextSectionCount, section_index: nextSectionIndex() }, function (data) {
           $thisSession(target).find('.sections').append(data);
@@ -94,7 +94,7 @@ $(function () {
     $('body').on('click', '.section:not(.to_be_deleted) > .panel-heading button.delete, .session:not(.to_be_deleted) > .panel-heading button.delete', function (e) {
       e.preventDefault();
             
-      var target = e.currentTarget            
+      var target = e.currentTarget;            
       var toDelete = $(this).data('to_delete');
 
       var persisted;
@@ -135,7 +135,7 @@ $(function () {
     $('body').on('click', '.section.to_be_deleted > .panel-heading button.delete, .session.to_be_deleted > .panel-heading button.delete', function (e) {
       e.preventDefault();
 
-      var target = e.currentTarget
+      var target = e.currentTarget;
       var toUndelete = $(this).data('to_delete');
       $(target).text('Remove');
       
@@ -164,26 +164,24 @@ $(function () {
       $('.actual-date:not(.hasDatepicker)').each(function (i, el) { crt.setup_datetimepicker(el) });
       */
 
-      $('.datetime_picker .actual-date')
-        .filter(function (i,el) { return $(el).parents('.to_be_deleted').length == 0})
-        .each(function (i,el) {
+      $('.datetime_picker .actual-date').filter(function (i,el) { 
+        return $(el).parents('.to_be_deleted').length === 0;}).each(function (i,el) {
           var date = $(el).datetimepicker('getDate');
 
           if (date < today) {
             backdated.push(date.toString());
-          }
-          else {
+          } else {
             postdated.push(date.toString());
           }
         });
-
-      if (backdated.length > 0 && postdated.length > 0) {
-        confstring += "Past Dates:\n\t" + backdated.join("\n\t") + "\n\n";
-        confstring += "Future Dates:\n\t" + postdated.join("\n\t") + "\n";
-        if (!confirm(confstring)) {
-          e.preventDefault();
+      
+        if (backdated.length > 0 && postdated.length > 0) {
+          confstring += "Past Dates:\n\t" + backdated.join("\n\t") + "\n\n";
+          confstring += "Future Dates:\n\t" + postdated.join("\n\t") + "\n";
+          if (!confirm(confstring)) {
+            e.preventDefault();
+          }
         }
-      }
     });
   }
     
@@ -191,7 +189,7 @@ $(function () {
   $('#affiliation .affiliation_field').hide();
   $('#affiliation input[type=radio]:checked').val();
   $('#local_' + $('#affiliation input[type=radio]:checked').val()).show();
-  if ($('#other_affiliation').val() != '') {
+  if ($('#other_affiliation').val() !== '') {
     $('#local_no_or_other').show();
   }
   $('#affiliation input[type=radio]').change(function(e) {
@@ -210,7 +208,7 @@ $(function () {
       $('#local_no_or_other').slideDown();
     } else {
       $('#local_no_or_other').slideUp();
-      $('#other_affiliation').val('')    
+      $('#other_affiliation').val('') ;   
     }
   });
   
@@ -226,7 +224,7 @@ $(function () {
   
   /* Update additional staff list on assigning primary staff contact to course */
   $('#course_primary_contact_id').on('change', function(e) {
-    var userId = $(this).val()
+    var userId = $(this).val();
     $('input#course_user_ids_' + userId).attr('checked', false).parent().removeClass('checked');
     $('#course_users_input .checkbox').show();
     $('.checkbox input#course_user_ids_' + userId).parent().parent().parent().hide();
@@ -234,7 +232,7 @@ $(function () {
   
   /* Update repository staff and remove primary contact when changing repositories */
   $('#course_repository_id_input select').on('change', function(e) {
-    var repoId = $(e.currentTarget).val()
+    var repoId = $(e.currentTarget).val();
     $.get('/repository/staff/', 'id=' + repoId + '&form=true&for=course_course[user_ids][]', function(html) {
     
       //Update the checkboxes
@@ -252,7 +250,7 @@ $(function () {
   
   /* Enable/disable note posting button depending on text in the note field */
   $('.c_courses.a_show').on('keyup', '#note_note_text', function(e) {
-    $('#note_submit_action').prop('disabled', $(this).val() == '');
+    $('#note_submit_action').prop('disabled', $(this).val() === '');
   });
     
   

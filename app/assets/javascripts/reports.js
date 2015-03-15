@@ -13,15 +13,15 @@ $(function() {
   var creme = '#F4EDCA';
   var gold = '#C4961A';
   var lemon = '#FFDB6D';
-  var options = { "colors": [crimson, saffron, pear, bluebonnet, parchment] }
+  var options = { "colors": [crimson, saffron, pear, bluebonnet, parchment] };
   $('.datepicker').datepicker();
   $('.highcharts-graph').each(function() {
-    var graph = { id: $(this).attr('id') }
+    var graph = { id: $(this).attr('id') };
     $.getJSON('/admin/create-graph', graph, function(data) {
         if ($.isEmptyObject(data.options.series)) {
           $('#' + data.id).text("(NO DATA)");
         } else {
-          $('#' + data.id).highcharts($.extend({},data.options, options))
+          $('#' + data.id).highcharts($.extend({},data.options, options));
         }
     });
   });

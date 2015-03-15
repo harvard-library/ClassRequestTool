@@ -1,6 +1,6 @@
 $(function () {
   $('nav.navbar li').each(function (i, el) {
-    var $el = $(el)
+    var $el = $(el);
     if ($el.find('a').attr('href') === location.pathname.replace(/\/\d+(\/.+)?$/, '')){
       $el.addClass('active');
       $el.parentsUntil('nav.navbar', 'li').addClass('active');
@@ -14,14 +14,14 @@ $(function () {
       return true;
     }
     $.rails.showConfirmDialog(link);
-  }
+    return false;
+  };
   
-  false;
 
   $.rails.confirmed = function(link) {
     link.removeAttr('data-confirm');
     link.trigger('click.rails');
-  }
+  };
   
   // Now configure the dialog
   $.rails.showConfirmDialog = function(link) {
