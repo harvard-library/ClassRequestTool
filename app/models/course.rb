@@ -33,7 +33,7 @@ class Course < ActiveRecord::Base
   validates_presence_of :title, :message => "can't be empty"
   validates_presence_of :contact_first_name, :contact_last_name
   validates_presence_of :contact_email, :message => "contact email is required" 
-  validates_format_of   :with => /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i, :message => "Invalid email"
+  validates_format_of   :contact_email, :with => /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i, :message => "Invalid email"
   validates_presence_of :contact_phone
   validates_presence_of :number_of_students, :message => "please enter a number"
   validates_presence_of :goal, :message => "please enter a goal"
@@ -54,7 +54,7 @@ class Course < ActiveRecord::Base
   scope :user_is_staff,         ->(id_array){ where(:repository_id => id_array) }
   scope :order_by_first_date,   ->{ order('first_date DESC NULLS LAST') }  
   scope :order_by_last_date,    ->{ order('last_date DESC NULLS LAST') }  
-  scope :order_by_submitted,    ->{ order('created_at DESC') }  
+  scope :order_by_submitted,    ->{ order('courses.created_at DESC') }  
 
 
   after_save :update_stats
