@@ -5,6 +5,6 @@
   - staff_members.each do |staff|
     = render partial: 'shared/formtastic_checkbox', locals: { _for: "course_user_ids_#{staff.id}", _name: 'course[user_ids][]', _id: staff.id, to_display: staff.full_name }
 - else
-  %ul.list-group
+  %ul
     - staff_members.each do |staff|
-      %li.list-group-item #{staff.full_name}
+      %li= staff.full_name

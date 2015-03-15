@@ -7,8 +7,8 @@
         %h1.panel-title Welcome
       .panel-body
         %p
-          Teach with us. Class sessions at participating special collections libraries and archives can range from surveys of faculty-selected collection material to sessions for which our staff provide guided explorations. Bring your class in for an hour or schedule several visits for in-depth investigations of archives, manuscripts, maps, rare books, and more.
-        %p.help-text
+          Teach with us! Class sessions at participating special collections libraries and archives can range from surveys of faculty-selected collection material to sessions for which our staff provide guided explorations. Bring your class in for an hour or schedule several visits for in-depth investigations of archives, manuscripts, maps, rare books, and more.
+        %p
           %strong NOTE: 
           %a{:href => "https://hcl.harvard.edu:8001/forms/requests/instruction.cfm", :target => "_new"} general library instruction sessions
           are scheduled separately.
@@ -26,7 +26,7 @@
       
   .col-md-4
     .featured-image
-      = render :partial => 'shared/repo_image', :locals => { image: @featured_image, size: :welcome_page, source: @featured_repository  }
+      = render :partial => 'shared/repo_image', :locals => { image: @featured_image, size: :welcome_page, repo: @featured_repository  }
     
     .well.well-sm
       %h4 Join Us!
@@ -43,7 +43,7 @@
         %h2.panel-title Request A Class
       .panel-body
         %p
-          %strong Select one of the following participating libraries or archives below request a class, or click the button if you don't know which one is right. 
+          %strong To request a class, select a site below, or press “Help Me Choose” to let us pair your class with a participating library or archive. 
         %p.help-text (You'll be asked to create an account so we can communicate with you about your classes.)
         %p.text-center
           = link_to 'Help Me Choose', new_course_path, :class => 'btn btn-primary'

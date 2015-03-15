@@ -1,8 +1,8 @@
 .btn-group.course-actions{ :style => "width: 150px" }
   - if course.status == 'Cancelled'
-    %li= link_to('Uncancel', "#{course_path(course)}/uncancel", :class => 'btn btn-xs btn-warning', :confirm => "Are you sure? This well reset the course to its last known status.")
+    = link_to 'Uncancel', "#{course_path(course)}/uncancel", :class => 'btn btn-xs btn-warning', :confirm => "Are you sure? This well reset the course to its last known status."
   - else
-    %a{ :href => edit_course_path(course), :class => "action-edit", :class => 'btn btn-xs btn-info'} Edit
-    %a{ :href => "#{course_path(course)}/cancel", :class => 'btn btn-xs btn-warning', :confirm => "Are you sure?"} Cancel
+    = link_to 'Edit', edit_course_path(course), :class => "action-edit", :class => 'btn btn-xs btn-info'
+    = link_to 'Cancel', "#{course_path(course)}/cancel", :class => 'btn btn-xs btn-warning', :confirm => "Are you sure?"
   - if current_user.superadmin?
-    %a{ :href => course_path(course), :class => 'btn btn-xs btn-danger', :confirm => "Are you sure?", :method => :delete} Delete
+    = link_to 'Delete', course_path(course), :method => :delete, :class => 'btn btn-xs btn-danger', :confirm => "Are you sure?", :method => :delete
