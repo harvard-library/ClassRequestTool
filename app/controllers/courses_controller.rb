@@ -224,6 +224,7 @@ class CoursesController < ApplicationController
 
   def index
     if current_user.can_admin?
+      @title = 'All Classes'
       @courses = Course.order_by_submitted.includes(:sections, :repository, :primary_contact)
       @nil_date_warning = false
       @courses.reverse.each do |c|
@@ -233,7 +234,11 @@ class CoursesController < ApplicationController
         end
       end
       @csv = params[:csv]
+    elsif current_user.staff?
+      @title = 'Classes for Your Library/Archive'
+      @courses = Course.where("repository_id IN (#{current_user.repositories.map { |r| r.id  }.join(',')})").order_by_submitted.includes(:sections)
     elsif current_user.patron?
+      @title = 'Your Classes'
       @courses = Course.user_is_patron(current_user.email).order_by_submitted.includes(:sections, :repository)
     end
     @repositories = Repository.order('name ASC')
@@ -327,14 +332,8 @@ class CoursesController < ApplicationController
 
     # Begin gross status manipulation *&!%
     # Set notification statuses
-    if !params[:course][:repository_id].blank? && @course.repository_id != params[:course][:repository_id].to_i
-      send_repo_change_notification = true
-    end
-
-    if (@course.primary_contact.blank? && !params[:course][:primary_contact_id].blank?) ||
-        (@course.users.blank? && !(params[:course][:user_ids].length == 1 && params[:course][:user_ids][0].blank?))
-      send_staff_change_notification = true unless current_user.id == params[:course][:primary_contact_id].to_i
-    end
+    send_repo_change_notification = repo_change?
+    send_staff_change_notification = staff_change? && !(current_user.id == params[:course][:primary_contact_id].to_i)
 
     params[:course][:status] = set_status(params[:course])
     # End gross status manipulation
@@ -343,22 +342,22 @@ class CoursesController < ApplicationController
 
     if @course.save
       if params[:course][:status] == "Closed" # check params because editing closed courses should not create notes
-        @course.notes.create(:note_text => "Class has marked as closed.", :user_id => current_user.id)
+        @course.notes.create(:note_text => "Class has marked as closed.", :user_id => current_user.id, :staff_comment => true)
         Notification.delay(:queue => 'assessments').assessment(@course)
-        @course.notes.create(:note_text => "Assessment email sent.", :user_id => current_user.id)
+        @course.notes.create(:note_text => "Assessment email sent.", :user_id => current_user.id, :staff_comment => true)
       end
 
       if send_repo_change_notification
         # FIX INFO_NEEDED Should "changed from" repos get email? Inquiring Bobbis want to know
         Notification.delay(:queue => 'changes').repo_change(@course) unless @course.repository.blank?
-        @course.notes.create(:note_text => "Library/Archive changed to #{@course.repository.blank? ? "none" : @course.repository.name + "Email sent"}.",
-                             :user_id => current_user.id)
+        @course.notes.create(:note_text => "Library/Archive changed to #{@course.repository.blank? ? "none" : @course.repository.name + ". Email sent."}.",
+                             :user_id => current_user.id, :staff_comment => true)
       end
 
       if send_staff_change_notification
         # FIX INFO_NEEDED Should "dropped" staff members get this email?
         Notification.delay(:queue => 'changes').staff_change(@course, current_user)
-        @course.notes.create(:note_text => "Staff change email sent.", :user_id => current_user.id)
+        @course.notes.create(:note_text => "Staff change email sent.", :user_id => current_user.id, :staff_comment => true)
       end
 
       respond_to do |format|
@@ -400,5 +399,20 @@ class CoursesController < ApplicationController
     respond_to do |format|
       format.html { redirect_to dashboard_welcome_index_url, notice: 'Class was successfully claimed.' }
     end
-  end  
+  end 
+  
+  private
+    def repo_change?
+      !params[:course][:repository_id].blank? && @course.repository_id != params[:course][:repository_id].to_i
+    end
+    
+    def staff_change?
+      binding.pry
+      return true if @course.primary_contact.blank? && !params[:course][:primary_contact_id].blank?
+      return true if !@course.primary_contact.blank? && (@course.primary_contact.id != params[:course][:primary_contact_id])
+      return true if @course.users.blank? && !params[:course][:user_ids].blank?
+      return true if !params[:course][:user_ids].nil? && (@course.users.map{ |u| u.id.to_s }.sort != params[:course][:user_ids].sort)
+
+      false
+    end 
 end
