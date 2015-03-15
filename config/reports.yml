@@ -2,7 +2,8 @@
 unique_class_requests:
   type: "stat"
   title: "Unique Class Requests"
-  description: "The number of unique class requests"
+  description: "Number of Unique Class Requests"
+  help: Count of all class requests
   data: 
     number_of_classes: "Number of Class Requests"
   returns: single_row
@@ -11,7 +12,8 @@ unique_class_requests:
 one_group_one_session: 
   type: "stat"
   title: "Single-session, Single-section Classes"
-  description: "The number of classes where one group meets once"
+  description: "Number of Single-session, Single-section Classes"
+  help: Subset of class requests which meet only once and in a single group
   data: 
     number_of_classes: "Number of Classes"
   returns: single_row
@@ -21,7 +23,8 @@ one_group_one_session:
 multiple_sessions_one_group:
   type: "stat"
   title: "Multiple-session Classes for One Group"
-  description: "The number of classes where one group meets several times and the number of sessions requested"
+  description: "Number of Multi-session Classes"
+  help: Subset of class requests which meet in multiple sections to consult the same materials, typically large classes
   data: 
     max_number_of_sessions: "Max Sessions"
     average_sessions: "Average Number of Sessions"
@@ -34,7 +37,8 @@ multiple_sessions_one_group:
 multiple_groups_one_session:
   type: "stat"
   title: "Single Sessions, Multiple Sections"
-  description: "The number of classes where several subgroups each meet once and the number of groups"
+  description: "Single Sessions, Multiple Sections"
+  help: Subset of class requests which meet multiple times throughout a semester, typically to consult with different materials
   data: 
     max_number_of_sections: "Max Sections"
     average_sections: "Average Number of Sections"
@@ -47,7 +51,8 @@ multiple_groups_one_session:
 multiple_groups_multiple_sessions: 
   type: "graph"
   title: "Multiple Sessions, Multiple Sections"
-  description: "The number of classes where several subgroups each meet several times and the number of groups"
+  description: "Multiple Sessions, Multiple Sections"
+  help: Subset of class requests which meet multiple times throughout a semester in multiple sections
   data_model:
     series: 
       -
@@ -77,7 +82,8 @@ multiple_groups_multiple_sessions:
 attendance: 
   type: "stat"
   title: Class Attendance
-  description: "Projected and actual class attendance and number of aggregate student visits"
+  description: "Class Attendance"
+  help: Total headcounts
   data: 
     average_actual: "Average Actual Attendance"
     average_projected: "Average Projected Attendance"
@@ -89,7 +95,8 @@ attendance:
 patron_distribution:
   type: "graph"
   title: Patron Data
-  description: "Top patrons requesting classes"
+  description: Patron Data
+  help: Top requestors
   data_model:
     categories: "name"
     series:
@@ -119,7 +126,8 @@ patron_distribution:
 staff_distribution:
   type: "graph"
   title: "Staff Data"
-  description: "Top staff staffing courses"
+  description: Staff Data
+  help: Top teachers assigned as primary and/or secondary staff  to class
   data_model:
     categories: "name"
     series:
