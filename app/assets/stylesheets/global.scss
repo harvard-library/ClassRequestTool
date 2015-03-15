@@ -78,6 +78,19 @@ html,body {
 	margin-right: 5%;
 	padding-bottom: 10px;
 }
+
+// &*&*^! ckeditor changes divs to li's - make them look like divs
+li.ckeditor {
+  display: block;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  label {
+    color: #555;
+    font-size: 14px;
+  }
+}
+
 .delete-button {
   width: 4%;
   float: left;
