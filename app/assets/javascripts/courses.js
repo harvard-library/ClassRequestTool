@@ -250,6 +250,12 @@ $(function () {
     });
   });
   
+  /* Enable/disable note posting button depending on text in the note field */
+  $('.c_courses.a_show').on('keyup', '#note_note_text', function(e) {
+    $('#note_submit_action').prop('disabled', $(this).val() == '');
+  });
+    
+  
   /* qtip for classes with multiple sections */
   var tooltips = $('.section-times .glyphicon-th-list').each (function() {
     var html = $(this).data('section_list');
