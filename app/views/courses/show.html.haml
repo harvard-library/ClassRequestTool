@@ -137,9 +137,6 @@
               %li
                 %span.summary-label Room:
                 = sect.room ? sect.room.name : 'No room assigned'
-              %li
-                %span.summary-label Session duration:
-                #{pluralize(sect.session_duration, 'hour')}
   - else
     %div No class dates selected.
   %ul.summary-info
