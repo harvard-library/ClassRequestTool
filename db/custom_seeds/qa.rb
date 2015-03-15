@@ -30,7 +30,8 @@ def create_user(index, utype)
     :password => PASSWORD,
     :first_name => "#{utype.to_s.titlecase}-#{index + 1}",
     :last_name => "User#{index + 1}",
-    :username => "#{utype.to_s}#{index + 1}"
+    :username => "#{utype.to_s}#{index + 1}",
+    :patron => true
   )
   user[utype] = true
   if user.save!
@@ -88,13 +89,14 @@ puts 'Creating repositories...'
   
   # Assign staff to repository
   3.times.each do |j|
-    puts "    Creating Staff-#{j + 1}"
+    puts "    Creating Staff-#{j + 1} for Repository #{i+1}"
     repo.users << User.create(
-      :email => "staff#{j + 1}@example.com",
+      :email => "staff_#{i+1}_#{j + 1}@example.com",
       :password => PASSWORD,
       :first_name => "Staff-#{j + 1}",
       :last_name => "Repo#{repo.id}",
-      :username => "staff#{j + 1}repo#{repo.id}"
+      :username => "staff#{j + 1}repo#{repo.id}",
+      :staff => true
     )
   end    
 end
