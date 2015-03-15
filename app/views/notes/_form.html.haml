@@ -5,4 +5,4 @@
   - if current_user.staff? || current_user.can_admin?
     = f.input :staff_comment, :label => "Staff Note? (Uncheck to send to requester) ", :input_html => {:checked => "checked"}
   = f.actions do
-    = f.action :submit, :as => :button, :button_html => {:class => 'btn btn-primary'}, :label => 'Post'
+    = f.action :submit, :as => :button, :button_html => {:class => 'btn btn-primary', :disabled => true}, :label => 'Post'
