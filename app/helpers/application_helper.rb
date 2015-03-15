@@ -30,7 +30,7 @@ module ApplicationHelper
       "From the <a href='#{repository_path(source)}'>#{source.name}</a>"
       
     elsif source.is_a? String
-      "Credit: #{sourse}"
+      "Credit: #{source}"
         
     elsif source.respond_to? :to_s
       "Credit: #{source.to_s}"
