@@ -5,7 +5,6 @@
       %thead
         %tr
           %th Name
-          %th.submission-date.date.filter-parsed.sorter-sugar Submission Date
           %th.first-class-meeting.date.filter-parsed.sorter-sugar First Class Meeting
           %th{class: "{sorter: false, filter: false}"}
           / %th.hidden Search fodder
@@ -13,7 +12,6 @@
         - courses.each do |course|
           %tr
             %td= link_to(course.title, course )
-            %td= course.created_at.strftime(DATE_FORMAT)
             %td.section-times= first_plus_multiple_sections(course).html_safe
             %td{class: "{sorter: false, filter: false}"}
               = render :partial => 'shared/course_actions', :locals => { :course => course }
