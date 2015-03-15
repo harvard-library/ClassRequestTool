@@ -19,20 +19,24 @@ class NotesController < ApplicationController
 
   def create
     @note = Note.new(params[:note])
-    respond_to do |format|
-      if @note.save
-        Notification.delay(:queue => 'notes').new_note(@note, current_user)
-#        @note.new_note_email(current_user)
-#        unless @note.staff_comment || @note.course.contact_email == current_user.email
-#          Notification.delay(:queue => 'notes').new_note(@note)
-#          @note.new_patron_note_email
-#        end
-        format.html { redirect_to course_url(@note.course), notice: 'Note was successfully created.' }
-        format.json { render json: @note, status: :created, note: @note }
-      else
-        format.html { render action: "new" }
-        format.json { render json: @note.errors, status: :unprocessable_entity }
+    unless params[:note][:note_text].blank?
+      respond_to do |format|
+        if @note.save
+          Notification.delay(:queue => 'notes').new_note(@note, current_user)
+  #        @note.new_note_email(current_user)
+  #        unless @note.staff_comment || @note.course.contact_email == current_user.email
+  #          Notification.delay(:queue => 'notes').new_note(@note)
+  #          @note.new_patron_note_email
+  #        end
+          format.html { redirect_to course_url(@note.course), notice: 'Note was successfully created.' }
+          format.json { render json: @note, status: :created, note: @note }
+        else
+          format.html { render action: "new" }
+          format.json { render json: @note.errors, status: :unprocessable_entity }
+        end
       end
+    else
+      redirect_to course_url(@note.course), alert: 'Your note must contain text'
     end
   end
 
