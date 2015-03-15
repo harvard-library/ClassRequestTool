@@ -1,32 +1,33 @@
 %h3 Staff Services
 %div
-  .pager-involvement
-    = render :partial => '/shared/tablesorter_pager'
-  %table#involvement.sortable
-    %thead
-      %tr
-        %th Text
-        %th Libraries/Archives
-        - if current_user.admin?
-          %th Actions
-        - else
-          %th
-    %tbody
-      - @staff_involvements.each do |si|
+  - if @staff_involvements.blank?
+    %p None available yet
+  - else  
+    .pager-involvement
+      = render :partial => '/shared/tablesorter_pager'
+    %table#involvement.sortable
+      %thead
         %tr
-          %td= si.involvement_text
-          %td
-            - si.repositories.each do |repo|
-              = repo.name
-              %br/
-          %td
-            - if current_user.can_admin?
-              = link_to('Edit', edit_staff_involvement_path(si), :class => "action-edit")
-            - if current_user.superadmin?
-              | #{link_to('Delete', staff_involvement_path(si), :confirm => "Are you sure?", :method => :delete)}
-  %br/
-  .pager-involvement
-    = render :partial => '/shared/tablesorter_pager'
+          %th Text
+          %th Libraries/Archives
+          - if current_user && current_user.can_admin?
+            %th{class: "{sorter: false, filter: false}"}
+      %tbody
+        - @staff_involvements.each do |si|
+          %tr
+            %td= si.involvement_text
+            %td
+              - si.repositories.each do |repo|
+                = repo.name
+                %br/
+            - if current_user && current_user.can_admin?
+              %td
+                = link_to('Edit', edit_staff_involvement_path(si), :class => "action-edit")
+                - if current_user.superadmin?
+                  | #{link_to('Delete', staff_involvement_path(si), :confirm => "Are you sure?", :method => :delete)}
+    %br/
+    .pager-involvement
+      = render :partial => '/shared/tablesorter_pager'
   %br/
   %br/
   - if current_user.can_admin?

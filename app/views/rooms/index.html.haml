@@ -1,39 +1,40 @@
 %h3 Rooms
 %div
-  .pager-rooms
-    = render :partial => '/shared/tablesorter_pager'
-  %table#rooms.sortable
-    %thead
-      %tr
-        %th Name
-        %th Limit
-        %th Libraries/Archives Associated
-        %th Technology Available
-        - if current_user.can_admin?
-          %th Actions
-        - else
-          %th
-    %tbody
-      - @rooms.each do |room|
+  - if @rooms.blank?
+    %p None available yet
+  - else  
+    .pager-rooms
+      = render :partial => '/shared/tablesorter_pager'
+    %table#rooms.sortable
+      %thead
         %tr
-          %td= room.name
-          %td= room.class_limit
-          %td
-            - room.repositories.each do |x|
-              = x.name
-              %br/
-          %td
-            - room.item_attributes.each do |x|
-              = x.name
-              %br/
-          %td
+          %th Name
+          %th Limit
+          %th Libraries/Archives Associated
+          %th Technology Available
+          - if current_user && current_user.can_admin?
+            %th{class: "{sorter: false, filter: false}"}
+      %tbody
+        - @rooms.each do |room|
+          %tr
+            %td= room.name
+            %td= room.class_limit
+            %td
+              - room.repositories.each do |x|
+                = x.name
+                %br/
+            %td
+              - room.item_attributes.each do |x|
+                = x.name
+                %br/
             - if current_user.can_admin?
-              = link_to('Edit', edit_room_path(room), :class => "action-edit")
-            - if current_user.superadmin?
-              | #{link_to('Delete', room_path(room), :confirm => "Are you sure?", :method => :delete)}
-  %br/
-  .pager-rooms
-    = render :partial => '/shared/tablesorter_pager'
+              %td
+                = link_to('Edit', edit_room_path(room), :class => "action-edit")
+                - if current_user.superadmin?
+                  | #{link_to('Delete', room_path(room), :confirm => "Are you sure?", :method => :delete)}
+    %br/
+    .pager-rooms
+      = render :partial => '/shared/tablesorter_pager'
   %br/
   %br/
   - if current_user.can_admin?

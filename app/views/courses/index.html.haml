@@ -1,13 +1,10 @@
 - today = DateTime.now
 %div
-  - if current_user.patron?
-    %h3 My Classes
-  - else
-    %h3 All Classes
-    - if current_user.can_admin?
-      %h4= link_to('Export Courses to CSV', export_courses_path(:format => :csv))
-      - if @nil_date_warning
-        .alert.alert-warning There are classes without requested or actual dates at the end of this list.
+  %h3= @title
+  - if current_user.can_admin?
+    %h4= link_to('Export Courses to CSV', export_courses_path(:format => :csv))
+    - if @nil_date_warning
+      .alert.alert-warning There are classes without requested or actual dates at the end of this list.
       
   %p To submit a new class, choose a Library/Archive:
   = form_tag new_course_path, :method => :get do
@@ -16,12 +13,12 @@
       = submit_tag "Go", :class => 'btn btn-primary'
       
   %br/
-  - unless @courses.empty?
+  - unless @courses.nil? || @courses.empty?
     %p
       %em
         %span.glyphicon.glyphicon-th-list
         &mdash; Hover to see all meeting times&nbsp;&nbsp;&nbsp;&nbsp;
-        - if current_user.can_admin?
+        - unless current_user.patron?
           %span.glyphicon.glyphicon-upload.upcoming
           &mdash; Upcoming course&nbsp;&nbsp;&nbsp;&nbsp;
           %span.glyphicon.glyphicon-download.past

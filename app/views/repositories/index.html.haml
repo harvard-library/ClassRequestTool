@@ -1,27 +1,28 @@
 %h3 Libraries/Archives
-%div
-  .pager-repositories
-    = render :partial => '/shared/tablesorter_pager'
-  %table#repositories.sortable
-    %thead
-      %tr
-        %th Name
-        - if current_user && current_user.can_admin?
-          %th Actions
-        - else
-          %th
-    %tbody
-      - @repositories.each do |repo|
-        %tr
-          %td= link_to repo.name, repo
-          %td
+  - if @repositories.blank?
+    %p None available yet
+  - else  
+    %div
+      .pager-repositories
+        = render :partial => '/shared/tablesorter_pager'
+      %table#repositories.sortable
+        %thead
+          %tr
+            %th Name
             - if current_user && current_user.can_admin?
-              = link_to('Edit', edit_repository_path(repo), :class => "action-edit")
-            - if current_user.superadmin?
-              | #{link_to('Delete', repository_path(repo), :confirm => "Are you sure?", :method => :delete)}
-  %br/
-  .pager-repositories
-    = render :partial => '/shared/tablesorter_pager'
+              %th{class: "{sorter: false, filter: false}"}
+        %tbody
+          - @repositories.each do |repo|
+            %tr
+              %td= link_to repo.name, repo
+              - if current_user && current_user.can_admin?
+                %td
+                  = link_to('Edit', edit_repository_path(repo), :class => "action-edit")
+                  - if current_user.superadmin?
+                    | #{link_to('Delete', repository_path(repo), :confirm => "Are you sure?", :method => :delete)}
+      %br/
+      .pager-repositories
+        = render :partial => '/shared/tablesorter_pager'
   %br/
   %br/
   - if current_user && current_user.can_admin?

@@ -1,40 +1,41 @@
 %h3 Users
 %div
-  .pager-users
-    = render :partial => '/shared/tablesorter_pager'
-  %table#users.sortable
-    %thead
-      %tr
-        %th First Name
-        %th Last Name
-        %th Username
-        %th Email
-        %th Superadmin?
-        %th Admin?
-        %th Staff?
-        %th Patron?
-        - if current_user && current_user.can_admin?
-          %th Actions
-        - else
-          %th
-    %tbody
-      - @users.each do |user|
+  - if @users.blank?
+    %p No users yet
+  - else  
+    .pager-users
+      = render :partial => '/shared/tablesorter_pager'
+    %table#users.sortable
+      %thead
         %tr
-          %td= user.first_name
-          %td= user.last_name
-          %td= link_to(user.username, user )
-          %td= user.email
-          %td= user.superadmin ? "Yes" : "No"
-          %td= user.admin ? "Yes" : "No"
-          %td= user.staff ? "Yes" : "No"
-          %td= user.patron ? "Yes" : "No"
-          %td
+          %th First Name
+          %th Last Name
+          %th Username
+          %th Email
+          %th Superadmin?
+          %th Admin?
+          %th Staff?
+          %th Patron?
+          - if current_user && current_user.can_admin?
+            %th{class: "{sorter: false, filter: false}"}
+      %tbody
+        - @users.each do |user|
+          %tr
+            %td= user.first_name
+            %td= user.last_name
+            %td= link_to(user.username, user )
+            %td= user.email
+            %td= user.superadmin ? "Yes" : "No"
+            %td= user.admin ? "Yes" : "No"
+            %td= user.staff ? "Yes" : "No"
+            %td= user.patron ? "Yes" : "No"
             - if current_user && current_user.can_admin?
-              = link_to('Edit', edit_user_path(user), :class => "action-edit")
-            - if current_user.superadmin?
-              | #{link_to('Delete', user_path(user), :confirm => "Are you sure?", :method => :delete)}
-  %br/
-  .pager-users
-    = render :partial => '/shared/tablesorter_pager'
+              %td
+                = link_to('Edit', edit_user_path(user), :class => "action-edit")
+                - if current_user.superadmin?
+                  | #{link_to('Delete', user_path(user), :confirm => "Are you sure?", :method => :delete)}
+    %br/
+    .pager-users
+      = render :partial => '/shared/tablesorter_pager'
   %br/
   %br/
