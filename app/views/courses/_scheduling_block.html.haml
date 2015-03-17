@@ -6,8 +6,10 @@
       = link_to image_tag('calendar_icon.png', :class => "cal-icon")+ " View Calendar to see availability", "#{@course.repository.calendar}", |
         :onclick=>"window.open(this.href,'view_calendar', 'height=600, width=600');return false;"                                             |
 .form_full_width.sessions
+  - section_index = 0
   - @course.sessions.each do |i, sesh|
-    = render :partial => 'session_block', :locals => { :sesh => sesh, :session_count => i }
+    = render :partial => 'session_block', :locals => { :sesh => sesh, :session_count => i, :section_index => section_index }
+    - section_index += sesh.length
 
 .form_full_width
   %button.add_session.btn.btn-primary Add A Session

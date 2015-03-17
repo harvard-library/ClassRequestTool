@@ -5,8 +5,10 @@ $(function () {
   $('body.c_courses').on('click', ' input.date:not(.hasDatepicker)', function (e) {
     var options = {
       controlType: 'select',
-      dateFormat: 'yy-mm-dd',
-      timeFormat: "hh:mm tt",
+      dateFormat: 'M d, yy',
+      timeFormat: "@ h:mm tt",
+//       dateFormat: 'yy-mm-dd',
+//       timeFormat: "hh:mm tt",
       buttonImage: "/assets/calendar_icon.png",
       stepMinute: 15,
       hourMin: 9,
@@ -22,7 +24,8 @@ $(function () {
   $('body.a_build_report').on('click', ' input.date:not(.hasDatepicker)', function (e) {
     var options = {
       controlType: 'select',
-      dateFormat: 'yy-mm-dd',
+      dateFormat: 'M d, yy',
+//       dateFormat: 'yy-mm-dd',
       buttonImage: "/assets/calendar_icon.png"
     }
     $(this).datepicker(options);

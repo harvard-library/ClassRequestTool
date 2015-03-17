@@ -295,7 +295,7 @@ class CoursesController < ApplicationController
        redirect_to('/') and return
     end
     @note = Note.new
-    notes = Note.where(:course_id => @course.id).order("created_at DESC").group_by(&:staff_comment)
+    notes = Note.where(:course_id => @course.id).order("created_at DESC").includes(:user).group_by(&:staff_comment)
     @staff_only_notes = notes[true]
     @notes = notes[false]
   end
@@ -337,7 +337,7 @@ class CoursesController < ApplicationController
 
     params[:course][:status] = set_status(params[:course])
     # End gross status manipulation
-
+        
     @course.attributes = params[:course]
 
     if @course.save
@@ -407,7 +407,6 @@ class CoursesController < ApplicationController
     end
     
     def staff_change?
-      binding.pry
       return true if @course.primary_contact.blank? && !params[:course][:primary_contact_id].blank?
       return true if !@course.primary_contact.blank? && (@course.primary_contact.id != params[:course][:primary_contact_id])
       return true if @course.users.blank? && !params[:course][:user_ids].blank?

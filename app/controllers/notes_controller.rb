@@ -2,7 +2,7 @@ class NotesController < ApplicationController
   before_filter :authenticate_admin_or_staff!, :only => [:destroy, :update]
 
   def index
-    @notes = Note.order('created_at ASC')
+    @notes = Note.order('created_at ASC').include(:user)
   end
 
   def new
