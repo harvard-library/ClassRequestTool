@@ -94,20 +94,13 @@ ul.course-actions {
   }
 }
 .status {
-  display: inline-block;
-  padding: 2px 5px;
-  border-radius: 5px;
-  color:#666;
-  background-color: $brand-info;
+  color: $brand-info;
+  font-weight: bold;
   &.warning {
-    color: white;
-    background-color: $brand-warning;
-    font-weight: bold;
+    color: $brand-warning;
   }
   &.danger {
-    color: white;
-    background-color: $brand-danger;
-    font-weight: bold;
+    color: $brand-danger;
   }
   &.inactive {
     background-color: $shade;

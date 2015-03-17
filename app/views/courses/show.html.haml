@@ -9,7 +9,9 @@
 %br/
 #welcome-left
   - if current_user.can_schedule?
-    %p= link_to 'Edit Class Info', edit_course_path(@course), :class => "btn btn-warning"
+    = render :partial => 'shared/course_actions', :locals => { :course => @course }
+    %br
+    %br
   %h4 Course Information
   %ul.summary-info
     %li

@@ -6,11 +6,12 @@
     - if @nil_date_warning
       .alert.alert-warning There are classes without requested or actual dates at the end of this list.
       
-  %p To submit a new class, choose a Library/Archive:
-  = form_tag new_course_path, :method => :get do
-    .row
-      = select_tag :repository, options_from_collection_for_select(@repositories, "id", "name"), :class => 'input select form-control', :prompt => "Not Sure - Help me Choose"
-      = submit_tag "Go", :class => 'btn btn-primary'
+  - if current_user.patron?
+    %p To submit a new class, choose a Library/Archive:
+    = form_tag new_course_path, :method => :get do
+      .row
+        = select_tag :repository, options_from_collection_for_select(@repositories, "id", "name"), :class => 'input select form-control', :prompt => "Not Sure - Help me Choose"
+        = submit_tag "Go", :class => 'btn btn-primary'
       
   %br/
   - unless @courses.nil? || @courses.empty?
@@ -45,12 +46,8 @@
       %tbody
         - @courses.each do |c|
           %tr
-            %td
+            %td.course-title
               #{link_to(c.title, c )}
-              - if current_user.can_admin?
-                %br
-                %br
-                = render :partial => 'shared/course_actions', :locals => { :course => c }
             - if current_user.can_admin?
               %td.status-column.starts_with
                 - if c.homeless?
