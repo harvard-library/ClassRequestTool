@@ -60,7 +60,6 @@ class Notification < ActionMailer::Base
   end
   
   def homeless_courses_reminder
-    binding.pry
     @courses = Course.where("repository_id IS NULL AND created_at <= ?", Time.now - 2.days)
     admins = User.where('admin = ? OR superadmin = ?', true, true).pluck(:email)
     

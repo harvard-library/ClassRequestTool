@@ -2,7 +2,6 @@ class Admin::Notifications::NotificationController < Admin::AdminController
 
   # By default list links to all emails
   def action_missing(m, *args, &block)
-   #  binding.pry
   
     case (m)
       when 'assessment_received_to_admins'
