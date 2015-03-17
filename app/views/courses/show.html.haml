@@ -129,7 +129,9 @@
                 %li
                   %span.summary-label 
                     Requested Times:
-                  = sect.requested_dates.map {|rd| rd.in_time_zone(Rails.configuration.time_zone).strftime(DATETIME_AT_FORMAT) }.join(', ')
+                  %ul
+                    %li
+                      = sect.requested_dates.map {|rd| rd.in_time_zone(Rails.configuration.time_zone).strftime(DATETIME_AT_FORMAT) }.join('</li><li>').html_safe
               - if 'Closed' == @course.status
                 %li
                   %span.summary-label Headcount:
