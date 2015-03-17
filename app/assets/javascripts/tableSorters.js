@@ -40,7 +40,7 @@ $(document).ready(function(){
   var pagerOptions = {
     removeRows: false, 
     output: "page {page} of {filteredPages}", 
-    pagesize: 10
+    size: 20
   };
   
   $.each($tables, function(i) {
@@ -117,5 +117,8 @@ $(document).ready(function(){
   // Bring to page one on resort
   $('table.sortable').bind("sortEnd", function(e, table) {
     $(this).trigger('pageSet', 0);
-  });  
+  });
+  
+  // Remove border and stripe classes
+  $('table').removeClass('table-bordered').removeClass('table-striped'); 
 });

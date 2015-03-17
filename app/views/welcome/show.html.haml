@@ -17,7 +17,7 @@
       .panel-heading
         %h4.panel-title Recent Classes
       .panel-body
-        %ul.list-group
+        %ul.list-group.no-borders
         - unless @courses.nil?
           - @courses.each do |course|
             %li.list-group-item= link_to(course.title, recent_show_course_url(course) )
@@ -48,6 +48,6 @@
         %p.text-center
           = link_to 'Help Me Choose', new_course_path, :class => 'btn btn-primary'
         %br
-        %ul.list-group
+        %ul.list-group.no-borders
           - @repositories.each do |repo|
             %li.list-group-item= link_to repo.name, repo

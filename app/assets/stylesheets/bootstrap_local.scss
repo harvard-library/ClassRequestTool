@@ -124,3 +124,11 @@ $dropdown-color:    $gray-dark;
   }
 }
 
+// Customizations
+// No borders on list groups
+ul.list-group.no-borders {
+  li.list-group-item {
+    border: none;
+  }
+}
+
