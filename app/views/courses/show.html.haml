@@ -70,7 +70,7 @@
         %ul.summary-info
           - @course.additional_patrons.each do |ap|
             %li= "#{ap.first_name} #{ap.last_name}, #{ap.email}, (#{ap.role})"
-  %h4 Staff Services
+  %h4 Staff Assignments
   %ul.summary-info
     %li
       %span.summary-label Primary Library/Archive Contact:
@@ -78,13 +78,21 @@
         = mail_to @course.primary_contact.email, "#{@course.primary_contact.full_name}"
       - else
         None
+    - unless @course.users.blank?
+      %li
+        %span.summary-label Additional Staff:
+        %ul
+          -@course.users.each do |u|
+            %li #{u.full_name}
     %li
-      %span.summary-label Staff Services:
-      %ul
-        - @course.staff_involvements.each do |si|
-          %li= si.involvement_text
-        - unless @course.staff_involvement.blank?
-          %li= @course.staff_involvement
+    
+  %h4 Staff Services
+  %ul
+    - @course.staff_involvements.each do |si|
+      %li= si.involvement_text
+    - unless @course.staff_involvement.blank?
+      %li= @course.staff_involvement
+
   %h4 Pre-Class Appointment
   %ul.summary-info
     - if !@course.pre_class_appt.nil?

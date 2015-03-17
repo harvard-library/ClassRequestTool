@@ -2,8 +2,9 @@
 - if form
   %label.control-label{ for: 'course_course[user_ids][]' }
   = hidden_field_tag "", name: 'course[user_ids][]'
+  %label Assign Additional Staff:
   - staff_members.each do |staff|
-    = render partial: 'shared/formtastic_checkbox', locals: { _for: "course_user_ids_#{staff.id}", _name: 'course[user_ids][]', _id: staff.id, to_display: staff.full_name }
+    = render partial: 'shared/formtastic_checkbox', locals: { _for: "course_user_ids_#{staff.id}", _name: 'course[user_ids][]', _id: staff.id, _checked: assigned_staff.map{|assigned| assigned.id}.include?(staff.id), to_display: staff.full_name }
 - else
   %ul
     - staff_members.each do |staff|

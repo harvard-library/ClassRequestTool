@@ -1,5 +1,5 @@
 / args: _for, _name, _id, to_display
 .checkbox
   %label.choice{ for: _for }  
-    = check_box_tag _name, _id, false, id: _for
+    = check_box_tag _name, _id, _checked, id: _for
     %span.staff #{to_display}

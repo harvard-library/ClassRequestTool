@@ -14,7 +14,7 @@
             = f.input :primary_contact_id, :as => :select, :collection => @course.repository.users, :label => "Assign Primary Staff Contact: "
             %span.help-block Staff member primarily responsible for course
             - unless @course.primary_contact_id.nil?
-              = render partial: 'repositories/staff_list', locals: { form: true, staff_members: @additional_staff }
+              = render partial: 'repositories/staff_list', locals: { form: true, staff_members: @additional_staff, assigned_staff: @course.users }
 
             - else
               = f.input :users, :as => :check_boxes, :collection => @course.repository.users, :label => "Assign Additional Staff: "
