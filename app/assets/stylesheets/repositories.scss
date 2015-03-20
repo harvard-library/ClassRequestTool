@@ -31,12 +31,16 @@ div.repo-section {
     padding: 20px;
   }
 }
-.display {
-  width: 16.66%;
-  margin: 0 auto;
-  img {
-    border-radius: 3px;
-    width: 100%;
+.row.repo-images {
+  text-align: center;
+  .display {
+    width: 16.66%;
+    margin: 0 auto;
+    display: inline-block;
+    img {
+      border-radius: 3px;
+      width: 100%;
+    }
   }
 }
 

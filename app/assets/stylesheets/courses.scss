@@ -103,6 +103,7 @@ ul.course-actions {
     color: $brand-danger;
   }
   &.inactive {
+    color: white;
     background-color: $shade;
   }
 }
