@@ -15,8 +15,7 @@ class Repository < ActiveRecord::Base
   accepts_nested_attributes_for :courses
 
   has_many :attached_images, :as => :picture, :dependent => :destroy
-  accepts_nested_attributes_for :attached_images, :allow_destroy => true, 
-      reject_if: ->(attributes){ attributes['image'].blank? && attributes['image_cache'].blank? }
+  accepts_nested_attributes_for :attached_images, :allow_destroy => true, reject_if: :all_blank 
 
   validates_presence_of :name
   

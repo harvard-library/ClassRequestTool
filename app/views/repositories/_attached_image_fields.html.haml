@@ -5,9 +5,9 @@
     = f.input :picture_id, :as => :hidden, :value => @repository.id 
     = f.input :picture_type, :as => :hidden, :value => @repository.class.to_s
     = f.input :image_cache, :as => :hidden
-    = f.input :featured, :as => :boolean, hint: 'A featured image may be shown on the welcome page of this site.'
-    = f.input :caption, :placholder => 'Caption'
     = f.input :image, as: :file
+    = f.input :featured, :as => :boolean, :value => f.object.featured?, hint: 'A featured image may be shown on the welcome page of this site.'
+    = f.input :caption, :placholder => 'Caption'
     .links
-      = link_to_remove_association 'Remove image', f, class: 'btn btn-warning'
+      = link_to_remove_association 'Remove image', f
     %br
