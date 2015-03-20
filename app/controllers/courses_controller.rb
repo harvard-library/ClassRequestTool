@@ -343,7 +343,7 @@ class CoursesController < ApplicationController
     if @course.save
       if params[:course][:status] == "Closed" # check params because editing closed courses should not create notes
         @course.notes.create(:note_text => "Class has marked as closed.", :user_id => current_user.id, :staff_comment => true)
-        Notification.delay(:queue => 'assessments').assessment(@course)
+        Notification.delay(:queue => 'assessments').assessment_requested(@course)
         @course.notes.create(:note_text => "Assessment email sent.", :user_id => current_user.id, :staff_comment => true)
       end
 
