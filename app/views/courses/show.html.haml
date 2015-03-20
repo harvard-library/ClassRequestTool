@@ -131,7 +131,7 @@
               - if sect.actual_date
                 %li
                   %span.summary-label Actual Date:
-                  - if aeon_timeframe_emitted
+                  - unless aeon_timeframe_emitted
                     %span#timeframe
                       = sect.try(:actual_date).try(:in_time_zone, Rails.configuration.time_zone).try(:strftime, DATETIME_AT_FORMAT)
                 - aeon_timeframe_emitted = true
