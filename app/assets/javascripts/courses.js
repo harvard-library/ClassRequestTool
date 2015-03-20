@@ -4,14 +4,15 @@ var firstClassDateExtraction = function(node) {
 };
 $(function () {
 
-  manageSectionHeader = function() {
-    if ($('.panel.section').length > 1) {
-      $('.panel.section .panel-title').css({ display: 'block' });
-    } else {
-      $('.panel.section .panel-title').css({ display: 'none' });
-    }
+  updateSectionHeader = function() {
+    $('.session').each(function(i) {
+      if ($(this).find('.section').length == 1) {
+        $(this).find('span.section-count').hide();
+      } else {
+        $(this).find('span.section-count').show();
+      }
+    });
   };
-    
 
   nextSectionIndex = function() {
     return $('#scheduling_info .section').length;
@@ -32,7 +33,8 @@ $(function () {
 
   var today = new Date();
   
-  manageSectionHeader();
+  updateSectionHeader();
+  
 
   /* Set up required content warnings */
   $('.required input').each(function(i) {
@@ -81,7 +83,7 @@ $(function () {
           $sessionDurations = $thisSession(target).find('.session_duration_val');
           $sessionDurations.last().val($sessionDurations.first().val());
           
-          manageSectionHeader();
+          updateSectionHeader();
           
         }
       );
@@ -126,7 +128,7 @@ $(function () {
           $thisSession(target).remove();
         } else {
           $thisSection(target).remove();
-          manageSectionHeader();
+          updateSectionHeader();
         }
        }
     });

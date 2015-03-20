@@ -6,7 +6,8 @@
 - this_session = sect.id.nil? ? session_count : sect.session
 %div{:class => "panel panel-default section", "data-session_count" => this_session, "data-section_count" => section_count, "data-section_index" => section_index }
   .panel-heading.clearfix
-    %h6{ :class => "panel-title pull-left", :style => "padding-top: 7.5px" }= "Section #{section_count}"
+    %h6{ :class => "panel-title pull-left", :style => "padding-top: 7.5px" }
+      %span.section-count Section #{section_count}
     - unless section_count == 1
       %div{ :class => "delete-button pull-right", :style => "padding-top: 0; padding-right: 70px;" }
         %button.btn.btn-primary.delete{ "data-to_delete" => 'section' } Remove
