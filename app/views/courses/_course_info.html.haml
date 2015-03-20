@@ -37,4 +37,4 @@
         %div{:style => "padding-left:5em; font-weight:bold; font-size: 1.2em;"} OR
         = f.input :external_syllabus, :label => "Enter URL: ", :input_html => { :value => @course.external_syllabus.nil? ? "http://" : @course.external_syllabus }
       .form_full_width
-        = f.input :goal, :label => "What is your goal for this class session? ", :input_html => { :rows => 5, :columns => 100 }
+        = f.input :goal, :as => :ckeditor, :label => "What is your goal for this class session? ", :input_html => { :rows => 5, :columns => 100 }
