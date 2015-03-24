@@ -5,4 +5,7 @@
 %p
   If you have any questions or additional details to share, please add a note to the
   = succeed "." do
-    %a{:href => "http://#{site_url}#{course_path(@course)}"} class request
+    - if @test
+      %a{ href: '#' } class request (linked to course)
+    - else
+      %a{:href => "http://#{site_url}#{course_path(@course)}"} class request

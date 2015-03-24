@@ -1,7 +1,10 @@
 Please review the feedback for:
 
-= render :partial => 'shared/notification_course_info'}, :locals => { course: @assessment.course }
+= render :partial => 'shared/notification_course_info'}, :locals => { course: @assessment.course, test: @test }
 
 here:
 
-\#{"#{site_url}#{assessment_path(@assessment)}"}
+- if @test
+  (link to assessment)
+- else
+  #{"#{site_url}#{assessment_path(@assessment)}"}

@@ -1,7 +1,10 @@
 You have been assigned to a class for #{@course.repo_name}.
 
-\#{render :partial => 'shared/notification_course_info'}, :locals => { course: @course }
+\#{render :partial => 'shared/notification_course_info'}, :locals => { course: @course, test: @test  }
 
 Please confirm the class date and time, and if applicable add the class to your event management system (e.g. Aeon) and/or room calendar:
 
-\#{"http://#{site_url}#{edit_course_path(@course)}"}
+- if @test
+  (link to course)
+- else
+  #{"http://#{site_url}#{edit_course_path(@course)}"}

@@ -1,7 +1,10 @@
 %p
   A class has been transferred to #{@course.repo_name}. This may be a formerly Homeless class or a class another repository has suggested would be more appropriate for #{@course.repo_name}.
-- render :partial => 'shared/notification_course_info'
+= render :partial => 'shared/notification_course_info', locals: { course: @course, test: @test  }
 %p
-  If you wish to manage or confirm details, claim this class or assign it to another staff member at #{@course.repository.name}, please
+  If you wish to manage or confirm details, claim this class or assign it to another staff member at #{@course.repo_name}, please
   = succeed "." do
-    %a{:href => "http://#{site_url}#{edit_course_path(@course)}"} edit the course
+    - if @test
+      %a{ href: '#' } edit the course (linked to course edit form)
+    - else
+      %a{:href => "http://#{site_url}#{edit_course_path(@course)}"} edit the course

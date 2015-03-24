@@ -1,7 +1,10 @@
 An assessment has been received for one of your classes: 
 
-= render :partial => 'shared/notification_course_info'}, :locals => { course: @course }
+= render :partial => 'shared/notification_course_info'}, :locals => { course: @course, test: @test  }
 
 Review the feedback here:
 
-\#{"#{site_url}#{assessment_path(@assessment)}"}
+- if @test
+  (link to assessment)
+- else
+  #{"#{site_url}#{assessment_path(@assessment)}"}

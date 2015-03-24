@@ -2,4 +2,7 @@ The class request for #{@course.title} has been cancelled.
 
 If you have any questions or additional details to share, please add a note to the class request:
 
-\#{"http://#{site_url}#{course_path(@course)}"}
+- if @test
+  (link to course)
+- else
+  #{"http://#{site_url}#{course_path(@course)}"}

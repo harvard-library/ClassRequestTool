@@ -1,7 +1,10 @@
 %p
   Please review the feedback for:
   
-= render :partial => 'shared/notification_course_info', :locals => { course: @assessment.course }
+= render :partial => 'shared/notification_course_info', :locals => { course: @assessment.course, test: @test }
 
 = succeed "." do
-  %a{:href => "http://#{"#{site_url}#{assessment_path(@assessment)}"}"} here
+  - if @test
+    %a{ href: '#' } here (linked to assessment)
+  - else
+    %a{:href => "http://#{"#{site_url}#{assessment_path(@assessment)}"}"} here

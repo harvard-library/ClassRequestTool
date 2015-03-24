@@ -1,0 +1,17 @@
+- if @test
+  Test: Course Title
+  Library/Archive: Test
+  Subject: Test
+  Course Number: Test
+  Affiliation: Test
+  Number of Students: Test  
+- else
+  #{course.title} (#{"http://#{site_url}#{course_path(course)}"})
+  Library/Archive: #{course.repo_name}
+  Subject: #{course.subject}
+  course Number: #{course.course_number}
+  Affiliation: #{course.affiliation}
+  Number of Students: #{course.number_of_students}
+  Syllabus: #{course.external_syllabus}
+
+
