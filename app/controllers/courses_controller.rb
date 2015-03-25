@@ -298,6 +298,22 @@ class CoursesController < ApplicationController
     notes = Note.where(:course_id => @course.id).order("created_at DESC").includes(:user).group_by(&:staff_comment)
     @staff_only_notes = notes[true]
     @notes = notes[false]
+    
+    first_section = @course.sections.where("actual_date IS NOT NULL").order("actual_date ASC").first
+    
+    @aeon_data = {
+      :room => first_section.nil? ? '' : first_section.room,
+      :title => @course.title,
+      :staffContact => @course.primary_contact.full_name,
+      :patronContact => @course.contact_full_name,
+      :class => @course.course_number,
+      :affiliation => @course.affiliation,
+      :requestorUsername => @course.contact_username,
+      :subject => @course.subject,
+      :repository => @course.repo_name,
+      :timeframe => first_section.nil? ? '' : first_section.actual_date.strftime(DATETIME_AEON_FORMAT),
+      :duration => @course.duration
+    }
   end
 
   def uncancel

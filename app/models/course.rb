@@ -105,6 +105,10 @@ class Course < ActiveRecord::Base
       nil
     end
   end
+  
+  def contact_full_name
+    "#{contact_first_name} #{contact_last_name}"
+  end
 
   # Returns an array of sessions, ordered by session number
   def sessions
