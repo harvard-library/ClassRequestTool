@@ -300,11 +300,16 @@ class CoursesController < ApplicationController
     @notes = notes[false]
     
     first_section = @course.sections.where("actual_date IS NOT NULL").order("actual_date ASC").first
+    if first_section.nil? || first_section.room.nil?
+      room = ''
+    else
+      room = room.name
+    end
     
     @aeon_data = {
-      :room => first_section.nil? ? '' : first_section.room,
+      :room => room,
       :title => @course.title,
-      :staffContact => @course.primary_contact.full_name,
+      :staffContact => @course.primary_contact.nil? ? '' : @course.primary_contact.full_name,
       :patronContact => @course.contact_full_name,
       :class => @course.course_number,
       :affiliation => @course.affiliation,
