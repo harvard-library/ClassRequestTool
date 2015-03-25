@@ -1,4 +1,0 @@
-AuthType Basic
-AuthName "Class Request Tool - QA-TK"
-AuthUserFile /var/www/.htpasswd
-Require valid-user
