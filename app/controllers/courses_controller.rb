@@ -303,7 +303,7 @@ class CoursesController < ApplicationController
     if first_section.nil? || first_section.room.nil?
       room = ''
     else
-      room = room.name
+      room = first_section.room.name
     end
     
     @aeon_data = {
@@ -316,7 +316,7 @@ class CoursesController < ApplicationController
       :requestorUsername => @course.contact_username,
       :subject => @course.subject,
       :repository => @course.repo_name,
-      :timeframe => first_section.nil? ? '' : first_section.actual_date.strftime(DATETIME_AEON_FORMAT),
+      :timeframe => first_section.nil? ? '' : first_section.actual_date.utc.strftime(DATETIME_AEON_FORMAT),
       :duration => @course.duration
     }
   end
