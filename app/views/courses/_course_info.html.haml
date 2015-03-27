@@ -14,15 +14,15 @@
         #affiliation.form-group
           %label.control-label{:for => "affiliation"} #{$local_config[:institution]} listed course?
           %p
-            = radio_button_tag :affiliation_selection, 'yes', flash[:affiliation_selection] == 'yes'
+            = radio_button_tag :affiliation_selection, 'yes', @affiliation_selection == 'yes'
             Yes
-            \#{radio_button_tag :affiliation_selection, 'no', flash[:affiliation_selection] == 'no'} No
+            \#{radio_button_tag :affiliation_selection, 'no', @affiliation_selection == 'no'} No
           #local_yes.affiliation_field
-            = select_tag :local_affiliation, $affiliates.map{ |opt| "<option#{opt == flash[:local_affiliation] ? ' selected' : ''}>#{opt.name}</option>" }.join("\n").html_safe, :prompt => '-- Which School? --', :class => 'form-control'
+            = select_tag :local_affiliation, $affiliates.map{ |opt| "<option#{opt.name == @local_affiliation ? ' selected' : ''}>#{opt.name}</option>" }.join("\n").html_safe, :prompt => '-- Which School? --', :class => 'form-control'
           #local_no_or_other.affiliation_field
             %label.control-label What is your affiliation?
             %br/
-            = text_field_tag :other_affiliation, flash[:other_affiliation], class: 'form-control'
+            = text_field_tag :other_affiliation, @other_affiliation, class: 'form-control'
       .form_full_width
         - unless @course.syllabus.blank?
           = link_to @course.syllabus.file.filename, @course.syllabus_url

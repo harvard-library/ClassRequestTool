@@ -102,29 +102,8 @@ class CoursesController < ApplicationController
       @repository = Repository.find(params[:course][:repository_id])
     end
 
-    params[:course][:status] = set_status(params[:course])
-
-    # strip out empty sections
-    if params.has_key?(:course) && params[:course].has_key?(:sections_attributes)
-      params[:course][:sections_attributes].delete_if{|k,v| v[:requested_dates] && v[:requested_dates].reject(&:nil?).blank? && v[:actual_date].blank?}
-    end
-    
-    # Remove empty additional patrons
-    if params.has_key?(:course) && params[:course].has_key?(:additional_patrons_attributes)
-      params[:course][:additional_patrons_attributes].delete_if{|k,v| v[:email].blank?}
-    end
-    
-    # set affiliation
-    if params[:harvard_affiliation].blank? || params[:harvard_affiliation] == 'Other'
-      params[:course][:affiliation] = params[:other_affiliation]
-    else
-      params[:course][:affiliation] = "#{params[:harvard_affiliation] == 'Other' ? 'Other: ' : ''} #{params[:harvard_affiliation]}"
-    end
-    
-    # Use flash to save affiliation parameters in case there is a form error
-    flash[:harvard_affiliation] = params[:harvard_affiliation]
-    flash[:other_affiliation]   = params[:other_affiliation]
-    flash[:harvard_affiliation] = params[:harvard_affiliation]
+    # Do some parameter manipulation    
+    process_params
             
     @course = Course.new(params[:course])
 
@@ -166,6 +145,19 @@ class CoursesController < ApplicationController
     end
 
     @additional_staff = additional_staff
+    
+    # Set affiliation variables
+    if $affiliates.map { |opt| opt.name }.include?(@course.affiliation)
+      @affiliation_selection = 'yes'
+      @local_affiliation = @course.affiliation
+    elsif @course.affiliation =~ /\AOther:/
+      @affiliation_selection = 'yes'
+      @local_affiliation = "Other"
+      @other_affiliation = @course.affiliation.gsub(/\aOther: /,'') 
+    else
+      @affiliation_selection = 'no'
+      @other_affiliation = @course.affiliation
+    end
 
     # @staff_involvement = @course.staff_involvement.split(',')
   end
@@ -338,15 +330,14 @@ class CoursesController < ApplicationController
   end
 
   def update
-    @course = Course.find(params[:id])
     unless current_user.staff? || current_user.can_admin? || @course.contact_email == current_user.email
       redirect_to('/') and return
     end
-    
-    if params.has_key?(:course) && params[:course].has_key?(:sections_attributes)
-      # strip out empty sections
-      params[:course][:sections_attributes].delete_if{|k,v| v[:requested_dates] && v[:requested_dates].reject(&:nil?).blank? && v[:actual_date].blank? && v[:_destroy].blank?}
-    end
+
+    @course = Course.find(params[:id])
+
+    # Do some parameter manipulation
+    process_params  
 
     send_repo_change_notification = false
     send_staff_change_notification = false
@@ -356,11 +347,8 @@ class CoursesController < ApplicationController
     send_repo_change_notification = repo_change?
     send_staff_change_notification = staff_change? && !(current_user.id == params[:course][:primary_contact_id].to_i)
 
-    params[:course][:status] = set_status(params[:course])
-    # End gross status manipulation
-        
     @course.attributes = params[:course]
-
+    
     if @course.save
       if params[:course][:status] == "Closed" # check params because editing closed courses should not create notes
         @course.notes.create(:note_text => "Class has marked as closed.", :user_id => current_user.id, :staff_comment => true)
@@ -423,6 +411,34 @@ class CoursesController < ApplicationController
   end 
   
   private
+    def process_params
+      params[:course][:status] = set_status(params[:course])
+      
+      # strip out empty sections
+      if params.has_key?(:course) && params[:course].has_key?(:sections_attributes)
+        params[:course][:sections_attributes].delete_if{|k,v| v[:requested_dates] && v[:requested_dates].reject(&:nil?).blank? && v[:actual_date].blank? && v[:_destroy].blank?}
+      end
+      
+      # Remove empty additional patrons
+      if params.has_key?(:course) && params[:course].has_key?(:additional_patrons_attributes)
+        params[:course][:additional_patrons_attributes].delete_if{|k,v| v[:email].blank?}
+      end
+      
+      # set affiliation
+      if params[:local_affiliation].blank?
+        params[:course][:affiliation] = params[:other_affiliation]
+      elsif  params[:local_affiliation] == 'Other'
+        params[:course][:affiliation] = "Other: #{params[:other_affiliation]}"
+      else
+        params[:course][:affiliation] = params[:local_affiliation]
+      end
+    
+      # Use flash to save affiliation parameters in case there is a form error
+      @affiliation_selection = params[:affiliation_selection]
+      @other_affiliation   = params[:other_affiliation]
+      @local_affiliation = params[:local_affiliation]
+    end
+    
     def repo_change?
       !params[:course][:repository_id].blank? && @course.repository_id != params[:course][:repository_id].to_i
     end

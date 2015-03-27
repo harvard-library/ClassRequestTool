@@ -49,7 +49,7 @@
           = link_to @course.external_syllabus, @course.external_syllabus, :target => "blank"
     %li
       %span.summary-label Goal for Class Visit:
-      = @course.goal unless @course.goal.nil?
+      = @course.goal.html_safe unless @course.goal.nil?
   - unless !user_signed_in? || current_user.patron?
     %h4 Requester Information
     %ul.summary-info
