@@ -139,10 +139,11 @@ class CoursesController < ApplicationController
   end
 
   def edit
-    @course = Course.find(params[:id])
     unless current_user.staff? || current_user.can_admin? || @course.contact_email == current_user.email
        redirect_to('/') and return
     end
+
+    @course = Course.find(params[:id])
 
     @additional_staff = additional_staff
     

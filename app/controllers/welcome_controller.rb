@@ -24,24 +24,50 @@ class WelcomeController < ApplicationController
     @user_repo_courses      = []
     @user_to_close          = []
     
-    Course.select(%Q(id, title, created_at, repository_id, scheduled, primary_contact_id, first_date, last_date, status))
-          .order_by_submitted
-          .includes(:repository, :sections).each do |c|
-      @homeless               << c if c.homeless?
-      @unscheduled_unclaimed  << c if !( c.scheduled? || c.claimed? )
-      @scheduled_unclaimed    << c if  ( c.scheduled? || !c.claimed? )
-      @user_upcoming          << c if  ( c.primary_contact_id == current_user.id &&
-                                         c.scheduled?                          && 
-                                         c.claimed?                            &&
-                                         c.first_date > DateTime.now
-                                       )
-      @user_past              << c if ( c.primary_contact_id == current_user.id && c.status == 'Closed' )     
-      @user_unscheduled       << c if ( c.primary_contact_id == current_user.id && !c.scheduled? )                                  
-      @user_repo_courses      << c if ( !c.homeless? && c.repository.user_ids.include?(current_user.id) )
-      @user_to_close          << c if ( c.primary_contact_id == current_user.id &&
-                                        c.status == 'Active' &&
-                                        c.last_date < DateTime.now
-                                      )
+    @homeless = Course.select(%Q(id, title, repository_id, scheduled, primary_contact_id, first_date, last_date, status)) \
+      .homeless \
+      .order_by_submitted.includes(:repository, :sections)
+      
+    claimed = Course.select(%Q(id, title, repository_id, scheduled, primary_contact_id, first_date, last_date, status)) \
+      .where(:primary_contact_id => !nil) \
+      .order_by_submitted \
+      .includes(:repository, :sections, :users)
+      
+    if current_user.admin?
+      unclaimed =  Course.select(%Q(id, title, repository_id, scheduled, primary_contact_id, first_date, last_date, status)) \
+        .housed.with_status('Active') \
+        .where(:primary_contact_id => nil) \
+        .order_by_submitted \
+        .includes(:repository, :sections, :users)
+    else   
+      unclaimed =  Course.select(%Q(id, title, repository_id, scheduled, primary_contact_id, first_date, last_date, status)) \
+        .housed.with_status('Active') \
+        .order_by_submitted \
+        .includes(:repository, :sections, :users)
+    end
+ 
+    unclaimed.each do |c|
+      if c.scheduled?
+        @scheduled_unclaimed   << c
+      else 
+        @unscheduled_unclaimed << c
+      end
+    end
+    
+    claimed.each do |c|
+      if c.status == 'Active'
+        if c.scheduled?
+          if c.first_date > DateTime.now
+            @user_upcoming << c
+          elsif c.last_date < DateTime.now
+            @user_to_close << c
+          end
+        else
+          @user_unscheduled << c if c.primary_contact
+        end
+      elsif c.status == 'Closed'
+        @user_past << c
+      end
     end
   end 
   
