@@ -12,7 +12,26 @@
           %strong NOTE: 
           %a{:href => "https://hcl.harvard.edu:8001/forms/requests/instruction.cfm", :target => "_new"} general library instruction sessions
           are scheduled separately.
-    
+          
+  .col-md-4
+    .panel.panel-primary
+      .panel-heading
+        %h2.panel-title Request A Class
+      .panel-body
+        %p
+          %strong To request a class, select a site, or click “Help Me Choose” to let us help you pair your class with a participating library or archive. 
+        %p.help-text (You'll be asked to create an account so we can communicate with you about your classes.)
+        %br
+        %p.text-center
+          .form-inline#select-repo
+            = select_tag :repo, options_from_collection_for_select(@repositories, :id, :name), :prompt => '-- Choose a Library --', :class => 'form-control'
+            %button.btn.btn-sm.btn-primary Go
+          %br
+          %strong OR
+          %br
+          %br
+            = link_to 'Help Me Choose', new_course_path, :class => 'btn btn-primary'
+
     .panel.panel-info
       .panel-heading
         %h4.panel-title Recent Classes
@@ -23,7 +42,7 @@
             %li.list-group-item= link_to(course.title, recent_show_course_url(course) )
         - else
           None yet.
-      
+
   .col-md-4
     .featured-image
       = render :partial => 'shared/repo_image', :locals => { image: @featured_image, size: :welcome_page, repo: @featured_repository  }
@@ -37,17 +56,3 @@
       %p.email
         %span.glyphicon.glyphicon-envelope
         %a{:href => "mailto:#{$local_config[:tool_content_admin_email]}"} Let us know!
-  .col-md-4
-    .panel.panel-primary
-      .panel-heading
-        %h2.panel-title Request A Class
-      .panel-body
-        %p
-          %strong To request a class, select a site below, or press “Help Me Choose” to let us pair your class with a participating library or archive. 
-        %p.help-text (You'll be asked to create an account so we can communicate with you about your classes.)
-        %p.text-center
-          = link_to 'Help Me Choose', new_course_path, :class => 'btn btn-primary'
-        %br
-        %ul.list-group.no-borders
-          - @repositories.each do |repo|
-            %li.list-group-item= link_to repo.name, repo
