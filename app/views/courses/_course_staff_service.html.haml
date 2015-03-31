@@ -1,0 +1,20 @@
+.form_wrapper
+  %h4 Staff Services
+  .panel.panel-default
+    .panel-body
+      .form_full_width
+        = render partial: 'repositories/staff_services', locals: { staff_services: @course.staff_services, all_staff_services: @all_staff_services }
+      - if current_user.can_admin? || current_user.staff?
+        .form_full_width.admin-box
+          %h3 Staff Assignments
+          - if @course.repository.nil?
+            = f.input :primary_contact_id, :as => :select, :collection => User.all_admins, :label => "Primary Staff Contact: "
+            = f.input :users, :as => :check_boxes, :collection => User.all_admins, :label => "Additional Staff: "
+          - else
+            = f.input :primary_contact_id, :as => :select, :collection => @course.repository.users, :label => "Primary Staff Contact: "
+            %span.help-block Staff member primarily responsible for course
+            - unless @course.primary_contact_id.nil?
+              = render partial: 'repositories/staff_list', locals: { form: true, staff_members: @additional_staff, assigned_staff: @course.users.blank? ? [] : @course.users }
+
+            - else
+              = f.input :users, :as => :check_boxes, :collection => @course.repository.users, :label => "Additional Staff: "

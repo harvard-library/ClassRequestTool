@@ -90,10 +90,8 @@
     
   %h4 Staff Services
   %ul
-    - @course.staff_involvements.each do |si|
-      %li= si.involvement_text
-    - unless @course.staff_involvement.blank?
-      %li= @course.staff_involvement
+    - @course.staff_services.each do |si|
+      %li= si.description
 
   %h4 Pre-Class Appointment
   %ul.summary-info

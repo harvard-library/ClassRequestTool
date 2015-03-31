@@ -3,6 +3,12 @@ var firstClassDateExtraction = function(node) {
   return node.childNodes[0].innerHTML;
 };
 $(function () {
+  var style_checkboxes = function() {
+    $('.checkbox input').iCheck({
+      checkboxClass: 'icheckbox_flat',
+      increaseArea: '20%'
+    });
+  };
 
   updateSectionHeader = function() {
     $('.session').each(function(i) {
@@ -229,16 +235,21 @@ $(function () {
     var userId = $(this).val();
     $('input#course_user_ids_' + userId).attr('checked', false).parent().removeClass('checked');
     $('#course_users_input .checkbox').show();
+    console.log($('.checkbox input#course_user_ids_' + userId).parent().parent().parent());
     $('.checkbox input#course_user_ids_' + userId).parent().parent().parent().hide();
   });
   
-  /* Update repository staff and remove primary contact when changing repositories */
+  /* Update staff services and repository staff and remove primary contact when changing repositories */
   $('#course_repository_id_input select').on('change', function(e) {
+  
     var repoId = $(e.currentTarget).val();
+    
+    //Staff change
     $.get('/repository/staff/', 'id=' + repoId + '&form=true&for=course_course[user_ids][]', function(html) {
     
       //Update the checkboxes
       $('#course_users_input').html(html);
+      style_checkboxes();
       
       //Update the primary contact select
       var options = '<option value = ""></option>';
@@ -248,6 +259,12 @@ $(function () {
       
       $('select#course_primary_contact_id').html(options);
     });
+    
+    //Service change
+    $.get('/repository/staff_services/', 'id=' + repoId, function(html) {
+      $('#course_staff_services_input').html(html);
+      style_checkboxes();
+    })
   });
   
   /* Enable/disable note posting button depending on text in the note field */

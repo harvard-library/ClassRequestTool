@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150202215128) do
+ActiveRecord::Schema.define(:version => 20150329151640) do
 
   add_extension "fuzzystrmatch"
 
@@ -148,9 +148,9 @@ ActiveRecord::Schema.define(:version => 20150202215128) do
     t.integer "course_id"
   end
 
-  create_table "courses_staff_involvements", :id => false, :force => true do |t|
+  create_table "courses_staff_services", :id => false, :force => true do |t|
     t.integer "course_id"
-    t.integer "staff_involvement_id"
+    t.integer "staff_service_id"
   end
 
   create_table "courses_users", :id => false, :force => true do |t|
@@ -255,9 +255,9 @@ ActiveRecord::Schema.define(:version => 20150202215128) do
     t.integer "room_id"
   end
 
-  create_table "repositories_staff_involvements", :id => false, :force => true do |t|
+  create_table "repositories_staff_services", :id => false, :force => true do |t|
     t.integer "repository_id"
-    t.integer "staff_involvement_id"
+    t.integer "staff_service_id"
   end
 
   create_table "repositories_users", :id => false, :force => true do |t|
@@ -290,13 +290,15 @@ ActiveRecord::Schema.define(:version => 20150202215128) do
   add_index "sections", ["course_id"], :name => "index_sections_on_course_id"
   add_index "sections", ["session_duration"], :name => "index_sections_on_session_duration"
 
-  create_table "staff_involvements", :force => true do |t|
-    t.string   "involvement_text"
-    t.datetime "created_at",       :null => false
-    t.datetime "updated_at",       :null => false
+  create_table "staff_services", :force => true do |t|
+    t.string   "description"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+    t.boolean  "required"
+    t.boolean  "global"
   end
 
-  add_index "staff_involvements", ["involvement_text"], :name => "index_staff_involvements_on_involvement_text"
+  add_index "staff_services", ["description"], :name => "index_staff_involvements_on_involvement_text"
 
   create_table "users", :force => true do |t|
     t.string   "email",                                 :default => "",    :null => false

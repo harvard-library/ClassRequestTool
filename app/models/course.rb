@@ -2,10 +2,10 @@ class Course < ActiveRecord::Base
   include ActionDispatch::Routing::UrlFor
   include Rails.application.routes.url_helpers
 
-  attr_accessible( :room_id, :repository_id, :user_ids, :item_attribute_ids, :primary_contact_id, :staff_involvement_ids, 
+  attr_accessible( :room_id, :repository_id, :user_ids, :item_attribute_ids, :primary_contact_id, :staff_service_ids, 
                    :sections_attributes, :additional_patrons_attributes, :collections_attributes, # associations
                    :title, :subject, :course_number, :affiliation, :number_of_students, :session_count,  #values
-                   :comments,  :staff_involvement, :instruction_session, :goal,
+                   :comments,  :staff_service, :instruction_session, :goal,
                    :contact_username, :contact_first_name, :contact_last_name, :contact_email, :contact_phone,  #contact info
                    :status, :syllabus, :remove_syllabus, :external_syllabus, #syllabus
                    :pre_class_appt, :timeframe, :timeframe_2, :timeframe_3, :timeframe_4, :duration, #concrete schedule vals
@@ -21,7 +21,7 @@ class Course < ActiveRecord::Base
   has_many :notes, :dependent => :destroy
   has_and_belongs_to_many :item_attributes
   has_many :assessments, :dependent => :destroy
-  has_and_belongs_to_many :staff_involvements
+  has_and_belongs_to_many :staff_services
   belongs_to :primary_contact, :class_name => 'User'
 
   has_many :additional_patrons, :dependent => :destroy, :autosave => true
@@ -183,7 +183,7 @@ class Course < ActiveRecord::Base
               'pre_class_appt',
               'r.name',               # Repositories column
               'u.first_name || u.last_name',
-              'staff_involvement',
+              'staff_service',
               'number_of_students',
               'status',
               'syllabus',

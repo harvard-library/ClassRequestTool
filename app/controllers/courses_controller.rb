@@ -159,8 +159,12 @@ class CoursesController < ApplicationController
       @affiliation_selection = 'no'
       @other_affiliation = @course.affiliation
     end
+    
+    unless @course.repository.nil?
+      @all_staff_services = @course.repository.all_staff_services
+    end
 
-    # @staff_involvement = @course.staff_involvement.split(',')
+    # @staff_service = @course.staff_service.split(',')
   end
 
   def export
@@ -173,7 +177,7 @@ class CoursesController < ApplicationController
       :contact_phone,
       :pre_class_appt,
       :repository,
-      :staff_involvement,
+      :staff_service,
       :number_of_students,
       :status,
       :syllabus,
@@ -395,7 +399,7 @@ class CoursesController < ApplicationController
     else
       @repository = ""
     end
-    #render :partial => "shared/forms/course_staff_involvement"
+    #render :partial => "shared/forms/course_staff_service"
     redirect_to new_course_path(:repository => @repository)
   end
 

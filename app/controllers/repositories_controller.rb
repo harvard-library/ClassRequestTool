@@ -57,12 +57,23 @@ class RepositoriesController < ApplicationController
   end
   
   def staff
-    staff_members = Repository.find(params[:id]).users.order("last_name ASC") unless params[:id].blank?
-    staff_members = User.all_admins.order("last_name ASC") if staff_members.blank?
+    if params[:id].blank?
+      staff_members = User.all_admins.order("last_name ASC")
+    else
+      staff_members = Repository.find(params[:id]).users.order("last_name ASC")
+    end
     
     respond_to do |format|
-      format.html { render partial: 'repositories/staff_list', locals: { form: params[:form], staff_members: staff_members }}
+      format.html { render partial: 'repositories/staff_list', locals: { form: params[:form], assigned_staff: [], staff_members: staff_members }}
       format.json { render json: staff_members }
     end
-  end  
+  end
+  
+  def staff_services
+    all_staff_services = Repository.find(params[:id]).all_staff_services
+    respond_to do |format|
+      format.html { render partial: 'repositories/staff_services', locals: { staff_services: [], all_staff_services: all_staff_services }}
+      format.json { render json: all_staff_services }
+    end
+  end
 end

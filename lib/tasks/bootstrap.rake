@@ -49,11 +49,11 @@ namespace :crt do
       puts "Rooms Added!"
     end
 
-    desc "Add the default staff involvement"
-    task :default_staff_involvement => :environment do
-      repospitories = Repository.all.collect!{|x| x.id }
+    desc "Add the default staff service"
+    task :default_staff_service => :environment do
+      repositories = Repository.all.collect!{|x| x.id }
       ['Pre-class appointment for instructor with Reference Staff (required for first time requestors, recommended for everyone)', 'Assistance with selection of materials', 'Introduction to Archives and Special Collections Research', 'Assistance with presentation of materials in class', 'Creation of sources list or research guide for course'].each do |si|
-        involvement = StaffInvolvement.new(:involvement_text => si, :repository_ids => repospitories.sample(5))
+        involvement = StaffInvolvement.new(:description => si, :repository_ids => repospitories.sample(5))
         involvement.save
       end
       puts "Staff Involvements Added!"
@@ -71,7 +71,7 @@ namespace :crt do
     end
 
     desc "run all tasks in bootstrap"
-    task :run_all => [:default_admin, :default_repos, :default_rooms, :default_staff_involvement, :default_attributes, :default_superadmin] do
+    task :run_all => [:default_admin, :default_repos, :default_rooms, :default_staff_service, :default_attributes, :default_superadmin] do
       puts "Created Admin account, Repos, Locations and Rooms!"
     end
   end

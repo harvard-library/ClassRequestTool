@@ -1,0 +1,40 @@
+%h3 Staff Services
+%div
+  - if @staff_services.blank?
+    %p None available yet
+  - else  
+    .pager-involvement
+      = render :partial => '/shared/tablesorter_pager'
+    %table#involvement.sortable
+      %thead
+        %tr
+          %th Service
+          %th Libraries/Archives
+          - if current_user && current_user.can_admin?
+            %th{class: "{sorter: false, filter: false}"}
+      %tbody
+        - @staff_services.each do |si|
+          %tr
+            %td
+              = si.description
+              - if si.required?
+                (required for all courses)
+            - if si.global?
+              %td All libraries/archives
+            - else
+              %td
+                - si.repositories.each do |repo|
+                  = repo.name
+                  %br/
+            - if current_user && current_user.can_admin?
+              %td
+                = link_to('Edit', edit_staff_service_path(si), :class => "action-edit")
+                - if current_user.superadmin?
+                  | #{link_to('Delete', staff_service_path(si), :confirm => "Are you sure?", :method => :delete)}
+    %br/
+    .pager-involvement
+      = render :partial => '/shared/tablesorter_pager'
+  %br/
+  %br/
+  - if current_user.can_admin?
+    = link_to("Add New Staff Service", new_staff_service_path, :class => "btn btn-primary" )

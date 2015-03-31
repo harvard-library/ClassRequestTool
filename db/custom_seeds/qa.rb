@@ -68,8 +68,8 @@ patrons = []
 end
 
 # Create default staff service
-staff_service = StaffInvolvement.create(
-  :involvement_text => "Pre-class appointment (required for all new requesters)"
+staff_service = StaffService.create(
+  :description => "Pre-class appointment (required for all new requesters)"
 )
 
 # Create repositories with staff
@@ -84,7 +84,7 @@ puts 'Creating repositories...'
   
   # Add default staff service
   puts '    Adding staff service'
-  repo.staff_involvements << staff_service
+  repo.staff_services << staff_service
   
   
   # Assign staff to repository

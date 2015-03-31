@@ -6,7 +6,7 @@ class Repository < ActiveRecord::Base
   has_and_belongs_to_many :users, :order => "last_name"
   has_and_belongs_to_many :rooms
   has_and_belongs_to_many :item_attributes
-  has_and_belongs_to_many :staff_involvements
+  has_and_belongs_to_many :staff_services
   
   has_many :collections, dependent: :destroy
   accepts_nested_attributes_for :collections, reject_if: ->(attributes){ attributes[:name].blank?}, allow_destroy: true
@@ -20,5 +20,9 @@ class Repository < ActiveRecord::Base
   validates_presence_of :name
   
   default_scope ->{ order("name ASC") }
+  
+  def all_staff_services
+    self.staff_services.order("description ASC")
+  end
   
 end
