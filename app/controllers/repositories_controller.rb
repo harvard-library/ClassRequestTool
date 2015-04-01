@@ -70,10 +70,13 @@ class RepositoriesController < ApplicationController
   end
   
   def staff_services
-    all_staff_services = Repository.find(params[:id]).all_staff_services
+    unless params[:id].blank?
+      all_staff_services = Repository.find(params[:id]).all_staff_services
+    end
+
     respond_to do |format|
       format.html { render partial: 'repositories/staff_services', locals: { staff_services: [], all_staff_services: all_staff_services }}
       format.json { render json: all_staff_services }
-    end
+    end      
   end
 end

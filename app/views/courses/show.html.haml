@@ -89,9 +89,12 @@
     %li
     
   %h4 Staff Services
-  %ul
-    - @course.staff_services.each do |si|
-      %li= si.description
+  - if @course.staff_services.blank?
+    %p No services have been selected yet.
+  - else
+    %ul
+      - @course.staff_services.each do |si|
+        %li= si.description
 
   %h4 Pre-Class Appointment
   %ul.summary-info
