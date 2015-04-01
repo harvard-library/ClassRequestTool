@@ -1,0 +1,9 @@
+#course_technologies_input
+  %label.control-label{ for: 'course_course[item_attribute_ids][]' } Classroom technologies available:
+  %p.help-block Please check those needed for your class. 
+  - if all_technologies.nil?
+    %p Technologies will be displayed once you've selected a library/archive.
+  - else
+    = hidden_field_tag "", name: 'course[technology_ids][]'
+    - all_technologies.each do |tech|
+      = render partial: 'shared/formtastic_checkbox', locals: { _klass: 'tech', _for: "course_technology_#{tech.id}", _name: 'course[technology_ids][]', _id: tech.id, _checked: technologies.map{|selected| selected.id}.include?(tech.id), to_display: tech.name }

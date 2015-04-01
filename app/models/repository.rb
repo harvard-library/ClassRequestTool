@@ -25,4 +25,8 @@ class Repository < ActiveRecord::Base
     self.staff_services.order("description ASC")
   end
   
+  def all_technologies
+    self.item_attributes.order("name ASC")
+  end
+  
 end

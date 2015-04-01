@@ -162,6 +162,7 @@ class CoursesController < ApplicationController
     
     unless @course.repository.nil?
       @all_staff_services = @course.repository.all_staff_services
+      @all_technologies   = @course.repository.all_technologies
     end
 
     # @staff_service = @course.staff_service.split(',')

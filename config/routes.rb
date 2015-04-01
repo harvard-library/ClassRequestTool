@@ -8,6 +8,7 @@ ClassRequestTool::Application.routes.draw do
   
   get       '/repository/staff',          to: 'repositories#staff'
   get       '/repository/staff_services', to: 'repositories#staff_services'
+  get       '/repository/technologies',   to: 'repositories#technologies'
   resources :repositories
 
   resources :rooms

@@ -79,4 +79,15 @@ class RepositoriesController < ApplicationController
       format.json { render json: all_staff_services }
     end      
   end
+  
+  def technologies
+    unless params[:id].blank?
+      all_technologies = Repository.find(params[:id]).item_attributes
+    end
+
+    respond_to do |format|
+      format.html { render partial: 'repositories/technologies', locals: { technologies: [], all_technologies: all_technologies }}
+      format.json { render json: all_staff_services }
+    end      
+  end
 end

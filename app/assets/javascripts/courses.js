@@ -265,7 +265,12 @@ $(function () {
       $('#course_staff_services_input').html(html);
       style_checkboxes();
     })
-  });
+    
+    //Technology change
+    $.get('/repository/technologies/', 'id=' + repoId, function(html) {
+      $('#course_technologies_input').html(html);
+      style_checkboxes();
+    })  });
   
   /* Enable/disable note posting button depending on text in the note field */
   $('.c_courses.a_show').on('keyup', '#note_note_text', function(e) {

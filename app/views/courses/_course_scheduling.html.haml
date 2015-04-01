@@ -33,12 +33,7 @@
       %br/
       %br/
   #form_full_width
-    - unless @course.repository.nil?
-      %br/
-      = f.input :item_attributes,                                                                                                                                    |
-        :as => :check_boxes,                                                                                                                                         |
-        :collection => @course.repository.item_attributes,                                                                                                           |
-        :label => 'Classroom Technologies Available:<span class="help-block" style="font-weight:normal">Please check those  needed for your class.</span>'.html_safe |
+    = render partial: 'repositories/technologies', locals: { technologies: @course.item_attributes, all_technologies: @all_technologies }
     %br/
     = f.input :comments,                                                                                                                                                                                                                       |
       :label => "If you have any special room arrangements or further instructions regarding your class visit, please enter them below. It is also helpful to note any accessibility issues the library/archive can endeavor to accommodate.", |
