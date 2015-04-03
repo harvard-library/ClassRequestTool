@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150402154938) do
+ActiveRecord::Schema.define(:version => 20150403210954) do
 
   add_extension "fuzzystrmatch"
 
@@ -236,6 +236,7 @@ ActiveRecord::Schema.define(:version => 20150402154938) do
     t.datetime "created_at",                       :null => false
     t.datetime "updated_at",                       :null => false
     t.boolean  "staff_comment", :default => false, :null => false
+    t.boolean  "auto",          :default => false
   end
 
   add_index "notes", ["note_text"], :name => "index_notes_on_note_text"

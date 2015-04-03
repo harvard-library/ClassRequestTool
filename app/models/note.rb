@@ -1,7 +1,7 @@
 class Note < ActiveRecord::Base
   include ActionDispatch::Routing::UrlFor
   include Rails.application.routes.url_helpers
-  attr_accessible :note_text, :user_id, :course_id, :staff_comment
+  attr_accessible :note_text, :user_id, :course_id, :staff_comment, :auto
   
   validates :note_text, :presence => true, length: { minimum: 3 }
 

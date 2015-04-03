@@ -1,6 +1,10 @@
 - unless notes.nil? || notes.empty?
+  - if current_user.can_admin?
+    %button.btn.btn-info.btn-xs.autogen Toggle Auto-gen Notes
+    %br
+    %br
   - notes.each do |note|
-    .well.well-sm{ :id => "note-#{note.id}" }
+    .well.well-sm{ :id => "note-#{note.id}", :class => (note.auto? ? nil : "auto-note") }
       %p
         = note.note_text
       %p

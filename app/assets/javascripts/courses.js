@@ -290,5 +290,12 @@ $(function () {
         classes: 'qtip-bootstrap'
       }
     });
-  });  
+  });
+  
+  //Hide auto-generated notes
+  $('.auto-note').hide();
+  
+  $('body').on('click', '.autogen', function() {
+    $('.auto-note').toggle();
+  });
 });

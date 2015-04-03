@@ -357,22 +357,22 @@ class CoursesController < ApplicationController
     
     if @course.save
       if params[:course][:status] == "Closed" # check params because editing closed courses should not create notes
-        @course.notes.create(:note_text => "Class has marked as closed.", :user_id => current_user.id, :staff_comment => true)
+        @course.notes.create(:note_text => "Class has marked as closed.", :user_id => current_user.id, :staff_comment => true, :auto => true)
         Notification.delay(:queue => 'assessments').assessment_requested(@course)
-        @course.notes.create(:note_text => "Assessment email sent.", :user_id => current_user.id, :staff_comment => true)
+        @course.notes.create(:note_text => "Assessment email sent.", :user_id => current_user.id, :staff_comment => true, :auto => true)
       end
 
       if send_repo_change_notification
         # FIX INFO_NEEDED Should "changed from" repos get email? Inquiring Bobbis want to know
         Notification.delay(:queue => 'changes').repo_change(@course) unless @course.repository.blank?
         @course.notes.create(:note_text => "Library/Archive changed to #{@course.repository.blank? ? "none" : @course.repository.name + ". Email sent."}.",
-                             :user_id => current_user.id, :staff_comment => true)
+                             :user_id => current_user.id, :staff_comment => true, :auto => true)
       end
 
       if send_staff_change_notification
         # FIX INFO_NEEDED Should "dropped" staff members get this email?
         Notification.delay(:queue => 'changes').staff_change(@course, current_user)
-        @course.notes.create(:note_text => "Staff change email sent.", :user_id => current_user.id, :staff_comment => true)
+        @course.notes.create(:note_text => "Staff change email sent.", :user_id => current_user.id, :staff_comment => true, :auto => true)
       end
 
       respond_to do |format|
