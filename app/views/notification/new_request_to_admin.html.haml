@@ -17,3 +17,7 @@
         %a{ href: '#' } edit the course (linked to course edit form)
       - else
         %a{:href => "http://#{site_url}#{edit_course_path(@course)}"} edit the course
+        
+- unless @custom_text.blank?
+  = @custom_text.html_safe
+

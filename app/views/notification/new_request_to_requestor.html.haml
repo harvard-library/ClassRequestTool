@@ -14,4 +14,8 @@
     You have requested a class at the #{@course.repo_name}, which has the following specific details and/or instructions:
   = @course.repository.email_details
 %br/
+
+- unless @custom_text.blank?
+  = @custom_text.html_safe
+
 %p Thank you for your request. We look forward to working with you.

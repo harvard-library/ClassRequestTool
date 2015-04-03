@@ -1,4 +1,6 @@
 ClassRequestTool::Application.routes.draw do
+  get "custom_text/index"
+
   # Home
   root :to => 'welcome#show'
 
@@ -48,6 +50,7 @@ ClassRequestTool::Application.routes.draw do
   
   namespace :admin do
     resources :customizations,                  only: [:update]
+    resources :custom_texts,                    only: [:index, :create, :update, :destroy]
 
     resources :affiliates,                      only: [:create, :update, :destroy]
     post      'affiliates/update_positions',    to: 'affiliates#update_positions'               # AJAX route

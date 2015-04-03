@@ -1,7 +1,11 @@
+- unless @custom_text.blank?
+  = @custom_text.html_safe
+
 %p
   Please review the feedback for:
   
 = render :partial => 'shared/notification_course_info', :locals => { course: @assessment.course, test: @test }
+
 
 = succeed "." do
   - if @test

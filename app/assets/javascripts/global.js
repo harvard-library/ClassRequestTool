@@ -1,3 +1,9 @@
+// Configure CKEditor
+CKEDITOR.config.toolbarGroups = [
+    { name: 'clipboard',   groups: [ 'clipboard', 'undo' ] },
+    { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
+    { name: 'paragraph',   groups: [ 'list', 'indent', 'blocks', 'align' ] },
+];
 $(function () {
   $('nav.navbar li').each(function (i, el) {
     var $el = $(el);

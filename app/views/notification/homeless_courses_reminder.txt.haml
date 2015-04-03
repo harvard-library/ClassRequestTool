@@ -6,3 +6,6 @@ The following homeless classes have yet to be assigned a location. If any of the
     (link to course)
   - else
     #{"http://\#{site_url}\#{edit_course_path(course.id)}"}
+
+- unless @custom_text.blank?
+  = @custom_text

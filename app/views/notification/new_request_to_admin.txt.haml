@@ -15,3 +15,6 @@
     (link to course)
   - else
     #{"http://#{site_url}#{edit_course_path(@course)}"}
+    
+- unless @custom_text.blank?
+  = @custom_text

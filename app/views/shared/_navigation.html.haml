@@ -22,6 +22,7 @@
             - if current_user.superadmin?
               %li
                 = link_to "Superadmin Dashboard", admin_dashboard_path
+                = link_to "Custom Text", admin_custom_texts_path
         %li= link_to "Edit Account", edit_user_registration_path
       - elsif current_user && current_user.staff?
         %li= link_to "Users", users_path

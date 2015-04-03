@@ -2,6 +2,10 @@
   The class request for
   %em= @course.title
   has been uncancelled.
+
+- unless @custom_text.blank?
+  = @custom_text.html_safe
+
 %p
   If you have any questions or additional details to share, please add a note to the
   = succeed "." do

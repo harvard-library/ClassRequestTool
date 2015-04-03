@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150329151640) do
+ActiveRecord::Schema.define(:version => 20150402154938) do
 
   add_extension "fuzzystrmatch"
 
@@ -156,6 +156,13 @@ ActiveRecord::Schema.define(:version => 20150329151640) do
   create_table "courses_users", :id => false, :force => true do |t|
     t.integer "course_id"
     t.integer "user_id"
+  end
+
+  create_table "custom_texts", :force => true do |t|
+    t.string   "key"
+    t.text     "text"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "customizations", :force => true do |t|

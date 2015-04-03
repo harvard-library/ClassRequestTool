@@ -1,5 +1,8 @@
 The class request for #{@course.title} has been cancelled. We maintain a record of this class request.
 
+- unless @custom_text.blank?
+  = @custom_text.html_safe
+
 If you have any questions or additional details to share, please add a note to the class request:
 
 - if @test

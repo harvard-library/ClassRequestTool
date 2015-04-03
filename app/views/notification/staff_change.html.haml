@@ -1,6 +1,10 @@
 %p
   You have been assigned to a class for #{@course.repo_name}.
 = render :partial => 'shared/notification_course_info', :locals => { course: @course, test: @test  }
+
+- unless @custom_text.blank?
+  = @custom_text.html_safe
+
 %p
   Please
   - if @test

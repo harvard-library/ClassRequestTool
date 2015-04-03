@@ -1,3 +1,6 @@
+- unless @custom_text.blank?
+  = @custom_text
+
 Please review the feedback for:
 
 = render :partial => 'shared/notification_course_info'}, :locals => { course: @assessment.course, test: @test }

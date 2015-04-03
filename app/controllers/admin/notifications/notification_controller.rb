@@ -4,6 +4,8 @@ class Admin::Notifications::NotificationController < Admin::AdminController
   def action_missing(m, *args, &block)
   
     @test = true
+    ct = Admin::CustomText.where(key: m).first
+    @custom_text = ct.nil? ? '' : ct.text
   
     case (m)
       when 'assessment_received_to_admins'

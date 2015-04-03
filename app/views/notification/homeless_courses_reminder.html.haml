@@ -8,3 +8,6 @@
       %a{:href => "http://\#{site_url}\#{edit_course_path(course.id)}"} Edit this course
   %br/
   %br/
+
+- unless @custom_text.blank?
+  = @custom_text.html_safe
