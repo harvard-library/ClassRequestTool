@@ -85,8 +85,13 @@
         %span.summary-label Additional Staff:
         %ul
           -@course.users.each do |u|
-            %li #{u.full_name}
-    %li
+            %li #{u.full_name}      
+  
+    - unless @course.assisting_repository.blank?
+      %li
+        %span.summary-label Assisting Library/Archive:
+        %br
+        #{@course.assisting_repository.name}
     
   %h4 Staff Services
   - if @course.staff_services.blank?

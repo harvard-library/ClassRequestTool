@@ -11,10 +11,11 @@
             = f.input :primary_contact_id, :as => :select, :collection => User.all_admins, :label => "Primary Staff Contact: "
             = f.input :users, :as => :check_boxes, :collection => User.all_admins, :label => "Additional Staff: "
           - else
-            = f.input :primary_contact_id, :as => :select, :collection => @course.repository.users, :label => "Primary Staff Contact: "
+            = f.input :primary_contact_id, :as => :select, :collection => @course.repository.users, :label => "Primary Staff Contact: ", :prompt => '-- Select Contact --'
             %span.help-block Staff member primarily responsible for course
             - unless @course.primary_contact_id.nil?
               = render partial: 'repositories/staff_list', locals: { form: true, staff_members: @additional_staff, assigned_staff: @course.users.blank? ? [] : @course.users }
 
             - else
               = f.input :users, :as => :check_boxes, :collection => @course.repository.users, :label => "Additional Staff: "
+          = f.input :assisting_repository_id, :as => :select, :collection => Repository.where("id != ?", @course.repository_id), :label => 'Assisting library/archive (if any)', :prompt => '-- Select Library/Archive --'

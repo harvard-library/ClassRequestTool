@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150403210954) do
+ActiveRecord::Schema.define(:version => 20150404155038) do
 
   add_extension "fuzzystrmatch"
 
@@ -126,6 +126,7 @@ ActiveRecord::Schema.define(:version => 20150403210954) do
     t.datetime "first_date"
     t.datetime "last_date"
     t.boolean  "scheduled"
+    t.integer  "assisting_repository_id"
   end
 
   add_index "courses", ["affiliation"], :name => "index_courses_on_affiliation"

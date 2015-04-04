@@ -3,7 +3,7 @@ class Course < ActiveRecord::Base
   include Rails.application.routes.url_helpers
 
   attr_accessible( :room_id, :repository_id, :user_ids, :item_attribute_ids, :primary_contact_id, :staff_service_ids, 
-                   :sections_attributes, :additional_patrons_attributes, :collections_attributes, # associations
+                   :sections_attributes, :additional_patrons_attributes, :collections_attributes, :assisting_repository_id, # associations
                    :title, :subject, :course_number, :affiliation, :number_of_students, :session_count,  #values
                    :comments,  :staff_service, :instruction_session, :goal,
                    :contact_username, :contact_first_name, :contact_last_name, :contact_email, :contact_phone,  #contact info
@@ -18,6 +18,8 @@ class Course < ActiveRecord::Base
   has_and_belongs_to_many :users
   belongs_to :room
   belongs_to :repository
+  belongs_to :assisting_repository, foreign_key: :assisting_repository_id, class_name: 'Repository'
+  
   has_many :notes, :dependent => :destroy
   has_and_belongs_to_many :item_attributes
   has_many :assessments, :dependent => :destroy
