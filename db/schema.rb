@@ -11,11 +11,13 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140825194420) do
+ActiveRecord::Schema.define(:version => 20150415192257) do
+
+  add_extension "fuzzystrmatch"
 
   create_table "assessments", :force => true do |t|
     t.text     "using_materials"
-    t.string   "involvement"
+    t.text     "involvement"
     t.integer  "staff_experience"
     t.integer  "staff_availability"
     t.integer  "space"
