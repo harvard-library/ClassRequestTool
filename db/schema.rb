@@ -40,7 +40,7 @@ ActiveRecord::Schema.define(version: 20150902021755) do
 
   create_table "assessments", force: :cascade do |t|
     t.text     "using_materials"
-    t.string   "involvement"
+    t.text     "involvement"
     t.integer  "staff_experience"
     t.integer  "staff_availability"
     t.integer  "space"
