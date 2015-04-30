@@ -242,7 +242,7 @@ Devise.setup do |config|
     config.authen_application = ENV['AUTHEN_APPLICATION'] || 'HLS_BCIS_CRT_DEV' #'HLS_BCIS_LRRS_DEV'
     config.gpg_home = ENV['GPG_HOME'] || '/web/numfar/rails3.2dev/docs/classrequest-dev/fakehome2'
     config.gpg_path = ENV['GPG_PATH'] if ENV['GPG_PATH']
-    config.debug = true
+    config.debug = Rails.env.development?
     config.post_logout_url = 'https://www.pin1.harvard.edu/pin/logout'
     config.creation_attributes = Proc.new do |user,user_info,authentication_info|
       user.email = user_info[:mail]
