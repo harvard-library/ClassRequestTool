@@ -250,6 +250,7 @@ class CoursesController < ApplicationController
       @repository = Repository.find(params[:repository])
       @course.repository_id = @repository.id
       @all_staff_services = @repository.staff_services
+      @all_technologies = @repository.item_attributes
     end
     
     # Automatically create with 1 section
