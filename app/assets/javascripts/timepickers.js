@@ -15,7 +15,13 @@ $(function () {
       hourMax: 17,
       beforeShowDay: $.datepicker.noWeekends,
       minDate: ($(this).hasClass('actual-date') ? null : 3),
+      minDate: ($(this).hasClass('actual-date') ? null : 3),
       numberOfMonths: 2
+    }
+    
+    // Remove the time restriction in the past for staff and admins
+    if ($('body').hasClass('u_staff') || $('body').hasClass('u_admin') || $('body').hasClass('u_superadmin')) {
+      delete options.minDate;
     }
     $(this).datetimepicker(options);
     $(this).datetimepicker('show');
