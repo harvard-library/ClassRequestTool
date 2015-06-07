@@ -249,6 +249,7 @@ class CoursesController < ApplicationController
     unless params[:repository].blank?
       @repository = Repository.find(params[:repository])
       @course.repository_id = @repository.id
+      @all_staff_services = @repository.staff_services
     end
     
     # Automatically create with 1 section
@@ -259,6 +260,7 @@ class CoursesController < ApplicationController
     @additional_staff = additional_staff
 
     @uploader = SyllabusUploader.new
+
     
   end
 

@@ -15,7 +15,7 @@
       .display
         = render :partial => 'shared/repo_image', :locals => { image: pic, size: :display, repo: @repository }
 .row
-  .col-md-4.collections
+  .col-md-3.collections
     .info
       %h4.column-head Collections
       - unless @repository.collections.empty?
@@ -24,7 +24,17 @@
           %li.list-group-item #{link_to c.name, c.url, target: '_blank'}
       - else
         %p (none)
-  .col-md-4.technology
+  .col-md-3.technology
+    .info
+      %h4.column-head Staff Services
+      - unless @repository.staff_services.blank?
+        %ul.no-bullets
+          - @repository.staff_services.each do |service|
+            %li
+              = service.description
+      - else
+        (None)
+  .col-md-3.technology
     .info
       %h4.column-head Technology Available
       - unless @repository.item_attributes.blank?
@@ -35,7 +45,7 @@
               = "- #{ attribute.description }" unless attribute.description.blank?
       - else
         (None)
-  .col-md-4.facilities
+  .col-md-3.facilities
     .info
       %h4.column-head Administrative Information
        

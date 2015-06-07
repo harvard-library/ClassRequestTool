@@ -1,7 +1,7 @@
 $(function () {
   
-  // Send user to chosen repository page
+  // Send user to make a request with given repository
   $('#select-repo button').on('click', function(e) {
-    window.location.href = '/repositories/' + $(e.currentTarget).prev('select').val();
+    window.location.href = '/courses/new?repository=' + $('#select-repo select').val();
   });
 });
