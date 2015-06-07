@@ -22,8 +22,9 @@
           %strong To request a class, select a site, or click “Help Me Choose” to let us help you pair your class with a participating library or archive. 
         %br
         %p.text-center
-          .form-inline#select-repo
+          .form#select-repo
             = select_tag :repo, options_from_collection_for_select(@repositories, :id, :name), :prompt => '-- Choose a Library --', :class => 'form-control'
+            %br
             %button.btn.btn-sm.btn-primary Go
           %br
           %strong OR
