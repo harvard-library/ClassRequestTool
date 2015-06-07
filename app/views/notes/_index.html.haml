@@ -1,12 +1,25 @@
 - unless notes.nil? || notes.empty?
   - if current_user.can_admin?
-    %button.btn.btn-info.btn-xs.autogen Toggle Auto-gen Notes
+    %button.btn.btn-info.btn-xs.note-toggle#autogen System-generated Notes (Show/Hide)
+    %br
+    %button.btn.btn-info.btn-xs.note-toggle#patron Patron Notes (Show/Hide)
+    %br
+    %button.btn.btn-info.btn-xs.note-toggle#staff Staff Notes (Show/Hide)
     %br
     %br
   - notes.each do |note|
-    .well.well-sm{ :id => "note-#{note.id}", :class => (note.auto? ? nil : "auto-note") }
-      %p
-        = note.note_text
+    %div{ :id => "note-#{note.id}", :class => "well well-sm #{(note.auto? ? 'autogen' : nil)} #{(note.staff_comment? ? 'staff' : 'patron')}" }
+      - if current_user.staff? || current_user.can_admin?
+        - case
+        - when note.auto?
+          - title = 'System-generated Note'
+        - when note.staff_comment?
+          - title = 'Staff-only Note'
+        - else
+          - title = 'Patron-Staff Note'
+          
+        %h5= title
+      %p= note.note_text
       %p
         %em #{note.user.full_name unless note.user.nil?}(#{note.user.user_type unless note.user.nil?}) on: #{note.created_at.strftime(DATETIME_FORMAT)}
       - if current_user.staff? || current_user.can_admin?

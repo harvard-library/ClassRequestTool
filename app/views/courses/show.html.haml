@@ -205,11 +205,7 @@
       %br/
     %h4 Notes
     - unless @notes.blank?
-      %h5 Patron Notes
       = render :partial => 'notes/index', :locals => {:notes => @notes }
-    - if !@staff_only_notes.blank? && (current_user.staff? || current_user.can_admin?)
-      %h5 Staff Notes
-      = render :partial => 'notes/index', :locals => {:notes => @staff_only_notes }
     = render :partial => 'notes/form', :locals => {:note => @note, :course => @course }
     %br
     - unless @course.status == "Closed"

@@ -293,9 +293,10 @@ $(function () {
   });
   
   //Hide auto-generated notes
-  $('.auto-note').hide();
+  $('.autogen').hide();
   
-  $('body').on('click', '.autogen', function() {
-    $('.auto-note').toggle();
+  $('body').on('click', '.note-toggle', function() {
+    var id = $(this).attr('id');
+    $('.' + id).toggle();
   });
 });

@@ -299,9 +299,7 @@ class CoursesController < ApplicationController
        redirect_to('/') and return
     end
     @note = Note.new
-    notes = Note.where(:course_id => @course.id).order("created_at DESC").includes(:user).group_by(&:staff_comment)
-    @staff_only_notes = notes[true]
-    @notes = notes[false]
+    @notes = Note.where(:course_id => @course.id).order("created_at DESC").includes(:user)
     
     first_section = @course.sections.where("actual_date IS NOT NULL").order("actual_date ASC").first
     if first_section.nil? || first_section.room.nil?
