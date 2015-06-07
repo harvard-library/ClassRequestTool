@@ -5,7 +5,7 @@ class Course < ActiveRecord::Base
   attr_accessible( :room_id, :repository_id, :user_ids, :item_attribute_ids, :primary_contact_id, :staff_service_ids, 
                    :sections_attributes, :additional_patrons_attributes, :collections_attributes, :assisting_repository_id, # associations
                    :title, :subject, :course_number, :affiliation, :number_of_students, :session_count,  #values
-                   :comments,  :staff_service, :instruction_session, :goal,
+                   :comments,  :staff_service, :instruction_session, :goal, :collaboration_options,
                    :contact_username, :contact_first_name, :contact_last_name, :contact_email, :contact_phone,  #contact info
                    :status, :syllabus, :remove_syllabus, :external_syllabus, #syllabus
                    :pre_class_appt, :timeframe, :timeframe_2, :timeframe_3, :timeframe_4, :duration, #concrete schedule vals
@@ -15,6 +15,8 @@ class Course < ActiveRecord::Base
                    :first_date, :last_date, :scheduled
                    )
 
+  serialize :collaboration_options
+  
   has_and_belongs_to_many :users
   belongs_to :room
   belongs_to :repository

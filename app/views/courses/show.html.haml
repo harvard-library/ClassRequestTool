@@ -87,11 +87,19 @@
           -@course.users.each do |u|
             %li #{u.full_name}      
   
-    - unless @course.assisting_repository.blank?
+  - unless @course.assisting_repository.blank?
+    %h4 Collaborating Library/Archive
+    %ul.summary-info
       %li
-        %span.summary-label Assisting Library/Archive:
-        %br
         #{@course.assisting_repository.name}
+      %li
+        %span.summary-label Nature of Collaboration
+        %br
+        - @course.collaboration_options.each do |option|
+          #{option}
+          %br
+        
+          
     
   %h4 Staff Services
   - if @course.staff_services.blank?

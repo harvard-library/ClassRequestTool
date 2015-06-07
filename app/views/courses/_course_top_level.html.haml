@@ -29,7 +29,7 @@
             = f.hidden_field :repository_id, :value => @course.repository_id
       #requester_info= render :partial => 'course_requester_info', :locals=>{:f=>f}
       #course_info= render :partial => 'course_info', :locals=>{:f=>f}
-      #involvement_info= render :partial => 'course_staff_service', :locals=>{:f=>f}
+      #involvement_info= render :partial => 'course_staff_service', :locals=>{:f=>f, possible_collaborations: @possible_collaborations, collaboration_options: @collaboration_options}
       #scheduling_info= render :partial => 'course_scheduling', :locals=>{:f=>f}
     #missing-fields
     = f.actions do

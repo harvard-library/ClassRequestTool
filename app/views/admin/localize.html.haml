@@ -35,6 +35,8 @@
         = f.input :tool_tech_admin_email, :label => 'Email'
         %br/
       = f.input :default_email_sender, :label => 'Default Sender for Tool Emails'
+      = f.input :collaboration_options, :label => 'Collaboration Types', :hint => 'Enter one type per line', :input_html => {:rows => 5}
+          
       %br/
     %br/
     = f.actions do

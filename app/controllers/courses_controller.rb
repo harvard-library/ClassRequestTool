@@ -144,8 +144,8 @@ class CoursesController < ApplicationController
     end
 
     @course = Course.find(params[:id])
-
     @additional_staff = additional_staff
+    @collaboration_options = $local_config.collaboration_options.gsub("\r", "").split("\n")
     
     # Set affiliation variables
     if $affiliates.map { |opt| opt.name }.include?(@course.affiliation)
@@ -163,6 +163,7 @@ class CoursesController < ApplicationController
     unless @course.repository.nil?
       @all_staff_services = @course.repository.all_staff_services
       @all_technologies   = @course.repository.all_technologies
+      @possible_collaborations = Repository.all - [@course.repository]
     end
 
     # @staff_service = @course.staff_service.split(',')
@@ -245,12 +246,14 @@ class CoursesController < ApplicationController
   def new
   
     @course = Course.new()
+    @collaboration_options = $local_config.collaboration_options.gsub("\r", "").split("\n")
     
     unless params[:repository].blank?
       @repository = Repository.find(params[:repository])
       @course.repository_id = @repository.id
       @all_staff_services = @repository.staff_services
       @all_technologies = @repository.item_attributes
+      @possible_collaborations = Repository.all - [@repository]
     end
     
     # Automatically create with 1 section

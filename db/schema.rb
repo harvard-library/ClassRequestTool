@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150404155038) do
+ActiveRecord::Schema.define(:version => 20150607183216) do
 
   create_table "additional_patrons", :force => true do |t|
     t.string   "first_name"
@@ -125,6 +125,7 @@ ActiveRecord::Schema.define(:version => 20150404155038) do
     t.datetime "last_date"
     t.boolean  "scheduled"
     t.integer  "assisting_repository_id"
+    t.text     "collaboration_options"
   end
 
   add_index "courses", ["affiliation"], :name => "index_courses_on_affiliation"
@@ -178,6 +179,7 @@ ActiveRecord::Schema.define(:version => 20150404155038) do
     t.datetime "updated_at",               :null => false
     t.string   "slogan"
     t.boolean  "notifications_on"
+    t.text     "collaboration_options"
   end
 
   create_table "delayed_jobs", :force => true do |t|
