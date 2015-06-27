@@ -224,7 +224,7 @@ class CoursesController < ApplicationController
   def index
     if current_user.can_admin?
       @title = 'All Classes'
-      @courses = Course.order_by_submitted.includes(:sections, :repository, :primary_contact)
+      @courses = Course.order_by_submitted.eager_load(:sections, :repository, :primary_contact)
       @nil_date_warning = false
       @courses.reverse.each do |c|
         if c.last_date.nil?
@@ -419,6 +419,54 @@ class CoursesController < ApplicationController
       format.html { redirect_to dashboard_welcome_index_url, notice: 'Class was successfully claimed.' }
     end
   end 
+  
+  def dashboard
+    @homeless               = []
+    @closed                 = []
+    @to_close               = []
+    @unclaimed_unscheduled  = []
+    @unclaimed_scheduled    = []
+    @claimed_unscheduled    = []
+    @claimed_scheduled      = []
+    
+    #Loop over courses and slot them into their categories
+    @courses = Course.order_by_submitted.eager_load(:repository, :sections, :users)
+    
+    @courses.each do |course|
+      if course.repository.nil?
+        @homeless << course
+      elsif course_owner?(course)
+        if course.completed?
+          if course.status == 'Closed'
+            @closed << course
+          else
+            @to_close << course
+          end
+        else       
+          section_ids = course.missing_dates?
+          if section_ids
+            @claimed_unscheduled << course
+            @sections = Section.find(section_ids)
+          else
+            @claimed_scheduled << course
+          end
+        end
+        
+      elsif current_user.repositories.include?(course.repository)
+        section_ids = course.missing_dates?
+          if section_ids
+            @unclaimed_unscheduled << course
+            @sections = Section.find(section_ids)
+          else
+            @unclaimed_scheduled << course
+          end
+        end
+      end 
+  end 
+  
+  def course_owner?(course)
+    current_user.id == course.primary_contact_id || course.users.include?(current_user)
+  end
   
   private
     def process_params

@@ -22,12 +22,12 @@
     = render :partial => 'dashboard_table',   |
       :locals => { :id => 'user-unscheduled',  |
       :title => 'Your Claimed, Unscheduled Classes', |
-      :courses => @user_unscheduled }                |
+      :courses => @claimed_unscheduled }                |
     -#
     = render :partial => 'dashboard_table', |
       :locals => { :id => 'user-upcoming',   |
       :title => 'Your Scheduled, Claimed Classes', |
-      :courses => @user_upcoming }                 |
+      :courses => @claimed_scheduled }                 |
   / END #upcoming
   #homeless.tab-pane.row
     .clearfix
@@ -41,22 +41,22 @@
       = render :partial => 'dashboard_table', |
         :locals => { :id => 'unassigned',      |
         :title => 'Classes to be Scheduled',         |
-        :courses => @unscheduled_unclaimed }         |
+        :courses => @unclaimed_unscheduled }         |
       -#
       = render :partial => 'dashboard_table', |
         :locals => { :id => 'roomless',        |
         :title => 'Scheduled Classes',               |
-        :courses => @scheduled_unclaimed }           |
+        :courses => @unclaimed_scheduled }           |
   / END unclaimed
   #closed.tab-pane.row
     = render :partial => 'dashboard_table', |
       :locals => { :id => 'user-to-close',   |
       :title => 'Your Classes To Close',           |
-      :courses => @user_to_close }         |
+      :courses => @to_close }         |
     -#
     = render :partial => 'dashboard_table', |
       :locals => { :id => 'user-past-table',       |
       :title => 'Your Closed Classes',             |
-      :courses => @user_past }                     |
+      :courses => @closed }                     |
   / END #closed
 / END .dash-wrap

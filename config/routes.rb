@@ -33,6 +33,7 @@ ClassRequestTool::Application.routes.draw do
       get 'export'
       # AJAX helpers for course new/edit form
       get 'new_section_or_session_block'
+      get 'dashboard'
     end
   end
   get "/courses/:id/cancel",    to: 'courses#cancel'
@@ -43,7 +44,6 @@ ClassRequestTool::Application.routes.draw do
 
   resources :welcome do
     collection do
-      get 'dashboard'
       get 'login'
     end
   end

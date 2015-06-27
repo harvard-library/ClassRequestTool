@@ -91,9 +91,6 @@ class Course < ActiveRecord::Base
 #     end
 #   end
 
-  def self.homeless
-    where(:status => 'Homeless').order_by_last_date
-  end
 
   # Headcounts represent after-the-fact, definite attendance numbers
   #   The following functions depend on Course::Session,
@@ -133,8 +130,29 @@ class Course < ActiveRecord::Base
     !self.primary_contact_id.blank?
   end
   
+  def completed?
+    now = Time.now
+    self.sections.each do |section|
+      if section.actual_date.nil? || ( section.actual_date > now )
+        return false
+      end
+    end
+    return true
+  end
+  
   def homeless?
     self.repository_id.blank?
+  end
+  
+  # This function returns true if all sections are scheduled, an array of unscheduled section ids if not
+  def missing_dates?
+    self.sections.each do |section|
+      if section.actual_date.blank?
+        missing_dates ||= []
+        missing_dates << section.id
+      end
+    end
+    missing_dates ||= false
   end
   
   # Quick update of course stats with direct db query

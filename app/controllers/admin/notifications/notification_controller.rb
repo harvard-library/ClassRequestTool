@@ -108,7 +108,7 @@ class Admin::Notifications::NotificationController < Admin::AdminController
         contact_username: 'ziffy',
         status: status
       })
-      unless status == 'Homeless'
+      unless course.repository == nil
         course.repository = Repository.first
       end
       course
