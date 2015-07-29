@@ -1,5 +1,4 @@
 class Room < ActiveRecord::Base
-  attr_accessible :name, :repository_ids, :item_attribute_ids, :class_limit
 
   has_and_belongs_to_many :repositories
   has_many :courses

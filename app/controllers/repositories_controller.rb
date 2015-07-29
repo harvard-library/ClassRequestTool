@@ -20,7 +20,7 @@ class RepositoriesController < ApplicationController
   end
 
   def create
-    @repository = Repository.new(params[:repository])
+    @repository = Repository.new(repository_params)
     respond_to do |format|
       if @repository.save
         format.html { redirect_to repositories_url, notice: 'Library/Archive was successfully created.' }
@@ -36,7 +36,7 @@ class RepositoriesController < ApplicationController
     @repository = Repository.find(params[:id])
     
     respond_to do |format|
-      if @repository.update_attributes(params[:repository])
+      if @repository.update_attributes(repository_params)
         format.html { redirect_to repository_path(@repository), notice: 'Library/Archive was successfully updated.' }
         format.json { head :no_content }
       else
@@ -90,4 +90,12 @@ class RepositoriesController < ApplicationController
       format.json { render json: all_staff_services }
     end      
   end
+
+  private
+    def repository_params
+      params.require(:repository).permit(
+        :name, :description, :can_edit, :class_limit, :room_ids,  :user_ids,:item_attribute_ids,
+        :calendar, :landing_page, :class_policies, { :attached_images_attributes => [:id, :_destroy, :picture_id, :picture_type, :image, :image_cache, :remove_image, :caption] }, :email_details
+      )
+    end
 end

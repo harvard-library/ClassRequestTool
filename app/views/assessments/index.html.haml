@@ -2,7 +2,7 @@
 %h4= link_to 'Download as CSV', export_assessments_path(:format => :csv)
 .pager-assessment-current
   = render 'shared/tablesorter_pager'
-%table#assessment-current.sortable
+%table.table#assessment-current.sortable
   %thead
     %th Course Title
     - @fields.each_pair do |attribute, text|

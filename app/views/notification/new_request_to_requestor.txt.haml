@@ -5,7 +5,7 @@ You may review your request and update it with any new details or comments by le
 - if @test
   (link to course)
 - else
-  #{"http://#{site_url}#{course_path(@course)}"}
+  = course_url(@course)}
   
 - unless @course.repository.blank? || @course.repository.email_details.blank?
   You have requested a class at the #{@course.repository.name}, which has the following specific details and/or instructions:

@@ -2,19 +2,6 @@ class Course < ActiveRecord::Base
   include ActionDispatch::Routing::UrlFor
   include Rails.application.routes.url_helpers
 
-  attr_accessible( :room_id, :repository_id, :user_ids, :item_attribute_ids, :primary_contact_id, :staff_service_ids, 
-                   :sections_attributes, :additional_patrons_attributes, :collections_attributes, :assisting_repository_id, # associations
-                   :title, :subject, :course_number, :affiliation, :number_of_students, :session_count,  #values
-                   :comments,  :staff_service, :instruction_session, :goal, :collaboration_options,
-                   :contact_username, :contact_first_name, :contact_last_name, :contact_email, :contact_phone,  #contact info
-                   :status, :syllabus, :remove_syllabus, :external_syllabus, #syllabus
-                   :pre_class_appt, :timeframe, :timeframe_2, :timeframe_3, :timeframe_4, :duration, #concrete schedule vals
-                   :time_choice_1, :time_choice_2, :time_choice_3, :time_choice_4, # tentative schedule vals
-                   :pre_class_appt_choice_1, :pre_class_appt_choice_2, :pre_class_appt_choice_3, #unused
-                   :section_count, :session_count, :total_attendance,  # stats
-                   :first_date, :last_date, :scheduled
-                   )
-
   serialize :collaboration_options
   
   has_and_belongs_to_many :users
@@ -37,7 +24,7 @@ class Course < ActiveRecord::Base
   validates_presence_of :title, :message => "can't be empty"
   validates_presence_of :contact_first_name, :contact_last_name
   validates_presence_of :contact_email, :message => "contact email is required" 
-  validates_format_of   :contact_email, :with => /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i, :message => "Invalid email"
+  validates_format_of   :contact_email, :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i, :message => "Invalid email"
   validates_presence_of :contact_phone
   validates_presence_of :number_of_students, :message => "please enter a number"
   validates_presence_of :goal, :message => "please enter a goal"
@@ -144,6 +131,10 @@ class Course < ActiveRecord::Base
     self.repository_id.blank?
   end
   
+  def unclaimed?
+    self.primary_contact.blank? & self.users.blank?
+  end
+  
   # This function returns true if all sections are scheduled, an array of unscheduled section ids if not
   def missing_dates?
     self.sections.each do |section|
@@ -165,22 +156,26 @@ class Course < ActiveRecord::Base
     first_date = last_date = nil
     
     # Scheduled
-    scheduled = true
-    self.sections.each do |s|
-      nsections += 1 if s.session == 1
-      nsessions = s.session.to_i if s.session > nsessions
-      nattendance += s.headcount.to_i
-      if s.actual_date
-        first_date = s.actual_date if (first_date.nil? || s.actual_date < first_date)
-        last_date = s.actual_date if (last_date.nil? || s.actual_date > last_date)
-      elsif s.requested_dates
-        scheduled = false
-        requested_dates = s.requested_dates.reject { |d| d.blank? }.sort        
-        first_date  = requested_dates.first if (first_date.nil? || requested_dates.first < first_date)
-        last_date   = requested_dates.last if (last_date.nil? || requested_dates.last > last_date)
-      else
-        scheduled = false
+    if !self.sections.blank?
+      scheduled = true
+      self.sections.each do |s|
+        nsections += 1 if s.session == 1
+        nsessions = s.session.to_i if s.session > nsessions
+        nattendance += s.headcount.to_i
+        if s.actual_date
+          first_date = s.actual_date if (first_date.nil? || s.actual_date < first_date)
+          last_date = s.actual_date if (last_date.nil? || s.actual_date > last_date)
+        elsif s.requested_dates
+          scheduled = false
+          requested_dates = s.requested_dates.reject { |d| d.blank? }.sort        
+          first_date  = requested_dates.first if (first_date.nil? || requested_dates.first < first_date)
+          last_date   = requested_dates.last if (last_date.nil? || requested_dates.last > last_date)
+        else
+          scheduled = false
+        end
       end
+    else
+      scheduled = false
     end
     
     # Use update_column to avoid autosave issues

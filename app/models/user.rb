@@ -8,9 +8,6 @@ class User < ActiveRecord::Base
   # Use delayed_job to send devise emails
   handle_asynchronously :send_devise_notification, :queue => 'devise'
 
-  # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :remember_me, :first_name, :last_name, :repository_ids, :username, :patron, :staff, :superadmin, :admin
-
   validates_uniqueness_of :username
   validates_presence_of :username, :unless => :pinuser
   has_and_belongs_to_many :courses
@@ -22,7 +19,7 @@ class User < ActiveRecord::Base
   end
 
   def display_name
-    return self.full_name == " " ? self.username : self.full_name
+    return self.full_name.blank? || self.full_name.match( /\A\s*\z/ ) ? self.username : self.full_name
   end
 
   # Custom setters for boolean user type fields
@@ -80,4 +77,8 @@ class User < ActiveRecord::Base
     admin? || superadmin?
   end
 
+  private
+    def user_params
+      params.permit(:user).permit(:email, :password, :password_confirmation, :username, :remember_me, :first_name, :last_name, :repository_ids)
+    end
 end

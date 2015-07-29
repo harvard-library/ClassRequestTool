@@ -16,7 +16,7 @@ class StaffServicesController < ApplicationController
   end
   
   def create
-    @staff_service = StaffService.new(params[:staff_service])
+    @staff_service = StaffService.new(staff_services_params)
     respond_to do |format|
       if @staff_service.save
         format.html { redirect_to staff_services_url, notice: 'Staff Service was successfully created.' }
@@ -32,7 +32,7 @@ class StaffServicesController < ApplicationController
     @staff_service = StaffService.find(params[:id])
 
     respond_to do |format|
-      if @staff_service.update_attributes(params[:staff_service])
+      if @staff_service.update_attributes(staff_services_params)
         format.html { redirect_to staff_services_url, notice: 'Staff Service was successfully updated.' }
         format.json { head :no_content }
       else
@@ -51,4 +51,9 @@ class StaffServicesController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  private
+    def staff_services_params
+      params.require(:staff_service).permit(:description, :repository_ids, :course_ids)
+    end
 end

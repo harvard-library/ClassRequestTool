@@ -1,4 +1,4 @@
-require 'test_helper'
+require 'spec_helper'
 
 class EmailsControllerTest < ActionController::TestCase
   # test "the truth" do

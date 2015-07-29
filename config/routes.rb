@@ -39,7 +39,10 @@ ClassRequestTool::Application.routes.draw do
   get "/courses/:id/cancel",    to: 'courses#cancel'
   get "/courses/:id/uncancel",  to: 'courses#uncancel'
 
-  devise_for :users
+  devise_for :users,
+    :controllers => {
+      :registrations => 'custom_devise/registrations'
+    }
   resources :users
 
   resources :welcome do

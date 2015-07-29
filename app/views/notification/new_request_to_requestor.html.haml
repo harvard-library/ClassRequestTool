@@ -7,7 +7,7 @@
   - if @test
     %a{ href: '#' } here (linked to course)
   - else
-    %a{:href => "http://#{site_url}#{course_path(@course)}"} here
+    %a{:href => course_url(@course)} here
   and update it with any new details or comments by leaving a note for staff.
 - unless @course.repository.blank? || @course.repository.email_details.blank?
   %p

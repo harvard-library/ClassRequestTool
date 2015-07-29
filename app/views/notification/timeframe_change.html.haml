@@ -11,6 +11,6 @@
     - if @test
       %a{ href: '#' } class request (linked to course)
     - else
-      %a{:href => "http://#{site_url}#{course_path(@course)}"} class request
+      %a{:href => course_url(@course)} class request
 - unless @pre_class.blank?
   %p= @pre_class

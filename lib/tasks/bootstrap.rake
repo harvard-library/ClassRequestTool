@@ -93,14 +93,14 @@ namespace :crt do
           :body => "<p>A homeless class request has been waiting 2 days for processing in the Class Request Tool. A Library or Archive should offer it a home as soon as possible.</p>
           <p>
           Library/Archive: Not yet assigned<br />
-          <a href='http://#{site_url}#{edit_course_path(course.id)}'>#{course.title}</a><br />
+          <a href='http://#{edit_course_path(course.id)}'>#{course.title}</a><br />
           Subject: #{course.subject}<br />
           Course Number: #{course.course_number}<br />
           Affiliation: #{course.affiliation}<br />
           Number of Students: #{course.number_of_students}<br />
           Syllabus: #{course.external_syllabus}<br />
           </p>
-          <p>If this is appropriate for your library or archive, please <a href='http://#{site_url}#{edit_course_path(course.id)}'>edit the course</a> and assign it to your repository.</p>"
+          <p>If this is appropriate for your library or archive, please <a href='http://#{edit_course_path(course.id)}'>edit the course</a> and assign it to your repository.</p>"
         )
       end
       puts "Successfully delivered homeless notices!"

@@ -16,7 +16,7 @@ class ItemAttributesController < ApplicationController
   end
   
   def create
-    @attribute = ItemAttribute.new(params[:item_attribute])
+    @attribute = ItemAttribute.new(item_attribute_params)
     respond_to do |format|
       if @attribute.save
         format.html { redirect_to item_attributes_url, notice: 'Item Attribute was successfully created.' }
@@ -32,7 +32,7 @@ class ItemAttributesController < ApplicationController
     @attribute = ItemAttribute.find(params[:id])
 
     respond_to do |format|
-      if @attribute.update_attributes(params[:item_attribute])
+      if @attribute.update_attributes(item_attribute_params)
         format.html { redirect_to item_attributes_url, notice: 'Item Attribute was successfully updated.' }
         format.json { head :no_content }
       else
@@ -51,4 +51,9 @@ class ItemAttributesController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  private
+    def item_attribute_params
+      params.require(:item_attribute).permit(:name, :description, :room_ids, :repository_ids)
+    end
 end

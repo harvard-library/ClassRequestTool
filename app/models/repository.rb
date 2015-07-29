@@ -1,7 +1,4 @@
 class Repository < ActiveRecord::Base
-  attr_accessible :name, :description, :class_limit, :room_ids, :user_ids, :item_attribute_ids, :calendar, 
-      :landing_page, :class_policies, :picture, :attached_images_attributes, :email_details, :collections_attributes
-  
 
   has_and_belongs_to_many :users, :order => "last_name"
   has_and_belongs_to_many :rooms
@@ -19,7 +16,7 @@ class Repository < ActiveRecord::Base
 
   validates_presence_of :name
   
-  default_scope ->{ order("name ASC") }
+  default_scope { order("name ASC") }
   
   def all_staff_services
     self.staff_services.order("description ASC")

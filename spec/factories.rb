@@ -34,34 +34,84 @@
     goal 'Lofty goal'
     duration 2
     repository
-    association :primary_contact, factory: :user, admin: true, staff: true
-    users { create_list :user, 1, :staff }
-    additional_patrons { create_list :additional_patron, 1 }
+
+    trait :with_future_section do
+      after(:create) do |course|
+        course.sections << build(:section)
+      end
+    end
     
+    trait :with_past_section do
+      after(:create) do |course|
+        course.sections << build(:section, :past)
+      end
+    end
+    
+    trait :scheduled do
+      after(:create) do |course|
+        course.sections << build(:section)
+      end
+    end
+    
+    trait :unscheduled do
+      after(:create) do |course|
+        course.sections << build(:section, :unscheduled)
+      end
+    end
+              
     trait :homeless do
-      status 'Active'
       repository nil
-      primary_contact nil
-      users []
-    end
-
-    trait :cancelled do
-      status 'Cancelled'
-    end
-
-    trait :closed do
-      status 'Closed'
     end
     
-    trait :no_users do
-      primary_contact nil
-      users []
+    trait :with_primary_contact do
+      primary_contact { create(:user, :staff) }
+    end
+    
+    trait :with_staff do
+      users { create_list :user, 1, :staff }
+    end
+  end
+  
+  # Site customization
+  factory :customization do
+    tool_name 'Class Request Tool'
+    institution 'Harvard'
+    institution_long 'Harvard University'
+    default_email_sender 'library_crt@harvard.edu'
+    slogan 'We have cool stuff'
+    tool_tech_admin_name 'Tech Admin'
+    tool_tech_admin_email 'tech@example.com'
+    tool_content_admin_name 'Content Admin'
+    tool_content_admin_email 'content@example.com'
+  end
+  
+  # Custom text
+  factory :custom_text, :class => Admin::CustomText do
+    key   'the_key'
+    text 'This is custom text'
+  end
+  
+  # Default is scheduled
+  factory :section do
+    headcount 10
+    session_duration 1  # hours
+    requested_dates [ Time.now + 3.months ]
+    actual_date Time.now + 3.months
+    
+    trait :unscheduled do
+      actual_date nil
+    end
+    
+    trait :past do
+      actual_date Time.now - 1.week
     end
   end
       
   factory :note do
     note_text 'This is some text for the note/'
     staff_comment false
+    user
+    course
     
     trait :staff_only do
       staff_comment true
@@ -78,11 +128,11 @@
     end
     
     trait :attached_course do
-      course
+      association :course, :factory => [:course, :with_primary_contact]
     end
     
     trait :no_users_course do
-      association :course, :factory => [:course, :no_users]
+      association :course, :factory => [:course]
     end
     
     trait :homeless_course do
@@ -91,16 +141,12 @@
   end
   
   factory :repository do
-    name 'Test Repository Archive'
-    can_edit false
-    
-    after(:create) do |repository|
-      create_list( :user, 3, :staff )
-    end
+    name 'Test Repository Archive'    
   end
-  
+    
   factory :user, :aliases => [:primary_contact] do
     password 'password_cant_be_blank'    
+    password_confirmation 'password_cant_be_blank'
     sequence(:email) { |n| "email_#{n}@example.com" }
     sequence(:username) { |n| "username_#{n}" }
     first_name 'First'

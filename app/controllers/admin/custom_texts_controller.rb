@@ -1,5 +1,5 @@
 class Admin::CustomTextsController < ApplicationController
-  before_filter :require_superadmin
+  before_action :require_superadmin
   
   def index
     @custom_texts = Admin::CustomText.all
@@ -46,6 +46,6 @@ class Admin::CustomTextsController < ApplicationController
   
   private
     def require_superadmin
-      current_user.superadmin?
+      redirect_to :root, alert: "You're not authorized to see that." unless current_user.superadmin?
     end
 end

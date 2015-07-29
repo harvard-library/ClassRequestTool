@@ -84,14 +84,14 @@ class AssessmentsController < ApplicationController
 
   def create
     params[:assessment][:involvement] = params[:assessment][:involvement].reject{ |e| e.empty? }.join(", ")
-    @assessment = Assessment.new(params[:assessment])
+    @assessment = Assessment.new(assessment_params)
     @assessment.course = Course.find(params[:course_id])
     respond_to do |format|
       if @assessment.save
         if @assessment.course.primary_contact.blank? && @assessment.course.users.blank?
-          Notification.delay(:queue => 'assessments').assessment_received_to_admins(@assessment)
+          Notification.assessment_received_to_admins(@assessment).deliver_later(:queue => 'assessments')
         else
-          Notification.delay(:queue => 'assessments').assessment_received_to_users(@assessment)
+          Notification.assessment_received_to_users(@assessment).deliver_later(:queue => 'assessments')
         end
         format.html { redirect_to course_url(@assessment.course), notice: 'assessment was successfully created.' }
         format.json { render json: @assessment, status: :created, assessment: @assessment }
@@ -107,7 +107,7 @@ class AssessmentsController < ApplicationController
     params[:assessment][:involvement] = params[:assessment][:involvement].reject{ |e| e.empty? }.join(", ")
 
     respond_to do |format|
-      if @assessment.update_attributes(params[:assessment])
+      if @assessment.update_attributes(assessment_params)
         format.html { redirect_to assessments_url, notice: 'assessment was successfully updated.' }
         format.json { head :no_content }
       else
@@ -142,4 +142,9 @@ class AssessmentsController < ApplicationController
       end
     end
   end
+  
+  private
+    def assessment_params
+      params.require(:assessment).permit(:using_materials, :involvement, :staff_experience, :staff_availability, :space, :request_materials, :digital_collections, :involve_again, :not_involve_again, :better_future, :request_course, :catalogs, :comments)
+    end
 end

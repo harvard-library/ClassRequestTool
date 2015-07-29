@@ -1,10 +1,10 @@
 #welcome-left
-  %h3 Sign in
+  %h3 Sign In
   = semantic_form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f|
     = f.input :username, :autofocus => true
     = f.input :password
     = f.actions do
-      = f.action :submit, :label => "Sign in", :button_html => {:class => 'btn btn-primary'}
+      = f.action :submit, :label => "Sign In", :button_html => {:class => 'btn btn-primary'}
     %br/
     - if devise_mapping.rememberable?
       = f.input :remember_me, :as => :boolean
@@ -13,11 +13,11 @@
   %h3 Create a New Account
   = semantic_form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f|
     = devise_error_messages!
-    = f.input :username
+    = f.input :username, :input_html => { :id => 'new_user_username' }
     = f.input :email
     = f.input :first_name
     = f.input :last_name
-    = f.input :password
+    = f.input :password, :input_html => { :id => 'new_user_password' }
     = f.input :password_confirmation
     = f.actions do
       = f.action :submit, :label => 'Sign Up', :button_html => {:class => 'btn btn-primary'}

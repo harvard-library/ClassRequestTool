@@ -1,8 +1,10 @@
 class Notification < ActionMailer::Base
 
-  include  AbstractController::Callbacks    # Includes the after_filter
-
-  default from: $local_config.nil? ? ENV['DEFAULT_MAILER_SENDER'] : $local_config.default_email_sender
+  include AbstractController::Callbacks    # Includes the after_filter
+  add_template_helper(ApplicationHelper)
+  
+  
+  default from: $local_config.nil? ? DEFAULT_MAILER_SENDER : $local_config.default_email_sender
   
   def assessment_received_to_admins(assessment)
     @custom_text = Admin::CustomText.where( key: __method__.to_s).first.text
@@ -219,7 +221,7 @@ class Notification < ActionMailer::Base
     mail(to: recipients, subject: "[ClassRequestTool] Class uncancellation confirmation")
   end
   
-  def test_email(email, queued_or_unqueued)
+  def send_test_email(email, queued_or_unqueued)
     mail(:to => email, :subject => "[ClassRequestTool] Test email (#{queued_or_unqueued})")
   end    
 end

@@ -11,4 +11,4 @@
   - if @test
     %a{ href: '#' } here (linked to assessment)
   - else
-    %a{:href => "http://#{"#{site_url}#{assessment_path(@assessment)}"}"} here
+    %a{:href => assessment_url(@assessment)} here

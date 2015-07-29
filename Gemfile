@@ -1,12 +1,13 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.20'
+gem 'dotenv-rails'
+gem 'rails', '>= 4.1'
+gem 'sprockets-rails', :require => 'sprockets/railtie'
 gem 'stackprof'                  # For ruby 2.1
-gem 'dotenv-rails', '~> 0.10.0'
 gem 'therubyracer'
-gem 'devise', '3.1.1'
+gem 'devise'
 gem 'formtastic'
-gem 'will_paginate', '>= 3.0.5'
+gem 'will_paginate'
 gem 'pg'
 gem 'postgres_ext'
 gem 'carrierwave'
@@ -15,7 +16,8 @@ gem 'mini_magick'
 gem 'delayed_job_active_record'
 gem 'daemons'
 gem 'ckeditor'
-gem 'devise_harvard_auth_proxy', :git => 'https://github.com/berkmancenter/devise_harvard_auth_proxy.git', :ref => '2a58ea07a8'
+gem 'devise_harvard_auth_proxy', :path => '/Users/tim/Development/git-repos/devise_harvard_auth_proxy', :ref => '2a58ea07a8'
+# gem 'devise_harvard_auth_proxy', :git => 'https://github.com/berkmancenter/devise_harvard_auth_proxy.git', :ref => '2a58ea07a8'
 gem 'css_splitter'
 gem 'haml-rails'
 gem 'formtastic-bootstrap'
@@ -23,21 +25,19 @@ gem 'cocoon'
 
 # Gems used only for assets and not required
 # in production environments by default.
-group :assets do
-  gem 'sass-rails',   '~> 3.2.6'
-  gem 'coffee-rails', '~> 3.2.1'
-  gem 'uglifier', '>= 1.0.3'
-  gem 'turbo-sprockets-rails3'
-  gem 'jquery-rails', '~> 3.1.0'
-  gem 'jquery-ui-rails', '~> 4.2.0'
-  gem 'jquery-tablesorter'
-  gem 'sugar-rails'
-  gem 'jquery-qtip2-rails'
-  gem 'highcharts-rails'
-  gem 'bootstrap-sass'
-end
+gem 'sass-rails'
+gem 'coffee-rails'
+gem 'uglifier'
+gem 'jquery-rails'
+gem 'jquery-ui-rails'
+gem 'jquery-tablesorter'
+gem 'sugar-rails'
+gem 'jquery-qtip2-rails'
+gem 'highcharts-rails'
+gem 'bootstrap-sass'
 
 group :test, :development do
+  gem 'rspec-rails'
   gem 'stepford'
   gem 'pry-rails'
   gem 'pry-remote'
@@ -50,7 +50,6 @@ group :test do
   gem 'cucumber-rails', :require => false
   gem 'database_cleaner'
   gem 'schema_to_scaffold'
-  gem 'shoulda'
 end
 
 group :development do

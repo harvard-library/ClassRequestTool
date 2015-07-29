@@ -16,7 +16,7 @@
 - else
   %p
     Title:
-    %a{:href => "http://#{site_url}#{course_path(course)}"}
+    %a{:href => course_url(course)}
       %em= course.title
     %br/
     Library/Archive: #{course.repo_name}

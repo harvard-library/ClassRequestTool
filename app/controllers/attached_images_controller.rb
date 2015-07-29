@@ -6,7 +6,7 @@ class AttachedImagesController < ApplicationController
   end
   
   def create
-    @attached_image = AttachedImage.new(params[:attached_image])
+    @attached_image = AttachedImage.new(attached_image_params)
     
     # if the image doesn't exist, fail silently
     if @attached_image.image.blank?
@@ -33,4 +33,9 @@ class AttachedImagesController < ApplicationController
     @attached_image.destroy
     render :json => true
   end
+  
+  private
+    def attached_image_params
+      params.require(:attached_image).permit(:picture_id, :picture_type, :image, :image_cache, :remove_image, :caption)
+    end
 end
