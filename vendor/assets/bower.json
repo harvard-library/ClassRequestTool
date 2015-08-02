@@ -1,0 +1,15 @@
+{
+  "name": "dsl-generated dependencies",
+  "dependencies": {
+    "bootstrap": "latest",
+    "bootstrap-sass": "latest",
+    "highcharts": "latest",
+    "icheck": "latest",
+    "jquery": "latest",
+    "jquery-tablesorter": "git://github.com/Mottie/tablesorter",
+    "jquery-ujs": "latest",
+    "jquery-ui": "latest",
+    "jqueryui-timepicker-addon": "latest",
+    "qtip2": "latest"
+  }
+}

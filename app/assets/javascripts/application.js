@@ -10,20 +10,21 @@
 // WARNING: THE FIRST BLANK LINE MARKS THE END OF WHAT'S TO BE PROCESSED, ANY BLANK LINE SHOULD
 // GO AFTER THE REQUIRES BELOW.
 //
+//= require bootstrap/dist/js/bootstrap
 //= require jquery
-//= require jquery_ujs
-//= require jquery-ui
-//= require bootstrap-sprockets
-//= require sugar
+//= require jquery-ujs
+//= require jquery-ui/jquery-ui
+//= require bootstrap-sass/assets/javascripts/bootstrap-sprockets
+// require sugar
 // require jquery-tablesorter
 // require jquery-tablesorter/parsers/parser-date-two-digit-year
 // require jquery-tablesorter/addons/pager/jquery.tablesorter.pager
 // require jquery-tablesorter/jquery.tablesorter.widgets-filter-formatter
-//= require jquery-ui-timepicker-addon
-//= require icheck
+//= require jqueryui-timepicker-addon/dist/jquery-ui-timepicker-addon
+//= require icheck/icheck.js
 //= require highcharts
 //= require highcharts/highcharts-more
 //= require ckeditor/init
 //= require cocoon
-//= require jquery.qtip.js
+//= require qtip2/jquery.qtip.js
 //= require_tree .

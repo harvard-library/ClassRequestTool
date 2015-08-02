@@ -54,20 +54,25 @@
  }
  
 @import "iefix";
-@import "bootstrap-sprockets";
+/* @import "bootstrap-sprockets"; */
+
+/* bootstrap-sass using bower */
+$icon-font-path: "bootstrap-sass/assets/fonts/bootstrap/";
+@import "bootstrap-sass/assets/stylesheets/bootstrap-sprockets";
+@import "bootstrap-sass/assets/stylesheets/bootstrap";
 
 /* Local Bootstrap overrides */
 @import "bootstrap_local";
 
 /* Vendor styles */
-@import "bootstrap";
-@import "icheck";
-@import "jquery-ui";
-@import "jquery-tablesorter/theme.bootstrap";
+@import "bootstrap/dist/css/bootstrap";
+@import "bootstrap/dist/css/bootstrap-theme";
+@import "icheck/icheck/skins/flat/red.css";
+@import "jquery-tablesorter/css/theme.bootstrap";
+@import "jquery-tablesorter/css/filter.formatter.css";
 @import "jquery-tablesorter/addons/pager/jquery.tablesorter.pager";
-@import "jquery-tablesorter/filter.formatter.css";
-@import "jquery-ui-timepicker-addon";
-@import "jquery.qtip.css";
+@import "jqueryui-timepicker-addon/dist/jquery-ui-timepicker-addon";
+@import "qtip2/jquery.qtip.css";
 
 /* Other local and overrides */
 @import "overrides";
