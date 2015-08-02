@@ -1,9 +1,9 @@
 %tr{ class: "custom-text-#{custom_text.id}" }
   %td.field
-    = text_field_tag :key, custom_text.key, :name => 'custom_text[key]', class: 'form-control'
-  %td.field           
-    = text_area_tag :key, custom_text.text, :name => 'custom_text[key]', class: 'ckeditor', size: "60x10"
-  %td 
+    = text_field_tag :key, custom_text.key, :name => 'custom_text[key]', class: 'form-control', :size => 40
+    %br
     .btn-group
       %button.update.btn.btn-info.btn-sm Update
       %button.delete.btn.btn-primary.btn-sm Delete
+  %td.field           
+    = text_area_tag :key, custom_text.text, :name => 'custom_text[key]', class: 'ckeditor', size: "60x10"

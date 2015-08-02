@@ -14,7 +14,8 @@
         = render partial: 'table_row', locals: { custom_text: custom_text }
 
     %tr#new_custom_text
-      %td.field= text_field_tag :key, nil, :name => "custom_text[key]", class: 'form-control'
-      %td.field= text_area_tag :text, nil, :name => "custom_text[text]", class: 'form-control'
-      %td
+      %td.field
+        = text_field_tag :key, nil, :name => "custom_text[key]", class: 'form-control', :placeholder => 'Key string'
+        %br
         %button.btn.btn-primary Add custom text
+      %td.field= text_area_tag :text, nil, :name => "custom_text[text]", class: 'form-control', class: 'ckeditor', size: "60x10"
