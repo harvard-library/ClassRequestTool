@@ -85,7 +85,7 @@ class CoursesController < ApplicationController
     course = Course.find(params[:id])
     course.status = 'Cancelled'
     if course.save(validate: false)         # Don't bother with validation since the class is being cancelled
-#      Notification.cancellation(course).deliver_later
+#      Notification.cancellation(course).deliver_later(:queue => 'notifications')
       flash[:notice] = "The class <em>#{course.title}</em> was successfully cancelled.".html_safe
     else
       flash[:alert] = "There was an error cancelling the class."
@@ -110,8 +110,8 @@ class CoursesController < ApplicationController
     respond_to do |format|
       if @course.save
         unless @backdated
-          Notification.new_request_to_requestor(@course).deliver_later(:queue => 'new_requests')
-          Notification.new_request_to_admin(@course).deliver_later(:queue => 'new_requests')
+          Notification.new_request_to_requestor(@course).deliver_later(:queue => 'notifications')
+          Notification.new_request_to_admin(@course).deliver_later(:queue => 'notifications')
         end
         
         format.html { redirect_to @course, notice: 'The class request was successfully submitted.' }
@@ -300,6 +300,17 @@ class CoursesController < ApplicationController
     end
     @note = Note.new
     @notes = Note.where(:course_id => @course.id).order("created_at DESC").includes(:user)
+    @note_type = {
+      :system => false,
+      :staff =>  false,
+      :patron => false
+    }
+    @notes.each do |note|
+      @note_type[:system] = true if note.auto?
+      @note_type[:staff]  = true if note.staff_comment?
+      @note_type[:patron] = true if !(note.auto? || note.staff_comment?)
+      break if @note_type.inject(true) { |anded, n_type| anded && n_type[1] }
+    end  
     
     first_section = @course.sections.where("actual_date IS NOT NULL").order("actual_date ASC").first
     if first_section.nil? || first_section.room.nil?
@@ -328,7 +339,7 @@ class CoursesController < ApplicationController
     course.status = 'Active'
     
     if course.save(validate: false)         # Don't bother with validation since the class is being recovered
-#      Notification.uncancellation(course).deliver_later
+#      Notification.uncancellation(course).deliver_later(:queue => 'notifications')
       flash[:notice] = "The class <em>#{course.title}</em> was successfully uncancelled.".html_safe
     else
       flash[:alert] = "There was an error uncancelling the class."
@@ -356,27 +367,27 @@ class CoursesController < ApplicationController
     # Set notification statuses
     send_repo_change_notification = repo_change?
     send_staff_change_notification = staff_change? && !(current_user.id == params[:course][:primary_contact_id].to_i)
-
+    
     @course.attributes = course_params
     
     if @course.save
       if params[:course][:status] == "Closed" # check params because editing closed courses should not create notes
-        @course.notes.create(:note_text => "Class has marked as closed.", :user_id => current_user.id, :staff_comment => true, :auto => true)
-        Notification.assessment_requested(@course).deliver_later(:queue => 'assessments')
-        @course.notes.create(:note_text => "Assessment email sent.", :user_id => current_user.id, :staff_comment => true, :auto => true)
+        @course.notes.create(:note_text => "Class has marked as closed.", :user_id => current_user.id, :auto => true)
+        Notification.assessment_requested(@course).deliver_later(:queue => 'notifications')
+        @course.notes.create(:note_text => "Assessment email sent.", :user_id => current_user.id, :auto => true)
       end
 
       if send_repo_change_notification
         # FIX INFO_NEEDED Should "changed from" repos get email? Inquiring Bobbis want to know
         Notification.repo_change(@course).deliver_later(:queue => 'changes') unless @course.repository.blank?
         @course.notes.create(:note_text => "Library/Archive changed to #{@course.repository.blank? ? "none" : @course.repository.name + ". Email sent."}.",
-                             :user_id => current_user.id, :staff_comment => true, :auto => true)
+                             :user_id => current_user.id, :auto => true)
       end
 
       if send_staff_change_notification
         # FIX INFO_NEEDED Should "dropped" staff members get this email?
-        Notification.staff_change(@course, current_user).deliver_later(:queue => 'changes')
-        @course.notes.create(:note_text => "Staff change email sent.", :user_id => current_user.id, :staff_comment => true, :auto => true)
+        Notification.staff_change(@course, current_user).deliver_later(:queue => 'notifications')
+        @course.notes.create(:note_text => "Staff change email sent.", :user_id => current_user.id, :auto => true)
       end
 
       respond_to do |format|
@@ -430,7 +441,7 @@ class CoursesController < ApplicationController
     @claimed_scheduled      = []
     
     #Loop over courses and slot them into their categories
-    @courses = Course.order_by_submitted.eager_load(:repository, :sections, :users)
+    @courses = Course.order_by_submitted.eager_load(:repository, :sections, :users, :primary_contact)
         
     @courses.each do |course|
       if course.homeless?
@@ -476,9 +487,14 @@ class CoursesController < ApplicationController
     def process_params
       params[:course][:status] = set_status(params[:course])
       
-      # strip out empty sections
+      # strip out empty sections and convert section hash to section array
       if params.has_key?(:course) && params[:course].has_key?(:sections_attributes)
         params[:course][:sections_attributes].delete_if{|k,v| v[:requested_dates] && v[:requested_dates].reject(&:nil?).blank? && v[:actual_date].blank? && v[:_destroy].blank?}
+        sections = []
+        params[:course][:sections_attributes].each do |i, section|
+          sections << section
+        end
+        params[:course][:sections_attributes] = sections
       end
       
       # Remove empty additional patrons
@@ -522,7 +538,7 @@ class CoursesController < ApplicationController
         { :sections_attributes => [
           :id,
           :_destroy,
-          :requested_dates [],    # Postgres array of DateTimes
+          {:requested_dates => []}, # Postgres array of DateTimes
           :actual_date,           # Single DateTime
           :session,               # Integer representing session membership
           :session_duration,      # Section/session duration

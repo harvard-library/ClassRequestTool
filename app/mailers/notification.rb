@@ -12,7 +12,7 @@ class Notification < ActionMailer::Base
     
     # Sends to all tool admins
     recipients = User.where('superadmin = ? OR admin = ?', true, true).map{|a| a.email}
-    mail(to: recipients, subject: "[ClassRequestTool] Class Assessment Received")
+    send_email(to: recipients, subject: "[ClassRequestTool] Class Assessment Received")
   end
 
   def assessment_received_to_users(assessment)
@@ -21,12 +21,12 @@ class Notification < ActionMailer::Base
     
     # Sends to assigned staff
     recipients = @assessment.course.users.map{|u| u.email }
-
+    
     # Sends to primary staff contact(s)
     unless @assessment.course.primary_contact.blank?
       recipients << @assessment.course.primary_contact.email
     end    
-    mail(to: recipients, subject: "[ClassRequestTool] Class Assessment Received")
+    send_email(to: recipients, subject: "[ClassRequestTool] Class Assessment Received")
   end
 
   def assessment_requested(course)
@@ -40,7 +40,7 @@ class Notification < ActionMailer::Base
       recipients += course.additional_patrons.map { |p| p.email }
     end
    
-    mail(to: recipients, subject: "[ClassRequestTool] Please Assess your Recent Class at #{course.repo_name}")
+    send_email(to: recipients, subject: "[ClassRequestTool] Please Assess your Recent Class at #{course.repo_name}")
   end
   
   def cancellation(course)
@@ -62,7 +62,7 @@ class Notification < ActionMailer::Base
     end
     
     # Send email
-    mail(to: recipients, subject: "[ClassRequestTool] Class cancellation confirmation")
+    send_email(to: recipients, subject: "[ClassRequestTool] Class cancellation confirmation")
   end
   
   def homeless_courses_reminder
@@ -70,7 +70,7 @@ class Notification < ActionMailer::Base
     @courses = Course.where("repository_id IS NULL AND created_at <= ?", Time.now - 2.days)
     admins = User.where('admin = ? OR superadmin = ?', true, true).pluck(:email)
     
-    mail(to: admins, subject: "[ClassRequestTool] Homeless classes are languishing!")
+    send_email(to: admins, subject: "[ClassRequestTool] Homeless classes are languishing!")
   end
   
   def new_note(note, current_user)
@@ -108,7 +108,7 @@ class Notification < ActionMailer::Base
     # Remove the current user's email
     recipients -= [current_user.email]
        
-    mail(to: recipients, subject: "[ClassRequestTool] A Comment has been Added to a Class")
+    send_email(to: recipients, subject: "[ClassRequestTool] A Comment has been Added to a Class")
   end
 
   def new_request_to_requestor(course)
@@ -120,7 +120,7 @@ class Notification < ActionMailer::Base
     unless course.additional_patrons.blank?
       recipients += course.additional_patrons.map { |p| p.email }
     end
-    mail(to: recipients, subject: "[ClassRequestTool] Class Request Successfully Submitted for #{course.title}")
+    send_email(to: recipients, subject: "[ClassRequestTool] Class Request Successfully Submitted for #{course.title}")
   end
   
   def new_request_to_admin(course)
@@ -138,7 +138,7 @@ class Notification < ActionMailer::Base
       recipients += superadmins
     end
     
-    mail(to: recipients, subject: "[ClassRequestTool] A New #{course.repository.blank? ? 'Homeless ' : ''}Class Request has been Received")
+    send_email(to: recipients, subject: "[ClassRequestTool] A New #{course.repository.blank? ? 'Homeless ' : ''}Class Request has been Received")
   end
 
   def repo_change(course)
@@ -150,7 +150,7 @@ class Notification < ActionMailer::Base
     recipients = course.repository.users.map{|u| u.email}
     superadmins = User.where(:superadmin => true).map{|u| u.email}
     recipients += superadmins  
-    mail(to: recipients, subject: "[ClassRequestTool] A Class has been Transferred to #{@repo}")
+    send_email(to: recipients, subject: "[ClassRequestTool] A Class has been Transferred to #{@repo}")
   end
   
   def staff_change(course, current_user)
@@ -164,7 +164,7 @@ class Notification < ActionMailer::Base
     end
     recipients -= [current_user.email]
  
-    mail(to: recipients, subject: "[ClassRequestTool] You have been assigned a class")
+    send_email(to: recipients, subject: "[ClassRequestTool] You have been assigned a class")
   end
 
   def timeframe_change(course)
@@ -196,7 +196,7 @@ class Notification < ActionMailer::Base
     unless course.additional_patrons.blank?
       recipients += course.additional_patrons.map { |p| p.email }
     end
-    mail(to: recipients, subject: "[ClassRequestTool] You have been assigned a class")
+    send_email(to: recipients, subject: "[ClassRequestTool] You have been assigned a class")
   end
 
   def uncancellation(course)
@@ -218,10 +218,24 @@ class Notification < ActionMailer::Base
     end
     
     # Send email
-    mail(to: recipients, subject: "[ClassRequestTool] Class uncancellation confirmation")
+    send_email(to: recipients, subject: "[ClassRequestTool] Class uncancellation confirmation")
   end
   
   def send_test_email(email, queued_or_unqueued)
-    mail(:to => email, :subject => "[ClassRequestTool] Test email (#{queued_or_unqueued})")
-  end    
+    send_email(:to => email, :subject => "[ClassRequestTool] Test email (#{queued_or_unqueued})")
+  end
+  
+  private
+    def send_email(options)
+      unless $local_config.notifications_on
+        if options[:to].is_array?
+          recipients = options[:to].join(', ')
+        else
+          recipients = options[:to]
+        end
+        options[:subject]= "CRT TEST | #{options[:subject]} | Recipients: #{recipients}"
+        options[:to] = $test_email
+      end
+      mail(options)
+    end   
 end
