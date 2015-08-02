@@ -28,7 +28,7 @@ class NotesController < ApplicationController
     unless params[:note][:note_text].blank?
       respond_to do |format|
         if @note.save
-          Notification.new_note(@note, current_user).deliver_later(:queue => 'notes')
+          Notification.new_note(@note, current_user).deliver_later(:queue => 'notifications')
           format.html { redirect_to course_url(@note.course), notice: 'Note was successfully created.' }
           format.json { render json: @note, status: :created, note: @note }
         else

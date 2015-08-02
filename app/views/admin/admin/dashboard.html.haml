@@ -5,7 +5,7 @@
   .panel-body
     %p
       %button{:class => "toggle-notification-status btn btn-#{$local_config.notifications_on? ? 'danger' : 'warning'}"}
-        Turn notifications #{$local_config.notifications_on? ? 'OFF' : 'ON'}
+        Notifications: #{$local_config.notifications_on? ? 'IN TEST' : 'ON'}
     %p
       Send a test email to #{current_user.email}. You can send queued using delayed_job or unqueued.
     %p

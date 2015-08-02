@@ -237,9 +237,9 @@
     - @course.assessments.each do |assessment|
       = link_to "View Assessment", assessment_path(assessment)
       %br/
-    %h4 Notes
-    = render :partial => 'notes/index', :locals => {:notes => @notes }
+    %h4 Notes - boo
     = render :partial => 'notes/form', :locals => {:note => @note, :course => @course }
+    = render :partial => 'notes/index'
 
 #aeon-data
   - @aeon_data.each do |id, value|

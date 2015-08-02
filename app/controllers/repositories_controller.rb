@@ -95,7 +95,7 @@ class RepositoriesController < ApplicationController
     def repository_params
       params.require(:repository).permit(
         :name, :description, :can_edit, :class_limit, :room_ids,  :user_ids,:item_attribute_ids,
-        :calendar, :landing_page, :class_policies, { :attached_images_attributes => [:id, :_destroy, :picture_id, :picture_type, :image, :image_cache, :remove_image, :caption] }, :email_details
+        :calendar, :landing_page, :class_policies, { :attached_images_attributes => [:id, :_destroy, :picture_id, :picture_type, :image, :image_cache, :remove_image, :caption, :featured] }, :email_details
       )
     end
 end

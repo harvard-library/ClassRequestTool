@@ -26,7 +26,7 @@ module ClassRequestTool
     # -- all .rb files in that directory are automatically loaded.
 
     # Custom directories with classes and modules you want to be autoloadable.
-    config.autoload_paths += %W(#{config.root}/lib)
+    # config.autoload_paths += %W(#{config.root}/lib)
 
     # Only load the plugins named here, in the order given (default is alphabetical).
     # :all can be used as a placeholder for all plugins not explicitly named.
@@ -63,8 +63,16 @@ module ClassRequestTool
     # parameters by using an attr_accessible or attr_protected declaration.
     #** config.active_record.whitelist_attributes = true
 
-    # Enable the asset pipeline
+    # Enable the asset pipeline and bower
     config.assets.enabled = true
+    root.join('vendor', 'assets', 'bower_components').to_s.tap do |bower_path|
+      config.sass.load_paths << bower_path
+      config.assets.paths << bower_path
+    end
+    # Precompile Bootstrap fonts
+    config.assets.precompile << %r(bootstrap-sass/assets/fonts/bootstrap/[\w-]+\.(?:eot|svg|ttf|woff2?)$)
+    # Minimum Sass number precision required by bootstrap-sass
+    ::Sass::Script::Value::Number.precision = [8, ::Sass::Script::Value::Number.precision].max
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'

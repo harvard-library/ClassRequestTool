@@ -89,9 +89,9 @@ class AssessmentsController < ApplicationController
     respond_to do |format|
       if @assessment.save
         if @assessment.course.primary_contact.blank? && @assessment.course.users.blank?
-          Notification.assessment_received_to_admins(@assessment).deliver_later(:queue => 'assessments')
+          Notification.assessment_received_to_admins(@assessment).deliver_later(:queue => 'notifications')
         else
-          Notification.assessment_received_to_users(@assessment).deliver_later(:queue => 'assessments')
+          Notification.assessment_received_to_users(@assessment).deliver_later(:queue => 'notifications')
         end
         format.html { redirect_to course_url(@assessment.course), notice: 'assessment was successfully created.' }
         format.json { render json: @assessment, status: :created, assessment: @assessment }
@@ -145,6 +145,20 @@ class AssessmentsController < ApplicationController
   
   private
     def assessment_params
-      params.require(:assessment).permit(:using_materials, :involvement, :staff_experience, :staff_availability, :space, :request_materials, :digital_collections, :involve_again, :not_involve_again, :better_future, :request_course, :catalogs, :comments)
+      params.require(:assessment).permit(
+        :using_materials, 
+        :involvement, 
+        :staff_experience, 
+        :staff_availability, 
+        :space, 
+        :request_materials, 
+        :digital_collections, 
+        :involve_again, 
+        :not_involve_again, 
+        :better_future, 
+        :request_course, 
+        :catalogs, 
+        :comments
+      )
     end
 end

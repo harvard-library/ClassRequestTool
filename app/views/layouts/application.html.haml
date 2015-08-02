@@ -31,16 +31,16 @@
   %body{:class => "c_#{controller.controller_name} a_#{controller.action_name} u_#{current_user ? current_user.user_type : "anon"}"}
     #wrap
       - if current_user && ( current_user.admin? || current_user.superadmin? )
-        %div{:class => "notifications-status #{$local_config.notifications_on? ? 'ON' : 'OFF'}"}
+        %div{:class => "notifications-status #{$local_config.notifications_on? ? 'ON' : 'OFF' }"}
           Notifications are
-          %b= $local_config.notifications_on? ? 'ON' : 'OFF'
+          %b= $local_config.notifications_on? ? 'ON' : "IN TEST - delivering to #{$test_email}"
       %nav.navbar.navbar-inverse.navbar-static-top{:role => "navigation"}
         = render :partial => 'shared/user'
         .container
           .nav.navbar-header.row
             %p.slogan= $local_config[:slogan]
             %h1.tool-title= $local_config[:tool_name]
-            = $local_config.attached_image.nil? ? ('<p>(Banner image missing)</p>'.html_safe) : image_tag($local_config.attached_image.image_url, :class => " banner img-responsive col-xs-12")
+            = image_tag(($local_config.attached_image.nil? ? image_url('default_banner.jpg') : $local_config.attached_image.image_url), :class => " banner img-responsive col-xs-12")
             %button.navbar-toggle.col-xs-12{"data-target" => "#main-nav", "data-toggle" => "collapse", :type => "button"}
               %span.sr-only Toggle navigation
               %span.icon-bar{:style => "margin-left: auto;margin-right:auto;"}

@@ -41,7 +41,7 @@ ClassRequestTool::Application.routes.draw do
 
   devise_for :users,
     :controllers => {
-      :registrations => 'custom_devise/registrations'
+      :registrations => 'users/registrations'
     }
   resources :users
 

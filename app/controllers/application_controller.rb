@@ -54,5 +54,6 @@ class ApplicationController < ActionController::Base
   def set_local
     $local_config  = Customization.last
     $affiliates    = Affiliate.all
+    $test_email    = current_user.email unless current_user.nil?
   end
 end

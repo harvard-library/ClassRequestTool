@@ -235,7 +235,6 @@ Devise.setup do |config|
   # end
   config.warden do |manager|
     manager.default_strategies(:scope => :user).unshift :database_authenticatable
-    manager.failure_app = CustomFailure
   end
 
   # Only if devise_harvard_auth_proxy is installed

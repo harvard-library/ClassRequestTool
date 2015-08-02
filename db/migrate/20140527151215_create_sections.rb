@@ -20,14 +20,12 @@
 class CreateSections < ActiveRecord::Migration
   class Course < ActiveRecord::Base
     # guard class to prevent validations, etc.
-    attr_protected nil
     has_many :sections
   end
 
   class Section < ActiveRecord::Base
     # guard class to prevent validations, etc.
     # Used for inserts to provide datetime parsing
-    attr_protected nil
     belongs_to :course
   end
 

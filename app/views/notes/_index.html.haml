@@ -1,11 +1,25 @@
-- unless notes.nil? || notes.empty?
+- unless @notes.nil? || @notes.empty?
   - if current_user.can_admin?
-    %button.btn.btn-info.btn-xs.note-toggle#autogen System-generated Notes (Show/Hide)
+    - if @note_type[:patron]
+      %button.btn.btn-info.btn-xs.note-toggle#patron Patron Notes (Show/Hide)
+      %br
+    - else
+      %p 
+        %em No patron notes
     %br
-    %button.btn.btn-info.btn-xs.note-toggle#patron Patron Notes (Show/Hide)
+    - if @note_type[:staff]
+      %button.btn.btn-info.btn-xs.note-toggle#staff Staff Notes (Show/Hide)
+      %br
+    - else
+      %p 
+        %em No staff notes
     %br
-    %button.btn.btn-info.btn-xs.note-toggle#staff Staff Notes (Show/Hide)
-    %br
+    - if @note_type[:system]
+      %button.btn.btn-info.btn-xs.note-toggle#autogen System-generated Notes (Show/Hide)
+      %br
+    - else
+      %p 
+        %em No system notes
     %br
   - notes.each do |note|
     %div{ :id => "note-#{note.id}", :class => "well well-sm #{(note.auto? ? 'autogen' : nil)} #{(note.staff_comment? ? 'staff' : 'patron')}" }

@@ -51,11 +51,9 @@ class Admin::Notifications::NotificationController < Admin::AdminController
     if $local_config.notifications_on?
       $local_config.notifications_on = false
       status = 'OFF'
-      Rails.configuration.action_mailer.perform_deliveries = false
     else  
       $local_config.notifications_on = true
       status = 'ON'      
-      Rails.configuration.action_mailer.perform_deliveries = true
       # If any jobs are in the queue, send them
       Delayed::Job.all.each do |job|
         if job.run_at < Time.now
