@@ -3,6 +3,6 @@
   = f.hidden_field :course_id, :value => course.id
   = f.hidden_field :user_id, :value => current_user.id
   - if current_user.staff? || current_user.can_admin?
-    = f.input :staff_comment, :label => "Email to requester? "
+    = f.input :staff_comment, :label => "Staff only? (no email sent to patron) "
   = f.actions do
     = f.action :submit, :as => :button, :button_html => {:class => 'btn btn-primary', :disabled => true}, :label => 'Post'
