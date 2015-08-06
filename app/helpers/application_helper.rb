@@ -34,6 +34,8 @@ module ApplicationHelper
   end
   
   def test_mail_recipient
+    return nil unless defined?(MAIL_RECIPIENT_OVERRIDE)
+    
     if MAIL_RECIPIENT_OVERRIDE.kind_of? Array
       retval = MAIL_RECIPIENT_OVERRIDE.join(', ')
     else
