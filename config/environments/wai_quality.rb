@@ -33,7 +33,10 @@ ClassRequestTool::Application.configure do
     precompile_array << (asset[1].split('/').pop) + '.js' unless asset.nil? 
   end
   config.assets.precompile += precompile_array
-#  config.assets.precompile += %w( jquery.qtip.css application_split2_ie.css iefix.css jquery-ui-timepicker-addon.css jquery-ui-timepicker-addon.js icheck.js icheck.scss jquery.tablesorter.pager.css filter.formatter.css)
+  #  config.assets.precompile += %w( jquery.qtip.css application_split2_ie.css iefix.css jquery-ui-timepicker-addon.css jquery-ui-timepicker-addon.js icheck.js icheck.scss jquery.tablesorter.pager.css filter.formatter.css)
+
+  # Precompile Bootstrap fonts
+  config.assets.precompile << %r(bootstrap-sass/assets/fonts/bootstrap/[\w-]+\.(?:eot|svg|ttf|woff2?)$)
 
   # Generate digests for assets URLs
   config.assets.digest = true
