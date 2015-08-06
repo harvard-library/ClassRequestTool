@@ -1,5 +1,7 @@
-PATH
-  remote: /Users/tim/Development/git-repos/devise_harvard_auth_proxy
+GIT
+  remote: https://github.com/timmykat/devise_harvard_auth_proxy.git
+  revision: eb2fdb2b1061b8697d84e589fec420d85d0c1210
+  ref: eb2fdb2b106
   specs:
     devise_harvard_auth_proxy (0.2.0)
       devise (>= 3.0.1)
