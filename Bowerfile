@@ -1,5 +1,4 @@
-asset "bootstrap"
-asset "bootstrap-sass"
+asset "bootstrap-sass-official"
 asset "highcharts"
 asset "icheck"
 asset "jquery"
