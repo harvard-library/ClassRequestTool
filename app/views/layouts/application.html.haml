@@ -33,7 +33,7 @@
       - if current_user && ( current_user.admin? || current_user.superadmin? )
         %div{:class => "notifications-status #{$local_config.notifications_on? ? 'ON' : 'OFF' }"}
           Notifications are
-          %b= $local_config.notifications_on? ? 'ON' : "IN TEST - delivering to #{$test_email}"
+          %b= Rails.env == :production ? 'ON' : "IN TEST - delivering to #{test_mail_recipient}"
       %nav.navbar.navbar-inverse.navbar-static-top{:role => "navigation"}
         = render :partial => 'shared/user'
         .container

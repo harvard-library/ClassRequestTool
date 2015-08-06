@@ -67,9 +67,9 @@ class Admin::AdminController < ApplicationController
   def send_test_email
     @delayed_jobs = Delayed::Job.all
     if 'true' == params[:queued]
-      Notification.test_email(current_user.email, 'queued').deliver_later(:queue => 'test')
+      ::Notification.send_test_email(current_user.email, 'queued').deliver_later(:queue => 'test')
     else
-      Notification.test_email(current_user.email, 'unqueued').deliver_now
+      ::Notification.send_test_email(current_user.email, 'unqueued').deliver_now
     end
     
     flash[:notice] = "You should receive an email shortly"

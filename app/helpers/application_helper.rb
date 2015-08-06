@@ -32,4 +32,13 @@ module ApplicationHelper
       "#{config[:host]}:#{config[:port]}"
     end
   end
+  
+  def test_mail_recipient
+    if MAIL_RECIPIENT_OVERRIDE.kind_of? Array
+      retval = MAIL_RECIPIENT_OVERRIDE.join(', ')
+    else
+      retval = MAIL_RECIPIENT_OVERRIDE
+    end
+    retval
+  end
 end

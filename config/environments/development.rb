@@ -21,13 +21,16 @@ ClassRequestTool::Application.configure do
   config.action_controller.perform_caching = false
 
   # Set up action mailer
-  mailer_config = YAML::load(File.open("#{Rails.root}/config/mailer.yml"))
+  mailer_data = ERB.new File.new("#{Rails.root}/config/mailer.yml.erb").read
+  mailer_config = YAML::load(mailer_data.result(binding))
   config.action_mailer.raise_delivery_errors = true
   mailconf = mailer_config[:mailer][:development]
   config.action_mailer.delivery_method = mailconf[:delivery_method]
   config.action_mailer.smtp_settings = mailconf[:settings].clone
   config.action_mailer.default_url_options = { :protocol => 'http://', :host => mailconf[:settings][:domain], :port => ':3000' }
 
+  MAIL_RECIPIENT_OVERRIDE = 'tim@wordsareimages.com'
+  
   # Print deprecation notices to the Rails logger
   config.active_support.deprecation = :log
   
@@ -51,8 +54,6 @@ ClassRequestTool::Application.configure do
   # Expands the lines which load the assets
   config.assets.debug = true
   
-  config.action_mailer.default_url_options = { :host => 'localhost', :port => 3000 }
-
   BetterErrors::Middleware.allow_ip! '127.0.0.1' 
 
   config.after_initialize do

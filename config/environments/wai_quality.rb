@@ -1,4 +1,7 @@
 ClassRequestTool::Application.configure do
+  #++ Added for Rails 4 
+  config.eager_load = true
+
   # Settings specified here will take precedence over those in config/application.rb
 
   # Code is not reloaded between requests
@@ -16,13 +19,11 @@ ClassRequestTool::Application.configure do
 
   # Don't fallback to assets pipeline if a precompiled asset is missed
   config.assets.compile = true
-  config.assets.precompile += %w( jquery-ui-timepicker-addon.css jquery-ui-timepicker-addon.js )
+  config.assets.precompile += %w( jquery.qtip.css application_split2_ie.css iefix.css jquery-ui-timepicker-addon.css jquery-ui-timepicker-addon.js icheck.js icheck.scss jquery.tablesorter.pager.css filter.formatter.css)
 
   # Generate digests for assets URLs
   config.assets.digest = true
-  
-  config.assets.expire_after 2.weeks
-  
+
   # Defaults to nil and saved in location specified by config.assets.prefix
   # config.assets.manifest = YOUR_PATH
 
@@ -54,11 +55,16 @@ ClassRequestTool::Application.configure do
   # Disable delivery errors, bad email addresses will be ignored
   # config.action_mailer.raise_delivery_errors = false
   
-  config.action_mailer.default_url_options = { :host => 'crtqa.lib.harvard.edu' }
-  config.action_mailer.delivery_method = :sendmail
+  # Set up action mailer
+  mailer_config = YAML::load(File.open("#{Rails.root}/config/mailer.yml"))
+  config.action_mailer.raise_delivery_errors = true
+  mailconf = mailer_config[:mailer][:wai_quality]
+  config.action_mailer.delivery_method = mailconf[:delivery_method]
+  config.action_mailer.smtp_settings = mailconf[:settings].clone
+  config.action_mailer.default_url_options = { :protocol => 'http://', :host => mailconf[:settings][:domain] }
 
-  MAIL_RECIPIENT_OVERRIDE = true
-
+  MAIL_RECIPIENT_OVERRIDE = ['ehardman@fas.harvard.edu', 'tim@wordsareimages.com']
+    
   # Enable threaded mode
   # config.threadsafe!
 

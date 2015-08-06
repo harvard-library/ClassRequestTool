@@ -57,17 +57,15 @@
 /* @import "bootstrap-sprockets"; */
 
 /* bootstrap-sass using bower */
-$icon-font-path: "bootstrap-sass/assets/fonts/bootstrap/";
-@import "bootstrap-sass/assets/stylesheets/bootstrap-sprockets";
-@import "bootstrap-sass/assets/stylesheets/bootstrap";
-
 /* Local Bootstrap overrides */
 @import "bootstrap_local";
+$icon-font-path: "bootstrap-sass-official/assets/fonts/bootstrap/";
+@import "bootstrap-sass-official/assets/stylesheets/bootstrap-sprockets";
+@import "bootstrap-sass-official/assets/stylesheets/bootstrap";
+
 
 /* Vendor styles */
-@import "bootstrap/dist/css/bootstrap";
-@import "bootstrap/dist/css/bootstrap-theme";
-@import "icheck/icheck/skins/flat/red.css";
+@import "icheck/skins/flat/flat";
 @import "jquery-tablesorter/css/theme.bootstrap";
 @import "jquery-tablesorter/css/filter.formatter.css";
 @import "jquery-tablesorter/addons/pager/jquery.tablesorter.pager";

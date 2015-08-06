@@ -4,9 +4,9 @@ require 'rails/all'
 require 'open3'
 
 
-if defined?(Bundler)
-  Bundler.require(:default, Rails.env)
-end
+Bundler.require(:default, Rails.env)
+
+Dotenv::Railtie.load
 
 module ClassRequestTool
   class Application < Rails::Application

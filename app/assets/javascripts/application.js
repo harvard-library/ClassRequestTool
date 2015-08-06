@@ -10,13 +10,12 @@
 // WARNING: THE FIRST BLANK LINE MARKS THE END OF WHAT'S TO BE PROCESSED, ANY BLANK LINE SHOULD
 // GO AFTER THE REQUIRES BELOW.
 //
-//= require bootstrap/dist/js/bootstrap
 //= require jquery
 //= require jquery-ujs
 //= require jquery-ui/jquery-ui
 //= require bootstrap-sass/assets/javascripts/bootstrap-sprockets
-// require sugar
-// require jquery-tablesorter
+//= require jquery-tablesorter/dist/js/jquery.tablesorter
+//= require jquery-tablesorter/dist/js/extras/jquery.tablesorter.pager.min.js
 // require jquery-tablesorter/parsers/parser-date-two-digit-year
 // require jquery-tablesorter/addons/pager/jquery.tablesorter.pager
 // require jquery-tablesorter/jquery.tablesorter.widgets-filter-formatter
