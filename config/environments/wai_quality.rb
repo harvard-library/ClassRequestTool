@@ -25,12 +25,12 @@ ClassRequestTool::Application.configure do
   css = File.readlines(Rails.root.join('app', 'assets', 'stylesheets', 'application.scss'))
   css.each do |line|
     asset = /^@import\s+["'](.+)["']/.match(line)
-    precompile_array << (asset[1].split('/').pop) + '.css' unless asset.nil? 
+    precompile_array << asset[1] + '.css' unless asset.nil? 
   end
   js = File.readlines(Rails.root.join('app', 'assets', 'javascripts', 'application.js'))
   js.each do |line|
     asset = /^\/\/=\s+require\s+(.+)/.match(line)
-    precompile_array << (asset[1].split('/').pop) + '.js' unless asset.nil? 
+    precompile_array << asset[1] + '.js' unless asset.nil? 
   end
   config.assets.precompile += precompile_array
   #  config.assets.precompile += %w( jquery.qtip.css application_split2_ie.css iefix.css jquery-ui-timepicker-addon.css jquery-ui-timepicker-addon.js icheck.js icheck.scss jquery.tablesorter.pager.css filter.formatter.css)
