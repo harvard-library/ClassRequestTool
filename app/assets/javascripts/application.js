@@ -13,7 +13,7 @@
 //= require jquery
 //= require jquery-ujs
 //= require jquery-ui/jquery-ui
-//= require bootstrap-sass/assets/javascripts/bootstrap-sprockets
+//= require bootstrap-sprockets
 //= require jquery-tablesorter/dist/js/jquery.tablesorter
 //= require jquery-tablesorter/dist/js/extras/jquery.tablesorter.pager.min.js
 // require jquery-tablesorter/parsers/parser-date-two-digit-year

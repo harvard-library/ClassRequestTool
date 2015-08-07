@@ -59,18 +59,17 @@
 /* bootstrap-sass using bower */
 /* Local Bootstrap overrides */
 @import "bootstrap_local";
-@import "bootstrap-sass-official/assets/stylesheets/bootstrap-sprockets";
-$icon-font-path: "bootstrap-sass-official/assets/fonts/bootstrap/";
-@import "bootstrap-sass-official/assets/stylesheets/bootstrap";
+@import "bootstrap-sprockets";
+@import "bootstrap";
 
 
 /* Vendor styles */
 @import "icheck/skins/flat/flat";
 @import "jquery-tablesorter/css/theme.bootstrap";
-@import "jquery-tablesorter/css/filter.formatter.css";
+@import "jquery-tablesorter/css/filter.formatter";
 @import "jquery-tablesorter/addons/pager/jquery.tablesorter.pager";
 @import "jqueryui-timepicker-addon/dist/jquery-ui-timepicker-addon";
-@import "qtip2/jquery.qtip.css";
+@import "qtip2/jquery.qtip";
 
 /* Other local and overrides */
 @import "overrides";

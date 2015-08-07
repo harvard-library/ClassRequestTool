@@ -45,6 +45,9 @@ GEM
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
     arel (6.0.2)
+    autoprefixer-rails (5.2.1)
+      execjs
+      json
     bcrypt (3.1.10)
     better_errors (2.1.1)
       coderay (>= 1.0.0)
@@ -52,6 +55,9 @@ GEM
       rack (>= 0.9.0)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
+    bootstrap-sass (3.3.5.1)
+      autoprefixer-rails (>= 5.0.0.1)
+      sass (>= 3.3.0)
     bower-rails (0.10.0)
     builder (3.2.2)
     bullet (4.14.7)
@@ -321,6 +327,7 @@ PLATFORMS
 DEPENDENCIES
   better_errors
   binding_of_caller
+  bootstrap-sass
   bower-rails
   bullet
   capistrano (~> 3.1.0)
