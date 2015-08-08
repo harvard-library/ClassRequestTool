@@ -26,13 +26,6 @@ namespace :db do
   task :custom_seed do
     Dir[File.join(Rails.root, 'db', 'custom_seeds', '*.rb')].each do |filename|
       load(filename) if File.exist?(filename)
-#       puts "Loading #{File.basename(filename, '.rb').to_sym}"
-#       task_name = File.basename(filename, '.rb').intern
-#       puts task_name
-#       puts File.exist?(filename)
-#       task task_name => :environment do
-#         load(filename) if File.exist?(filename)
-#       end
     end
   end
 end      
