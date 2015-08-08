@@ -95,9 +95,13 @@
       %li
         %span.summary-label Nature of Collaboration
         %br
-        - @course.collaboration_options.each do |option|
-          #{option}
-          %br
+          - if @course.collaboration_options.blank?
+            None selected
+            %br
+          - else
+            - @course.collaboration_options.each do |option|
+              #{option}
+              %br
         
           
     
@@ -237,7 +241,7 @@
     - @course.assessments.each do |assessment|
       = link_to "View Assessment", assessment_path(assessment)
       %br/
-    %h4 Notes - boo
+    %h4 Notes
     = render :partial => 'notes/form', :locals => {:note => @note, :course => @course }
     = render :partial => 'notes/index'
 

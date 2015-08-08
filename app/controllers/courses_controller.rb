@@ -331,7 +331,7 @@ class CoursesController < ApplicationController
       :repository => @course.repo_name,
       :timeframe => first_section.nil? ? '' : first_section.actual_date.utc.strftime(DATETIME_AEON_FORMAT),
       :duration => @course.duration
-    }
+    }    
   end
 
   def uncancel
@@ -551,7 +551,7 @@ class CoursesController < ApplicationController
           :first_name, :last_name, :email, :role, :course_id
         ]}, 
         :subject, :course_number, :affiliation,  :session_count,  #values
-        :comments,  :staff_involvement, :instruction_session, :status, 
+        :comments,  :staff_involvement, :instruction_session, :status, :collaboration_options,
         :syllabus, :remove_syllabus, :external_syllabus, #syllabus
         :pre_class_appt, :timeframe, :timeframe_2, :timeframe_3, :timeframe_4, :duration, #concrete schedule vals
         :time_choice_1, :time_choice_2, :time_choice_3, :time_choice_4, # tentative schedule vals
