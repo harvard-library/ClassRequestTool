@@ -1,7 +1,6 @@
 {
   "name": "dsl-generated dependencies",
   "dependencies": {
-    "bootstrap-sass-official": "latest",
     "highcharts": "latest",
     "icheck": "latest",
     "jquery": "latest",

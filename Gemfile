@@ -29,14 +29,12 @@ gem 'bootstrap-sass'
 # Gems used only for assets and not required
 # in production environments by default.
 gem 'sass-rails'
-gem 'coffee-rails'
 gem 'uglifier'
 # gem 'jquery-rails'
 # gem 'jquery-ui-rails'
 # gem 'jquery-tablesorter'
 # gem 'sugar-rails'
 # gem 'highcharts-rails'
-# gem 'bootstrap-sass'
 
 group :test, :development do
   gem 'rspec-rails'
