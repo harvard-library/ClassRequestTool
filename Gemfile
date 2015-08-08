@@ -55,7 +55,7 @@ end
 group :development do
   gem 'capistrano',        '~> 3.1'
   gem 'capistrano-rails',  '~> 1.1'
-  gem 'rvm1-capistrano3'
+  gem 'capistrano-rvm'
   gem 'better_errors'
   gem 'binding_of_caller'
   gem 'puma'
