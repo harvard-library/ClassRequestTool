@@ -49,11 +49,24 @@ class Admin::Notifications::NotificationController < Admin::AdminController
   
   def toggle_notifications
     if $local_config.notifications_on?
+      if MAIL_RECIPIENT_OVERRIDE.kind_of? Array
+        test_mail_recipient = MAIL_RECIPIENT_OVERRIDE.join(', ')
+      else
+        test_mail_recipient = MAIL_RECIPIENT_OVERRIDE
+      end
+      
       $local_config.notifications_on = false
-      status = 'OFF'
+      status = {
+        :class => 'OFF',
+        :label => "TEST MODE - delivering to #{test_mail_recipient}"
+      }
     else  
       $local_config.notifications_on = true
-      status = 'ON'      
+      status = {
+        :class => 'ON',
+        :label => 'SENDING NORMALLY'
+      }
+      
       # If any jobs are in the queue, send them
       Delayed::Job.all.each do |job|
         if job.run_at < Time.now
@@ -66,7 +79,7 @@ class Admin::Notifications::NotificationController < Admin::AdminController
     end
     
     if $local_config.save
-      render :text => status
+      render :json => status.to_json
     else
       render :nothing
     end
