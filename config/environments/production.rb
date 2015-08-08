@@ -20,26 +20,6 @@ ClassRequestTool::Application.configure do
   # Don't fallback to assets pipeline if a precompiled asset is missed
   config.assets.compile = true
 
-  # Scan application.scss for css files and application.js for js files to precompile
-  precompile_array = []
-  css = File.readlines(Rails.root.join('app', 'assets', 'stylesheets', 'application.scss'))
-  css.each do |line|
-    asset = /^@import\s+["'](.+)["']/.match(line)
-    precompile_array << asset[1] + '.css' unless asset.nil? 
-  end
-  js = File.readlines(Rails.root.join('app', 'assets', 'javascripts', 'application.js'))
-  js.each do |line|
-    asset = /^\/\/=\s+require\s+(.+)/.match(line)
-    precompile_array << asset[1] + '.js' unless asset.nil? 
-  end
-  config.assets.precompile += precompile_array
-  #  config.assets.precompile += %w( jquery.qtip.css application_split2_ie.css iefix.css jquery-ui-timepicker-addon.css jquery-ui-timepicker-addon.js icheck.js icheck.scss jquery.tablesorter.pager.css filter.formatter.css)
-
-  # Generate digests for assets URLs
-  config.assets.digest = true
-
-  # Defaults to nil and saved in location specified by config.assets.prefix
-  # config.assets.manifest = YOUR_PATH
 
   # Specifies the header that your server uses for sending files
   # config.action_dispatch.x_sendfile_header = "X-Sendfile" # for apache
@@ -62,9 +42,6 @@ ClassRequestTool::Application.configure do
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server
   # config.action_controller.asset_host = "http://assets.example.com"
-
-  # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
-  # config.assets.precompile += %w( search.js )
 
   # Disable delivery errors, bad email addresses will be ignored
   # config.action_mailer.raise_delivery_errors = false

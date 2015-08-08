@@ -61,18 +61,6 @@ module ClassRequestTool
     # parameters by using an attr_accessible or attr_protected declaration.
     #** config.active_record.whitelist_attributes = true
 
-    # Enable the asset pipeline and bower
-    config.assets.enabled = true
-    Rails.root.join('vendor', 'assets', 'bower_components').to_s.tap do |bower_path|
-#      config.sass.load_paths << bower_path
-      config.assets.paths << bower_path
-    end
-
-    # Minimum Sass number precision required by bootstrap-sass
-    ::Sass::Script::Value::Number.precision = [8, ::Sass::Script::Value::Number.precision].max
-
-    # Version of your assets, change this if you want to expire all your assets
-    config.assets.version = '1.0'
     
     # Skip validation of locale
     #**config.i18n.enforce_available_locales = false
