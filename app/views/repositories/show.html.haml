@@ -57,7 +57,7 @@
       .info
         %p
           %span.glyphicon.glyphicon-eye-open &nbsp
-          = link_to  @repository.landing_page, :target => "_blank" do
+          = link_to  @repository.landing_page do
             More on teaching at the #{@repository.name}
     .info
       - unless @repository.calendar.blank?
@@ -87,6 +87,6 @@
       .manage
         %h4 Edit this repository
         = link_to('Edit', edit_repository_path(@repository), :class => "action-edit")
-        | #{link_to('Delete', repository_path(@repository), :confirm => "Are you sure?", :method => :delete)}
+        | #{link_to('Delete', repository_path(@repository), :data => { :confirm => "Are you sure?" }, :method => :delete)}
 .row.return-to-list
   = link_to "Return to library/archive list", root_url, :class => 'btn btn-primary'

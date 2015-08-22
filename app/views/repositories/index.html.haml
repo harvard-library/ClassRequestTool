@@ -19,7 +19,7 @@
               %td
                 = link_to('Edit', edit_repository_path(repo), :class => "action-edit")
                 - if current_user.superadmin?
-                  | #{link_to('Delete', repository_path(repo), :confirm => "Are you sure?", :method => :delete)}
+                  | #{link_to('Delete', repository_path(repo), :data => { :confirm => "Are you sure?" }, :method => :delete)}
     %br/
     .pager-repositories
       = render :partial => '/shared/tablesorter_pager'
