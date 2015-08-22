@@ -140,10 +140,11 @@ div.ui-datepicker{
 }
 
 /* iCheck */
-.icheckbox_flat,
-.iradio_flat {
-  background-image: image-url('check_flat_crimson.png');
+.icheckbox_square-blue,
+.iradio_square-blue {
+  background-color: white;
 }
+
 
 /* Default picture captions */
 .caption {
@@ -251,6 +252,11 @@ ul.no-bullets {
     padding-left: 0;
     line-height: 1.2
   }
+}
+
+/* Increase font size for the pop-up calendars */
+div.ui-datepicker {
+  font-size: 100%;
 }
 
 /* Header */

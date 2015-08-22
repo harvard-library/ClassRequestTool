@@ -5,7 +5,7 @@ var firstClassDateExtraction = function(node) {
 $(function () {
   var style_checkboxes = function() {
     $('.checkbox input').iCheck({
-      checkboxClass: 'icheckbox_flat',
+      checkboxClass: 'icheckbox_square-blue',
       increaseArea: '20%'
     });
   };
