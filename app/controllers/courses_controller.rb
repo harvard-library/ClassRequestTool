@@ -164,6 +164,8 @@ class CoursesController < ApplicationController
       @all_staff_services = @course.repository.all_staff_services
       @all_technologies   = @course.repository.all_technologies
       @possible_collaborations = Repository.all - [@course.repository]
+    else
+      @all_staff_services = StaffService.where(:global => true)
     end
 
     # @staff_service = @course.staff_service.split(',')

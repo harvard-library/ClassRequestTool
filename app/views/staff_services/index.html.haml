@@ -30,7 +30,7 @@
               %td
                 = link_to('Edit', edit_staff_service_path(si), :class => "action-edit")
                 - if current_user.superadmin?
-                  | #{link_to('Delete', staff_service_path(si), :confirm => "Are you sure?", :method => :delete)}
+                  | #{link_to('Delete', staff_service_path(si), :data => { :confirm => "Are you sure?" }, :method => :delete)}
     %br/
     .pager-involvement
       = render :partial => '/shared/tablesorter_pager'
