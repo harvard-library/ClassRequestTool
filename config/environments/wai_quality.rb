@@ -21,7 +21,7 @@ ClassRequestTool::Application.configure do
   config.assets.compile = true
   
   # Add color chips for icheck (managed with bower)
-  config.assets.precompile += %w( icheck/skins/square/blue.png icheck/skins/square/blue@2x.png )
+  config.assets.precompile += %w( blue.png blue@2x.png )
   
   # Specifies the header that your server uses for sending files
   # config.action_dispatch.x_sendfile_header = "X-Sendfile" # for apache

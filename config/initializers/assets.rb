@@ -3,6 +3,9 @@ Rails.application.config.assets.enabled = true
 
 Rails.root.join('vendor', 'assets', 'bower_components').to_s.tap do |bower_path|
   Rails.application.config.assets.paths << bower_path
+  
+  # icheck images
+  Rails.application.config.assets.paths << "#{bower_path}/icheck/skins/square/"
 end
 
 # Minimum Sass number precision required by bootstrap-sass
