@@ -39,4 +39,4 @@
       - if current_user.staff? || current_user.can_admin?
         %br/
         = link_to "Edit", edit_note_path(note.id)
-        | #{link_to('Delete', note_path(note), :confirm => "Are you sure?", :method => :delete)}
+        | #{link_to('Delete', note_path(note), :data => { :confirm => "Are you sure?" }, :method => :delete)}

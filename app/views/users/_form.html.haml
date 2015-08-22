@@ -7,12 +7,11 @@
       = f.input :email, :input_html => { :size => 30 }
     = f.input :repositories, :as => :check_boxes, :label => "Associated Libraries/Archives: "
     - if @user != current_user || current_user.can_admin?
-      %span#admin_box
-        User Role:
-        %br/
+      .admin-box
+        %label User Role:
         - if current_user.superadmin?
-          = select_tag "role", options_for_select(@options_super, @selected)
+          = select_tag "role", options_for_select(@options_super, @selected), :class => 'form-control input-small'
         - else
-          = select_tag "role", options_for_select(@options, @selected)
+          = select_tag "role", options_for_select(@options, @selected), :class => 'form-control'
   = f.actions do
     = f.action :submit, :as => :button, :button_html => {:class => 'btn btn-primary'}

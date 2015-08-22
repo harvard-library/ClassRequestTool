@@ -19,7 +19,7 @@
               %td
                 = link_to('Edit', edit_item_attribute_path(attribute), :class => "action-edit")
                 - if current_user.superadmin?
-                  | #{link_to('Delete', item_attribute_path(attribute), :confirm => "Are you sure?", :method => :delete)}
+                  | #{link_to('Delete', item_attribute_path(attribute), :data => { :confirm => "Are you sure?" }, :method => :delete)}
     %br/
     .pager-attributes
       = render :partial => '/shared/tablesorter_pager'

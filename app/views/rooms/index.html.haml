@@ -31,7 +31,7 @@
               %td
                 = link_to('Edit', edit_room_path(room), :class => "action-edit")
                 - if current_user.superadmin?
-                  | #{link_to('Delete', room_path(room), :confirm => "Are you sure?", :method => :delete)}
+                  | #{link_to('Delete', room_path(room), :data => { :confirm => "Are you sure?" }, :method => :delete)}
     %br/
     .pager-rooms
       = render :partial => '/shared/tablesorter_pager'

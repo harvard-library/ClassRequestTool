@@ -1,8 +1,8 @@
 #course_staff_services_input
   %label.control-label{ for: 'course_course[staff_service_ids][]' } How can our staff assist you for this class? 
   - if all_staff_services.nil?
-    %p Staff services will be displayed once you've selected a library/archive.
+    %p No staff services have been specified at this time.
   - else
     = hidden_field_tag "", name: 'course[staff_service_ids][]'
     - all_staff_services.each do |service|
-      = render partial: 'shared/formtastic_checkbox', locals: { _klass: 'service', _for: "course_staff_service_#{service.id}", _name: 'course[staff_service_ids][]', _id: service.id, _checked: staff_services.map{|selected| selected.id}.include?(service.id), to_display: service.description }
+      = render partial: 'shared/formtastic_checkbox', locals: { _klass: 'service', _for: "course_staff_service_#{service.id}", _name: 'course[staff_service_ids][]', _id: service.id, _checked: (service.required? || staff_services.map{|selected| selected.id}.include?(service.id)), to_display: service.description }
