@@ -43,4 +43,8 @@ module ApplicationHelper
     end
     retval
   end
+  
+  def repository_list
+    Repository.all.order(:name => 'ASC')
+  end
 end

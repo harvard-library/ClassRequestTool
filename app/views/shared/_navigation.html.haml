@@ -1,6 +1,14 @@
 #main-nav.navbar-collapse.collapse
   %ul.nav.navbar-nav{:role => "navigation"}
     %li= link_to "Home", root_path
+    %li.dropdown
+      %a#drop1.dropdown-toggle{"data-toggle" => "dropdown", :href => "#", :role => "button"}
+        Libraries/Archives
+        %b.caret
+      %ul.dropdown-menu{"aria-labelledby" => "drop1", :role => "menu"}
+        - repository_list.each do |repository|
+          %li= link_to repository.name, repository_path(repository)
+      
     - if current_user && current_user.can_schedule?
       %li= link_to "Dashboard", dashboard_courses_path
       %li= link_to "Classes", courses_path
