@@ -1,7 +1,7 @@
 #course_staff_services_input
   %label.control-label{ for: 'course_course[staff_service_ids][]' } How can our staff assist you for this class? 
   - if all_staff_services.nil?
-    %p No staff services have been specified at this time.
+    %p No staff services are available at this time.
   - else
     = hidden_field_tag "", name: 'course[staff_service_ids][]'
     - all_staff_services.each do |service|
