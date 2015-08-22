@@ -25,7 +25,7 @@ class UsersController < ApplicationController
     end
     
     params[:user] = params[:user].delete_if{|key, value| key == "superadmin" || key == "admin" || key == "staff" || key == "patron" }
-    @user = User.new(params[:user])
+    @user = User.new(user_params)
     @user.password = User.random_password
     
     superadmin ? @user.superadmin = true : @user.superadmin = false
@@ -102,7 +102,7 @@ class UsersController < ApplicationController
     end
       
     params[:user] = params[:user].delete_if{|key, value| key == "superadmin" || key == "admin" || key == "staff" || key == "patron" }
-    @user.attributes = params[:user]
+    @user.attributes = user_params
     
     superadmin ? @user.superadmin = true : @user.superadmin = false
     admin ? @user.admin = true : @user.admin = false
@@ -119,4 +119,9 @@ class UsersController < ApplicationController
       end
     end
   end
+  
+  private
+    def user_params
+      params.require(:user).permit(:email, :password, :first_name, :last_name, :username, :pinuser, :admin, :superadmin, :staff, :patron)
+    end
 end
