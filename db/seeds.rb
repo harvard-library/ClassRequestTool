@@ -41,6 +41,29 @@ Admin::Customization.create(
   ]
   
 )
+# Example repository
+Repository.create(
+  :name => 'The Example Library',
+  :description => 'This is an example of a library or archive.',
+  :class_limit => 17,
+  :landing_page => 'http://library.example.edu',
+  :class_policies => 'First, do no harm.'
+)
+
+# Example staff service
+StaffService.create(
+  :description => "Pedicure in Harvard crimson.",
+  :required => true,
+  :global => true
+}
+
+# Example item attribute
+ItemAttribute.create(
+  :name => 'Multimedia player',
+  :description => 'This can play MP3, MP4, DVDs, and CDs'
+)
+)
+
 
 # Custom text which is inserted into notification emails. See the notification previews.  
 custom_notification_texts = {
