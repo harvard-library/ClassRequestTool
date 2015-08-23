@@ -14,11 +14,11 @@
 //= require jquery-ujs
 //= require jquery-ui/jquery-ui
 //= require bootstrap-sprockets
-//= require jquery-tablesorter/dist/js/jquery.tablesorter
-//= require jquery-tablesorter/dist/js/extras/jquery.tablesorter.pager.min.js
-// require jquery-tablesorter/parsers/parser-date-two-digit-year
-// require jquery-tablesorter/addons/pager/jquery.tablesorter.pager
-// require jquery-tablesorter/jquery.tablesorter.widgets-filter-formatter
+//= require jquery-tablesorter/dist/js/jquery.tablesorter.min
+//= require jquery-tablesorter/dist/js/jquery.tablesorter.widgets.min
+//= require jquery-tablesorter/dist/js/extras/jquery.tablesorter.pager.min
+//= require jquery-tablesorter/dist/js/parsers/parser-date-two-digit-year.min
+//= require jquery-tablesorter/dist/js/widgets/widget-filter-formatter-jui.min
 //= require jqueryui-timepicker-addon/dist/jquery-ui-timepicker-addon
 //= require icheck/icheck.js
 //= require highcharts

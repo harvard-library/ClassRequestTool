@@ -8,7 +8,7 @@ class Repository < ActiveRecord::Base
   has_many :collections, dependent: :destroy
   accepts_nested_attributes_for :collections, reject_if: ->(attributes){ attributes[:name].blank?}, allow_destroy: true
     
-  has_many :courses
+  has_many :courses, :dependent => :nullify
   accepts_nested_attributes_for :courses
 
   has_many :attached_images, :as => :picture, :dependent => :destroy

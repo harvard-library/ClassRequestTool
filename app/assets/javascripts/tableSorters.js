@@ -1,9 +1,9 @@
-$(document).ready(function(){
+$(function(){
 
-  var $ts = $.tablesorter;
-  
-  // Parser for sorting on date cell data rather than cell contents
+  // Sorting on date cell data rather than cell contents
   // Borrowing from two digit year parser included in tablesorter package
+  var $ts = $.tablesorter;  
+	
   $ts.addParser({
     id: 'data_date',
     is: function(s) {
@@ -22,22 +22,20 @@ $(document).ready(function(){
  
   var tablesorterOptions = {
     theme: 'bootstrap',
-    widgets: ['uitheme', 'filter'],
-    icons: 'glyphicon glyphicon-{name}',
     headerTemplate: "{content} {icon}",
+    widgets: ['uitheme', 'filter', 'zebra'],
+    cssIcons: 'glyphicon glyphicon-{name}',
     widthFixed: true,
     widgetOptions: {
-      uitheme: 'bootstrap',
-      filter_placeholder: { 
-        search: 'Filter...',
-        from: 'From...',
-        to: 'To...'
-      },
-      filter_reset: $('.filter-reset')
+      zebra: ['even', 'odd' ],
+      filter_reset: '.filter-reset',
+      filter_hideFilters: false,
+      filter_cssFilter: 'form-control'
      }
   };
   
   var pagerOptions = {
+    cssGoto: '.pagenum',
     removeRows: false, 
     output: "page {page} of {filteredPages}", 
     size: 20
@@ -47,7 +45,7 @@ $(document).ready(function(){
     var tableId = $(this).attr('id');
     
     // Use date_data parser for date columns
-    var mySorters = {};
+   var mySorters = {};
     $(this).find('tr.active-headers th').each( function(i) {
       if ($(this).hasClass('date')) {
         mySorters[i] = { sorter: 'data_date' };
@@ -110,8 +108,7 @@ $(document).ready(function(){
       pagerOptions = $.extend(true, pagerOptions, { positionFixed: false });
     }
     
-    $(this).tablesorter(tablesorterOptions);
-    $(this).tablesorterPager(pagerOptions);
+    $(this).tablesorter(tablesorterOptions).tablesorterPager(pagerOptions);
   });
   
   // Bring to page one on resort
@@ -120,5 +117,5 @@ $(document).ready(function(){
   });
   
   // Remove border and stripe classes
-  $('table').removeClass('table-bordered').removeClass('table-striped'); 
+  //$('table').removeClass('table-bordered').removeClass('table-striped'); 
 });

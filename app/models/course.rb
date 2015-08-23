@@ -128,7 +128,7 @@ class Course < ActiveRecord::Base
   end
   
   def homeless?
-    self.repository_id.blank?
+    self.repository.blank?
   end
   
   def unclaimed?
