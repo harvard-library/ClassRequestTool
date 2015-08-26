@@ -2,4 +2,5 @@
 .caption
   %p= image.caption.html_safe
   %br
-%p.credit= photo_credit(repo).html_safe
+- if show_credit
+  %p.credit= photo_credit(repo).html_safe

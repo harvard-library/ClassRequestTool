@@ -19,7 +19,7 @@
         %h2.panel-title Request A Class
       .panel-body
         %p
-          %strong To request a class, select a site blow or click “Help Me Choose” and we'll help pair your class with a participating library or archive. 
+          %strong To request a class, select a site below or click “Help Me Choose” and we'll help pair your class with a participating library or archive. 
         %br
         %p.text-center
           .form#select-repo
@@ -45,7 +45,7 @@
 
   .col-md-4
     .featured-image
-      = render :partial => 'shared/repo_image', :locals => { image: @featured_image, size: :welcome_page, repo: @featured_repository  }
+      = render :partial => 'shared/repo_image', :locals => { image: @featured_image, size: :welcome_page, repo: @featured_repository, show_credit: true   }
     
     .well.well-sm
       %h4 Join Us!

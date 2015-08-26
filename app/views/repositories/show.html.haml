@@ -13,7 +13,7 @@
   .row.repo-images
     - @repository.attached_images.each do |pic|
       .display
-        = render :partial => 'shared/repo_image', :locals => { image: pic, size: :display, repo: @repository }
+        = render :partial => 'shared/repo_image', :locals => { image: pic, size: :display, repo: @repository, show_credit: false }
 .row
   .col-md-3.collections
     .info
