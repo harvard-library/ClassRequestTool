@@ -96,8 +96,8 @@ class RepositoriesController < ApplicationController
       params.require(:repository).permit(
         :name, :description, :can_edit, :class_limit, :room_ids,  :user_ids,:item_attribute_ids, :email_details,
         :calendar, :landing_page, :class_policies, 
-        { :attached_images_attributes => [:id, :_destroy, :picture_id, :picture_type, :image, :image_cache, :remove_image, :caption, :featured] }, 
-        { :collections_attributes => [:id, :name, :description, :url, :repository_id] }       
+        :attached_images_attributes => [:id, :_destroy, :picture_id, :picture_type, :image, :image_cache, :remove_image, :caption, :featured], 
+        :collections_attributes => [:id, :_destroy,:name, :description, :url, :repository_id]       
       )
     end
 end
