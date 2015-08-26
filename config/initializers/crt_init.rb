@@ -2,6 +2,7 @@ ROOT_URL = ENV['ROOT_URL'] || 'localhost'
 ROOT_PATH = '/'
 DEFAULT_MAILER_SENDER = ENV['DEFAULT_MAILER_SENDER'] || "LibraryCRT@harvard.edu"
 
+
 # The following are settable through environment variables
 TIME_FORMAT = ENV['TIME_FORMAT'] || "%l:%M %P"      # 3:45 pm
 DATE_FORMAT = ENV['DATE_FORMAT'] ||  "%b %-d, %Y"    # Jan 1, 2015
