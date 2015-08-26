@@ -29,7 +29,7 @@ ClassRequestTool::Application.configure do
   config.action_mailer.smtp_settings = mailconf[:settings].clone
   config.action_mailer.default_url_options = { :protocol => 'http://', :host => mailconf[:settings][:domain], :port => ':3000' }
 
-  MAIL_RECIPIENT_OVERRIDE = 'tim@wordsareimages.com'
+  MAIL_RECIPIENT_OVERRIDE = ['tim@wordsareimages.com','kinnel@warpmail.net']
   
   # Print deprecation notices to the Rails logger
   config.active_support.deprecation = :log

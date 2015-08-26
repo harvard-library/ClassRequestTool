@@ -26,4 +26,8 @@ class Repository < ActiveRecord::Base
     self.item_attributes.order("name ASC")
   end
   
+  def affiliated?(user)
+    self.users.include?(user)
+  end
+  
 end
