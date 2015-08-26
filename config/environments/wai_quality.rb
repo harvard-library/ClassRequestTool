@@ -49,7 +49,7 @@ ClassRequestTool::Application.configure do
   # Set up action mailer
   mailer_data = YAML.load(ERB.new(File.read("#{Rails.root}/config/mailer.yml.erb")).result)
   config.action_mailer.raise_delivery_errors = true
-  mailconf = mailer_data[:mailer][:production]
+  mailconf = mailer_data[:mailer][:wai_quality]
   config.action_mailer.delivery_method = mailconf[:delivery_method]
   config.action_mailer.smtp_settings = mailconf[:settings].clone
   config.action_mailer.default_url_options = { :protocol => 'http://', :host => mailconf[:settings][:domain] }
