@@ -525,6 +525,7 @@ class CoursesController < ApplicationController
       else
         new_repo = Repository.find(params[:course][:repository_id].to_i)
         return ! new_repo.affiliated?(current_user)
+      end
     end
     
     def staff_change?
@@ -532,7 +533,6 @@ class CoursesController < ApplicationController
       return true if !@course.primary_contact.blank? && (@course.primary_contact.id != params[:course][:primary_contact_id])
       return true if @course.users.blank? && !params[:course][:user_ids].blank?
       return true if !params[:course][:user_ids].nil? && (@course.users.map{ |u| u.id.to_s }.sort != params[:course][:user_ids].sort)
-
       false
     end 
 
