@@ -36,10 +36,10 @@ namespace :crt do
 
       daily = "1 12 * * *"
       env = "RAILS_ENV=#{ENV['RAILS_ENV']}"
-      preamble = "cd #{ENV['RAKE_ROOT'] || Rails.root} && #{env} #{`which rvm`.chomp} default do bundle exec #{`which rake`.chomp} crt:cron_task:"
+      cmd = "cd #{ENV['RAKE_ROOT'] || Rails.root} && #{env} #{`which rvm`.chomp} default do bundle exec #{`which rake`.chomp} crt:cron_task:send_homeless_notices"
       redirect = '> /dev/null 2>&1'
 
-      tmp.write "#{daily} #{preamble}#{pm} #{redirect}\n"
+      tmp.write "#{daily} #{cmd} #{redirect}\n"
 
       tmp.write "#CRT_AUTO_CRON_END\n"
       tmp.close
