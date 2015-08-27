@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150607183216) do
+ActiveRecord::Schema.define(version: 20150827021835) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -185,6 +185,8 @@ ActiveRecord::Schema.define(version: 20150607183216) do
     t.string   "slogan"
     t.boolean  "notifications_on"
     t.text     "collaboration_options"
+    t.integer  "homeless_staff_services",  default: [], array: true
+    t.integer  "homeless_technologies",    default: [], array: true
   end
 
   create_table "delayed_jobs", force: :cascade do |t|

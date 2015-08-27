@@ -1,6 +1,13 @@
 class Admin::CustomizationsController < Admin::AdminController
 
   def update
+    # Reject empty strings in homeless attribute selections 
+    # (see https://github.com/justinfrench/formtastic/issues/749)
+    params[:customization][:homeless_staff_services] =
+      params[:customization][:homeless_staff_services].reject{ |id| id.blank? }.map{ |s| s.to_i }
+    params[:customization][:homeless_technologies] =
+      params[:customization][:homeless_technologies].reject{ |id| id.blank? }.map{ |s| s.to_i}
+    binding.pry
     @custom = Customization.find(params[:id])
     respond_to do |format|
       if @custom.update_attributes(customization_params)
@@ -28,7 +35,11 @@ class Admin::CustomizationsController < Admin::AdminController
         :tool_content_admin_name,
         :tool_content_admin_email,
         :default_email_sender,
-        :collaboration_options
+        :collaboration_options,
+        :notifications_on,
+        :homeless_staff_services => [],
+        :homeless_technologies => [],
+        :attached_image_attributes => [:id, :picture_id, :picture_type, :image, :image_cache, :remove_image]
       )
     end
 

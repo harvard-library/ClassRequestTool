@@ -36,7 +36,12 @@
         %br/
       = f.input :default_email_sender, :label => 'Default Sender for Tool Emails'
       = f.input :collaboration_options, :label => 'Collaboration Types', :hint => 'Enter one type per line', :input_html => {:rows => 5}
-          
+
+      %fieldset
+        %legend Homeless Course Options
+        =f.input :homeless_staff_services, :as => :check_boxes, :collection => StaffService.pluck(:description, :id)           
+        =f.input :homeless_technologies, :as => :check_boxes, :collection => ItemAttribute.pluck(:name, :id)           
+        
       %br/
     %br/
     = f.actions do
