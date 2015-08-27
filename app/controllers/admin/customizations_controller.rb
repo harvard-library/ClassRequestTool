@@ -7,7 +7,7 @@ class Admin::CustomizationsController < Admin::AdminController
       params[:customization][:homeless_staff_services].reject{ |id| id.blank? }.map{ |s| s.to_i }
     params[:customization][:homeless_technologies] =
       params[:customization][:homeless_technologies].reject{ |id| id.blank? }.map{ |s| s.to_i}
-    binding.pry
+
     @custom = Customization.find(params[:id])
     respond_to do |format|
       if @custom.update_attributes(customization_params)
