@@ -27,6 +27,10 @@
           %span.glyphicon.glyphicon-minus-sign.nil
           &mdash; Course with no dates&nbsp;&nbsp;&nbsp;&nbsp;
        
+    .search
+      %input{:class => 'table-search', 'data-column' => 'all', :type => 'search', :placeholder => 'Search table...' } 
+        &nbsp;&nbsp; (all non-date columns)
+    %br
     .pager-courses-current
       = render 'shared/tablesorter_pager'
     %table#courses-current.sortable.table

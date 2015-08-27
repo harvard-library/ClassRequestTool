@@ -165,7 +165,8 @@ class CoursesController < ApplicationController
       @all_technologies   = @course.repository.all_technologies
       @possible_collaborations = Repository.all - [@course.repository]
     else
-      @all_staff_services = StaffService.where(:global => true)
+      @all_staff_services = StaffService.find($local_config.homeless_staff_services)
+      @all_technologies   = ItemAttribute.find($local_config.homeless_technologies)
     end
 
     # @staff_service = @course.staff_service.split(',')
@@ -256,6 +257,10 @@ class CoursesController < ApplicationController
       @all_staff_services = @repository.staff_services
       @all_technologies = @repository.item_attributes
       @possible_collaborations = Repository.all - [@repository]
+    else
+      @all_staff_services = StaffService.find($local_config.homeless_staff_services)
+      @all_technologies   = ItemAttribute.find($local_config.homeless_technologies)
+      @possible_collaborations = Repository.all
     end
     
     # Automatically create with 1 section

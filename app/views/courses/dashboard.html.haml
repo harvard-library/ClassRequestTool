@@ -7,7 +7,7 @@
       });
     });
    });
-%h3 Dashboard
+%h3 My Dashboard
 %ul.nav.nav-tabs{:role => "tablist"}
   %li.active
     %a{"data-toggle" => "tab", :href => "#upcoming", :role => "tab"} Upcoming Classes
@@ -21,12 +21,12 @@
   #upcoming.tab-pane.active.row
     = render :partial => 'dashboard_table',   |
       :locals => { :id => 'user-unscheduled',  |
-      :title => 'Your Claimed, Unscheduled Classes', |
+      :title => 'My Unscheduled Classes', |
       :courses => @claimed_unscheduled }                |
     -#
     = render :partial => 'dashboard_table', |
       :locals => { :id => 'user-upcoming',   |
-      :title => 'Your Scheduled, Claimed Classes', |
+      :title => 'My Scheduled Classes', |
       :courses => @claimed_scheduled }                 |
   / END #upcoming
   #homeless.tab-pane.row
@@ -40,23 +40,23 @@
     .clearfix
       = render :partial => 'dashboard_table', |
         :locals => { :id => 'unassigned',      |
-        :title => 'Classes to be Scheduled',         |
+        :title => 'Unclaimed Classes to be Scheduled',         |
         :courses => @unclaimed_unscheduled }         |
       -#
       = render :partial => 'dashboard_table', |
         :locals => { :id => 'roomless',        |
-        :title => 'Scheduled Classes',               |
+        :title => 'Unclaimed Scheduled Classes',               |
         :courses => @unclaimed_scheduled }           |
   / END unclaimed
   #closed.tab-pane.row
     = render :partial => 'dashboard_table', |
       :locals => { :id => 'user-to-close',   |
-      :title => 'Your Classes To Close',           |
+      :title => 'My Classes To Close',           |
       :courses => @to_close }         |
     -#
     = render :partial => 'dashboard_table', |
       :locals => { :id => 'user-past-table',       |
-      :title => 'Your Closed Classes',             |
+      :title => 'My Closed Classes',             |
       :courses => @closed }                     |
   / END #closed
 / END .dash-wrap

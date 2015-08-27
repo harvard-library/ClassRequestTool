@@ -30,8 +30,10 @@ $(function(){
       zebra: ['even', 'odd' ],
       filter_reset: '.filter-reset',
       filter_hideFilters: false,
-      filter_cssFilter: 'form-control'
-     }
+      filter_cssFilter: 'form-control',
+      filter_external : '.table-search',
+      filter_placeholder: { search : 'Search...' }
+    }
   };
   
   var pagerOptions = {
@@ -75,7 +77,6 @@ $(function(){
       { 
         widgetOptions: {
           textExtraction: textExtractions,
-          filter_startsWith: startsWith
         }
       }
     );
