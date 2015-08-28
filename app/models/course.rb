@@ -1,8 +1,6 @@
 class Course < ActiveRecord::Base
   include ActionDispatch::Routing::UrlFor
   include Rails.application.routes.url_helpers
-
-  serialize :collaboration_options
   
   has_and_belongs_to_many :users
   belongs_to :room

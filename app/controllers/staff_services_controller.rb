@@ -54,6 +54,6 @@ class StaffServicesController < ApplicationController
 
   private
     def staff_services_params
-      params.require(:staff_service).permit(:description, :global, :required, :repository_ids, :course_ids)
+      params.require(:staff_service).permit(:description, :required, :repository_ids, :course_ids)
     end
 end

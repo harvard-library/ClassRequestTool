@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150827021835) do
+ActiveRecord::Schema.define(version: 20150828012034) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -99,8 +99,8 @@ ActiveRecord::Schema.define(version: 20150827021835) do
     t.string   "subject"
     t.string   "course_number"
     t.string   "affiliation"
-    t.string   "contact_email",           limit: 150, null: false
-    t.string   "contact_phone",           limit: 25,  null: false
+    t.string   "contact_email",           limit: 150,              null: false
+    t.string   "contact_phone",           limit: 25,               null: false
     t.datetime "pre_class_appt"
     t.datetime "pre_class_appt_choice_1"
     t.datetime "pre_class_appt_choice_2"
@@ -128,7 +128,7 @@ ActiveRecord::Schema.define(version: 20150827021835) do
     t.datetime "last_date"
     t.boolean  "scheduled"
     t.integer  "assisting_repository_id"
-    t.text     "collaboration_options"
+    t.text     "collaboration_options",               default: [],              array: true
   end
 
   add_index "courses", ["affiliation"], name: "index_courses_on_affiliation", using: :btree
@@ -184,9 +184,9 @@ ActiveRecord::Schema.define(version: 20150827021835) do
     t.datetime "updated_at"
     t.string   "slogan"
     t.boolean  "notifications_on"
-    t.text     "collaboration_options"
     t.integer  "homeless_staff_services",  default: [], array: true
     t.integer  "homeless_technologies",    default: [], array: true
+    t.text     "collaboration_options",    default: [], array: true
   end
 
   create_table "delayed_jobs", force: :cascade do |t|
@@ -312,7 +312,6 @@ ActiveRecord::Schema.define(version: 20150827021835) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "required"
-    t.boolean  "global"
   end
 
   add_index "staff_services", ["description"], name: "index_staff_services_on_description", using: :btree

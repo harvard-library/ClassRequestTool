@@ -145,7 +145,7 @@ class CoursesController < ApplicationController
 
     @course = Course.find(params[:id])
     @additional_staff = additional_staff
-    @collaboration_options = $local_config.collaboration_options.gsub("\r", "").split("\n")
+    @collaboration_options = $local_config.collaboration_options
     
     # Set affiliation variables
     if $affiliates.map { |opt| opt.name }.include?(@course.affiliation)
@@ -167,6 +167,7 @@ class CoursesController < ApplicationController
     else
       @all_staff_services = StaffService.find($local_config.homeless_staff_services)
       @all_technologies   = ItemAttribute.find($local_config.homeless_technologies)
+      @possible_collaborations = Repository.all
     end
 
     # @staff_service = @course.staff_service.split(',')
@@ -249,7 +250,7 @@ class CoursesController < ApplicationController
   def new
   
     @course = Course.new()
-    @collaboration_options = $local_config.collaboration_options.gsub("\r", "").split("\n")
+    @collaboration_options = $local_config.collaboration_options
     
     unless params[:repository].blank?
       @repository = Repository.find(params[:repository])
@@ -562,7 +563,7 @@ class CoursesController < ApplicationController
           :first_name, :last_name, :email, :role, :course_id
         ]}, 
         :subject, :course_number, :affiliation,  :session_count,  #values
-        :comments,  :staff_involvement, :instruction_session, :status, :collaboration_options,
+        :comments,  :staff_involvement, :instruction_session, :status, :assisting_repository_id, {:collaboration_options => []},
         :syllabus, :remove_syllabus, :external_syllabus, #syllabus
         :pre_class_appt, :timeframe, :timeframe_2, :timeframe_3, :timeframe_4, :duration, #concrete schedule vals
         :time_choice_1, :time_choice_2, :time_choice_3, :time_choice_4, # tentative schedule vals

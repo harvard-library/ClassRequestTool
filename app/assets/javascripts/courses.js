@@ -299,4 +299,17 @@ $(function () {
     var id = $(this).attr('id');
     $('.' + id).toggle();
   });
+  
+  /* Collaboration logic: if repo is nil, can't collaborate */
+  if ( $('#course_assisting_repository_id').val() >=1 ) {
+      $('.nature-of-collaboration').slideDown();
+  }    
+  $('body').on('change', '#course_assisting_repository_id', function(e) {
+    if ($(this).val() >= 1) {
+      $('.nature-of-collaboration').slideDown();
+    } else {
+      $('.nature-of-collaboration').slideUp();
+      $('.nature-of-collaboration input').iCheck('uncheck');
+    } 
+  });
 });
