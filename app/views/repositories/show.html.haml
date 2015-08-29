@@ -21,7 +21,9 @@
       - unless @repository.collections.empty?
         %ul.list-group
         - @repository.collections.each do |c|
-          %li.list-group-item #{link_to c.name, c.url, target: '_blank'}
+          %li.list-group-item 
+            = link_to c.name, c.url
+            = c.description
       - else
         %p (none)
   .col-md-3.technology
@@ -73,7 +75,7 @@
       .info
         %p
           %span.glyphicon.glyphicon-list-alt &nbsp
-          = link_to "Class policies", @repository.landing_page, :target => "_blank"
+          = link_to "Class policies", @repository.class_policies
 - if current_user && current_user.can_admin?
   .row
     .admin-box

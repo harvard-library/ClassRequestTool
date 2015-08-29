@@ -164,43 +164,6 @@ div.ui-datepicker{
 }
 
 
-/*
-.btn-primary, .btn-primary.disabled, .btn-primary[disabled]  {
-  color: $creme;
-  background-color: $crimson;
-  border-color: darken($crimson, 10%);
-}
-.btn-primary:active, .btn-primary.active {
-  background-color: lighten($crimson, 10%);
-  border-color: $crimson;
-}
-.btn-primary:hover, .btn-primary:focus {
-  background-color: lighten($crimson, 10%);
-  border-color: $crimson;
-}
-.panel-primary > .panel-heading {
-  background-color: $slate;
-  border-color: $slate;
-}
-
-h4.panel-title, h5.panel-title, h6.panel-title {
-  font-family: Roboto, Helvetica, Arial, sans-serif;
-  font-weight: bold;
-  font-style: italic;
-}
-h4.panel-title {
-  font-size: 20px;
-}
-h5.panel-title {
-  font-size: 16px;
-}
-h6.panel-title {
-  font-size: 14px;
-}
-.well {
-  background-color: #efefef;
-}
-*/ 
 td.course-title {
   font-weight: bold;
 }
@@ -230,6 +193,13 @@ td.status-column {
 .glyphicon-info-sign {
   color: $bluebonnet;
   cursor: pointer;
+}
+
+/* hint text */
+p.hint {
+  margin: 10px 0 10px 20px;
+  font-size: 0.95em;
+  color: #555;
 }
 
 /* Account management bar at top */

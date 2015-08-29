@@ -24,12 +24,17 @@
         :as => :string,                                                                                     |
         :input_html => {                                                                                    |
         :size => 30,                                                                                        |
-        :value => @course.pre_class_appt.nil? ? nil : @course.pre_class_appt.strftime(DATETIME_AT_FORMAT), |
+        :value => @course.pre_class_appt.nil? ? nil : @course.pre_class_appt.strftime(DATETIME_AT_FORMAT),  |
         :readonly => true,                                                                                  |
         :class => 'pre-class-date date',                                                                    |
         :placeholder => "Click to select date/time" }                                                       |
-      = check_box_tag :send_timeframe_email
-      Check to send email notification of confirmed or changed class date/time and (if applicable) scheduled pre-class appointment to requester.
+
+    .form_full_width.admin-box
+      %label Confirm class date/time
+      %p.hint (Also use to confirm changes to class dates/times or a scheduled pre-class appointment, if applicable.)
+      .checkbox
+        = check_box_tag 'send_timeframe_email', 1, false, :class => 'checkbox'
+        Check to send email notification of confirmed or changed class date/time and (if applicable) scheduled pre-class appointment to requester.
       %br/
       %br/
   #form_full_width
