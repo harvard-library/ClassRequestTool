@@ -96,6 +96,24 @@ class CoursesController < ApplicationController
     end
   end
   
+  def close
+    @course = Course.find(params[:id])
+  
+    return false unless @course.completed?
+    
+    if params[:class_action] == 'close-class'
+      status = 'Closed'
+    else
+      status = 'Active'
+    end
+    
+    if @course.update(:status => status)
+      render :text => @course.status
+    else 
+      render :nothing
+    end
+  end
+  
   def create
 
     unless params[:course][:repository_id].blank?
@@ -456,7 +474,7 @@ class CoursesController < ApplicationController
         @homeless << course
       elsif course_owner?(course)
         if course.completed?
-          if course.status == 'Closed'
+          if course.closed?
             @closed << course
           else
             @to_close << course

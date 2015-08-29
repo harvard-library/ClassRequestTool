@@ -312,4 +312,16 @@ $(function () {
       $('.nature-of-collaboration input').iCheck('uncheck');
     } 
   });
+  
+  /* Closing classes - with option to unclose */
+  $('body').on('click', "td[id*='close'] button", function(e) {
+    var $clicked = $(this);
+    var action = $clicked.attr('class').match(/(un){0,1}close-class/)[0];
+    var $notClicked = $(this).parent().siblings().children();
+    var id = $clicked.parent().parent().attr('id').substr(6);
+    $.get('/courses/' + id + '/close', 'class_action=' + action, function(data) {
+      $clicked.attr('disabled', true).removeClass('btn-warning').addClass('btn-info');
+      $notClicked.attr('disabled', false).removeClass('btn-info').addClass('btn-warning');
+    });
+  });
 });

@@ -125,6 +125,10 @@ class Course < ActiveRecord::Base
     return true
   end
   
+  def closed?
+    self.status == 'Closed'
+  end
+  
   def homeless?
     self.repository.blank?
   end

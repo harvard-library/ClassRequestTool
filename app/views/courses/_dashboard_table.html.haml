@@ -11,7 +11,18 @@
         - courses.each do |course|
           %tr
             %td.course-title= link_to(course.title, course )
-            %td.section-times= first_plus_multiple_sections(course).html_safe
+            - if course.completed?
+              - if course.closed?
+                %td Closed
+              - else
+                %td{ :id => "close-#{course.id}" }
+                  .pull-left
+                    %button.btn.btn-warning.close-class Close
+                  .pull-right 
+                    %button.btn.btn-info.unclose-class{:disabled => true } Unclose
+                
+            - else
+              %td.section-times= first_plus_multiple_sections(course).html_safe
             / %td.hidden= searchable_fields(course)
     %div{ class: "pager-#{id}" }
       = render :partial => '/shared/tablesorter_pager'
