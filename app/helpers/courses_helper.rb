@@ -17,7 +17,7 @@ module CoursesHelper
   end
 
   def searchable_fields(course)
-    course.attributes.values_at("comments", "goal", "title", "subject", "affiliation", "course_number", "contact_first_name", "contact_last_name").reject(&:blank?).join(' ')
+    strip_tags(course.attributes.values_at("comments", "goal", "title", "subject", "affiliation", "course_number", "contact_first_name", "contact_last_name", "assisting_repository", "additional_patrons").reject(&:blank?).join(' ')).downcase.gsub(/[^a-z0-9\s]/i, '')
   end
   
   def full_status(course)

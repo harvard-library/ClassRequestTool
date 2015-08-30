@@ -30,3 +30,8 @@ input[readonly] {
 textarea {
   width: 200;
 }
+
+/* Hide the search index column */
+.a_index .tablesorter .tablesorter-filter-row td:last-child {
+  display: none;
+}

@@ -32,6 +32,7 @@ $(function(){
       filter_hideFilters: false,
       filter_cssFilter: 'form-control',
       filter_external : '.table-search',
+      filter_startsWith: false,
       filter_placeholder: { search : 'Search...' }
     }
   };

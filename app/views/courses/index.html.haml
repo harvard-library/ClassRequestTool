@@ -28,11 +28,8 @@
           &mdash; Course with no dates&nbsp;&nbsp;&nbsp;&nbsp;
        
     .search
-      = form_tag courses_index_path, :method => :post do
-        = search_field_tag 'search', 'Full class search', :class => 'form-control'
-        %button{:type => submit, :class => 'btn btn-info'}
-          %span.glyphicon.glyphicon-search &nbsp;
-
+      - column = current_user.can_admin? ? 7 : 3
+      %input{:class => 'table-search', 'data-column' => column, :type => 'search', :placeholder => 'Search table...' }
     %br
     .pager-courses-current
       = render 'shared/tablesorter_pager'
@@ -49,7 +46,7 @@
           - if current_user.can_admin?
             %th Requester
           / %th{class: "{sorter: false, filter: false}"} Actions
-          / %th.hidden Search fodder
+          %th.hidden.filter-false.sorter-false  search index
       %tbody
         - @courses.each do |c|
           %tr
@@ -77,7 +74,7 @@
                 #{c.contact_first_name} #{c.contact_last_name}
                 %br
                 = mail_to c.contact_email, "<span class='glyphicon glyphicon-envelope'></span>".html_safe
-            / %td.hidden= searchable_fields(c)
+            %td.hidden= searchable_fields(c)
     .pager-courses-current
       = render 'shared/tablesorter_pager'
     %br/

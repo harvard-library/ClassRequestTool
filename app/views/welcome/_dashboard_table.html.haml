@@ -12,7 +12,7 @@
           %tr
             %td.course-title= link_to(course.title, course )
             %td.section-times= first_plus_multiple_sections(course).html_safe
-            / %td.hidden= searchable_fields(course)
+            %td.hidden= searchable_fields(course)
     %div{ class: "pager-#{id}" }
       = render :partial => '/shared/tablesorter_pager'
   - else
