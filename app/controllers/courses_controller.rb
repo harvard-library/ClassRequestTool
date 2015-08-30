@@ -10,54 +10,6 @@ class CoursesController < ApplicationController
   # Ref: https://github.com/justinfrench/formtastic/issues/633
   before_filter ->(){params[:user_ids] && params[:user_ids].reject!(&:blank?)} , :only => [:create, :update]
 
-  # Processes all datetime fields that map directly to AR columns
-  # NOTE: Anything NOT mapping to a datetime column needs to be handled
-  #   separately
-  def process_datetimes
-    dt_cols = Course.columns.select {|c| c.type == :datetime}
-    dt_cols.each do |col|
-      if params[:course] && params[:course].include?(col.name) && !params[:course][col.name].blank?
-        unless col.array
-          begin
-            params[:course][col.name] = Time.zone.parse(params[:course][col.name]).utc.to_datetime
-          rescue
-            params[:course].delete(col.name)
-          end
-        else
-          params[:course][col.name] = params[:course][col.name].map do |date|
-            begin
-              Time.zone.parse(date).utc.to_datetime
-            rescue
-              nil
-            end
-          end.reject(&:nil?)
-          params[:course].delete(col.name) if params[:course][col.name].blank?
-        end
-      end
-    end
-    # Speaking of which, handle nested sessions
-    if params[:course] && !params[:course][:sections_attributes].blank?
-      sections = params[:course][:sections_attributes]
-      sections.each_pair do |k, v|
-        if v[:requested_dates]
-          v[:requested_dates].map! do |date|
-            begin
-              Time.zone.parse(date).utc.to_datetime
-            rescue
-              nil
-            end
-          end
-          v[:requested_dates].reject!(&:blank?)
-        end
-      end
-    end
-  end
-
-  def backdated?
-    unless params[:course][:sections_attributes] && params[:course][:sections_attributes].values.select{|s| !s[:actual_date].blank?}.blank?
-      @backdated = (params[:course][:sections_attributes] && params[:course][:sections_attributes].values.select {|s| !s[:actual_date].blank? && s[:actual_date] < DateTime.now}.blank?)
-    end
-  end
 
   def additional_staff
     # Set additional staff
@@ -70,17 +22,12 @@ class CoursesController < ApplicationController
     end
   end
 
-  # Helper for update, used to determine status
-  def set_status(c_params)
-    if c_params[:status] == "Closed" || @course && @course.status == "Closed"
-      "Closed"
-    elsif c_params[:status] == "Cancelled" || @course && @course.status == "Cancelled"
-      "Cancelled"
-    else
-      "Active"
+  def backdated?
+    unless params[:course][:sections_attributes] && params[:course][:sections_attributes].values.select{|s| !s[:actual_date].blank?}.blank?
+      @backdated = (params[:course][:sections_attributes] && params[:course][:sections_attributes].values.select {|s| !s[:actual_date].blank? && s[:actual_date] < DateTime.now}.blank?)
     end
   end
-
+  
   def cancel
     course = Course.find(params[:id])
     course.status = 'Cancelled'
@@ -114,6 +61,10 @@ class CoursesController < ApplicationController
     end
   end
   
+  def course_owner?(course)
+    current_user == course.primary_contact|| course.users.include?(current_user)
+  end
+  
   def create
 
     unless params[:course][:repository_id].blank?
@@ -142,6 +93,54 @@ class CoursesController < ApplicationController
       end
     end
   end
+
+  def dashboard
+    @homeless               = []
+    @closed                 = []
+    @to_close               = []
+    @unclaimed_unscheduled  = []
+    @unclaimed_scheduled    = []
+    @claimed_unscheduled    = []
+    @claimed_scheduled      = []
+    
+    #Loop over courses and slot them into their categories
+    @courses = Course.order_by_submitted.eager_load(:repository, :sections, :users, :primary_contact)
+        
+    @courses.each do |course|
+      if course.homeless?
+        @homeless << course
+      elsif course_owner?(course)
+        if course.completed?
+          if course.closed?
+            @closed << course
+          else
+            @to_close << course
+          end
+        else 
+          if course.scheduled?     
+            @claimed_scheduled << course
+          else
+            @claimed_unscheduled << course
+            section_ids = course.missing_dates?
+            if section_ids
+              @sections = Section.find(section_ids)
+            end
+          end
+        end
+        
+      elsif course.unclaimed? && current_user.repositories.include?(course.repository)
+        if course.scheduled?     
+          @unclaimed_scheduled << course
+        else
+          @unclaimed_unscheduled << course
+          section_ids = course.missing_dates?
+          if section_ids
+            @sections = Section.find(section_ids)
+          end
+        end
+      end
+    end 
+  end 
 
   def destroy
     @course = Course.find(params[:id])
@@ -319,6 +318,63 @@ class CoursesController < ApplicationController
     end
   end
   
+  # Processes all datetime fields that map directly to AR columns
+  # NOTE: Anything NOT mapping to a datetime column needs to be handled
+  #   separately
+  def process_datetimes
+    dt_cols = Course.columns.select {|c| c.type == :datetime}
+    dt_cols.each do |col|
+      if params[:course] && params[:course].include?(col.name) && !params[:course][col.name].blank?
+        unless col.array
+          begin
+            params[:course][col.name] = Time.zone.parse(params[:course][col.name]).utc.to_datetime
+          rescue
+            params[:course].delete(col.name)
+          end
+        else
+          params[:course][col.name] = params[:course][col.name].map do |date|
+            begin
+              Time.zone.parse(date).utc.to_datetime
+            rescue
+              nil
+            end
+          end.reject(&:nil?)
+          params[:course].delete(col.name) if params[:course][col.name].blank?
+        end
+      end
+    end
+    # Speaking of which, handle nested sessions
+    if params[:course] && !params[:course][:sections_attributes].blank?
+      sections = params[:course][:sections_attributes]
+      sections.each_pair do |k, v|
+        if v[:requested_dates]
+          v[:requested_dates].map! do |date|
+            begin
+              Time.zone.parse(date).utc.to_datetime
+            rescue
+              nil
+            end
+          end
+          v[:requested_dates].reject!(&:blank?)
+        end
+      end
+    end
+  end
+
+  def recent_show
+    @course = Course.find(params[:id])
+  end
+
+  def repo_select
+    unless params[:repo] == ""
+      @repository = Repository.find(params[:repo])
+    else
+      @repository = ""
+    end
+    #render :partial => "shared/forms/course_staff_service"
+    redirect_to new_course_path(:repository => @repository)
+  end
+
   def show
     @course = Course.includes(sections: :room).find(params[:id])
     unless current_user.staff? || current_user.can_admin? || @course.contact_email == current_user.email
@@ -360,6 +416,29 @@ class CoursesController < ApplicationController
     }    
   end
 
+  # Helper for update, used to determine status
+  def set_status(c_params)
+    if c_params[:status] == "Closed" || @course && @course.status == "Closed"
+      "Closed"
+    elsif c_params[:status] == "Cancelled" || @course && @course.status == "Cancelled"
+      "Cancelled"
+    else
+      "Active"
+    end
+  end
+
+  def take
+    @course = Course.find(params[:id])
+    @course.users << current_user
+    if @course.repository.nil?
+      @course.repository = current_user.repositories[0]
+    end
+    @course.save
+    respond_to do |format|
+      format.html { redirect_to dashboard_welcome_index_url, notice: 'Class was successfully claimed.' }
+    end
+  end 
+  
   def uncancel
     course = Course.find(params[:id])
     course.status = 'Active'
@@ -392,7 +471,8 @@ class CoursesController < ApplicationController
     # Begin gross status manipulation *&!%
     # Set notification statuses
     send_repo_change_notification = repo_change?
-    send_staff_change_notification = staff_change? && !(current_user.id == params[:course][:primary_contact_id].to_i)
+    send_staff_change_notification = staff_change? && (current_user.id != params[:course][:primary_contact_id].to_i) &&
+      !params[:course][:user_ids].map(&:to_i).include?(current_user.id)
     
     @course.attributes = course_params
     
@@ -429,84 +509,6 @@ class CoursesController < ApplicationController
         format.json { render :json => @course.errors, :status => :unprocessable_entity }
       end
     end
-  end
-
-  def recent_show
-    @course = Course.find(params[:id])
-  end
-
-  def repo_select
-    unless params[:repo] == ""
-      @repository = Repository.find(params[:repo])
-    else
-      @repository = ""
-    end
-    #render :partial => "shared/forms/course_staff_service"
-    redirect_to new_course_path(:repository => @repository)
-  end
-
-  def take
-    @course = Course.find(params[:id])
-    @course.users << current_user
-    if @course.repository.nil?
-      @course.repository = current_user.repositories[0]
-    end
-    @course.save
-    respond_to do |format|
-      format.html { redirect_to dashboard_welcome_index_url, notice: 'Class was successfully claimed.' }
-    end
-  end 
-  
-  def dashboard
-    @homeless               = []
-    @closed                 = []
-    @to_close               = []
-    @unclaimed_unscheduled  = []
-    @unclaimed_scheduled    = []
-    @claimed_unscheduled    = []
-    @claimed_scheduled      = []
-    
-    #Loop over courses and slot them into their categories
-    @courses = Course.order_by_submitted.eager_load(:repository, :sections, :users, :primary_contact)
-        
-    @courses.each do |course|
-      if course.homeless?
-        @homeless << course
-      elsif course_owner?(course)
-        if course.completed?
-          if course.closed?
-            @closed << course
-          else
-            @to_close << course
-          end
-        else 
-          if course.scheduled?     
-            @claimed_scheduled << course
-          else
-            @claimed_unscheduled << course
-            section_ids = course.missing_dates?
-            if section_ids
-              @sections = Section.find(section_ids)
-            end
-          end
-        end
-        
-      elsif course.unclaimed? && current_user.repositories.include?(course.repository)
-        if course.scheduled?     
-          @unclaimed_scheduled << course
-        else
-          @unclaimed_unscheduled << course
-          section_ids = course.missing_dates?
-          if section_ids
-            @sections = Section.find(section_ids)
-          end
-        end
-      end
-    end 
-  end 
-  
-  def course_owner?(course)
-    current_user == course.primary_contact|| course.users.include?(current_user)
   end
   
   private

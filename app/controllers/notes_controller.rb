@@ -18,7 +18,7 @@ class NotesController < ApplicationController
   end
 
   def create
-    params[:note][:staff_comment] = ! params[:note][:staff_comment] unless params[:note][:auto]
+    params[:note][:staff_comment] = params[:note][:staff_comment].to_bool || params[:note][:auto].to_bool
     
     @note = Note.new(note_params)
 

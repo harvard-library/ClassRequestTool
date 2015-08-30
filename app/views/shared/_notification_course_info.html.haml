@@ -19,6 +19,15 @@
     %a{:href => course_url(course)}
       %em= course.title
     %br/
+    Requester: #{course.primary_contact.display_name}
+    %br/
+    - unless course.additional_patrons.blank?
+      Additional Contacts:
+      %br/
+      - course.additional_patrons do |ap|
+        &ndash; #{ap.full_name} (#{ap.role})
+        %br/
+    %br/
     Library/Archive: #{course.repo_name}
     %br/
     Subject: #{course.subject}

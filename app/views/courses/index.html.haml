@@ -28,8 +28,11 @@
           &mdash; Course with no dates&nbsp;&nbsp;&nbsp;&nbsp;
        
     .search
-      %input{:class => 'table-search', 'data-column' => 'all', :type => 'search', :placeholder => 'Search table...' } 
-        &nbsp;&nbsp; (all non-date columns)
+      = form_tag courses_index_path, :method => :post do
+        = search_field_tag 'search', 'Full class search', :class => 'form-control'
+        %button{:type => submit, :class => 'btn btn-info'}
+          %span.glyphicon.glyphicon-search &nbsp;
+
     %br
     .pager-courses-current
       = render 'shared/tablesorter_pager'

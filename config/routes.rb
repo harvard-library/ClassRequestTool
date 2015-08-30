@@ -36,9 +36,10 @@ ClassRequestTool::Application.routes.draw do
       get 'dashboard'
     end
   end
-  get "/courses/:id/cancel",    to: 'courses#cancel'
-  get "/courses/:id/uncancel",  to: 'courses#uncancel'
-  get "/courses/:id/close",     to: 'courses#close'
+  get  "/courses/:id/cancel",    to: 'courses#cancel'
+  get  "/courses/:id/uncancel",  to: 'courses#uncancel'
+  get  "/courses/:id/close",     to: 'courses#close'
+  post "/courseas/search",      to: 'courses#search'
 
   devise_for :users,
     :controllers => {
