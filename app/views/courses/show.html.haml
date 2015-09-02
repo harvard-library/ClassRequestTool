@@ -7,6 +7,13 @@
   DO NOT CHANGE THEM without also changing the Aeon plugin that relies on them.
 %h3= @course.title
 %br/
+- if @course.status == 'Active'
+  %h2.bg-success Active
+- elsif @course.status == 'Closed'
+  %h2.bg-danger Closed
+- elsif @course.status == 'Cancelled'
+  %h2.bg-info Cancelled
+  
 #welcome-left
   - if current_user.can_schedule?
     = render :partial => 'shared/course_actions', :locals => { :course => @course }
@@ -215,7 +222,7 @@
     - unless @course.status == "Closed"
       .admin-box
         %p When class is complete, click box to send class assessment, if desired. Use button below to close class.
-        = semantic_form_for(@course, :html => {:multipart => true}) do |f|
+        = semantic_form_for(@course, :method => :put, :html => {:multipart => true}) do |f|
           #headcounts.panel.panel-default
             .panel-heading
               %h4.panel-title
@@ -226,9 +233,10 @@
                   - if section.object.try(:actual_date)
                     = section.inputs :headcount, :name => "Visit #{section.object.session}: #{display_with_tz(section.object.actual_date)}"
           = f.inputs do
-            = f.input :status, :as => :hidden, :value => "Closed"
-            = check_box_tag :send_assessment_email
-            Send assessment email to requester
+            = f.input :status, :as => :hidden, :input_html => { :value => "Closed" }
+            .checkbox
+              = check_box_tag :send_assessment_email
+              Send assessment email to requester
             %br/
             %br/
           = f.actions do

@@ -125,6 +125,10 @@ class Course < ActiveRecord::Base
     return true
   end
   
+  def cancelled?
+    self.status == 'Cancelled'
+  end
+  
   def closed?
     self.status == 'Closed'
   end

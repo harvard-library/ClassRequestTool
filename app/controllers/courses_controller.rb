@@ -471,16 +471,18 @@ class CoursesController < ApplicationController
     # Begin gross status manipulation *&!%
     # Set notification statuses
     send_repo_change_notification = repo_change?
-    send_staff_change_notification = staff_change? && (current_user.id != params[:course][:primary_contact_id].to_i) &&
-      !params[:course][:user_ids].map(&:to_i).include?(current_user.id)
+    send_staff_change_notification = staff_change? && (current_user.id != params[:course][:primary_contact_id].to_i) && 
+    (params[:course][:user_ids].blank? || !params[:course][:user_ids].map(&:to_i).include?(current_user.id))
     
     @course.attributes = course_params
     
     if @course.save
       if params[:course][:status] == "Closed" # check params because editing closed courses should not create notes
         @course.notes.create(:note_text => "Class has marked as closed.", :user_id => current_user.id, :auto => true)
-        Notification.assessment_requested(@course).deliver_later(:queue => 'notifications')
-        @course.notes.create(:note_text => "Assessment email sent.", :user_id => current_user.id, :auto => true)
+        unless params[:send_assessment_email].blank?
+          Notification.assessment_requested(@course).deliver_later(:queue => 'notifications') 
+          @course.notes.create(:note_text => "Assessment email sent.", :user_id => current_user.id, :auto => true)
+        end
       end
 
       if send_repo_change_notification
