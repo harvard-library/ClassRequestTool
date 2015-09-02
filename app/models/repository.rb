@@ -15,6 +15,7 @@ class Repository < ActiveRecord::Base
   accepts_nested_attributes_for :attached_images, :allow_destroy => true, reject_if: :all_blank 
 
   validates_presence_of :name
+  validates :class_policies, format: { :with => URI.regexp }, :if => Proc.new { |a| a.class_policies.present? }
   
   default_scope { order("name ASC") }
   
