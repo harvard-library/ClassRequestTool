@@ -22,7 +22,7 @@ ClassRequestTool::Application.configure do
 
   # Set up action mailer
   mailer_data = ERB.new File.new("#{Rails.root}/config/mailer.yml.erb").read
-  mailer_config = YAML::load(mailer_data.result(binding))
+  mailer_config = YAML::load(mailer_data.result(binding)).with_indifferent_access
   config.action_mailer.raise_delivery_errors = true
   mailconf = mailer_config[:mailer][:development]
   config.action_mailer.delivery_method = mailconf[:delivery_method]
@@ -54,8 +54,10 @@ ClassRequestTool::Application.configure do
 
   # Expands the lines which load the assets
   config.assets.debug = true
-  
-  BetterErrors::Middleware.allow_ip! '127.0.0.1' 
+
+  config.action_mailer.default_url_options = { :host => 'localhost', :port => 3000 }
+
+  BetterErrors::Middleware.allow_ip! '127.0.0.1'
 
   config.after_initialize do
     Bullet.enable = true
@@ -72,4 +74,3 @@ ClassRequestTool::Application.configure do
     Bullet.stacktrace_includes = false
   end
 end
-

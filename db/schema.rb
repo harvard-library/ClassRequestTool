@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150902021755) do
+ActiveRecord::Schema.define(:version => 20150415192257) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -131,23 +131,23 @@ ActiveRecord::Schema.define(version: 20150902021755) do
     t.text     "collaboration_options",               default: [],              array: true
   end
 
-  add_index "courses", ["affiliation"], name: "index_courses_on_affiliation", using: :btree
-  add_index "courses", ["contact_email"], name: "index_courses_on_contact_email", using: :btree
-  add_index "courses", ["contact_phone"], name: "index_courses_on_contact_phone", using: :btree
-  add_index "courses", ["course_number"], name: "index_courses_on_course_number", using: :btree
-  add_index "courses", ["duration"], name: "index_courses_on_duration", using: :btree
-  add_index "courses", ["first_date", "last_date"], name: "index_courses_on_first_date_and_last_date", using: :btree
-  add_index "courses", ["instruction_session"], name: "index_courses_on_instruction_session", using: :btree
-  add_index "courses", ["pre_class_appt"], name: "index_courses_on_pre_class_appt", using: :btree
-  add_index "courses", ["scheduled"], name: "index_courses_on_scheduled", using: :btree
-  add_index "courses", ["session_count", "section_count", "total_attendance"], name: "courses_index_sessions_sections_attendance", using: :btree
-  add_index "courses", ["session_count"], name: "index_courses_on_session_count", using: :btree
-  add_index "courses", ["staff_involvement"], name: "index_courses_on_staff_involvement", using: :btree
-  add_index "courses", ["status"], name: "index_courses_on_status", using: :btree
-  add_index "courses", ["subject"], name: "index_courses_on_subject", using: :btree
-  add_index "courses", ["title"], name: "index_courses_on_title", using: :btree
+  add_index "courses", ["affiliation"], :name => "index_courses_on_affiliation"
+  add_index "courses", ["contact_email"], :name => "index_courses_on_contact_email"
+  add_index "courses", ["contact_phone"], :name => "index_courses_on_contact_phone"
+  add_index "courses", ["course_number"], :name => "index_courses_on_course_number"
+  add_index "courses", ["duration"], :name => "index_courses_on_duration"
+  add_index "courses", ["first_date", "last_date"], :name => "index_courses_on_first_date_and_last_date"
+  add_index "courses", ["instruction_session"], :name => "index_courses_on_instruction_session"
+  add_index "courses", ["pre_class_appt"], :name => "index_courses_on_pre_class_appt"
+  add_index "courses", ["scheduled"], :name => "index_courses_on_scheduled"
+  add_index "courses", ["session_count", "section_count", "total_attendance"], :name => "courses_index_sessions_sections_attendance"
+  add_index "courses", ["session_count"], :name => "index_courses_on_session_count"
+  add_index "courses", ["staff_involvement"], :name => "index_courses_on_staff_involvement"
+  add_index "courses", ["status"], :name => "index_courses_on_status"
+  add_index "courses", ["subject"], :name => "index_courses_on_subject"
+  add_index "courses", ["title"], :name => "index_courses_on_title"
 
-  create_table "courses_item_attributes", id: false, force: :cascade do |t|
+  create_table "courses_item_attributes", :id => false, :force => true do |t|
     t.integer "item_attribute_id"
     t.integer "course_id"
   end

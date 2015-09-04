@@ -1,13 +1,9 @@
 class CorrectSessionCountColumnType < ActiveRecord::Migration
   def up
-    connection.execute(%q{
-      ALTER TABLE COURSES
-      ALTER COLUMN session_count
-      type integer using cast(session_count as integer)
-    })
+    execute("ALTER TABLE courses ALTER COLUMN session_count TYPE integer USING (coalesce(NULLIF(session_count, ''), '0')::integer);")
   end
 
   def down
-    change_column :courses, :session_count, :string
+    execute('ALTER TABLE courses ALTER COLUMN session_count TYPE varchar(255) USING (session_count::varchar);')
   end
 end
