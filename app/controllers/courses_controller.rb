@@ -464,7 +464,7 @@ class CoursesController < ApplicationController
 
     # Do some parameter manipulation
     process_params  
-
+    
     send_repo_change_notification = false
     send_staff_change_notification = false
 
