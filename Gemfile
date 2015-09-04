@@ -25,7 +25,7 @@ gem 'haml-rails'
 gem 'bower-rails'
 gem 'cocoon'
 gem 'bootstrap-sass'
-
+gem 'net-ssh', '~> 2.9.0'
 # Gems used only for assets and not required
 # in production environments by default.
 gem 'sass-rails'
