@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'dotenv-rails', :groups => [:development, :test]
+gem 'dotenv-rails'
 gem 'rails', '>= 4.1'
 gem 'sprockets-rails', :require => 'sprockets/railtie'
 gem 'stackprof'                  # For ruby 2.1
