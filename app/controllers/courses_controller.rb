@@ -567,30 +567,36 @@ class CoursesController < ApplicationController
     def course_params
       params.require(:course).permit(
         :title, :number_of_students, :goal,
-        :contact_username, :contact_first_name, :contact_last_name, :contact_email, :contact_phone,  #contact info
-        :room_id, :repository_id, :user_ids, :item_attribute_ids, :primary_contact_id, :staff_involvement_ids, # associations
-        { :sections_attributes => [
-          :id,
-          :_destroy,
-          {:requested_dates => []}, # Postgres array of DateTimes
-          :actual_date,           # Single DateTime
-          :session,               # Integer representing session membership
-          :session_duration,      # Section/session duration
-          :room_id,
-          :course,
-          :headcount
-        ]},
-        { :additional_patrons_attributes => [
+        :contact_username, :contact_first_name, :contact_last_name, :contact_email, :contact_phone,   #contact info
+        :room_id, :repository_id,
+        :subject, :course_number, :affiliation,  :session_count,                                      #values
+        :comments,  :staff_involvement, :instruction_session, :status, :assisting_repository_id, 
+        :syllabus, :remove_syllabus, :external_syllabus,                                              #syllabus
+        :pre_class_appt, :timeframe, :timeframe_2, :timeframe_3, :timeframe_4, :duration,             #concrete schedule vals
+        :time_choice_1, :time_choice_2, :time_choice_3, :time_choice_4,                               # tentative schedule vals
+        #:pre_class_appt_choice_1, :pre_class_appt_choice_2, :pre_class_appt_choice_3,                #unused
+        :section_count, :session_count, :total_attendance,                                            # stats
+         
+        :primary_contact_id,                                                                          # associations
+        {:collaboration_options           => [] },
+        { :item_attribute_ids             => [] },  
+        { :user_ids                       => [] }, 
+        { :staff_involvement_ids          => [] },
+        { :additional_patrons_attributes  => [
           :id, :_destroy,
           :first_name, :last_name, :email, :role, :course_id
         ]}, 
-        :subject, :course_number, :affiliation,  :session_count,  #values
-        :comments,  :staff_involvement, :instruction_session, :status, :assisting_repository_id, {:collaboration_options => []},
-        :syllabus, :remove_syllabus, :external_syllabus, #syllabus
-        :pre_class_appt, :timeframe, :timeframe_2, :timeframe_3, :timeframe_4, :duration, #concrete schedule vals
-        :time_choice_1, :time_choice_2, :time_choice_3, :time_choice_4, # tentative schedule vals
-        :pre_class_appt_choice_1, :pre_class_appt_choice_2, :pre_class_appt_choice_3, #unused
-        :section_count, :session_count, :total_attendance  # stats
+        { :sections_attributes => [
+          :id,
+          :_destroy,
+          {:requested_dates => []},   # Postgres array of DateTimes
+          :actual_date,               # Single DateTime
+          :session,                   # Integer representing session membership
+          :session_duration,          # Section/session duration
+          :room_id,
+          :course,
+          :headcount
+        ]}
       )
     end    
 end
