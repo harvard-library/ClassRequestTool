@@ -35,10 +35,10 @@ class UsersController < ApplicationController
     
     respond_to do|format|
       if @user.save
-        flash[:notice] = 'Added that User'
+        flash[:info] << 'Added that User'
         format.html {redirect_to :action => :index}
       else
-        flash[:error] = 'Could not add that User'
+        flash[:danger] << 'Could not add that User'
         format.html {render :action => :new}
       end
     end
@@ -77,7 +77,7 @@ class UsersController < ApplicationController
     
     user = @user.email
     if @user.destroy
-      flash[:notice] = %Q|Deleted user #{user}|
+      flash[:info] << %Q|Deleted user #{user}|
       redirect_to :action => :index
     else
 
@@ -111,10 +111,10 @@ class UsersController < ApplicationController
     
     respond_to do|format|
       if @user.save
-        flash[:notice] = %Q|#{@user} updated|
+        flash[:info] << %Q|#{@user} updated|
         format.html {redirect_to :action => :index}
       else
-        flash[:error] = 'Could not update that User'
+        flash[:danger] << 'Could not update that User'
         format.html {render :action => :new}
       end
     end

@@ -111,6 +111,13 @@ class Course < ActiveRecord::Base
     self.homeless? ? 'Homeless' : self.repository.name
   end
     
+  def backdated?
+    self.sections.each do |s|
+      return false if s.actual_date.blank? || s.actual_date > DateTime.now
+    end
+    true
+  end
+
   def claimed?
     !self.primary_contact_id.blank?
   end

@@ -22,7 +22,7 @@ class Admin::AdminController < ApplicationController
     if klass.respond_to? :csv_data
       csv_export = CSVExport.new(klass, filters)
     else
-      flash[:alert] = "It's not possible to export data for that."
+      flash[:warning] << "It's not possible to export data for that."
       return_to :back
     end
     
@@ -33,7 +33,7 @@ class Admin::AdminController < ApplicationController
   
   def build_report
     if params[:selected_reports].blank?
-      flash[:alert] = "You must select at least one report item"
+      flash[:warning] << "You must select at least one report item"
       redirect_to :back
       return
     end
@@ -72,19 +72,19 @@ class Admin::AdminController < ApplicationController
       ::Notification.send_test_email(current_user.email, 'unqueued').deliver_now
     end
     
-    flash[:notice] = "You should receive an email shortly"
+    flash[:info] << "You should receive an email shortly"
     redirect_to :back
   end
   
   def update_stats
     Course.update_all_stats
-    flash[:notice] = 'Course stats have been updated'
+    flash[:info] << 'Course stats have been updated'
     sessionless_courses = Course.where(session_count: 0).all
     sessionless_courses.each do |sc|
-      flash[:alert] = flash[:alert].nil? ? '<p>Sessionless courses:</p>' : flash[:alert]
-      flash[:alert] += "<p>#{sc.id} - #{sc.title}</p>\n"
+      sessionless_course_warning ||=  '<p>Sessionless courses:</p>'
+      sessionless_course_warning += "<p>#{sc.id} - #{sc.title}</p>\n"
     end
-    flash[:alert] = flash[:alert].html_safe
+    flash[:warning] << sessionless_course_warning.html_safe
     redirect_to :back
   end
   
@@ -99,7 +99,7 @@ class Admin::AdminController < ApplicationController
   private
     def admins_only
       unless current_user && (current_user.admin? || current_user.superadmin?)
-        flash[:alert] = 'Sorry, only admins have permission to do that.'
+        flash[:warning] << 'Sorry, only admins have permission to do that.'
         redirect_to '/'
       end
     end

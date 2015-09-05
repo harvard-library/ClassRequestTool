@@ -43,12 +43,40 @@ $(function () {
   
 
   /* Set up required content warnings */
-  $('.required input').each(function(i) {
+  /* NOTE: This does not include ckeditor text areas - that's a more complicated problem */
+  $('.required input, .required select').each(function(i) {
     $('#missing-fields').append('<div class="alert alert-danger" id="warning_' + $(this).attr('id') + '">Missing field: ' + $(this).closest('.required').find('label').text().replace(': *','') + '</div>');
-    if ($(this).val()) {
+    if ($(this).selector.match(/ckeditor/)) {
+      var has_content = $($(this).selector + ' iframe').contents().find("body").text();
+    } else {
+      has_content = $(this).val();
+    }
+    if (has_content) {
       $('#missing-fields #warning_' + $(this).attr('id')).hide();
     }
   });
+  
+  /* Check required fields to make sure they have something in them */
+  $('body').on('change', '.required input, .required select', function(e) {
+    $input = $(e.currentTarget);
+    if ($input.val()) {
+      $('#missing-fields #warning_' + $input.attr('id')).hide();
+    } else {
+      $('#missing-fields #warning_' + $input.attr('id')).show();  
+    }
+  });
+        
+    
+  $('body').on('blur', '.ckeditor.required iframe', function(e) {
+    console.log('FIRED');
+    $input = $(this).closest('.ckeditor.required');
+    if ($this.contents().find("body").text()) {
+      $('#missing-fields #warning_' + $input.attr('id')).hide();
+    } else {
+      $('#missing-fields #warning_' + $input.attr('id')).show();  
+    }
+  });
+  
 
   /* courses#(new|edit) */
   if ($('body').hasClass('c_courses') &&  ($('body').hasClass('a_edit') || $('body').hasClass('a_new'))) {
@@ -217,16 +245,6 @@ $(function () {
     } else {
       $('#local_no_or_other').slideUp();
       $('#other_affiliation').val('') ;   
-    }
-  });
-  
-  /* Check required fields to make sure they have something in them */
-  $('body').on('change', '.required input', function(e) {
-    $input = $(e.currentTarget);
-    if ($input.val()) {
-      $('#missing-fields #warning_' + $input.attr('id')).hide();
-    } else {
-      $('#missing-fields #warning_' + $input.attr('id')).show();  
     }
   });
   

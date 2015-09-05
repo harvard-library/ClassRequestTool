@@ -47,4 +47,8 @@ module ApplicationHelper
   def repository_list
     Repository.all.order(:name => 'ASC')
   end
+  
+  def mail_process_running?
+    %x[ps -ef | grep delayed_job | grep -v grep].match(/delayed_job/)
+  end
 end

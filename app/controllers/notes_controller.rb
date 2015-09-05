@@ -26,6 +26,7 @@ class NotesController < ApplicationController
       respond_to do |format|
         if @note.save
           Notification.new_note(@note, current_user).deliver_later(:queue => 'notifications')
+          flash[:info] << "New note notification sent"  unless $local_config.notifications_on? 
           format.html { redirect_to course_url(@note.course), notice: 'Note was successfully created.' }
           format.json { render json: @note, status: :created, note: @note }
         else

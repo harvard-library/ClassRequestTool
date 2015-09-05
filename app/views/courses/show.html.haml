@@ -5,14 +5,13 @@
   span#headcount and span#avgHeadcount are there for potential future use by Aeon
   
   DO NOT CHANGE THEM without also changing the Aeon plugin that relies on them.
+- if current_user && current_user.can_admin?
+  %div{ :class => "alert alert-#{status_class(@course.status)}"} 
+    This class is
+    %strong= @course.status.downcase
+
 %h3= @course.title
 %br/
-- if @course.status == 'Active'
-  %h2.bg-success Active
-- elsif @course.status == 'Closed'
-  %h2.bg-danger Closed
-- elsif @course.status == 'Cancelled'
-  %h2.bg-info Cancelled
   
 #welcome-left
   - if current_user.can_schedule?

@@ -30,7 +30,7 @@
       <![endif]
   %body{:class => "c_#{controller.controller_name} a_#{controller.action_name} u_#{current_user ? current_user.user_type : "anon"}"}
     #wrap
-      - if current_user && ( current_user.admin? || current_user.superadmin? )
+      - if current_user && current_user.can_admin?
         %div{:class => "notifications-status #{$local_config.notifications_on? ? 'ON' : 'OFF' }"}
           Notifications:
           %b= $local_config.notifications_on? ? 'SENDING NORMALLY' : "TEST MODE - delivering to #{test_mail_recipient}"
@@ -52,7 +52,19 @@
           .content
             .row
               .col-md-12
-                = render :partial => 'shared/messages'
+                -if current_user && current_user.can_admin?
+                  - unless mail_process_running? 
+                    %div{:class => "alert alert-danger"}
+                      %strong The mail process is not running. Please notify a superadmin.
+                - flash.each do |name, msgs|
+                  - next if name.match(/affiliation/) || msgs.blank?
+                  - msgs = [msgs] if msgs.is_a?(String)
+                  - msgs.each do |msg|
+                    %div{:class => "alert alert-#{name.to_s}"}
+                      %a.close{"data-dismiss" => "alert"} ×
+                      = content_tag :div, msg.html_safe, :class => "flash_#{name}"
+            .row
+              .col-md-12
                 = yield
         / ! end of .container
       / ! end of #main

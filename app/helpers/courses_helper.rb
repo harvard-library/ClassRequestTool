@@ -56,6 +56,19 @@ module CoursesHelper
     range
   end
   
+  def status_class(status)
+    case status
+      when 'Active'
+        'success'
+      when 'Closed'
+        'danger'
+      when 'Cancelled'
+        'info'
+      else
+        'warning'
+      end
+  end
+  
   def upcoming_or_past(date)
     if date.nil?
       "<span class='glyphicon glyphicon-minus-sign nil'></span>"

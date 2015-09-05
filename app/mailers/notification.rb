@@ -112,6 +112,8 @@ class Notification < ActionMailer::Base
   end
 
   def new_request_to_requestor(course)
+    binding.pry
+    
     @custom_text = Admin::CustomText.where( key: __method__.to_s).first.text
     @course = course
        
@@ -124,6 +126,8 @@ class Notification < ActionMailer::Base
   end
   
   def new_request_to_admin(course)
+    binding.pry
+    
     @custom_text = Admin::CustomText.where( key: __method__.to_s).first.text
     @course = course
     
@@ -196,7 +200,7 @@ class Notification < ActionMailer::Base
     unless course.additional_patrons.blank?
       recipients += course.additional_patrons.map { |p| p.email }
     end
-    mail(to: recipients, subject: "[ClassRequestTool] You have been assigned a class")
+    mail(to: recipients, subject: "[ClassRequestTool] Confirmation of time change")
   end
 
   def uncancellation(course)
@@ -223,5 +227,6 @@ class Notification < ActionMailer::Base
   
   def send_test_email(email, queued_or_unqueued)
     mail(:to => email, :subject => "[ClassRequestTool] Test email (#{queued_or_unqueued})")
+    flash[:info] << "Test email sent"  unless $local_config.notifications_on? 
   end  
 end

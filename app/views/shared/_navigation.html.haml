@@ -35,7 +35,7 @@
       - elsif current_user && current_user.staff?
         %li= link_to "Users", users_path
     - elsif current_user && current_user.patron?
-      %li= link_to "Request a Class", courses_path
+      %li= link_to "Request a Class", new_course_path
       %li= link_to "My Classes", courses_path
     - if current_user && (current_user.patron? || current_user.staff)
       %li= link_to "Edit Account", edit_user_registration_path
