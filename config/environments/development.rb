@@ -59,10 +59,11 @@ ClassRequestTool::Application.configure do
 
   config.after_initialize do
     Bullet.enable = true
-    Bullet.alert = true
     Bullet.bullet_logger = true
     Bullet.console = true
-    Bullet.growl = true
+    
+    # Turned off
+    Bullet.growl = false
     Bullet.xmpp = false
     Bullet.rails_logger = false
     Bullet.bugsnag = false

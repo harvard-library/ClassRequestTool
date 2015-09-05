@@ -173,8 +173,6 @@ GEM
     libv8 (3.16.14.11)
     loofah (2.0.2)
       nokogiri (>= 1.5.9)
-    macaddr (1.7.1)
-      systemu (~> 2.6.2)
     mail (2.6.3)
       mime-types (>= 1.16, < 3)
     method_source (0.8.2)
@@ -264,8 +262,6 @@ GEM
       rspec-mocks (~> 3.3.0)
       rspec-support (~> 3.3.0)
     rspec-support (3.3.0)
-    ruby-growl (4.1)
-      uuid (~> 2.3, >= 2.3.5)
     ruby_parser (3.7.0)
       sexp_processor (~> 4.1)
     sass (3.4.16)
@@ -293,7 +289,6 @@ GEM
     stepford (0.15.1)
       rails
       thor
-    systemu (2.6.5)
     therubyracer (0.12.2)
       libv8 (~> 3.16.14.0)
       ref
@@ -306,8 +301,6 @@ GEM
       execjs (>= 0.3.0)
       json (>= 1.8.0)
     uniform_notifier (1.9.0)
-    uuid (2.3.8)
-      macaddr (~> 1.0)
     warden (1.2.3)
       rack (>= 1.0)
     will_paginate (3.0.7)
@@ -355,7 +348,6 @@ DEPENDENCIES
   rack-mini-profiler
   rails (>= 4.1)
   rspec-rails
-  ruby-growl
   sass-rails
   schema_to_scaffold
   sprockets-rails

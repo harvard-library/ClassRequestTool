@@ -64,6 +64,5 @@ group :development do
   gem 'bullet'
   gem 'rack-mini-profiler', require: false
   gem 'flamegraph'
-  gem 'ruby-growl'
 end
 
