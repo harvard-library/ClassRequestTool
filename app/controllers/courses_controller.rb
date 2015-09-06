@@ -28,9 +28,9 @@ class CoursesController < ApplicationController
     course.status = 'Cancelled'
     if course.save(validate: false)         # Don't bother with validation since the class is being cancelled
       # Don't bother with notification
-      flash[:info] << "The class <em>#{course.title}</em> was successfully cancelled.".html_safe
+      flash_message :info, "The class <em>#{course.title}</em> was successfully cancelled.".html_safe
     else
-      flash[:danger] << "There was an error cancelling the class."
+      flash_message :danger, "There was an error cancelling the class."
     end
     
     respond_to do |format|
@@ -76,10 +76,10 @@ class CoursesController < ApplicationController
         unless @course.backdated?
           Notification.new_request_to_requestor(@course).deliver_later(:queue => 'notifications')
           Notification.new_request_to_admin(@course).deliver_later(:queue => 'notifications')
-          flash[:info] << "New course request confirmation sent to patron"  unless $local_config.notifications_on? 
-          flash[:info] << "New request notification sent to admins"  unless $local_config.notifications_on? 
+          flash_message :info, "New course request confirmation sent to patron"  unless $local_config.notifications_on? 
+          flash_message :info, "New request notification sent to admins"  unless $local_config.notifications_on? 
         end
-        flash[:info] << 'The class request was successfully submitted.'
+        flash_message :info, 'The class request was successfully submitted.'
         
         format.html { redirect_to @course }
         format.json { render json: @course, status: :created, location: @course }
@@ -449,9 +449,9 @@ class CoursesController < ApplicationController
     
     if course.save(validate: false)         # Don't bother with validation since the class is being recovered
 #      Notification.uncancellation(course).deliver_later(:queue => 'notifications')
-      flash[:info] << "The class <em>#{course.title}</em> was successfully uncancelled.".html_safe
+      flash_message :info, "The class <em>#{course.title}</em> was successfully uncancelled.".html_safe
     else
-      flash[:danger] << "There was an error uncancelling the class."
+      flash_message :danger, "There was an error uncancelling the class."
     end
     
     respond_to do |format|
@@ -485,7 +485,7 @@ class CoursesController < ApplicationController
         @course.notes.create(:note_text => "Class has marked as closed.", :user_id => current_user.id, :auto => true)
         unless params[:send_assessment_email].blank?
           Notification.assessment_requested(@course).deliver_later(:queue => 'notifications') 
-          flash[:info] << "Assessment requested notification sent"  unless $local_config.notifications_on? 
+          flash_message :info, "Assessment requested notification sent"  unless $local_config.notifications_on? 
           @course.notes.create(:note_text => "Assessment email sent.", :user_id => current_user.id, :auto => true)
         end
       end
@@ -493,7 +493,7 @@ class CoursesController < ApplicationController
       if send_repo_change_notification
         # FIX INFO_NEEDED Should "changed from" repos get email? Inquiring Bobbis want to know
         Notification.repo_change(@course).deliver_later(:queue => 'changes') unless @course.repository.blank?
-        flash[:info] << "Repository change notification sent"  unless $local_config.notifications_on? 
+        flash_message :info, "Repository change notification sent"  unless $local_config.notifications_on? 
         @course.notes.create(:note_text => "Library/Archive changed to #{@course.repository.blank? ? "none" : @course.repository.name + ". Email sent."}.",
                              :user_id => current_user.id, :auto => true)
       end
@@ -501,13 +501,13 @@ class CoursesController < ApplicationController
       if send_staff_change_notification
         # FIX INFO_NEEDED Should "dropped" staff members get this email?
         Notification.staff_change(@course, current_user).deliver_later(:queue => 'notifications')
-        flash[:info] << "Staff change notification sent to #{recipients.join(', ')}"  unless $local_config.notifications_on? 
+        flash_message :info, "Staff change notification sent to #{recipients.join(', ')}"  unless $local_config.notifications_on? 
         @course.notes.create(:note_text => "Staff change email sent.", :user_id => current_user.id, :auto => true)
       end
       
       unless params[:send_timeframe_email].blank?
         Notification.timeframe_change.deliver_later(:queue => 'notifications')
-        flash[:info] << "Time change confirmation sent"  unless $local_config.notifications_on?
+        flash_message :info, "Time change confirmation sent"  unless $local_config.notifications_on?
       end
 
       respond_to do |format|

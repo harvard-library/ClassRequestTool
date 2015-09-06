@@ -90,10 +90,10 @@ class AssessmentsController < ApplicationController
       if @assessment.save
         if @assessment.course.primary_contact.blank? && @assessment.course.users.blank?
           Notification.assessment_received_to_admins(@assessment).deliver_later(:queue => 'notifications')
-          flash[:info] << "Assessment receipt notification sent to admins"  unless $local_config.notifications_on? 
+          flash_message :info, "Assessment receipt notification sent to admins"  unless $local_config.notifications_on? 
         else
           Notification.assessment_received_to_users(@assessment).deliver_later(:queue => 'notifications')
-          flash[:info] << "Assessment receipt notification sent to users"  unless $local_config.notifications_on? 
+          flash_message :info, "Assessment receipt notification sent to users"  unless $local_config.notifications_on? 
         end
         format.html { redirect_to course_url(@assessment.course), notice: 'assessment was successfully created.' }
         format.json { render json: @assessment, status: :created, assessment: @assessment }

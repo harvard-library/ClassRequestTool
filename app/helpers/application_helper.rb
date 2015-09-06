@@ -51,4 +51,21 @@ module ApplicationHelper
   def mail_process_running?
     %x[ps -ef | grep delayed_job | grep -v grep].match(/delayed_job/)
   end
+  
+  # Handling flash
+  def type_to_class(type)  
+    case type
+    when :notice, :info
+      'info'
+    when :error, :danger
+      'danger'
+    when :alert, :warning
+      'warning'
+    when :success
+      'success'
+    else
+      'info'
+    end
+  end
+
 end

@@ -227,6 +227,6 @@ class Notification < ActionMailer::Base
   
   def send_test_email(email, queued_or_unqueued)
     mail(:to => email, :subject => "[ClassRequestTool] Test email (#{queued_or_unqueued})")
-    flash[:info] << "Test email sent"  unless $local_config.notifications_on? 
+    flash_message :info, "Test email sent"  unless $local_config.notifications_on? 
   end  
 end

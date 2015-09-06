@@ -56,13 +56,13 @@
                   - unless mail_process_running? 
                     %div{:class => "alert alert-danger"}
                       %strong The mail process is not running. Please notify a superadmin.
-                - flash.each do |name, msgs|
-                  - next if name.match(/affiliation/) || msgs.blank?
+                - flash.each do |type, msgs|
+                  - next if type.match(/affiliation/) || msgs.blank?
                   - msgs = [msgs] if msgs.is_a?(String)
                   - msgs.each do |msg|
-                    %div{:class => "alert alert-#{name.to_s}"}
+                    %div{:class => "alert alert-#{type_to_class(type)}"}
                       %a.close{"data-dismiss" => "alert"} ×
-                      = content_tag :div, msg.html_safe, :class => "flash_#{name}"
+                      = content_tag :div, msg.html_safe, :class => "flash-#{type}"
             .row
               .col-md-12
                 = yield

@@ -22,7 +22,7 @@ class Admin::AdminController < ApplicationController
     if klass.respond_to? :csv_data
       csv_export = CSVExport.new(klass, filters)
     else
-      flash[:warning] << "It's not possible to export data for that."
+      flash_message :warning, "It's not possible to export data for that."
       return_to :back
     end
     
@@ -33,7 +33,7 @@ class Admin::AdminController < ApplicationController
   
   def build_report
     if params[:selected_reports].blank?
-      flash[:warning] << "You must select at least one report item"
+      flash_message :warning, "You must select at least one report item"
       redirect_to :back
       return
     end
@@ -72,19 +72,21 @@ class Admin::AdminController < ApplicationController
       ::Notification.send_test_email(current_user.email, 'unqueued').deliver_now
     end
     
-    flash[:info] << "You should receive an email shortly"
+    flash_message :info, "You should receive an email shortly"
     redirect_to :back
   end
   
   def update_stats
     Course.update_all_stats
-    flash[:info] << 'Course stats have been updated'
+    flash_message :info, 'Course stats have been updated'
     sessionless_courses = Course.where(session_count: 0).all
-    sessionless_courses.each do |sc|
-      sessionless_course_warning ||=  '<p>Sessionless courses:</p>'
-      sessionless_course_warning += "<p>#{sc.id} - #{sc.title}</p>\n"
-    end
-    flash[:warning] << sessionless_course_warning.html_safe
+    unless sessionless_courses.blank?
+      sessionless_courses.each do |sc|
+        sessionless_course_warning ||=  '<p>Sessionless courses:</p>'
+        sessionless_course_warning += "<p>#{sc.id} - #{sc.title}</p>\n"
+      end
+      flash_message :warning, sessionless_course_warning.html_safe
+    end 
     redirect_to :back
   end
   
@@ -99,7 +101,7 @@ class Admin::AdminController < ApplicationController
   private
     def admins_only
       unless current_user && (current_user.admin? || current_user.superadmin?)
-        flash[:warning] << 'Sorry, only admins have permission to do that.'
+        flash_message :warning, 'Sorry, only admins have permission to do that.'
         redirect_to '/'
       end
     end
