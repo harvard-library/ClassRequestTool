@@ -4,7 +4,6 @@ class CustomFailure < Devise::FailureApp
   end
 
   def respond
-    binding.pry
     if http_auth?
       http_auth
     else

@@ -112,7 +112,6 @@ class Notification < ActionMailer::Base
   end
 
   def new_request_to_requestor(course)
-    binding.pry
     
     @custom_text = Admin::CustomText.where( key: __method__.to_s).first.text
     @course = course
@@ -126,8 +125,6 @@ class Notification < ActionMailer::Base
   end
   
   def new_request_to_admin(course)
-    binding.pry
-    
     @custom_text = Admin::CustomText.where( key: __method__.to_s).first.text
     @course = course
     

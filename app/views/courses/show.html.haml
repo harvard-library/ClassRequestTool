@@ -108,16 +108,22 @@
             - @course.collaboration_options.each do |option|
               #{option}
               %br
-        
-          
-    
-  %h4 Staff Services
+            
+  %h4 Staff Services Requested
   - if @course.staff_services.blank?
     %p No services have been selected yet.
   - else
     %ul
       - @course.staff_services.each do |si|
         %li= si.description
+        
+  %h4 Technologies Requested
+  - if @course.item_attributes.blank?
+    %p No technologies have been selected yet.
+  - else
+    %ul
+      - @course.item_attributes.each do |tech|
+        %li= tech.name
 
   %h4 Pre-Class Appointment
   %ul.summary-info
