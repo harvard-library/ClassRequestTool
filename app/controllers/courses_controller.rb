@@ -190,61 +190,8 @@ class CoursesController < ApplicationController
       @all_technologies   = ItemAttribute.find($local_config.homeless_technologies)
       @possible_collaborations = Repository.all
     end
-
-    # @staff_service = @course.staff_service.split(',')
   end
 
-  def export
-    exportable = [
-      :title,
-      :subject,
-      :course_number,
-      :affiliation,
-      :contact_email,
-      :contact_phone,
-      :pre_class_appt,
-      :repository,
-      :staff_service,
-      :number_of_students,
-      :status,
-      :syllabus,
-      :external_syllabus,
-      :duration,
-      :comments,
-      :session_count,
-      :goal,
-      :instruction_session,
-      :contact_first_name,
-      :contact_last_name,
-      :contact_username,
-      :primary_contact,
-      :staff
-    ]
-      
-    @sections = Section.joins(:course).order('course_id ASC NULLS LAST, session ASC NULLS LAST, actual_date ASC NULLS LAST')
-    csv = CSV.generate(:encoding => 'utf-8') do |csv|
-      csv << (exportable + [:session, :section_id, :date, :headcount]).map { |c| c.to_s.gsub(/_/, ' ').titlecase }
-      @sections.each do |section|
-        course = section.course
-        values = []
-        exportable.each do |c|
-          case (c)
-            when :repository
-              values << (course.repository.blank? ? '' : course.repository.name)
-            when :primary_contact
-              values << (course.primary_contact.blank? ? '' : course.primary_contact.full_name)
-            when :staff
-              values << (course.users.count > 0 ? course.users.map{ |u| u.full_name }.join('!') : '')
-            else
-              values << course.send("#{c}")
-          end
-        end
-        values += [section.session, section.id, section.actual_date, (section.headcount || 'Not Entered')]
-        csv << values
-      end
-    end
-    render :text => csv
-  end  
 
   def index
     if current_user.can_admin?
@@ -467,17 +414,9 @@ class CoursesController < ApplicationController
     @course = Course.find(params[:id])
 
     # Do some parameter manipulation
-    process_params  
+    process_params
     
-    send_repo_change_notification = false
-    send_staff_change_notification = false
-
-    # Begin gross status manipulation *&!%
-    # Set notification statuses
-    send_repo_change_notification = repo_change?
-    send_staff_change_notification = staff_change? && (current_user.id != params[:course][:primary_contact_id].to_i) && 
-    (params[:course][:user_ids].blank? || !params[:course][:user_ids].map(&:to_i).include?(current_user.id))
-    
+    # Begin gross status manipulation *&!%    
     @course.attributes = course_params
     
     if @course.save
@@ -490,7 +429,7 @@ class CoursesController < ApplicationController
         end
       end
 
-      if send_repo_change_notification
+      if repo_change?
         # FIX INFO_NEEDED Should "changed from" repos get email? Inquiring Bobbis want to know
         Notification.repo_change(@course).deliver_later(:queue => 'changes') unless @course.repository.blank?
         flash_message :info, "Repository change notification sent"  unless $local_config.notifications_on? 
@@ -498,10 +437,10 @@ class CoursesController < ApplicationController
                              :user_id => current_user.id, :auto => true)
       end
 
-      if send_staff_change_notification
+      if staff_change?
         # FIX INFO_NEEDED Should "dropped" staff members get this email?
         Notification.staff_change(@course, current_user).deliver_later(:queue => 'notifications')
-        flash_message :info, "Staff change notification sent to #{recipients.join(', ')}"  unless $local_config.notifications_on? 
+        flash_message :info, "Staff change notification sent"  unless $local_config.notifications_on? 
         @course.notes.create(:note_text => "Staff change email sent.", :user_id => current_user.id, :auto => true)
       end
       
@@ -544,6 +483,13 @@ class CoursesController < ApplicationController
         params[:course][:additional_patrons_attributes].delete_if{|k,v| v[:email].blank?}
       end
       
+      # Remove empty user ids
+      params[:course][:user_ids].each do |id|
+        if id.blank?
+          params[:course][:user_ids].delete(id)
+        end
+      end
+      
       # set affiliation
       if params[:local_affiliation].blank?
         params[:course][:affiliation] = params[:other_affiliation]
@@ -582,7 +528,7 @@ class CoursesController < ApplicationController
         :contact_username, :contact_first_name, :contact_last_name, :contact_email, :contact_phone,   #contact info
         :room_id, :repository_id,
         :subject, :course_number, :affiliation,  :session_count,                                      #values
-        :comments,  :staff_involvement, :instruction_session, :status, :assisting_repository_id, 
+        :comments, :instruction_session, :status, :assisting_repository_id, 
         :syllabus, :remove_syllabus, :external_syllabus,                                              #syllabus
         :pre_class_appt, :timeframe, :timeframe_2, :timeframe_3, :timeframe_4, :duration,             #concrete schedule vals
         :time_choice_1, :time_choice_2, :time_choice_3, :time_choice_4,                               # tentative schedule vals
@@ -593,7 +539,7 @@ class CoursesController < ApplicationController
         {:collaboration_options           => [] },
         { :item_attribute_ids             => [] },  
         { :user_ids                       => [] }, 
-        { :staff_involvement_ids          => [] },
+        { :staff_service_ids              => [] },
         { :additional_patrons_attributes  => [
           :id, :_destroy,
           :first_name, :last_name, :email, :role, :course_id

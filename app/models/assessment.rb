@@ -8,7 +8,7 @@ class Assessment < ActiveRecord::Base
 
   # CSV export
   def self.csv_data(filters = {})
-    fields =  [ "to_char(a.created_at, 'YYYY-MM-DD HH:MIam')",
+    fields =  [ "a.created_at",
                   'using_materials', 
                   'involvement', 
                   'staff_experience', 
@@ -25,31 +25,35 @@ class Assessment < ActiveRecord::Base
                   'c.title'
                 ]
     header_row = []
+    formatted_fields = []
     fields.each do |field|
       case field
-      when "to_char(a.created_at, 'YYYY-MM-DD HH:MIam')"
-        heading = 'Submitted'
+      when "a.created_at"
+        header_row << 'Submitted'
+        formatted_fields << "to_char(#{field}, 'YYYY-MM-DD HH:MIam')"
       when 'a.comments'
-        heading = 'Comments'
+        header_row << 'Comments'
+        formatted_fields << field
       when 'c.title'
-        heading = 'Course title'
+        header_row << 'Course title'
+        formatted_fields << field
       else
-        heading = field.humanize
+        header_row << field.humanize
+        formatted_fields << field
       end
-      header_row << heading
     end
     
-    select = "SELECT #{fields.join(',')} FROM assessments a "
+    select = "SELECT #{formatted_fields.join(',')} FROM assessments a "
     joins = [
       "INNER JOIN courses c ON a.course_id = c.id",
     ]
     
-    order = 'ORDER BY a.created_at DESC'
+    order = 'a.created_at DESC'
     
     if filters.empty?
-      sql = "#{select} #{joins.join(' ')} #{order}"
+      sql = "#{select} #{joins.join(' ')} ORDER BY #{order}"
     else
-      sql = "#{select} #{joins.join(' ')} WHERE #{filters.join(' AND ')} #{order}"
+      sql = "#{select} #{joins.join(' ')} WHERE #{filters.join(' AND ')} ORDER BY #{order}"
     end
     [header_row, sql]
   end

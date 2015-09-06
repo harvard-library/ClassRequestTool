@@ -129,22 +129,6 @@ class AssessmentsController < ApplicationController
     end
   end
 
-  # CSV export
-  def export
-    @assessments = Assessment.joins(:course).order('assessments.created_at DESC')
-    respond_to do |format|
-      format.csv do
-        csv = CSV.generate(:encoding => 'utf-8') do |csv|
-          csv << Assessment.attribute_names + ['course_title']
-          @assessments.each do |row|
-            csv << Assessment.attribute_names.map{|name| row.send name} + [row.course.title]
-          end
-        end
-        render :text => csv
-      end
-    end
-  end
-  
   private
     def assessment_params
       params.require(:assessment).permit(

@@ -20,12 +20,12 @@ class Admin::AdminController < ApplicationController
     end
     
     if klass.respond_to? :csv_data
-      csv_export = CSVExport.new(klass, filters)
+      csv_export = CSVExport.new(klass, filters, params[:associations])
     else
       flash_message :warning, "It's not possible to export data for that."
       return_to :back
     end
-    
+        
     csv_export.build
     
     send_data csv_export.output, :type => 'text/csv', :filename => "#{params[:klass].downcase}_data_export.csv"

@@ -203,71 +203,95 @@ class Course < ActiveRecord::Base
   # Class functions
   # Implemented for the CSVExport class
   def self.csv_data(filters = [])
-    fields = ["to_char(c.created_at, 'YYYY-MM-DD HH:MIam')",
+    fields = ["c.created_at",
               'title',
-              'subject',
-              'course_number',
-              'affiliation',
-              'contact_email',
-              'contact_phone',
-              'pre_class_appt',
-              'r.name',               # Repositories column
-              'u.first_name || u.last_name',
-              'staff_service',
-              'number_of_students',
-              'status',
-              'syllabus',
-              'external_syllabus',
+#               'subject',
+#               'course_number',
+#               'affiliation',
+#               'contact_email',
+#               'contact_phone',
+#               'pre_class_appt',
+#               'r.name',                             # Repositories column
+#               'u.first_name || u.last_name',
+               "ss.description",                     # staff services are now in a separate table, aggregate - see formatted_fields and group_by
+#               'number_of_students',
+#               'status',
+#               'syllabus',
+#               'external_syllabus',
               'duration',
-              'comments',
+#              'comments',
               'session_count',
               'goal',
               'contact_first_name',
               'contact_last_name',
               'contact_username',
-              's.session',                                            # Sections column 
-              's.id',                                                 # Sections column
-              "to_char(s.actual_date, 'YYYY-MM-DD HH:MIam')",         # Sections column 
-              's.headcount'                                           # Sections column
+              's.session',                          # Sections column 
+              's.id',                               # Sections column
+#              "s.actual_date",                      # Sections column 
+#              's.headcount'                         # Sections column
             ]
-    
+            
+    # Have to aggregate on everything that isn't aggregated. How aggravating.
+    group_by = []
+    formatted_fields = []
     header_row = []
+    
     fields.each do |field|
       case field
-      when "to_char(c.created_at, 'YYYY-MM-DD HH:MIam')"
-        heading = 'Submitted'
+      when "c.created_at"
+        header_row << 'Submitted'
+        formatted_fields << "to_char(#{field}, 'YYYY-MM-DD HH:MIam')"
+        group_by << field
       when 'r.name'
-        heading = 'Repository'
+        header_row << 'Repository'
+        formatted_fields << field
+        group_by << field
       when 'u.first_name || u.last_name'
-        heading = 'Primary staff contact'
+        header_row << 'Primary staff contact'
+        formatted_fields << '(u.first_name || " " || u.last_name) AS full_name'
+        group_by << fieeld
       when 's.session'
-        heading = 'Session'
+        header_row << 'Session'
+        formatted_fields << field
+        group_by << field
       when 's.id'
-        heading = 'Section ID'
-      when "to_char(s.actual_date, 'YYYY-MM-DD HH:MIam')"
-        heading = 'Section date'
+        header_row << 'Section ID'
+        formatted_fields << field
+        group_by << field
+      when "s.actual_date"
+        header_row <<'Section date'
+        formatted_fields << "to_char(#{field}, 'YYYY-MM-DD HH:MIam')"
+        group_by << field
       when 's.headcount'
-        heading = 'Attendance'
+        header_row << 'Attendance'
+        formatted_fields << field
+        group_by << field
+      when "ss.description"
+        header_row << 'Staff Services'
+        formatted_fields << "string_agg(#{field}, ',')"
+        # Do not add into group_by - we're aggregating these
       else
-        heading = field.humanize
+        header_row << field.humanize
+        formatted_fields << field
+        group_by << field
       end
-      
-      header_row << heading
     end
     
-    select = "SELECT #{fields.join(',')} FROM courses c "
+    select = "SELECT #{formatted_fields.join(',')} FROM courses c "
     joins = [
       "LEFT JOIN repositories r ON c.repository_id = r.id",
       "LEFT JOIN sections s ON s.course_id = c.id",
-      "LEFT JOIN users u ON u.id = c.primary_contact_id"
+      "LEFT JOIN users u ON u.id = c.primary_contact_id",
+      "LEFT JOIN courses_staff_services css ON c.id = css.course_id",
+      "LEFT JOIN staff_services ss ON css.staff_service_id = ss.id"
     ]
     
-    order = 'ORDER BY c.created_at ASC, s.session ASC NULLS LAST, s.actual_date ASC NULLS LAST'
+    order = 'c.created_at ASC, s.session ASC NULLS LAST, s.actual_date ASC NULLS LAST'
     
     if filters.empty?
-      sql = "#{select} #{joins.join(' ')} #{order}"
+      sql = "#{select} #{joins.join(' ')} GROUP BY #{group_by.join(',')} ORDER BY #{order} "
     else
-      sql = "#{select} #{joins.join(' ')} WHERE #{filters.join(' AND ')} #{order}"
+      sql = "#{select} #{joins.join(' ')} WHERE #{filters.join(' AND ')} GROUP BY #{group_by.join(',')} ORDER BY #{order}"
     end
     
     [header_row, sql]    

@@ -13,7 +13,7 @@
 
 class CSVExport     # Don't need to inherit from ActiveRecord::Base
     
-  def initialize(klass, filters)
+  def initialize(klass, filters, associations = [])
     @klass = klass
     @filters = filters
     @data_obj = {}
