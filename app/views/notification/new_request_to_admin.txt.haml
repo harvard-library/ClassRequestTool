@@ -17,4 +17,4 @@
     = edit_course_url(@course)}"
     
 - unless @custom_text.blank?
-  = @custom_text
+  = strip_tags(@custom_text)

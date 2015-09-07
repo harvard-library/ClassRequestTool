@@ -13,6 +13,6 @@ You may review your request and update it with any new details or comments by le
   \#{@course.repository.email_details.raw}
 
 - unless @custom_text.blank?
-  = @custom_text
+  = strip_tags(@custom_text)
 
 Thank you for your request. We look forward to working with you.

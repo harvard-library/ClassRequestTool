@@ -8,4 +8,4 @@ If you wish to manage or confirm details, claim this class or assign it to anoth
   = edit_course_url(@course)}
 
 - unless @custom_text.blank?
-  = @custom_text.html_safe
+  = strip_tags(@custom_text)

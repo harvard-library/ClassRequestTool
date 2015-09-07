@@ -3,7 +3,7 @@ An assessment has been received for one of your classes:
 = render :partial => 'shared/notification_course_info'}, :locals => { course: @course, test: @test  }
 
 - unless @custom_text.blank?
-  = @custom_text
+  = strip_tags(@custom_text)
 
 Review the feedback here:
 

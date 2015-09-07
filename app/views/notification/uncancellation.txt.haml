@@ -1,7 +1,7 @@
 The class request for #{@course.title} has been cancelled.
 
 - unless @custom_text.blank?
-  = @custom_text
+  = strip_tags(@custom_text)
 
 If you have any questions or additional details to share, please add a note to the class request:
 
