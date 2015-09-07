@@ -11,12 +11,12 @@
   %tbody
     - @assessments.each do |a|
       %tr
-        %td= a.course ? link_to(a.course.title, a.course) : ''
+        %td= assessment_course(a)
         - @fields.keys.each do |name|
           %td= a.send name
         %td
           - @text_fields.each do |attribute, text|
             - unless a.send(attribute).blank?
-              %button{"data-content" => a.send(attribute), "data-placement" => "left", "data-title" => text[:title], "data-toggle" => "popover", :type => "text"}= text[:slug]
+              %button{"data-content" => a.send(attribute), "data-placement" => "left", "data-title" => text[:title], :class => 'btn btn-default'}= text[:slug]
 .pager-assessment-current
   = render 'shared/tablesorter_pager'

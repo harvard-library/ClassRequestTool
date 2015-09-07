@@ -5,7 +5,8 @@ class Assessment < ActiveRecord::Base
   belongs_to :course
 
   INVOLVEMENT = ['Class visit to see particular materials', 'Assisted in selecting materials for viewing in class', 'Presentation on use of primary sources in research', 'Class orientation in preparation for research assignment', 'Suggestions for materials appropriate to student research', 'Presentation on how to locate archival or rare book sources', 'Coordination of digital imaging for class use', 'Coordination of special projects (exhibits, etc.)', 'Other']
-
+  RATINGS = {"0 Not Applicable" => 0, "1 Poor" => 1, "2 Sufficient" => 2, "3 Good" => 3, "4 Very Good" => 4, "5 Excellent" => 5 }
+  
   # CSV export
   def self.csv_data(filters = {})
     fields =  [ "a.created_at",

@@ -47,6 +47,40 @@ namespace :crt do
       puts 'Crontab added' if success
     end
   end
+  
+  namespace :assessment_tests do
+    desc "Generate test assessments"
+    task :generate, [:number] => :environment do |t, args|
+      n = (args.blank? || args[:number].blank?) ? 10 : args[:number]
+      (1..n).each do |i|
+        Assessment.create(
+          :course_id => -1,
+          :staff_experience => Assessment::RATINGS.values.sample,
+          :staff_availability => Assessment::RATINGS.values.sample,
+          :space => Assessment::RATINGS.values.sample,
+          :request_course => Assessment::RATINGS.values.sample,
+          :request_materials => Assessment::RATINGS.values.sample,
+          :catalogs => Assessment::RATINGS.values.sample,
+          :digital_collections => Assessment::RATINGS.values.sample,
+          :involve_again => Assessment::RATINGS.values.sample,
+      
+          # Text fields
+          :not_involve_again => "This was not fun",
+          :better_future => "Make it more fun",
+          :using_materials => "All the stuff that was shown was really cool",
+          :involvement => "Some random comment about the repository",
+          :comments => "Great experience"
+        )
+      end
+      puts "#{n} test assessments created"
+    end
+    
+    desc "Remove all test assessments"
+    task :clean => :environment do
+      Assessment.where('course_id < 0').destroy_all
+      puts "Test assessments deleted"
+    end
+  end
 end
 
 # Custom seed files (custom_seeds directory)  
