@@ -26,11 +26,7 @@ $(function() {
     });
   });
   
-  $('.report-toggle').change(function() {
-    if (this.checked) {
-      $('input.include-report').prop('checked', this.checked);
-    } else {
-      $('input.include-report').prop('checked', false);
-    }
+  $('input.report-toggle').on('ifToggled', function() {
+      $('input.include-report').iCheck('toggle');
   });
 });

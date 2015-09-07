@@ -31,7 +31,8 @@
             %tr
               %td
                 %label Closed classes only:
-              %td= check_box_tag :closed_only, 1, true
+              %td
+                .checkbox= check_box_tag :closed_only, 1, true
             %tr
               %td
                 %label Library/archive:
@@ -68,13 +69,15 @@
           %table.table
             %thead
               %th
-                = check_box_tag 'toggle', 1, true, :class => 'report-toggle'
-                Toggle All
+                .checkbox
+                  = check_box_tag 'toggle', 1, true, :class => 'report-toggle'
+                  Toggle All
               %th Description
             %tbody
               - Rails.configuration.crt_reports.each do |report, options|
                 %tr
-                  %td= check_box_tag "selected_reports[#{report}]", 1, true, :class => 'include-report'
+                  %td
+                    .checkbox= check_box_tag "selected_reports[#{report}]", 1, true, :class => 'include-report'
                   %td= Rails.configuration.crt_reports[report]['type'].capitalize + ':'
                   %td
                     = options['description']
