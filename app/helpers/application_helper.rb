@@ -9,6 +9,41 @@ module ApplicationHelper
     end      
   end
   
+  def page_title(controller)
+    subject = case controller.controller_name
+      when 'admin'
+        'Administration'
+      when 'assessments'
+        'Assessment'
+      when 'courses'
+        'Class'
+      when 'item_attributes'
+        'Technology'
+      when 'repositories'
+        'Library/Archive'
+      when 'rooms'
+        'Room'
+      when 'staff_services'
+        'Staff Service'
+      when 'users'
+        'User'
+      when 'welcome'
+        'Welcome'
+      end
+    case controller.action_name
+    when  'index'
+      "#{subject} List"
+    when 'new'
+      "New #{subject}"
+    when 'show'
+      subject
+    when 'update'
+      "Update #{subject}"
+    when 'dashboard'
+      "#{subject} Dashboard"
+    end  
+  end
+  
   def photo_credit(source)
   
     if source.is_a? Repository
