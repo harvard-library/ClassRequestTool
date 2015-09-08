@@ -17,24 +17,14 @@ gem 'mini_magick'
 gem 'delayed_job_active_record'
 gem 'daemons'
 gem 'ckeditor'
-gem 'devise_harvard_auth_proxy', :git => 'https://github.com/timmykat/devise_harvard_auth_proxy.git', :ref => 'eb2fdb2b106'
-# gem 'devise_harvard_auth_proxy', :path => '/Users/tim/Development/git-repos/devise_harvard_auth_proxy', :ref => '2a58ea07a8'
-# gem 'devise_harvard_auth_proxy', :git => 'https://github.com/berkmancenter/devise_harvard_auth_proxy.git', :ref => '2a58ea07a8'
+gem 'devise_harvard_auth_proxy', :git => 'https://github.com/harvard-library/devise_harvard_auth_proxy.git'
 gem 'css_splitter'
 gem 'haml-rails'
 gem 'bower-rails'
 gem 'cocoon'
 gem 'bootstrap-sass'
-
-# Gems used only for assets and not required
-# in production environments by default.
 gem 'sass-rails'
 gem 'uglifier'
-# gem 'jquery-rails'
-# gem 'jquery-ui-rails'
-# gem 'jquery-tablesorter'
-# gem 'sugar-rails'
-# gem 'highcharts-rails'
 
 group :test, :development do
   gem 'rspec-rails'
@@ -59,10 +49,9 @@ group :development do
   gem 'better_errors'
   gem 'binding_of_caller'
   gem 'puma'
-  
+
   # Performance analysis
   gem 'bullet'
   gem 'rack-mini-profiler', require: false
   gem 'flamegraph'
 end
-
