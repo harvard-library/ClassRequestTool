@@ -26,7 +26,7 @@ set :format, :pretty
 
 # Create these in /path/to/deploy/shared
 set :linked_files, %w{config/database.yml config/mailer.yml.erb config/reports.yml .env}
-set :linked_dirs, %w{log tmp/pids tmp/cache tmp/sockets vendor/bundle public/assets public/system public/uploads}
+set :linked_dirs, %w{node_modules log tmp/pids tmp/cache tmp/sockets vendor/bundle public/assets public/system public/uploads}
 
 set :keep_releases, 3
 
