@@ -22,7 +22,7 @@ class CoursesController < ApplicationController
     end
   end
 
-      
+
   def cancel
     course = Course.find(params[:id])
     course.status = 'Cancelled'
@@ -32,43 +32,43 @@ class CoursesController < ApplicationController
     else
       flash_message :danger, "There was an error cancelling the class."
     end
-    
+
     respond_to do |format|
       format.html { redirect_to :back }
     end
   end
-  
+
   def close
     @course = Course.find(params[:id])
-  
+
     return false unless @course.completed?
-    
+
     if params[:class_action] == 'close-class'
       status = 'Closed'
     else
       status = 'Active'
     end
-    
+
     if @course.update(:status => status)
       render :text => @course.status
-    else 
+    else
       render :nothing
     end
   end
-  
+
   def course_owner?(course)
     current_user == course.primary_contact|| course.users.include?(current_user)
   end
-  
+
   def create
 
     unless params[:course][:repository_id].blank?
       @repository = Repository.find(params[:course][:repository_id])
     end
 
-    # Do some parameter manipulation    
+    # Do some parameter manipulation
     process_params
-            
+
     @course = Course.new(course_params)
 
     respond_to do |format|
@@ -76,11 +76,11 @@ class CoursesController < ApplicationController
         unless @course.backdated?
           Notification.new_request_to_requestor(@course).deliver_later(:queue => 'notifications')
           Notification.new_request_to_admin(@course).deliver_later(:queue => 'notifications')
-          flash_message :info, "New course request confirmation sent to patron"  unless $local_config.notifications_on? 
-          flash_message :info, "New request notification sent to admins"  unless $local_config.notifications_on? 
+          flash_message :info, "New course request confirmation sent to patron"  unless $local_config.notifications_on?
+          flash_message :info, "New request notification sent to admins"  unless $local_config.notifications_on?
         end
         flash_message :info, 'The class request was successfully submitted.'
-        
+
         format.html { redirect_to @course }
         format.json { render json: @course, status: :created, location: @course }
       else
@@ -106,10 +106,10 @@ class CoursesController < ApplicationController
     @unclaimed_scheduled    = []
     @claimed_unscheduled    = []
     @claimed_scheduled      = []
-    
+
     #Loop over courses and slot them into their categories
     @courses = Course.order_by_submitted.eager_load(:repository, :sections, :users, :primary_contact)
-        
+
     @courses.each do |course|
       if course.homeless?
         @homeless << course
@@ -120,8 +120,8 @@ class CoursesController < ApplicationController
           else
             @to_close << course
           end
-        else 
-          if course.scheduled?     
+        else
+          if course.scheduled?
             @claimed_scheduled << course
           else
             @claimed_unscheduled << course
@@ -131,9 +131,9 @@ class CoursesController < ApplicationController
             end
           end
         end
-        
+
       elsif course.unclaimed? && current_user.repositories.include?(course.repository)
-        if course.scheduled?     
+        if course.scheduled?
           @unclaimed_scheduled << course
         else
           @unclaimed_unscheduled << course
@@ -143,8 +143,8 @@ class CoursesController < ApplicationController
           end
         end
       end
-    end 
-  end 
+    end
+  end
 
   def destroy
     @course = Course.find(params[:id])
@@ -167,7 +167,7 @@ class CoursesController < ApplicationController
     @course = Course.find(params[:id])
     @additional_staff = additional_staff
     @collaboration_options = $local_config.collaboration_options
-    
+
     # Set affiliation variables
     if $affiliates.map { |opt| opt.name }.include?(@course.affiliation)
       @affiliation_selection = 'yes'
@@ -175,12 +175,12 @@ class CoursesController < ApplicationController
     elsif @course.affiliation =~ /\AOther:/
       @affiliation_selection = 'yes'
       @local_affiliation = "Other"
-      @other_affiliation = @course.affiliation.gsub(/\aOther: /,'') 
+      @other_affiliation = @course.affiliation.gsub(/\aOther: /,'')
     else
       @affiliation_selection = 'no'
       @other_affiliation = @course.affiliation
     end
-    
+
     unless @course.repository.nil?
       @all_staff_services = @course.repository.all_staff_services
       @all_technologies   = @course.repository.all_technologies
@@ -216,10 +216,10 @@ class CoursesController < ApplicationController
   end
 
   def new
-  
+
     @course = Course.new()
     @collaboration_options = $local_config.collaboration_options
-    
+
     unless params[:repository].blank?
       @repository = Repository.find(params[:repository])
       @course.repository_id = @repository.id
@@ -231,7 +231,7 @@ class CoursesController < ApplicationController
       @all_technologies   = ItemAttribute.find($local_config.homeless_technologies)
       @possible_collaborations = Repository.all
     end
-    
+
     # Automatically create with 1 section
     if params[:course].blank? || params[:course][:sections_attributes].blank?
       @course.sections.build
@@ -241,19 +241,19 @@ class CoursesController < ApplicationController
 
     @uploader = SyllabusUploader.new
 
-    
+
   end
 
   def new_section_or_session_block
     session_count = params[:session_count].try(:to_i) || 1
     section_count = params[:section_count].try(:to_i) || 1
-    
+
     # This requires a new section
-    locals = { 
-      :course_id => params[:course_id], 
-      :session_count => session_count, 
-      :section_count => section_count, 
-      :admin => current_user.can_schedule?, 
+    locals = {
+      :course_id => params[:course_id],
+      :session_count => session_count,
+      :section_count => section_count,
+      :admin => current_user.can_schedule?,
       :section_index => params[:section_index],
     }
     respond_to do |format|
@@ -268,7 +268,7 @@ class CoursesController < ApplicationController
       end
     end
   end
-  
+
   # Processes all datetime fields that map directly to AR columns
   # NOTE: Anything NOT mapping to a datetime column needs to be handled
   #   separately
@@ -343,15 +343,15 @@ class CoursesController < ApplicationController
       @note_type[:staff]  = true if note.staff_comment?
       @note_type[:patron] = true if !(note.auto? || note.staff_comment?)
       break if @note_type.inject(true) { |anded, n_type| anded && n_type[1] }
-    end  
-    
+    end
+
     first_section = @course.sections.where("actual_date IS NOT NULL").order("actual_date ASC").first
     if first_section.nil? || first_section.room.nil?
       room = ''
     else
       room = first_section.room.name
     end
-    
+
     @aeon_data = {
       :room => room,
       :title => @course.title,
@@ -364,7 +364,7 @@ class CoursesController < ApplicationController
       :repository => @course.repo_name,
       :timeframe => first_section.nil? ? '' : first_section.actual_date.utc.strftime(DATETIME_AEON_FORMAT),
       :duration => @course.duration
-    }    
+    }
   end
 
   # Helper for update, used to determine status
@@ -388,19 +388,19 @@ class CoursesController < ApplicationController
     respond_to do |format|
       format.html { redirect_to dashboard_welcome_index_url, info: 'Class was successfully claimed.' }
     end
-  end 
-  
+  end
+
   def uncancel
     course = Course.find(params[:id])
     course.status = 'Active'
-    
+
     if course.save(validate: false)         # Don't bother with validation since the class is being recovered
 #      Notification.uncancellation(course).deliver_later(:queue => 'notifications')
       flash_message :info, "The class <em>#{course.title}</em> was successfully uncancelled.".html_safe
     else
       flash_message :danger, "There was an error uncancelling the class."
     end
-    
+
     respond_to do |format|
       format.html { redirect_to :back }
     end
@@ -415,16 +415,16 @@ class CoursesController < ApplicationController
 
     # Do some parameter manipulation
     process_params
-    
-    # Begin gross status manipulation *&!%    
+
+    # Begin gross status manipulation *&!%
     @course.attributes = course_params
-    
+
     if @course.save
       if params[:course][:status] == "Closed" # check params because editing closed courses should not create notes
         @course.notes.create(:note_text => "Class has marked as closed.", :user_id => current_user.id, :auto => true)
         unless params[:send_assessment_email].blank?
-          Notification.assessment_requested(@course).deliver_later(:queue => 'notifications') 
-          flash_message :info, "Assessment requested notification sent"  unless $local_config.notifications_on? 
+          Notification.assessment_requested(@course).deliver_later(:queue => 'notifications')
+          flash_message :info, "Assessment requested notification sent"  unless $local_config.notifications_on?
           @course.notes.create(:note_text => "Assessment email sent.", :user_id => current_user.id, :auto => true)
         end
       end
@@ -432,7 +432,7 @@ class CoursesController < ApplicationController
       if repo_change?
         # FIX INFO_NEEDED Should "changed from" repos get email? Inquiring Bobbis want to know
         Notification.repo_change(@course).deliver_later(:queue => 'changes') unless @course.repository.blank?
-        flash_message :info, "Repository change notification sent"  unless $local_config.notifications_on? 
+        flash_message :info, "Repository change notification sent"  unless $local_config.notifications_on?
         @course.notes.create(:note_text => "Library/Archive changed to #{@course.repository.blank? ? "none" : @course.repository.name + ". Email sent."}.",
                              :user_id => current_user.id, :auto => true)
       end
@@ -440,10 +440,10 @@ class CoursesController < ApplicationController
       if staff_change?
         # FIX INFO_NEEDED Should "dropped" staff members get this email?
         Notification.staff_change(@course, current_user).deliver_later(:queue => 'notifications')
-        flash_message :info, "Staff change notification sent"  unless $local_config.notifications_on? 
+        flash_message :info, "Staff change notification sent"  unless $local_config.notifications_on?
         @course.notes.create(:note_text => "Staff change email sent.", :user_id => current_user.id, :auto => true)
       end
-      
+
       unless params[:send_timeframe_email].blank?
         Notification.timeframe_change.deliver_later(:queue => 'notifications')
         flash_message :info, "Time change confirmation sent"  unless $local_config.notifications_on?
@@ -463,13 +463,12 @@ class CoursesController < ApplicationController
       end
     end
   end
-  
+
   private
     def process_params
       params[:course][:status] = set_status(params[:course])
-      
       # strip out empty sections and convert section hash to section array
-      if params.has_key?(:course) && params[:course].has_key?(:sections_attributes)
+      if params[:course].has_key?(:sections_attributes)
         params[:course][:sections_attributes].delete_if{|k,v| v[:requested_dates] && v[:requested_dates].reject(&:nil?).blank? && v[:actual_date].blank? && v[:_destroy].blank?}
         sections = []
         params[:course][:sections_attributes].each do |i, section|
@@ -477,19 +476,21 @@ class CoursesController < ApplicationController
         end
         params[:course][:sections_attributes] = sections
       end
-      
+
       # Remove empty additional patrons
-      if params.has_key?(:course) && params[:course].has_key?(:additional_patrons_attributes)
+      if params[:course].has_key?(:additional_patrons_attributes)
         params[:course][:additional_patrons_attributes].delete_if{|k,v| v[:email].blank?}
       end
-      
+
       # Remove empty user ids
-      params[:course][:user_ids].each do |id|
-        if id.blank?
-          params[:course][:user_ids].delete(id)
+      if params[:course].has_key?(:user_ids)
+        params[:course][:user_ids].each do |id|
+          if id.blank?
+            params[:course][:user_ids].delete(id)
+          end
         end
       end
-      
+
       # set affiliation
       if params[:local_affiliation].blank?
         params[:course][:affiliation] = params[:other_affiliation]
@@ -498,29 +499,29 @@ class CoursesController < ApplicationController
       else
         params[:course][:affiliation] = params[:local_affiliation]
       end
-    
+
       # Use flash to save affiliation parameters in case there is a form error
       @affiliation_selection = params[:affiliation_selection]
       @other_affiliation   = params[:other_affiliation]
       @local_affiliation = params[:local_affiliation]
     end
-    
+
     def repo_change?
-      if params[:course][:repository_id].blank? || @course.repository_id == params[:course][:repository_id].to_i 
+      if params[:course][:repository_id].blank? || @course.repository_id == params[:course][:repository_id].to_i
         return false
       else
         new_repo = Repository.find(params[:course][:repository_id].to_i)
         return ! new_repo.affiliated?(current_user)
       end
     end
-    
+
     def staff_change?
       return true if @course.primary_contact.blank? && !params[:course][:primary_contact_id].blank?
       return true if !@course.primary_contact.blank? && (@course.primary_contact.id != params[:course][:primary_contact_id])
       return true if @course.users.blank? && !params[:course][:user_ids].blank?
       return true if !params[:course][:user_ids].nil? && (@course.users.map{ |u| u.id.to_s }.sort != params[:course][:user_ids].sort)
       false
-    end 
+    end
 
     def course_params
       params.require(:course).permit(
@@ -528,22 +529,22 @@ class CoursesController < ApplicationController
         :contact_username, :contact_first_name, :contact_last_name, :contact_email, :contact_phone,   #contact info
         :room_id, :repository_id,
         :subject, :course_number, :affiliation,  :session_count,                                      #values
-        :comments, :instruction_session, :status, :assisting_repository_id, 
+        :comments, :instruction_session, :status, :assisting_repository_id,
         :syllabus, :remove_syllabus, :external_syllabus,                                              #syllabus
         :pre_class_appt, :timeframe, :timeframe_2, :timeframe_3, :timeframe_4, :duration,             #concrete schedule vals
         :time_choice_1, :time_choice_2, :time_choice_3, :time_choice_4,                               # tentative schedule vals
         #:pre_class_appt_choice_1, :pre_class_appt_choice_2, :pre_class_appt_choice_3,                #unused
         :section_count, :session_count, :total_attendance,                                            # stats
-         
+
         :primary_contact_id,                                                                          # associations
         {:collaboration_options           => [] },
-        { :item_attribute_ids             => [] },  
-        { :user_ids                       => [] }, 
+        { :item_attribute_ids             => [] },
+        { :user_ids                       => [] },
         { :staff_service_ids              => [] },
         { :additional_patrons_attributes  => [
           :id, :_destroy,
           :first_name, :last_name, :email, :role, :course_id
-        ]}, 
+        ]},
         { :sections_attributes => [
           :id,
           :_destroy,
@@ -556,5 +557,5 @@ class CoursesController < ApplicationController
           :headcount
         ]}
       )
-    end    
+    end
 end
