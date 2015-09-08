@@ -12,7 +12,7 @@ before 'deploy:compile_assets', 'bower:install'
 
 
 set :application, 'class_request_tool'
-# set :repo_url, 'git@github.com:harvard-library/ClassRequestTool.git'
+set :repo_url, 'git@github.com:harvard-library/ClassRequestTool.git'
 
 ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }
 
