@@ -1,4 +1,8 @@
 class CreateCustomizationTables < ActiveRecord::Migration
+  class Customization < ActiveRecord::Base
+    # Guard class to prevent issues on migrate
+  end
+
   def change
     create_table :customizations do |t|
       t.string :institution
@@ -21,6 +25,8 @@ class CreateCustomizationTables < ActiveRecord::Migration
     
       t.timestamps
     end
+    
+    Customization.reset_column_information!
     
     # Initialize
     Customization.create  institution:              'Academia',
