@@ -1,4 +1,8 @@
 class AddColumnToCustomization < ActiveRecord::Migration
+  class Customization < ActiveRecord::Base
+    # Guard class to avoid validation errors
+  end
+
   def change
     add_column :customizations, :slogan, :string
     
