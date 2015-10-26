@@ -13,7 +13,7 @@ class Customization < ActiveRecord::Base
 
 #   serialize :homeless_staff_services  // store as PG array
 #   serialize :homeless_technologies    // store as PG array
-                  
+
   validates_presence_of :institution, message: 'Please enter the short name for your institution (i.e. Harvard)'
   validates_presence_of :institution_long, message: 'Please enter the long name for your institution (i.e. Harvard University)'
   validates_presence_of :tool_name, message: 'Please enter a name for this tool'
@@ -39,6 +39,14 @@ class Customization < ActiveRecord::Base
       tool_content_admin_email: 'librarian@academia.edu',
       default_email_sender:     'library_crt@academia.edu'
     )
+  end
+
+  def self.current
+    Thread.current['local_config']
+  end
+
+  def self.current=(conf)
+    Thread.current['local_config'] = conf
   end
 
 end

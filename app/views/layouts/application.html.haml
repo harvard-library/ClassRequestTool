@@ -31,16 +31,16 @@
   %body{:class => "c_#{controller.controller_name} a_#{controller.action_name} u_#{current_user ? current_user.user_type : "anon"}"}
     #wrap
       - if current_user && current_user.can_admin?
-        %div{:class => "notifications-status #{Thread.current['local_config'].notifications_on? ? 'ON' : 'OFF' }"}
+        %div{:class => "notifications-status #{Customization.current.notifications_on? ? 'ON' : 'OFF' }"}
           Notifications:
-          %b= Thread.current['local_config'].notifications_on? ? 'SENDING NORMALLY' : "TEST MODE - delivering to #{test_mail_recipient}"
+          %b= Customization.current.notifications_on? ? 'SENDING NORMALLY' : "TEST MODE - delivering to #{test_mail_recipient}"
       %nav.navbar.navbar-inverse.navbar-static-top{:role => "navigation"}
         = render :partial => 'shared/user'
         .container
           .nav.navbar-header.row
-            %p.slogan= Thread.current['local_config'][:slogan]
-            %h1.tool-title= Thread.current['local_config'][:tool_name]
-            = image_tag(((Thread.current['local_config'].attached_image.nil? || !Thread.current['local_config'].attached_image.image?) ? image_url('default_banner.jpg') : Thread.current['local_config'].attached_image.image_url), :class => " banner img-responsive col-xs-12")
+            %p.slogan= Customization.current[:slogan]
+            %h1.tool-title= Customization.current[:tool_name]
+            = image_tag(((Customization.current.attached_image.nil? || !Customization.current.attached_image.image?) ? image_url('default_banner.jpg') : Customization.current.attached_image.image_url), :class => " banner img-responsive col-xs-12")
             %button.navbar-toggle.col-xs-12{"data-target" => "#main-nav", "data-toggle" => "collapse", :type => "button"}
               %span.sr-only Toggle navigation
               %span.icon-bar{:style => "margin-left: auto;margin-right:auto;"}
@@ -53,7 +53,7 @@
             .row
               .col-md-12
                 -if current_user && current_user.can_admin?
-                  - unless mail_process_running? 
+                  - unless mail_process_running?
                     %div{:class => "alert alert-danger"}
                       %strong The mail process is not running. Please notify a superadmin.
                 - flash.each do |type, msgs|

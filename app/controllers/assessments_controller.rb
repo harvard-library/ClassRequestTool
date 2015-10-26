@@ -94,10 +94,10 @@ class AssessmentsController < ApplicationController
       if @assessment.save
         if @assessment.course.primary_contact.blank? && @assessment.course.users.blank?
           Notification.assessment_received_to_admins(@assessment).deliver_later(:queue => 'notifications')
-          flash_message :info, "Assessment receipt notification sent to admins"  unless Thread.current['local_config'].notifications_on?
+          flash_message :info, "Assessment receipt notification sent to admins"  unless Customization.current.notifications_on?
         else
           Notification.assessment_received_to_users(@assessment).deliver_later(:queue => 'notifications')
-          flash_message :info, "Assessment receipt notification sent to users"  unless Thread.current['local_config'].notifications_on?
+          flash_message :info, "Assessment receipt notification sent to users"  unless Customization.current.notifications_on?
         end
         format.html { redirect_to course_url(@assessment.course), notice: 'assessment was successfully created.' }
         format.json { render json: @assessment, status: :created, assessment: @assessment }
@@ -136,18 +136,18 @@ class AssessmentsController < ApplicationController
   private
     def assessment_params
       params.require(:assessment).permit(
-        :using_materials, 
-        :involvement, 
-        :staff_experience, 
-        :staff_availability, 
-        :space, 
-        :request_materials, 
-        :digital_collections, 
-        :involve_again, 
-        :not_involve_again, 
-        :better_future, 
-        :request_course, 
-        :catalogs, 
+        :using_materials,
+        :involvement,
+        :staff_experience,
+        :staff_availability,
+        :space,
+        :request_materials,
+        :digital_collections,
+        :involve_again,
+        :not_involve_again,
+        :better_future,
+        :request_course,
+        :catalogs,
         :comments
       )
     end

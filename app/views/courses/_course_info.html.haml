@@ -12,7 +12,7 @@
         = f.input :course_number, :label => "Course Number: "
       .form_col2.clearfix
         #affiliation.form-group
-          %label.control-label{:for => "affiliation"} #{Thread.current['local_config'][:institution]} listed course?
+          %label.control-label{:for => "affiliation"} #{Customization.current[:institution]} listed course?
           %p
             = radio_button_tag :affiliation_selection, 'yes', @affiliation_selection == 'yes'
             Yes

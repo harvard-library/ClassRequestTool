@@ -76,8 +76,8 @@ class CoursesController < ApplicationController
         unless @course.backdated?
           Notification.new_request_to_requestor(@course).deliver_later(:queue => 'notifications')
           Notification.new_request_to_admin(@course).deliver_later(:queue => 'notifications')
-          flash_message :info, "New course request confirmation sent to patron"  unless Thread.current['local_config'].notifications_on?
-          flash_message :info, "New request notification sent to admins"  unless Thread.current['local_config'].notifications_on?
+          flash_message :info, "New course request confirmation sent to patron"  unless Customization.current.notifications_on?
+          flash_message :info, "New request notification sent to admins"  unless Customization.current.notifications_on?
         end
         flash_message :info, 'The class request was successfully submitted.'
 
@@ -166,7 +166,7 @@ class CoursesController < ApplicationController
 
     @course = Course.find(params[:id])
     @additional_staff = additional_staff
-    @collaboration_options = Thread.current['local_config'].collaboration_options
+    @collaboration_options = Customization.current.collaboration_options
 
     # Set affiliation variables
     if $affiliates.map { |opt| opt.name }.include?(@course.affiliation)
@@ -186,8 +186,8 @@ class CoursesController < ApplicationController
       @all_technologies   = @course.repository.all_technologies
       @possible_collaborations = Repository.all - [@course.repository]
     else
-      @all_staff_services = StaffService.find(Thread.current['local_config'].homeless_staff_services)
-      @all_technologies   = ItemAttribute.find(Thread.current['local_config'].homeless_technologies)
+      @all_staff_services = StaffService.find(Customization.current.homeless_staff_services)
+      @all_technologies   = ItemAttribute.find(Customization.current.homeless_technologies)
       @possible_collaborations = Repository.all
     end
   end
@@ -218,7 +218,7 @@ class CoursesController < ApplicationController
   def new
 
     @course = Course.new()
-    @collaboration_options = Thread.current['local_config'].collaboration_options
+    @collaboration_options = Customization.current.collaboration_options
 
     unless params[:repository].blank?
       @repository = Repository.find(params[:repository])
@@ -227,8 +227,8 @@ class CoursesController < ApplicationController
       @all_technologies = @repository.item_attributes
       @possible_collaborations = Repository.all - [@repository]
     else
-      @all_staff_services = StaffService.find(Thread.current['local_config'].homeless_staff_services)
-      @all_technologies   = ItemAttribute.find(Thread.current['local_config'].homeless_technologies)
+      @all_staff_services = StaffService.find(Customization.current.homeless_staff_services)
+      @all_technologies   = ItemAttribute.find(Customization.current.homeless_technologies)
       @possible_collaborations = Repository.all
     end
 
@@ -424,7 +424,7 @@ class CoursesController < ApplicationController
         @course.notes.create(:note_text => "Class has marked as closed.", :user_id => current_user.id, :auto => true)
         unless params[:send_assessment_email].blank?
           Notification.assessment_requested(@course).deliver_later(:queue => 'notifications')
-          flash_message :info, "Assessment requested notification sent"  unless Thread.current['local_config'].notifications_on?
+          flash_message :info, "Assessment requested notification sent"  unless Customization.current.notifications_on?
           @course.notes.create(:note_text => "Assessment email sent.", :user_id => current_user.id, :auto => true)
         end
       end
@@ -432,7 +432,7 @@ class CoursesController < ApplicationController
       if repo_change?
         # FIX INFO_NEEDED Should "changed from" repos get email? Inquiring Bobbis want to know
         Notification.repo_change(@course).deliver_later(:queue => 'changes') unless @course.repository.blank?
-        flash_message :info, "Repository change notification sent"  unless Thread.current['local_config'].notifications_on?
+        flash_message :info, "Repository change notification sent"  unless Customization.current.notifications_on?
         @course.notes.create(:note_text => "Library/Archive changed to #{@course.repository.blank? ? "none" : @course.repository.name + ". Email sent."}.",
                              :user_id => current_user.id, :auto => true)
       end
@@ -440,13 +440,13 @@ class CoursesController < ApplicationController
       if staff_change?
         # FIX INFO_NEEDED Should "dropped" staff members get this email?
         Notification.staff_change(@course, current_user).deliver_later(:queue => 'notifications')
-        flash_message :info, "Staff change notification sent"  unless Thread.current['local_config'].notifications_on?
+        flash_message :info, "Staff change notification sent"  unless Customization.current.notifications_on?
         @course.notes.create(:note_text => "Staff change email sent.", :user_id => current_user.id, :auto => true)
       end
 
       unless params[:send_timeframe_email].blank?
         Notification.timeframe_change.deliver_later(:queue => 'notifications')
-        flash_message :info, "Time change confirmation sent"  unless Thread.current['local_config'].notifications_on?
+        flash_message :info, "Time change confirmation sent"  unless Customization.current.notifications_on?
       end
 
       respond_to do |format|

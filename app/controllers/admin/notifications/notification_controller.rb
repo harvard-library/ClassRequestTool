@@ -2,11 +2,11 @@ class Admin::Notifications::NotificationController < Admin::AdminController
 
   # By default list links to all emails
   def action_missing(m, *args, &block)
-  
+
     @test = true
     ct = Admin::CustomText.where(key: m).first
     @custom_text = ct.nil? ? '' : ct.text
-  
+
     case (m)
       when 'assessment_received_to_admins'
         @assessment = test_assessment
@@ -19,7 +19,7 @@ class Admin::Notifications::NotificationController < Admin::AdminController
 
       when 'cancellation'
         @course = test_course('Active')
-        
+
       when 'homeless_courses_reminder'
         @courses = [test_course('Active', true)]
 
@@ -48,20 +48,20 @@ class Admin::Notifications::NotificationController < Admin::AdminController
   end
 
   def toggle_notifications
-    if Thread.current['local_config'].notifications_on?
+    if Customization.current.notifications_on?
       if MAIL_RECIPIENT_OVERRIDE.kind_of? Array
         test_mail_recipient = MAIL_RECIPIENT_OVERRIDE.join(', ')
       else
         test_mail_recipient = MAIL_RECIPIENT_OVERRIDE
       end
 
-      Thread.current['local_config'].notifications_on = false
+      Customization.current.notifications_on = false
       status = {
         :class => 'OFF',
         :label => "TEST MODE - delivering to #{test_mail_recipient}"
       }
     else
-      Thread.current['local_config'].notifications_on = true
+      Customization.current.notifications_on = true
       status = {
         :class => 'ON',
         :label => 'SENDING NORMALLY'
@@ -78,44 +78,44 @@ class Admin::Notifications::NotificationController < Admin::AdminController
       end
     end
 
-    if Thread.current['local_config'].save
+    if Customization.current.save
       render :json => status.to_json
     else
       render :nothing
     end
   end
-  
+
   private
     def test_assessment
       assessment = Assessment.new({
-        using_materials: "This is some text", 
-        involvement: "This is some text", 
-        staff_experience: 2, 
-        staff_availability: 2, 
-        space: 2, 
-        request_course: 2, 
-        request_materials: 2, 
-        catalogs: 2, 
-        digital_collections: 2, 
-        involve_again: 'No', 
-        not_involve_again: 'This is some text', 
-        better_future: 'This is what you could do better', 
+        using_materials: "This is some text",
+        involvement: "This is some text",
+        staff_experience: 2,
+        staff_availability: 2,
+        space: 2,
+        request_course: 2,
+        request_materials: 2,
+        catalogs: 2,
+        digital_collections: 2,
+        involve_again: 'No',
+        not_involve_again: 'This is some text',
+        better_future: 'This is what you could do better',
         comments: 'These are my comments'
       })
       assessment.course = test_course('Closed')
       assessment
     end
-    
+
     def test_course(status, homeless = false)
       course = Course.new({
-        title: "Test Course Title", 
-        contact_email: 'test@example.com', 
-        contact_phone: '617-555-1234', 
-        number_of_students: 10, 
-        duration: '1.5', 
-        goal: 'This is my goal', 
-        contact_first_name: 'Zelda', 
-        contact_last_name: 'Fitzgerald', 
+        title: "Test Course Title",
+        contact_email: 'test@example.com',
+        contact_phone: '617-555-1234',
+        number_of_students: 10,
+        duration: '1.5',
+        goal: 'This is my goal',
+        contact_first_name: 'Zelda',
+        contact_last_name: 'Fitzgerald',
         contact_username: 'ziffy',
         status: status
       })

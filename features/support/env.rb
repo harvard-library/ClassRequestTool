@@ -58,5 +58,5 @@ Cucumber::Rails::Database.javascript_strategy = :truncation
 
 # Hooks
 Before do
-  Thread.current['local_config'] = FactoryGirl.create(:customization)
+  Customization.current = FactoryGirl.create(:customization)
 end

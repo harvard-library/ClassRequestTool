@@ -9,17 +9,17 @@
         %p
           Teach with us! Class sessions at participating special collections libraries and archives can range from surveys of faculty-selected collection material to sessions for which our staff provide guided explorations. Bring your class in for an hour or schedule several visits for in-depth investigations of archives, manuscripts, maps, rare books, and more.
         %p
-          %strong NOTE: 
+          %strong NOTE:
           %a{:href => "https://hcl.harvard.edu:8001/forms/requests/instruction.cfm", :target => "_new"} general library instruction sessions
           are scheduled separately.
-          
+
   .col-md-4
     .panel.panel-primary
       .panel-heading
         %h2.panel-title Request A Class
       .panel-body
         %p
-          %strong To request a class, select a site below or click “Help Me Choose” and we'll help pair your class with a participating library or archive. 
+          %strong To request a class, select a site below or click “Help Me Choose” and we'll help pair your class with a participating library or archive.
         %br
         %p.text-center
           .form#select-repo
@@ -50,9 +50,9 @@
     .well.well-sm
       %h4 Join Us!
       %p
-        Are you a special collections library/archive at #{Thread.current['local_config'][:institution]}?
+        Are you a special collections library/archive at #{Customization.current[:institution]}?
       %p
         Would you like to participate?
       %p.email
         %span.glyphicon.glyphicon-envelope
-        %a{:href => "mailto:#{Thread.current['local_config'][:tool_content_admin_email]}"} Let us know!
+        %a{:href => "mailto:#{Customization.current[:tool_content_admin_email]}"} Let us know!
