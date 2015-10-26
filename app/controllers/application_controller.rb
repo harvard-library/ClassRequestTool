@@ -53,7 +53,7 @@ class ApplicationController < ActionController::Base
 
   def set_local
     # Set customization variables
-    $local_config  = Customization.last
+    Thread.current['local_config'] = Customization.last || Customization.default
     $affiliates    = Affiliate.all
   end
 

@@ -2,14 +2,14 @@ class Notification < ActionMailer::Base
 
   include AbstractController::Callbacks    # Includes the after_filter
   add_template_helper(ApplicationHelper)
-  
-  
-  default from: $local_config.nil? ? DEFAULT_MAILER_SENDER : $local_config.default_email_sender
-  
+
+
+  default from: Thread.current['local_config'].nil? ? DEFAULT_MAILER_SENDER : Thread.current['local_config'].default_email_sender
+
   def assessment_received_to_admins(assessment)
     @custom_text = Admin::CustomText.where( key: __method__.to_s).first.text
     @assessment = assessment
-    
+
     # Sends to all tool admins
     recipients = User.where('superadmin = ? OR admin = ?', true, true).map{|a| a.email}
     mail(to: recipients, subject: "[ClassRequestTool] Class Assessment Received")
@@ -217,13 +217,13 @@ class Notification < ActionMailer::Base
         end
       end
     end
-    
+
     # Send email
     mail(to: recipients, subject: "[ClassRequestTool] Class uncancellation confirmation")
   end
-  
+
   def send_test_email(email, queued_or_unqueued)
     mail(:to => email, :subject => "[ClassRequestTool] Test email (#{queued_or_unqueued})")
-    flash_message :info, "Test email sent"  unless $local_config.notifications_on? 
-  end  
+    flash_message :info, "Test email sent"  unless Thread.current['local_config'].notifications_on?
+  end
 end

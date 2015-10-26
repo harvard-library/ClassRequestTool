@@ -58,11 +58,11 @@ class Admin::AdminController < ApplicationController
   end
 
   def localize
-    @custom = Customization.last
+    @custom = Customization.first_or_create(Customization.default.attributes)
     @affiliates = Affiliate.all
     render 'admin/localize', :locals => { :custom => @custom, :affiliates => @affiliates }
   end
-  
+
   # This sends a test email to the current user
   def send_test_email
     @delayed_jobs = Delayed::Job.all

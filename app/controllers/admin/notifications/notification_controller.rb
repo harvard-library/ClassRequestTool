@@ -35,38 +35,38 @@ class Admin::Notifications::NotificationController < Admin::AdminController
 
       when 'repo_change', 'staff_change', 'timeframe_change'
         @course = test_course('Active')
-        
+
       when ':action'
         all_notifications = 'admin/notifications/all_notifications'
     end
-    
+
     if all_notifications.nil?
       render :file => "notification/#{m}", :layout => 'notification_preview'
     else
       render :file => all_notifications
     end
   end
-  
+
   def toggle_notifications
-    if $local_config.notifications_on?
+    if Thread.current['local_config'].notifications_on?
       if MAIL_RECIPIENT_OVERRIDE.kind_of? Array
         test_mail_recipient = MAIL_RECIPIENT_OVERRIDE.join(', ')
       else
         test_mail_recipient = MAIL_RECIPIENT_OVERRIDE
       end
-      
-      $local_config.notifications_on = false
+
+      Thread.current['local_config'].notifications_on = false
       status = {
         :class => 'OFF',
         :label => "TEST MODE - delivering to #{test_mail_recipient}"
       }
-    else  
-      $local_config.notifications_on = true
+    else
+      Thread.current['local_config'].notifications_on = true
       status = {
         :class => 'ON',
         :label => 'SENDING NORMALLY'
       }
-      
+
       # If any jobs are in the queue, send them
       Delayed::Job.all.each do |job|
         if job.run_at < Time.now
@@ -77,8 +77,8 @@ class Admin::Notifications::NotificationController < Admin::AdminController
         end
       end
     end
-    
-    if $local_config.save
+
+    if Thread.current['local_config'].save
       render :json => status.to_json
     else
       render :nothing

@@ -46,13 +46,13 @@
   .col-md-4
     .featured-image
       = render :partial => 'shared/repo_image', :locals => { image: @featured_image, size: :welcome_page, repo: @featured_repository, show_credit: true   }
-    
+
     .well.well-sm
       %h4 Join Us!
       %p
-        Are you a special collections library/archive at #{$local_config[:institution]}?
+        Are you a special collections library/archive at #{Thread.current['local_config'][:institution]}?
       %p
         Would you like to participate?
       %p.email
         %span.glyphicon.glyphicon-envelope
-        %a{:href => "mailto:#{$local_config[:tool_content_admin_email]}"} Let us know!
+        %a{:href => "mailto:#{Thread.current['local_config'][:tool_content_admin_email]}"} Let us know!

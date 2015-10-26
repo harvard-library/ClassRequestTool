@@ -23,8 +23,22 @@ class Customization < ActiveRecord::Base
   validates :tool_content_admin_email, presence: { message: 'Please enter an email' }, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i, message: 'Please enter a valid email'}
   validates_presence_of :default_email_sender, message: 'Please enter the default address from which this tool will send email'
 
-  validates_with HomelessAttributesValidator 
-  
+  validates_with HomelessAttributesValidator
+
   has_one :attached_image, :as => :picture, :dependent => :destroy
   accepts_nested_attributes_for :attached_image, :allow_destroy => true
+
+  def self.default
+    Customization.new(
+      institution:              'Academia',
+      institution_long:         'Academia University',
+      tool_name:                'Class Request Tool',
+      tool_tech_admin_name:     'Technical Contact',
+      tool_tech_admin_email:    'tech@academia.edu',
+      tool_content_admin_name:  'Content Contact',
+      tool_content_admin_email: 'librarian@academia.edu',
+      default_email_sender:     'library_crt@academia.edu'
+    )
+  end
+
 end

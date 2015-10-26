@@ -19,14 +19,14 @@ class NotesController < ApplicationController
 
   def create
     params[:note][:staff_comment] = params[:note][:staff_comment].to_bool || params[:note][:auto].to_bool
-    
+
     @note = Note.new(note_params)
 
     unless params[:note][:note_text].blank?
       respond_to do |format|
         if @note.save
           Notification.new_note(@note, current_user).deliver_later(:queue => 'notifications')
-          flash_message :info, "New note notification sent"  unless $local_config.notifications_on? 
+          flash_message :info, "New note notification sent"  unless Thread.current['local_config'].notifications_on?
           format.html { redirect_to course_url(@note.course), notice: 'Note was successfully created.' }
           format.json { render json: @note, status: :created, note: @note }
         else
