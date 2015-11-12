@@ -41,7 +41,6 @@ namespace :crt do
 
     desc "Add the default rooms"
     task :default_rooms => :environment do
-      locations = Location.all.collect!{|x| x.id }
       ['Room A', 'Room B', 'Room C', 'Room D', 'Room E', 'Room F', 'Room G', 'Room H', 'Room I', 'Room J', 'Room K'].each do |room|
         room = Room.new(:name => room)
         room.save
