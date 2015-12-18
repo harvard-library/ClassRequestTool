@@ -25,6 +25,7 @@ gem 'cocoon'
 gem 'bootstrap-sass'
 gem 'sass-rails'
 gem 'uglifier'
+gem 'activerecord-deprecated_finders', require: 'active_record/deprecated_finders'
 
 group :test, :development do
   gem 'rspec-rails'

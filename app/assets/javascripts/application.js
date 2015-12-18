@@ -21,8 +21,8 @@
 //= require jquery-tablesorter/dist/js/widgets/widget-filter-formatter-jui.min
 //= require jqueryui-timepicker-addon/dist/jquery-ui-timepicker-addon
 //= require icheck/icheck.js
-//= require highcharts
-//= require highcharts/highcharts-more
+//= require 'highcharts/lib/highcharts.js'
+//= require 'highcharts/lib/highcharts-more.js'
 //= require ckeditor/init
 //= require cocoon
 //= require qtip2/jquery.qtip
