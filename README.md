@@ -19,8 +19,10 @@ The Class Request Tool (CRT) is a class reservation system that lets instructors
 ## System Requirements
 
 ### General
-* Ruby 1.9.3+ (2.x preferred)
+* Ruby 2.1.X or higher
 * Bundler
+* NodeJS (for assets compilation and running Bower
+* Bower (non-global installs are fine, regardless of what error messages might say)
 * A webserver capable of interfacing with Rails applications.  Ideally, Apache or Nginx with mod_passenger
 * Linux/OSX.  Windows will probably work fine, but we don't test on Windows as of now.
 
@@ -44,6 +46,7 @@ The Class Request Tool (CRT) is a class reservation system that lets instructors
    rake crt:bootstrap:run_all
   ```
 6. Set up cron jobs to run various tasks, detailed in [lib/tasks/bootstrap.rb](lib/tasks/bootstrap.rb)
+7. Run `rake bower:install`. Note that this must be run at least once in any environment where the application or tests is going to be run, and must be re-run when JS assets included via `bower-rails` are changed.  It is recommended that this be automated for deployment.
 
 ## Capistrano
 
