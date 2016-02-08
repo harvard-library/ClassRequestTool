@@ -1,4 +1,4 @@
 require 'rails_helper'
 
-describe AttributesController do
+describe ItemAttributesController do
 end
