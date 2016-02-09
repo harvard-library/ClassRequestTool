@@ -273,7 +273,8 @@ describe Notification, :type => :mailer do
     
           # Subject
           it 'sets the subject correctly' do
-            expect(ActionMailer::Base.deliveries.last.subject).to eq("[ClassRequestTool] You have been assigned a class")
+            expect(ActionMailer::Base.deliveries.last.subject).to eq("[ClassRequestTool] Confirmation of time change")
+
           end  
         end
 
