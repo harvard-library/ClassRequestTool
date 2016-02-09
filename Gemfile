@@ -1,11 +1,11 @@
 source 'https://rubygems.org'
 
 gem 'dotenv-rails'
-gem 'rails', '>= 4.1'
+gem 'rails', '~> 4.2.5.1'
 gem 'sprockets-rails', :require => 'sprockets/railtie'
 gem 'stackprof'                  # For ruby 2.1
 gem 'therubyracer'
-gem 'devise'
+gem 'devise', '~> 3.5.6'
 gem 'formtastic'
 gem 'formtastic-bootstrap'
 gem 'will_paginate'
