@@ -19,8 +19,6 @@ ClassRequestTool::Application.configure do
   # Don't fallback to assets pipeline if a precompiled asset is missed
   config.assets.compile = true
 
-  # Add color chips for icheck (managed with bower)
-  config.assets.precompile += %w( icheck/skins/square/blue.png icheck/skins/square/blue@2x.png )
 
   # Generate digests for assets URLs
   config.assets.digest = true
