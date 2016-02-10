@@ -20,4 +20,4 @@ EMAIL_BATCH_LIMIT = ENV['EMAIL_BATCH_LIMIT'].try(:to_i) || 100
 
 # Email notifications global on or off
 $notifications_status = 'OFF'
-
+Customization.current = Customization.last || Customization.default
