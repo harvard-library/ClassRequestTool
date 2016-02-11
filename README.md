@@ -68,7 +68,7 @@ Additional development notes can be found [here](DEV_NOTES.md)
 
 ## Contributors
 
-* Bobbi Fox: http://github.com/bobbi_smr
+* Bobbi Fox: http://github.com/bobbi-SMR
 * Dave Mayo: http://github.com/pobocks (primary contact)
 * Anita Patel: http://github.com/apatel
 
