@@ -23,7 +23,7 @@ User.create(
 )
 
 # Create a basic customization - this should be changed and a banner added
-Admin::Customization.create(
+Customization.create(
   :institution              => 'Harvard',
   :institution_long         => 'Harvard University',
   :tool_name                => 'Class Request Tool',
@@ -54,14 +54,13 @@ Repository.create(
 StaffService.create(
   :description => "Pedicure in Harvard crimson.",
   :required => true,
-  :global => true
-}
+#  :global => true
+)
 
 # Example item attribute
 ItemAttribute.create(
   :name => 'Multimedia player',
   :description => 'This can play MP3, MP4, DVDs, and CDs'
-)
 )
 
 
