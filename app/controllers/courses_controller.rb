@@ -166,7 +166,7 @@ class CoursesController < ApplicationController
 
     @course = Course.find(params[:id])
     @additional_staff = additional_staff
-    @collaboration_options = Customization.current.collaboration_options
+    @collaboration_options = Customization.current.collaboration_options || []
 
     # Set affiliation variables
     if $affiliates.map { |opt| opt.name }.include?(@course.affiliation)
