@@ -21,7 +21,7 @@
       %p 
         %em No system notes
     %br
-  - notes.each do |note|
+  - @notes.each do |note|
     %div{ :id => "note-#{note.id}", :class => "well well-sm #{(note.auto? ? 'autogen' : nil)} #{(note.staff_comment? ? 'staff' : 'patron')}" }
       - if current_user.staff? || current_user.can_admin?
         - case
