@@ -84,7 +84,7 @@ module ApplicationHelper
   end
   
   def mail_process_running?
-    %x[ps -ef | grep delayed_job | grep -v grep].match(/delayed_job/)
+    %x[ps -ef | grep jobs\:work | grep -v grep].match(/jobs\:work/)
   end
   
   # Handling flash
