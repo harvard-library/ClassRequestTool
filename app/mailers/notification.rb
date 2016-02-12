@@ -7,7 +7,7 @@ class Notification < ActionMailer::Base
   default from: Customization.current.nil? ? DEFAULT_MAILER_SENDER : Customization.current.default_email_sender
 
   def assessment_received_to_admins(assessment)
-    @custom_text = Admin::CustomText.where( key: __method__.to_s).first.text
+    fetch_custom_text(__method__.to_s)
     @assessment = assessment
 
     # Sends to all tool admins
@@ -16,7 +16,7 @@ class Notification < ActionMailer::Base
   end
 
   def assessment_received_to_users(assessment)
-    @custom_text = Admin::CustomText.where( key: __method__.to_s).first.text
+    fetch_custom_text(__method__.to_s)
     @assessment = assessment
 
     # Sends to assigned staff
@@ -30,7 +30,7 @@ class Notification < ActionMailer::Base
   end
 
   def assessment_requested(course)
-    @custom_text = Admin::CustomText.where( key: __method__.to_s).first.text
+    fetch_custom_text(__method__.to_s)
     @course = course
 
     # send email to requester and additional contacts
@@ -44,7 +44,7 @@ class Notification < ActionMailer::Base
   end
 
   def cancellation(course)
-    @custom_text = Admin::CustomText.where( key: __method__.to_s).first.text
+    fetch_custom_text(__method__.to_s)
     @course = course
 
     # Send to primary staff contact, if exists, and to first staff contact with email
@@ -66,7 +66,7 @@ class Notification < ActionMailer::Base
   end
 
   def homeless_courses_reminder
-    @custom_text = Admin::CustomText.where( key: __method__.to_s).first.text
+    fetch_custom_text(__method__.to_s)
     @courses = Course.where("repository_id IS NULL AND created_at <= ?", Time.now - 2.days)
     admins = User.where('admin = ? OR superadmin = ?', true, true).pluck(:email)
 
@@ -74,7 +74,7 @@ class Notification < ActionMailer::Base
   end
 
   def new_note(note, current_user)
-    @custom_text = Admin::CustomText.where( key: __method__.to_s).first.text
+    fetch_custom_text(__method__.to_s)
     @note = note
     @course = @note.course
     repository = @note.course.repo_name
@@ -113,7 +113,7 @@ class Notification < ActionMailer::Base
 
   def new_request_to_requestor(course)
 
-    @custom_text = Admin::CustomText.where( key: __method__.to_s).first.text
+    fetch_custom_text(__method__.to_s)
     @course = course
 
     # send email to requester
@@ -125,7 +125,7 @@ class Notification < ActionMailer::Base
   end
 
   def new_request_to_admin(course)
-    @custom_text = Admin::CustomText.where( key: __method__.to_s).first.text
+    fetch_custom_text(__method__.to_s)
     @course = course
 
     # If repository is empty (homeless), send to all admins of tool
@@ -143,7 +143,7 @@ class Notification < ActionMailer::Base
   end
 
   def repo_change(course)
-    @custom_text = Admin::CustomText.where( key: __method__.to_s).first.text
+    fetch_custom_text(__method__.to_s)
     @course = course
     @repo = course.repo_name
 
@@ -155,7 +155,7 @@ class Notification < ActionMailer::Base
   end
 
   def staff_change(course, current_user)
-    @custom_text = Admin::CustomText.where( key: __method__.to_s).first.text
+    fetch_custom_text(__method__.to_s)
     @course = course
 
     # send to assigned staff members
@@ -169,7 +169,7 @@ class Notification < ActionMailer::Base
   end
 
   def timeframe_change(course)
-    @custom_text = Admin::CustomText.where( key: __method__.to_s).first.text
+    fetch_custom_text(__method__.to_s)
     @course = course
 
     # figure out if there is a primary staff contact, if not send to first staff contact with email
@@ -201,7 +201,7 @@ class Notification < ActionMailer::Base
   end
 
   def uncancellation(course)
-    @custom_text = Admin::CustomText.where( key: __method__.to_s).first.text
+    fetch_custom_text(__method__.to_s)
     @course = course
 
     # Send to primary staff contact, if exists, and to first staff contact with email
@@ -224,5 +224,14 @@ class Notification < ActionMailer::Base
 
   def send_test_email(email, queued_or_unqueued)
     mail(:to => email, :subject => "[ClassRequestTool] Test email (#{queued_or_unqueued})")
+  end
+
+  private
+  def fetch_custom_text(key) 
+    @custom_text = ""
+    txt =  Admin::CustomText.where( key: key).first
+    if !txt.nil?
+      @custom_text = txt.text
+    end
   end
 end
