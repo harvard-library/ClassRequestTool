@@ -106,9 +106,9 @@ Given(/^"(.*?)" signs up$/) do |name|
     fill_in "Email", :with => @user.email
     fill_in "First name", :with => @user.first_name
     fill_in "Last name", :with => @user.last_name
-    fill_in "Password", :with => @user.password
+    fill_in "Password", :with => @user.password, :match => :first
     fill_in "Password confirmation", :with => @user.password_confirmation
-    click_button "Sign up"
+    click_button "Sign Up"
   end
 end
 
