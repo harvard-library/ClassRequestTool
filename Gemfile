@@ -4,7 +4,7 @@ gem 'rails', '3.2.20'
 
 gem 'dotenv-rails', '~> 0.10.0'
 gem 'therubyracer'
-gem 'devise', '3.1.1'
+gem 'devise', '3.5.4'
 gem 'formtastic'
 gem 'will_paginate', '>= 3.0.5'
 gem 'pg'
