@@ -9,15 +9,18 @@ Given /^a user clicks on Not Sure$/ do
 end
 
 Given /^an admin user named "([^"]*)"$/ do |name|
-  @user = FactoryGirl.create(:user, :username => name, :password => 'adminpassword', :admin=> true)
+  @user = FactoryGirl.create(:user, :username => name, :password => 'adminpassword', 
+                             :password_confirmation =>  'adminpassword',
+                             :admin=> true, :patron => false)
 end
 
 Given /^a staff user named "([^"]*)"$/ do |name|
-  @user = FactoryGirl.create(:user, :username => name, :password => 'staffpassword', :staff => true)
+  @user = FactoryGirl.create(:user, :username => name, :password => 'staffpassword',  :password_confirmation =>'staffpassword', 
+                             :staff => true,  :patron => false)
 end
 
 Given /^a user named "([^"]*)"$/ do |name|
-  @user = FactoryGirl.create(:user, :username => name, :password => 'password')
+  @user = FactoryGirl.create(:user, :username => name, :password => 'password',  :password_confirmation =>'password')
 end
 
 Given /^(?:"([^"]*)"|user) logs in$/ do |name|
