@@ -13,9 +13,8 @@
   <p>This Library/Archive does not have a publicly available calendar. Please submit your request with your preferred times and a staff member will get back to you.</p>
 <% else %>
   <p><%= link_to image_tag('calendar_icon.png', :class => "cal-icon")+ " View Calendar to see availability", "#{@course.repository.calendar}",
-                 :onclick=>"window.open(this.href,'view_calendar', 'height=600, width=600');return false;" %>
+                 :onclick=>"window.open(this.href,'view_calendar', 'height=600, width=600');return false;" %> </p>
 <% end %>
-  </p>
 </div>
 <% section_counter = 1 %>
 
