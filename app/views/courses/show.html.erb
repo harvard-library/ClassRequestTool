@@ -87,24 +87,27 @@
         !@course.sections.map(&:requested_dates).reject(&:nil?).blank? %>
     <div>
       <% aeon_timeframe_emitted = nil # Has the first timeframe been emitted for Aeon's sake?  %>
+      <% aeon_found_timeframe = nil # if we find a first timeframe, we need to mark the room %>
       <% @course.sessions.each.with_index(1) do |sesh, i| %>
         <h5>Session <%= i %></h5>
         <h6>Dates/Times</h6>
         <ul class="summary-info">
           <% sesh.each do |sect| %>
             <% if sect.actual_date %>
-              <li><span class="summary-label">Actual Date:</span> <%= sect.try(:actual_date).try(:in_time_zone, Rails.configuration.time_zone).try(:strftime, '%m/%d/%Y %l:%M %P') %> 
+              <li><span class="summary-label">Actual Date:</span> <%= sect.try(:actual_date).try(:in_time_zone, Rails.configuration.time_zone).try(:strftime, DATETIME_AT_FORMAT) %> 
 		<% if  !aeon_timeframe_emitted %>
 		<span id="timeframe" style="display:none"><%= sect.try(:actual_date).try(:utc).try(:strftime,DATETIME_AEON_FORMAT) %></span>
+		<% aeon_found_timeframe = true # so we know to mark up the room %>
 		<% end %>
 
-</li>
-              <% aeon_timeframe_emitted = true %>
+	      </li>
+	      <% aeon_timeframe_emitted = true %>
             <% elsif sect.requested_dates %>
               <li><span class="summary-label">Requested Times: </span> <%== '<ul><li>' + sect.requested_dates.map {|rd| display_with_tz rd }.join("</li><li>") + '</li></ul>' %></li>
             <% end %>
             <li><span class="summary-label">Headcount:</span> <%= sect.headcount ? sect.headcount : "Not Recorded" %></li>
-            <li><span class="summary-label">Room:</span> <%= sect.room ? sect.room.name : 'No room assigned' %></li>
+            <li><span class="summary-label">Room:</span> 
+	      <% if aeon_found_timeframe %><span id="room"><% end %><%= sect.room ? sect.room.name : 'No room assigned' %> <% if aeon_found_timeframe %></span><%  aeon_found_timeframe = nil; end %></li>
           <% end %>
         </ul>
 	    <% end %>
