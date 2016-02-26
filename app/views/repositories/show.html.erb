@@ -78,7 +78,7 @@
         <% @repository.courses.ordered_by_last_section.limit(20).each do |course| %>
           <tr>
     	  	  <td><%= link_to(course.title, course ) %></td>
-    		    <td><%= course.sections.first.try(:actual_date).try(:strftime, '%m/%d/%Y %I:%M %P') unless course.sections.first.try(:actual_date).nil? %></td>
+    		    <td><%= course.sections.first.try(:actual_date).try(:strftime, DATETIME_AT_FORMAT) unless course.sections.first.try(:actual_date).nil? %></td>
     		    <td><%= link_to('Edit', edit_course_path(course), :class => "action-edit") %></td>
             <% if current_user.try(:admin?) || current_user.try(:superadmin?) %>
     	   		  <td> | <%= link_to('Delete', course_path(course), :confirm => "Are you sure?", :method => :delete) %></td>

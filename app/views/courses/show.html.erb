@@ -67,11 +67,11 @@
 	<h4>Pre-Class Appointment</h4>
   <ul class="summary-info">
 	  <% if !@course.pre_class_appt.nil? %>
-	    <li><span class="summary-label">Pre-Class Appt:</span> <%= @course.pre_class_appt.strftime('%m/%d/%Y %I:%M %P') unless @course.pre_class_appt.nil? %></li>
+	    <li><span class="summary-label">Pre-Class Appt:</span> <%= @course.pre_class_appt.strftime(DATETIME_AT_FORMAT) unless @course.pre_class_appt.nil? %></li>
 	  <% elsif !@course.pre_class_appt_choice_1.nil? || !@course.pre_class_appt_choice_2.nil? || !@course.pre_class_appt_choice_3.nil? %>
-	    <li><span class="summary-label">Choice 1:</span> <%= @course.pre_class_appt_choice_1.strftime('%m/%d/%Y %I:%M %P') unless @course.pre_class_appt_choice_1.nil? %></li>
-	    <li><span class="summary-label">Choice 2:</span> <%= @course.pre_class_appt_choice_2.strftime('%m/%d/%Y %I:%M %P') unless @course.pre_class_appt_choice_2.nil? %></li>
-	    <li><span class="summary-label">Choice 3:</span> <%= @course.pre_class_appt_choice_3.strftime('%m/%d/%Y %I:%M %P') unless @course.pre_class_appt_choice_3.nil? %></li>
+	    <li><span class="summary-label">Choice 1:</span> <%= @course.pre_class_appt_choice_1.strftime(DATETIME_AT_FORMAT) unless @course.pre_class_appt_choice_1.nil? %></li>
+	    <li><span class="summary-label">Choice 2:</span> <%= @course.pre_class_appt_choice_2.strftime(DATETIME_AT_FORMAT) unless @course.pre_class_appt_choice_2.nil? %></li>
+	    <li><span class="summary-label">Choice 3:</span> <%= @course.pre_class_appt_choice_3.strftime(DATETIME_AT_FORMAT) unless @course.pre_class_appt_choice_3.nil? %></li>
 	<% else %>
 	    <li>To be scheduled, if required.</li>
 	<% end %>

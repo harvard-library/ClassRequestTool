@@ -28,8 +28,8 @@
 	    <% @courses_mine_current.each do |course| %>
 	    <tr>
 	  	  <td><%= link_to(course.title, course ) %></td>
-		  <td><%= course.created_at.strftime('%m/%d/%Y') %></td>
-		  <td><%= course.sections.first.try(:actual_date).try(:strftime, '%m/%d/%Y %I:%M %P') unless course.sections.first.try(:actual_date).nil? %></td>
+		  <td><%= course.created_at.strftime(DATE_FORMAT) %></td>
+		  <td><%= course.sections.first.try(:actual_date).try(:strftime, DATETIME_AT_FORMAT) unless course.sections.first.try(:actual_date).nil? %></td>
 		  <td><%= course.repository.nil? ? "Not Assigned" : course.repository.name %></td>
 		  <td><%= course.status %></td>
       <td><%= course.contact_last_name %></td>
@@ -68,8 +68,8 @@
 	    <% @courses_mine_past.each do |course| %>
 	    <tr>
 	  	  <td><%= link_to(course.title, course ) %></td>
-		  <td><%= course.created_at.strftime('%m/%d/%Y') %></td>
-		  <td><%= course.sections.first.try(:actual_date).try(:strftime, '%m/%d/%Y %I:%M %P') unless course.sections.first.try(:actual_date).nil? %></td>
+		  <td><%= course.created_at.strftime(DATE_FORMAT) %></td>
+		  <td><%= course.sections.first.try(:actual_date).try(:strftime, DATETIME_AT_FORMAT) unless course.sections.first.try(:actual_date).nil? %></td>
 		  <td><%= course.repository.nil? ? "Not Assigned" : course.repository.name %></td>
 		  <td><%= course.status %></td>
       <td><%= course.contact_last_name %></td>
@@ -112,8 +112,8 @@
 	    <% @courses_all.each do |course| %>
 	    <tr>
 	  	  <td><%= link_to(course.title, course ) %></td>
-		  <td><%= course.created_at.strftime('%m/%d/%Y') %></td>
-		  <td><%= course.sections.first.try(:actual_date).try(:strftime, '%m/%d/%Y %I:%M %P') unless course.sections.first.try(:actual_date).nil? %></td>
+		  <td><%= course.created_at.strftime(DATE_FORMAT) %></td>
+		  <td><%= course.sections.first.try(:actual_date).try(:strftime, DATETIME_AT_FORMAT) unless course.sections.first.try(:actual_date).nil? %></td>
 		  <td><%= course.repository.nil? ? "Not Assigned" : course.repository.name %></td>
 		  <td><%= course.status %></td>
       <td><%= course.contact_last_name %></td>
