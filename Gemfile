@@ -50,5 +50,5 @@ group :development do
   gem 'binding_of_caller'
 end
 
-gem 'jquery-rails', '~> 3.1.0'
+gem 'jquery-rails', '~> 3.1.4'
 gem 'jquery-ui-rails', '~> 4.2.0'

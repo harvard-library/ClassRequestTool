@@ -125,7 +125,7 @@ GEM
     hike (1.2.3)
     i18n (0.7.0)
     journey (1.0.4)
-    jquery-rails (3.1.0)
+    jquery-rails (3.1.4)
       railties (>= 3.0, < 5.0)
       thor (>= 0.14, < 2.0)
     jquery-tablesorter (1.12.6)
@@ -264,7 +264,7 @@ DEPENDENCIES
   factory_girl_rails
   formtastic
   formtastic-bootstrap
-  jquery-rails (~> 3.1.0)
+  jquery-rails (~> 3.1.4)
   jquery-tablesorter
   jquery-ui-rails (~> 4.2.0)
   pg
