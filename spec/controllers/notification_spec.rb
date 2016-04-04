@@ -1,7 +1,4 @@
 require 'rails_helper'
-  
-$notifications_status = 'ON'
-
 
 describe Notification, :type => :mailer do
 
@@ -15,7 +12,7 @@ describe Notification, :type => :mailer do
     @patron     = create(:user, :patron)
     @superadmin      = create(:user, :superadmin)
   end
-    
+
 
 #   before :each do
 # #    allow(view).to receive(:site_url).and_return("http://example.com")
@@ -31,32 +28,32 @@ describe Notification, :type => :mailer do
       @wait_until = Time.now + 1.hour
       Notification.send_test_email(@patron, 'queued').deliver_later(:wait_until => @wait_until, :queue => 'test')
     end
-  
+
     after do
       Delayed::Job.destroy_all
     end
-  
+
     it 'accepts an entry' do
       expect(Delayed::Job.all.count).to eq(1)
     end
-  
+
     it 'has the right queue name' do
       expect(Delayed::Job.first.queue).to eq('test')
     end
-  
+
     it 'has the right send time' do
       expect(Delayed::Job.first.run_at.to_s).to eq(@wait_until.to_s)
     end
-    
+
     it 'has no send attempts' do
       expect(Delayed::Job.first.attempts).to eq(0)
     end
-  
+
     it 'has correct method information in the handler' do
       expect(Delayed::Job.first.handler).to match(/send_test_email/)
     end
   end
-  
+
   describe 'notifications for' do
     before do
       Delayed::Worker.delay_jobs = false
@@ -66,13 +63,13 @@ describe Notification, :type => :mailer do
         @course = create(:course)
         @course.repository.users = create_list(:user, 3, :staff)
       end
-  
+
       context 'assessment_requested' do
         before do
           @custom_text = create(:custom_text, :key => 'assessment_requested')
           Notification.assessment_requested(@course).deliver_later
         end
-          
+
         # Number of emails
         it 'sends one email'  do
           expect(ActionMailer::Base.deliveries.count).to eq(1)
@@ -88,7 +85,7 @@ describe Notification, :type => :mailer do
           recipients = [@course.contact_email] + @course.additional_patrons.map { |ap| ap.email }
           expect(ActionMailer::Base.deliveries.last.to.sort).to eq(recipients.sort)
         end
-  
+
         # Subject
         it 'sets the subject correctly' do
           expect(ActionMailer::Base.deliveries.last.subject).to eq("[ClassRequestTool] Please Assess your Recent Class at #{@course.repo_name}")
@@ -100,7 +97,7 @@ describe Notification, :type => :mailer do
           custom_text = create(:custom_text, :key => 'new_request_to_requestor')
           Notification.new_request_to_requestor(@course).deliver_later
         end
-  
+
         # Number of emails
         it 'sends one email' do
           expect(ActionMailer::Base.deliveries.count).to eq(1)
@@ -116,14 +113,14 @@ describe Notification, :type => :mailer do
           recipients = [@course.contact_email] + @course.additional_patrons.map { |ap| ap.email }
           expect(ActionMailer::Base.deliveries.last.to.sort).to eq(recipients.sort)
         end
-    
+
         # Subject
         it 'sets the subject correctly' do
           assert_equal("[ClassRequestTool] Class Request Successfully Submitted for Test Course Title", ActionMailer::Base.deliveries.last.subject, "The subject is incorrect")
         end
-  
+
       end
-    
+
       context 'homeless course' do
         context 'new_request_to_admin' do
           before do
@@ -131,7 +128,7 @@ describe Notification, :type => :mailer do
             custom_text = create(:custom_text, :key => 'new_request_to_admin')
             Notification.new_request_to_admin(@course).deliver_later
           end
-  
+
           # Number of emails
           it 'sends one email' do
             expect(ActionMailer::Base.deliveries.count).to eq(1)
@@ -147,11 +144,11 @@ describe Notification, :type => :mailer do
             recipients = User.where('superadmin = true OR admin = true').pluck(:email)
             expect(ActionMailer::Base.deliveries.last.to.uniq.sort).to eq(recipients.uniq.sort)
           end
-    
+
           # Subject
           it 'sets the subject correctly' do
             expect(ActionMailer::Base.deliveries.last.subject).to eq("[ClassRequestTool] A New Homeless Class Request has been Received")
-          end  
+          end
         end
       end
 
@@ -159,13 +156,13 @@ describe Notification, :type => :mailer do
         before do
           @course = create(:course, :with_primary_contact, :with_staff)
         end
-  
+
         context 'new_request_to_admin' do
           before do
             custom_text = create(:custom_text, :key => 'new_request_to_admin')
             Notification.new_request_to_admin(@course).deliver_later
           end
-  
+
           # Number of emails
           it 'sends one email' do
             expect(ActionMailer::Base.deliveries.count).to eq(1)
@@ -182,11 +179,11 @@ describe Notification, :type => :mailer do
             recipients += User.where(superadmin: true).pluck(:email)
             expect(ActionMailer::Base.deliveries.last.to.uniq.sort).to eq(recipients.uniq.sort)
           end
-    
+
           # Subject
           it 'sets the subject correctly' do
             expect(ActionMailer::Base.deliveries.last.subject).to eq("[ClassRequestTool] A New Class Request has been Received")
-          end  
+          end
         end
 
         context 'repo_change' do
@@ -194,7 +191,7 @@ describe Notification, :type => :mailer do
             custom_text = create(:custom_text, :key => 'repo_change')
             Notification.repo_change(@course).deliver_later
           end
-  
+
           # Number of emails
           it 'sends one email' do
             expect(ActionMailer::Base.deliveries.count).to eq(1)
@@ -212,11 +209,11 @@ describe Notification, :type => :mailer do
             recipients
             expect(ActionMailer::Base.deliveries.last.to.uniq.sort).to eq(recipients.uniq.sort)
           end
-    
+
           # Subject
           it 'sets the subject correctly' do
             expect(ActionMailer::Base.deliveries.last.subject).to eq("[ClassRequestTool] A Class has been Transferred to #{@course.repo_name}")
-          end  
+          end
         end
 
         context 'staff_change' do
@@ -224,7 +221,7 @@ describe Notification, :type => :mailer do
             custom_text = create(:custom_text, :key => 'staff_change')
             Notification.staff_change(@course, @admin).deliver_later
           end
-  
+
           # Number of emails
           it 'sends one email' do
             expect(ActionMailer::Base.deliveries.count).to eq(1)
@@ -242,19 +239,19 @@ describe Notification, :type => :mailer do
             recipients
             expect(ActionMailer::Base.deliveries.last.to.uniq.sort).to eq(recipients.uniq.sort)
           end
-    
+
           # Subject
           it 'sets the subject correctly' do
             expect(ActionMailer::Base.deliveries.last.subject).to eq("[ClassRequestTool] You have been assigned a class")
-          end  
+          end
         end
-  
+
         context 'timeframe_change' do
           before do
             custom_text = create(:custom_text, :key => 'timeframe_change')
             Notification.timeframe_change(@course).deliver_later
           end
-  
+
           # Number of emails
           it 'sends one email' do
             expect(ActionMailer::Base.deliveries.count).to eq(1)
@@ -270,12 +267,12 @@ describe Notification, :type => :mailer do
             recipients = [@course.contact_email] + @course.additional_patrons.map { |ap| ap.email }
             expect(ActionMailer::Base.deliveries.last.to.sort).to eq(recipients.sort)
           end
-    
+
           # Subject
           it 'sets the subject correctly' do
             expect(ActionMailer::Base.deliveries.last.subject).to eq("[ClassRequestTool] Confirmation of time change")
 
-          end  
+          end
         end
 
       end
@@ -283,7 +280,7 @@ describe Notification, :type => :mailer do
       context 'assessment_received' do
         context '(for course with assigned users)' do
           before do
-            @assessment = create(:assessment) 
+            @assessment = create(:assessment)
             @assessment.course.primary_contact = create(:user, :admin, :staff)
             @assessment.course.save
             @assessment.course.users = create_list(:user, 2, :staff)
@@ -332,12 +329,12 @@ describe Notification, :type => :mailer do
         end
       end
     end
-  
+
     context 'new_note' do
-      
+
       [:by_staff, :by_admin, :by_patron].each do |person|
         [:attached_course, :no_users_course, :homeless_course].each do |course|
-    
+
           it "sends to the correct recipient when #{person.to_s.sub('by_','')} writes the note for a(n) #{course.to_s.gsub('_',' ')}" do
 
             @note = create(:note, person, course)
@@ -351,23 +348,23 @@ describe Notification, :type => :mailer do
             case (course)
               when :no_users_course, :homeless_course
                 recipients =  User.where('admin = ? OR superadmin = ?', true, true).pluck(:email)
-   
+
               when :attached_course
                 recipients << @note.course.primary_contact.email
                 recipients += @note.course.users.map{ |u| u.email }
             end
-      
+
             recipients << @note.course.contact_email
             recipients += @note.course.additional_patrons.map { |ap| ap.email }
 
-        
+
             # Remove the current user's email if in the recipients list
             recipients -= [@current_user.email]
-             
+
             expect(ActionMailer::Base.deliveries.last.to.uniq.sort).to eq(recipients.uniq.sort)
-        
+
           end
-      
+
           next if person == :by_patron
 
           it "sends only to staff for a staff-only comment when #{person.to_s.sub('by_','')} writes the note for a(n) #{course.to_s.gsub('_',' ')}" do
@@ -383,17 +380,17 @@ describe Notification, :type => :mailer do
             case (course)
               when :no_users_course, :homeless_course
                 recipients=  User.where('admin = ? OR superadmin = ?', true, true).pluck(:email)
-   
+
               when :attached_course
                 recipients << @note.course.primary_contact.email
                 recipients += @note.course.users.map{ |u| u.email }
             end
-        
+
             # Remove the current user's email if in the recipients list
             recipients -= [@current_user.email]
-             
+
             expect(ActionMailer::Base.deliveries.last.to.uniq.sort).to eq(recipients.uniq.sort)
-        
+
           end
 
         end
@@ -401,4 +398,3 @@ describe Notification, :type => :mailer do
     end
   end
 end
-

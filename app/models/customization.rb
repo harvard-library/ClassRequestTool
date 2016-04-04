@@ -42,7 +42,7 @@ class Customization < ActiveRecord::Base
   end
 
   def self.current
-    Thread.current['local_config']
+    Thread.current['local_config'] || (Customization.current = Customization.last) || Customization.default
   end
 
   def self.current=(conf)
