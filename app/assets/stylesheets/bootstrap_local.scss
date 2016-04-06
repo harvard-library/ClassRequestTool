@@ -79,6 +79,17 @@ $btn-default-color: $gray-dark;
 $btn-default-bg:    $creme;
 $btn-font-weight:   bold;
 
+// button for actions that change *on the page*
+.btn-local-action {
+   background-color: #FFFFFF;
+   color:  #4E84C4;
+   border-style: solid;
+   border-color: #4E84C4 !important;
+   border-width: 2px;
+
+}
+
+
 // Dropdown defaults
 $dropdown-bg:       $creme;
 $dropdown-color:    $gray-dark;
