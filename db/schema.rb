@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150902021755) do
+ActiveRecord::Schema.define(version: 20160406152659) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -30,7 +30,6 @@ ActiveRecord::Schema.define(version: 20150902021755) do
     t.string   "name"
     t.string   "url"
     t.text     "description"
-    t.integer  "customization_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "position"
@@ -48,13 +47,13 @@ ActiveRecord::Schema.define(version: 20150902021755) do
     t.integer  "request_materials"
     t.integer  "catalogs"
     t.integer  "digital_collections"
-    t.string   "involve_again"
+    t.string   "involve_again",       limit: 255
     t.text     "not_involve_again"
     t.text     "better_future"
     t.text     "comments"
     t.integer  "course_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
   end
 
   add_index "assessments", ["better_future"], name: "index_assessments_on_better_future", using: :btree
@@ -95,10 +94,10 @@ ActiveRecord::Schema.define(version: 20150902021755) do
   add_index "collections", ["repository_id"], name: "index_collections_on_repository_id", using: :btree
 
   create_table "courses", force: :cascade do |t|
-    t.string   "title"
-    t.string   "subject"
-    t.string   "course_number"
-    t.string   "affiliation"
+    t.string   "title",                   limit: 255
+    t.string   "subject",                 limit: 255
+    t.string   "course_number",           limit: 255
+    t.string   "affiliation",             limit: 255
     t.string   "contact_email",           limit: 150,              null: false
     t.string   "contact_phone",           limit: 25,               null: false
     t.datetime "pre_class_appt"
@@ -108,16 +107,16 @@ ActiveRecord::Schema.define(version: 20150902021755) do
     t.integer  "repository_id"
     t.text     "staff_involvement"
     t.integer  "number_of_students"
-    t.string   "status"
-    t.string   "syllabus"
-    t.string   "external_syllabus"
-    t.string   "duration"
+    t.string   "status",                  limit: 255
+    t.string   "syllabus",                limit: 255
+    t.string   "external_syllabus",       limit: 255
+    t.string   "duration",                limit: 255
     t.text     "comments"
     t.integer  "session_count"
     t.text     "goal"
-    t.string   "instruction_session"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.string   "instruction_session",     limit: 255
+    t.datetime "created_at",                                       null: false
+    t.datetime "updated_at",                                       null: false
     t.string   "contact_first_name",      limit: 100
     t.string   "contact_last_name",       limit: 100
     t.string   "contact_username",        limit: 100
@@ -207,22 +206,22 @@ ActiveRecord::Schema.define(version: 20150902021755) do
 
   create_table "emails", force: :cascade do |t|
     t.text     "to"
-    t.string   "bcc"
-    t.string   "from"
-    t.string   "reply_to"
-    t.string   "subject"
+    t.string   "bcc",          limit: 255
+    t.string   "from",         limit: 255
+    t.string   "reply_to",     limit: 255
+    t.string   "subject",      limit: 255
     t.text     "body"
     t.date     "date_sent"
-    t.boolean  "message_sent", default: false, null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.boolean  "message_sent",             default: false, null: false
+    t.datetime "created_at",                               null: false
+    t.datetime "updated_at",                               null: false
   end
 
   create_table "item_attributes", force: :cascade do |t|
-    t.string   "name",        null: false
+    t.string   "name",        limit: 255, null: false
     t.text     "description"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
   end
 
   add_index "item_attributes", ["description"], name: "index_item_attributes_on_description", using: :btree
@@ -242,8 +241,8 @@ ActiveRecord::Schema.define(version: 20150902021755) do
     t.text     "note_text",                     null: false
     t.integer  "user_id",                       null: false
     t.integer  "course_id",                     null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
     t.boolean  "staff_comment", default: false, null: false
     t.boolean  "auto",          default: false
   end
@@ -251,14 +250,14 @@ ActiveRecord::Schema.define(version: 20150902021755) do
   add_index "notes", ["note_text"], name: "index_notes_on_note_text", using: :btree
 
   create_table "repositories", force: :cascade do |t|
-    t.string   "name"
+    t.string   "name",           limit: 255
     t.text     "description"
-    t.integer  "class_limit",    default: 0
+    t.integer  "class_limit",                default: 0
     t.integer  "user_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
     t.text     "calendar"
-    t.string   "landing_page"
+    t.string   "landing_page",   limit: 255
     t.string   "class_policies"
     t.text     "email_details"
   end
@@ -283,10 +282,10 @@ ActiveRecord::Schema.define(version: 20150902021755) do
   end
 
   create_table "rooms", force: :cascade do |t|
-    t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "class_limit", default: 0
+    t.string   "name",        limit: 255
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
+    t.integer  "class_limit",             default: 0
   end
 
   add_index "rooms", ["name"], name: "index_rooms_on_name", using: :btree
@@ -297,8 +296,8 @@ ActiveRecord::Schema.define(version: 20150902021755) do
     t.integer  "session",          default: 1, null: false
     t.integer  "course_id"
     t.integer  "room_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
     t.integer  "headcount"
     t.integer  "session_duration"
   end
@@ -308,33 +307,33 @@ ActiveRecord::Schema.define(version: 20150902021755) do
   add_index "sections", ["session_duration"], name: "index_sections_on_session_duration", using: :btree
 
   create_table "staff_services", force: :cascade do |t|
-    t.string   "description"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.string   "description", limit: 255
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
     t.boolean  "required"
   end
 
   add_index "staff_services", ["description"], name: "index_staff_services_on_description", using: :btree
 
   create_table "users", force: :cascade do |t|
-    t.string   "email",                              default: "",    null: false
-    t.string   "encrypted_password",                 default: "",    null: false
-    t.string   "reset_password_token"
+    t.string   "email",                  limit: 255, default: "",    null: false
+    t.string   "encrypted_password",     limit: 255, default: "",    null: false
+    t.string   "reset_password_token",   limit: 255
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
     t.integer  "sign_in_count",                      default: 0
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
-    t.string   "current_sign_in_ip"
-    t.string   "last_sign_in_ip"
+    t.string   "current_sign_in_ip",     limit: 255
+    t.string   "last_sign_in_ip",        limit: 255
     t.boolean  "admin",                              default: false, null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                                         null: false
+    t.datetime "updated_at",                                         null: false
     t.string   "first_name",             limit: 100
     t.string   "last_name",              limit: 100
     t.boolean  "staff",                              default: false, null: false
     t.boolean  "patron",                             default: true,  null: false
-    t.string   "username",                           default: "",    null: false
+    t.string   "username",               limit: 255, default: "",    null: false
     t.boolean  "superadmin",                         default: false, null: false
     t.boolean  "pinuser",                            default: false, null: false
   end
