@@ -15,9 +15,9 @@
       .form_col1
         = f.input :contact_last_name, :label => "Primary Contact Last Name: ", :input_html => { :value => @course.contact_last_name.nil? ? current_user.last_name : @course.contact_last_name, :class => 'fl' }
       .form_col2
-        = f.input :contact_phone, :label => "Primary Contact Phone: "
-      .form_col2
         = f.input :contact_email, :label => "Primary Contact Email: ", :input_html => { :value => @course.contact_email.nil? ? current_user.email : @course.contact_email }
+      .form_col2
+        = f.input :contact_phone, :label => "Primary Contact Phone: "
       .clearfix
 
   .panel.panel-default
