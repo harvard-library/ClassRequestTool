@@ -33,7 +33,7 @@
         = f.semantic_fields_for :collections do |c|
           = render 'collection_fields', f: c
         .links
-          = link_to_add_association 'Add a collection', f, :collections, class: 'btn btn-primary'
+          = link_to_add_association 'Add a collection', f, :collections, class: 'btn btn-local-action'
 
     .panel.panel-info
       .panel-heading
@@ -46,6 +46,6 @@
           = render 'attached_image_fields', f: pic
         
         .links
-          = link_to_add_association 'Add an image', f, :attached_images, class: 'btn btn-primary'
+          = link_to_add_association 'Add an image', f, :attached_images, class: 'btn btn-local-action'
   = f.actions do
     = f.action :submit, :as => :button, :button_html => {:class => 'btn btn-primary'}

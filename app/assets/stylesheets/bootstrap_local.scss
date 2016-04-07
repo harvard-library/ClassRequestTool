@@ -82,10 +82,10 @@ $btn-font-weight:   bold;
 // button for actions that change *on the page*
 .btn-local-action {
    background-color: #FFFFFF;
-   color:  #4E84C4;
+   color:  $brand-primary;
    border-style: solid;
-   border-color: #4E84C4 !important;
-   border-width: 2px;
+   border-color: $brand-primary !important;
+   border-width: 2px !important;
 
 }
 

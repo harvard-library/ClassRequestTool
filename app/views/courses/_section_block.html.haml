@@ -10,7 +10,7 @@
       %span.section-count Section #{section_count}
     - unless section_count == 1
       %div{ :class => "delete-button pull-right", :style => "padding-top: 0; padding-right: 70px;" }
-        %button.btn.btn-primary.delete{ "data-to_delete" => 'section' } Remove
+        %button.btn.btn-local-action.delete{ "data-to_delete" => 'section' } Remove
   .panel-body
     .form_full_width
       - if sect.id
@@ -24,7 +24,7 @@
           = formtastic_wrapper('string', "#{(rd_i+1).ordinalize} choice", (text_field_tag :requested_dates, display_with_tz(sect.requested_dates.try(:slice, rd_i)), :name => "#{name_prefix}[requested_dates][]", :id => "#{id_prefix}_requested_dates_#{rd_i}", :class => 'requested_date date form-control', :placeholder => "Click to select date/time")).html_safe
 
           - if current_user.can_schedule?
-            %button.btn.btn-primary.date-setter Set as Actual Date
+            %button.btn.btn-local-action.date-setter Set as Actual Date
         / END form_date
 
       - if current_user.can_schedule?

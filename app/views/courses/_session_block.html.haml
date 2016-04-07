@@ -7,7 +7,7 @@
       %h4{ :class => "panel-title pull-left", :style => "padding-top: 7.5px" }= "Session #{session_count}"
       - unless session_count == 1
         %div{ :class => "delete-button pull-right", :style => "padding-top: 0; padding-right: 70px;" }
-          %button.btn.btn-primary.delete{ "data-to_delete" => 'session' }  Remove
+          %button.btn.btn-local-action.delete{ "data-to_delete" => 'session' }  Remove
     .panel-body
       .sections
         -# sesh = [Section.new] if sesh.nil?
@@ -16,5 +16,5 @@
           - section_index += 1
       / END .sections
       .add_section-button-block
-        %button.add_section.btn.btn-primary Add A Section
+        %button.add_section.btn.btn-local-action Add A Section
         .glyphicon.glyphicon-info-sign{ "data-help_info" => "Add one or more sections if your group is too large to view the materials all at once." }
