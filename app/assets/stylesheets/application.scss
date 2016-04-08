@@ -75,6 +75,9 @@
 @import "formtastic-changes";
 @import "global";
 
+/* needed for table filtering */
+@import "tablesorter";
+
 /* model/controller styles */
 @import "courses";
 @import "repositories";
