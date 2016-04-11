@@ -1,4 +1,5 @@
 ClassRequestTool::Application.routes.draw do
+  mount Ckeditor::Engine => '/ckeditor'
   get "custom_text/index"
 
   # Home

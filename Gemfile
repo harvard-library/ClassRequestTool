@@ -25,7 +25,7 @@ gem 'cocoon'
 gem 'bootstrap-sass'
 gem 'sass-rails'
 gem 'uglifier'
-
+gem 'ckeditor'
 # one of devise_harvard_auth_proxy or devise itself relies on deprecated finder methods
 gem 'activerecord-deprecated_finders', require: 'active_record/deprecated_finders'
 
