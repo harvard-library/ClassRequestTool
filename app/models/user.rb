@@ -77,8 +77,4 @@ class User < ActiveRecord::Base
     admin? || superadmin?
   end
 
-  private
-    def user_params
-      params.permit(:user).permit(:email, :password, :password_confirmation, :username, :remember_me, :first_name, :last_name, :repository_ids)
-    end
 end
