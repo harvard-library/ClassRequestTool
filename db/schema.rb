@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160412181807) do
+ActiveRecord::Schema.define(version: 20160413150828) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -248,10 +248,14 @@ ActiveRecord::Schema.define(version: 20160412181807) do
     t.integer "repository_id"
   end
 
+  add_index "item_attributes_repositories", ["item_attribute_id", "repository_id"], name: "index_item_attributes_repositories_on_join", unique: true, using: :btree
+
   create_table "item_attributes_rooms", id: false, force: :cascade do |t|
     t.integer "item_attribute_id"
     t.integer "room_id"
   end
+
+  add_index "item_attributes_rooms", ["item_attribute_id", "room_id"], name: "index_item_attributes_rooms_on_join", unique: true, using: :btree
 
   create_table "notes", force: :cascade do |t|
     t.text     "note_text",                     null: false
