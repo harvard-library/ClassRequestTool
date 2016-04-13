@@ -8,7 +8,7 @@ class RepositoriesController < ApplicationController
 
   def show
     @repository = Repository.includes(:collections).find(params[:id])
-    @recent_courses = Course.where( repository_id: @repository.id ).select(:title).order_by_last_date.limit(3).map { |c| c.title }
+    @recent_courses = Course.where( repository_id: @repository.id ).order_by_last_date.limit(3)
   end
 
   def new
