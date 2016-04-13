@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160411152238) do
+ActiveRecord::Schema.define(version: 20160412181807) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -296,6 +296,8 @@ ActiveRecord::Schema.define(version: 20160411152238) do
     t.integer "repository_id"
     t.integer "user_id"
   end
+
+  add_index "repositories_users", ["repository_id", "user_id"], name: "index_repositories_users_on_repository_id_and_user_id", unique: true, using: :btree
 
   create_table "rooms", force: :cascade do |t|
     t.string   "name",        limit: 255
