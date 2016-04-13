@@ -91,7 +91,7 @@ class CoursesController < ApplicationController
           end
         end
         flash.now[:danger] = error_messages.html_safe
-
+        @collaboration_options = Customization.current.collaboration_options # need this to render new
         format.html { render :new }
         format.json { render json: @course.errors, status: :unprocessable_entity }
       end
