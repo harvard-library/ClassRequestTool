@@ -1,2 +1,2 @@
-%h3= "Edit Class <em>#{@course.title}</em>".html_safe
+%h3= "Edit Class <em>#{html_escape(@course.title)}</em>".html_safe
 = render :partial => 'course_top_level'

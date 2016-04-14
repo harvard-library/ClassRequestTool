@@ -20,12 +20,12 @@ class Report
     unless params[:repo].blank?
       repo = Repository.find(params[:repo].to_i)
       @report_filters[:clauses] << "c.repository_id=#{params[:repo]}"
-      @report_filters[:displays] << "For #{repo.name} only"    
+      @report_filters[:displays] << "For #{ActionController::Base.helpers.sanitize(repo.name)} only"    
     end
     
     unless params[:affiliate].blank?
       @report_filters[:clauses] << "c.affiliation='#{params[:affiliate]}'"
-      @report_filters[:displays] << "Requests from #{params[:affiliate]} only"
+      @report_filters[:displays] << "Requests from #{ActionController::Base.helpers.sanitize(params[:affiliate])} only"
     end
     
     unless params[:start_date].blank? || params[:end_date].blank?

@@ -18,7 +18,7 @@
             Yes
             \#{radio_button_tag :affiliation_selection, 'no', @affiliation_selection == 'no'} No
           #local_yes.affiliation_field
-            = select_tag :local_affiliation, $affiliates.map{ |opt| "<option#{opt.name == @local_affiliation ? ' selected' : ''}>#{opt.name}</option>" }.join("\n").html_safe, :prompt => '-- Which School? --', :class => 'form-control'
+            = select_tag :local_affiliation, $affiliates.map{ |opt| "<option#{opt.name == @local_affiliation ? ' selected' : ''}>#{html_escape(opt.name)}</option>" }.join("\n").html_safe, :prompt => '-- Which School? --', :class => 'form-control'
           #local_no_or_other.affiliation_field
             %label.control-label What is your affiliation?
             %br/
