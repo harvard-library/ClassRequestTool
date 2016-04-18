@@ -40,5 +40,6 @@
     - if current_user && (current_user.patron? || current_user.staff)
       %li= link_to "Edit Account", edit_user_registration_path
   %ul.nav.navbar-nav.navbar-right
-    %li.navbar-link
-      %a{:href => "https://docs.google.com/forms/d/1sXRDtvBth1uVKddiHKQ7Psgu2vZeEOFIG08pKYn5ilU/viewform"} Questions/Feedback
+    - if !Customization.current.feedback_link.blank?
+      %li.navbar-link
+        %a{:href => Customization.current.feedback_link} Questions/Feedback

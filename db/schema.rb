@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160413150828) do
+ActiveRecord::Schema.define(version: 20160414172051) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -202,6 +202,7 @@ ActiveRecord::Schema.define(version: 20160413150828) do
     t.integer  "homeless_staff_services",  default: [], array: true
     t.integer  "homeless_technologies",    default: [], array: true
     t.text     "collaboration_options",    default: [], array: true
+    t.text     "feedback_link"
   end
 
   create_table "delayed_jobs", force: :cascade do |t|
