@@ -1,41 +1,50 @@
+
+
 $(function() {
   
+  var data_prep = function($tr) {
+      var  data = { custom_text: {} };
+      var key_val = $tr.children(".field").children(".key").val();
+      var text_id = $tr.children(".field").children(".ckeditor").attr("id");
+      var text = CKEDITOR.instances[text_id].getData();
+      data.custom_text["key"] = key_val;
+      data.custom_text["text"] = text;
+      return data;
+    }
+ 
+var show_success = function($tr) {
+     $tr.css({'background-color': '#c3d7a4;'})
+     $tr.animate({'background-color': 'transparent'}, 800);
+    }
+  
   $('body').on('click', '#new_custom_text button', function(e) {
-    var data = { custom_text: {} };
-    $('#new_custom_text .field').each(function() {
-      var key = $(this).children().attr('id');
-      var customText = $(this).children().val();
-      data.custom_text[key] = customText;
-    });
-    
+    var data = data_prep($('#new_custom_text'));
     if (data.custom_text.key != '' && data.custom_text.key != null) {
       $.post('/admin/custom_texts', data, function(newText) {
-       $('#new_custom_text').before(
-         '<tr class="custom-text-' + newText.id + '">' + 
-         '  <td><a href="#" name="custom_text[key]" data-type="text" data-pk="' + newText.id + '" data-url="/admin/custom_texts/' + newText.id + '", class="editable">' + newText.key + '</a></td>' +
-         '  <td><a href="#" name="custom_text[text]" data-type="wysihtml5" data-pk="' + newText.id + '" data-url="/admin/custom_texts/' + newText.id + '", class="editable">' + newText.text + '</a></td>' +
-         '</tr>');
+	  $('#new_custom_text').before(newText);
+	  var $tr = $('#new_custom_text').prev()
+	  var ckid = $tr.find("*.ckeditor").attr("id")
+	  CKEDITOR.replace(ckid);
+	  $('#new_custom_text').find("#key").val("");
+	  $('#new_custom_text').find("#text").val("");
+	  CKEDITOR.instances["text"].destroy(true);
+	  CKEDITOR.replace("text");
+	  show_success($tr);
       });
     }
   });
   
   $('body').on('click', '#custom_texts .update', function(e) {
-    var $tr = $(e.currentTarget).parent().parent().parent();
-    var id = $tr.attr('class').replace('custom-text-', '');
-    var data = { custom_text: {} };
-    $tr.children('.field').each(function() {
-      var key = $(this).children().attr('id');
-      var customText = $(this).children().val();
-      data.custom_text[key] = customText;
-    });
-    $.ajax('/admin/custom_texts/' + id, { 
-      method: 'PUT',
-      data: data,
-      success: function() {
-        $tr.css({'background-color': '#c3d7a4;'})
-        $tr.animate({'background-color': 'transparent'}, 800);
-      }
-    });  
+      var $tr = $(e.currentTarget).parent().parent().parent();
+      var data = data_prep($tr);
+      var id = $tr.attr('class').replace('custom-text-', '');
+      $.ajax('/admin/custom_texts/' + id, { 
+	  method: 'PUT',
+	  data: data,
+	  success: function() {
+              show_success($tr);
+	  }
+      });  
   });
     
   $('body').on('click', '#custom_texts .delete', function(e) {
