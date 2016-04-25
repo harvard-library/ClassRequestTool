@@ -6,11 +6,14 @@ class Admin::CustomTextsController < ApplicationController
   end
   
   def create
-    @custom_text = Admin::CustomText.new(params[:custom_text])
+    @custom_text = Admin::CustomText.new(custom_text_params)
     
     if @custom_text.save
       respond_to do |format|
-        format.json { render json: @custom_text }
+        format.html do
+          render :partial => 'table_row', locals: { custom_text:  @custom_text }
+#        format.json { render json: @custom_text }
+        end
       end
     else
       respond_to do |format|
@@ -22,7 +25,7 @@ class Admin::CustomTextsController < ApplicationController
   def update
     @custom_text = Admin::CustomText.find(params[:id])
     
-    if @custom_text.update_attributes(params[:custom_text])
+    if @custom_text.update_attributes(custom_text_params)
       respond_to do |format|
         format.json { render json: @custom_text }
       end
@@ -47,5 +50,8 @@ class Admin::CustomTextsController < ApplicationController
   private
     def require_superadmin
       redirect_to :root, alert: "You're not authorized to see that." unless current_user.superadmin?
+    end
+    def custom_text_params
+      params.require(:custom_text).permit(:key, :text)
     end
 end
