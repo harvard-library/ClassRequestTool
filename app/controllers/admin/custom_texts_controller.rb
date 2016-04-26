@@ -52,6 +52,8 @@ class Admin::CustomTextsController < ApplicationController
       redirect_to :root, alert: "You're not authorized to see that." unless current_user.superadmin?
     end
     def custom_text_params
-      params.require(:custom_text).permit(:key, :text)
+      c_params = params.require(:custom_text).permit(:key, :text)
+      c_params[:key].strip!
+      c_params
     end
 end
