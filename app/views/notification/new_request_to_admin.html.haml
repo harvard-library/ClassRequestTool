@@ -1,6 +1,11 @@
 - if @course.repository.blank?
+  - if @test
+    %b If homeless:
   %p A new homeless class request has been received in the Class Request Tool.
   = render :partial => 'shared/notification_course_info', :locals => { course: @course, test: @test  }
+  - if @test
+    %p
+    %b 'Homeless' text:
   %p
     If this class is appropriate for your library or archive, please,
     - if @test
@@ -8,6 +13,12 @@
     - else
       %a{:href => edit_course_url(@course)} edit the course
     and assign it to your repository.
+    - if @test
+      %p
+      %b Assigned repository text:
+      %p  If you wish to manage or confirm details, claim this class or assign it to another staff member at (repository name), please 
+      %a{ href: '#' } edit the course (linked to course edit form)
+
 - else
   = render :partial => 'shared/notification_course_info', :locals => { course: @course, test: @test   }
   %p
