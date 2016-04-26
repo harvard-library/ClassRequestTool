@@ -1,8 +1,15 @@
 // The following are for in-place editing of custom text
 %h1 Custom Text Entries
-%p Custom text entries allow you to customize elements of text throughout the application.
+%p Custom text entries allow you to customize elements of text throughout the application. Currently, they are only used in Notifications.
 %p If you want to add custom text in a new location, please see your application tech admin to add the code to the correct template.
-%p Texts are pulled in via their key strings. Key strings should be mnemonic, giving an indication of where the text will be used.
+%p Texts are pulled in via their key strings. Here are the key string labels that you can currently use:
+%ul
+  - Notification.instance_methods(false).each do |n|
+    - next if /^_/.match(n.to_s)
+    - next if /test_email/.match(n.to_s)
+    %li 
+      %i For #{n.to_s.gsub('_', ' ').capitalize}: 
+      %b #{n.to_s }
 %table{ class: 'table', id: 'custom_texts' }
   %thead
     %th Key String
