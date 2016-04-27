@@ -56,7 +56,7 @@ ClassRequestTool::Application.configure do
   config.action_mailer.default_url_options = { :host => 'crtqa.lib.harvard.edu' }
   config.action_mailer.delivery_method = :sendmail
 
-  MAIL_RECIPIENT_OVERRIDE = true
+  MAIL_RECIPIENT_OVERRIDE = (ENV['OVERRIDE_RECIPIENTS']||[]).split("'")
 
   # Enable threaded mode
   # config.threadsafe!
