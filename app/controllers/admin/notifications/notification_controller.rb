@@ -2,10 +2,9 @@ class Admin::Notifications::NotificationController < Admin::AdminController
 
   # By default list links to all emails
   def action_missing(m, *args, &block)
-
     @test = true
     ct = Admin::CustomText.where(key: m).first
-    @custom_text = ct.nil? ? '' : ct.text
+    @custom_text = ct.nil? ? '<i>CUSTOM TEXT HERE</i>' : "<i>Custom text:</i> #{ct.text}"
 
     case (m)
       when 'assessment_received_to_admins'
