@@ -15,6 +15,7 @@ $(function () {
   
   // Dealing with modal confirm dialog - override $.rails.allowAction 
   // (see http://lesseverything.com/blog/archives/2012/07/18/customizing-confirmation-dialog-in-rails/ ) 
+  // FOX ADDS:  this only seems to work if a data-method is defined in the link (e.g.: "get" or "delete")
   $.rails.allowAction = function(link) {
     if (!link.attr('data-confirm')) {
       return true;
@@ -31,8 +32,17 @@ $(function () {
   
   // Now configure the dialog
   $.rails.showConfirmDialog = function(link) {
-    var html;
-    html = "<div id=\"dialog-confirm\" title=\"Are you sure?\">\n  <p>This will be permanently deleted and cannot be recovered.</p>\n</div>";
+    var html  = "<div id=\"dialog-confirm\" title=\"Are you sure?\">\n<p>";
+    var method = $(link).attr("data-method");
+    method = method?method:"";
+    if (method ==="delete") {
+	html = html + "This will be permanently deleted and cannot be recovered.</p>\n";
+    }
+    else {
+	var conf = $(link).attr("data-confirm");
+	html = html + ((conf !== "Are you sure?")? conf:"");
+    }
+    html = html + "</p></div>";
     return $(html).dialog({
       resizable: false,
       modal: true,
