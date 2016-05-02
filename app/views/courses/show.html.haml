@@ -226,7 +226,7 @@
       = render :partial => 'notes/index', :locals => {:notes => @notes }
     = render :partial => 'notes/form', :locals => {:note => @note, :course => @course }
     %br
-    - if @course.completed? && @course.status == "Active"
+    - if !@course.completed? && @course.status == "Active"
       .admin-box
         %p When class is complete, click box to send class assessment, if desired. Use button below to close class.
         = semantic_form_for(@course, :method => :put, :html => {:multipart => true}) do |f|
