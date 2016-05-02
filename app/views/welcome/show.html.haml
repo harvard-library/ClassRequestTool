@@ -19,18 +19,13 @@
         %h2.panel-title Request A Class
       .panel-body
         %p
-          %strong To request a class, select a site below or click “Help Me Choose” and we'll help pair your class with a participating library or archive.
-        %br
+          %strong Select a library or archive:
         %p.text-center
           .form#select-repo
-            = select_tag :repo, options_from_collection_for_select(@repositories, :id, :name), :prompt => '-- Choose a Library --', :class => 'form-control'
+            = select_tag :repo, options_from_collection_for_select(@repositories, :id, :name), :prompt => '-- Choose a Library/Archive --', :class => 'form-control'
             %br
-            %button.btn.btn-primary Request Class
-          %br
-          %strong OR
-          %br
-          %br
-            = link_to 'Help Me Choose', new_course_path, :class => 'btn btn-primary'
+            %p
+              %button.btn.btn-primary Request Class
 
     .panel.panel-info
       .panel-heading
