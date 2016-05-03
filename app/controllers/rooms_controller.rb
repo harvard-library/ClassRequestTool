@@ -54,9 +54,7 @@ class RoomsController < ApplicationController
 
   private
     def room_params
-      rm_params = params.require(:room).permit(:name, :repository_ids, :item_attribute_ids, :class_limit)
-      rm_params[:repository_ids] = params[:room][:repository_ids]
-      rm_params[:item_attribute_ids] = params[:room][:item_attribute_ids]
+      rm_params = params.require(:room).permit(:name, {:repository_ids => []}, {:item_attribute_ids => []}, :class_limit)
       rm_params
     end
 end
