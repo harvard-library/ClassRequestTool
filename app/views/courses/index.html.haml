@@ -19,14 +19,7 @@
       %em
         %span.glyphicon.glyphicon-th-list
         &mdash; Hover to see all meeting times&nbsp;&nbsp;&nbsp;&nbsp;
-        - unless current_user.patron?
-          %span.glyphicon.glyphicon-upload.upcoming
-          &mdash; Upcoming course&nbsp;&nbsp;&nbsp;&nbsp;
-          %span.glyphicon.glyphicon-download.past
-          &mdash; Past course&nbsp;&nbsp;&nbsp;&nbsp;
-          %span.glyphicon.glyphicon-minus-sign.nil
-          &mdash; Course with no dates&nbsp;&nbsp;&nbsp;&nbsp;
-       
+
     .search
       - column = current_user.can_admin? ? 7 : 3
       %input{:class => 'table-search', 'data-column' => column, :type => 'search', :placeholder => 'Search table...' }
