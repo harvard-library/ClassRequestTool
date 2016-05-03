@@ -68,9 +68,10 @@ class Notification < ActionMailer::Base
   def homeless_courses_reminder
     fetch_custom_text(__method__.to_s)
     @courses = Course.where("repository_id IS NULL AND created_at <= ?", Time.now - 2.days)
-    admins = User.where('admin = ? OR superadmin = ?', true, true).pluck(:email)
-
-    mail(to: admins, subject: "[ClassRequestTool] Homeless classes are languishing!")
+    unless @courses.blank?
+      admins = User.where('admin = ? OR superadmin = ?', true, true).pluck(:email)
+      mail(to: admins, subject: "[ClassRequestTool] Homeless classes are languishing!")
+    end
   end
 
   def new_note(note, current_user)
