@@ -114,7 +114,10 @@ module CoursesHelper
 
     # Always list first scheduled section date
     meeting_time = course.first_date.blank? ? '' :  course.first_date.strftime(DATETIME_AT_FORMAT)
-    html = "<span class='time'>#{meeting_time}</span>#{meeting_time.blank? ?  '<span class=\"status danger\">No dates</span>' : ''}"
+    html = "<span class='time'>#{meeting_time}</span>"
+    if meeting_time.blank?
+      html += " <span class='status danger'>No dates</span>"
+    end
     if scheduled_sections.count > 1
       html += ' <br /><span class="glyphicon glyphicon-th-list" '
       scheduled_sections.each do |s|
