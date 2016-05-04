@@ -114,6 +114,11 @@ ul.course-actions {
   border-radius: 5px;
 }
 
+// needed to properly position from & to for date ranges 
+tr.tablesorter-filter-row td label { 
+			  display: block;
+}
+
 // Hide AEon data
 #aeon-data {
   height: 0px;
