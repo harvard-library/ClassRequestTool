@@ -34,8 +34,12 @@
             %th.status-column.filter-select{'data-placeholder' => 'Select...'} Library/Archive
             %th.status-column.filter-select{'data-placeholder' => 'Select...', :class => "{sorter: false, filter: false}"} Scheduling
             %th.status-column Owner
-          %th.submission-date.date Submission Date
-          %th.first-class-meeting.date First Class Meeting
+          %th.submission-date.date{ "data-help_info" => "For filtering, enter a date in either 'From' OR 'To'."} 
+            Submission Date
+            .glyphicon.glyphicon-info-sign
+          %th.first-class-meeting.date{ "data-help_info" => "For filtering, enter a date in either 'From' OR 'To'."}
+            First Class Meeting
+            .glyphicon.glyphicon-info-sign
           - if current_user.can_admin?
             %th Requester
           / %th{class: "{sorter: false, filter: false}"} Actions
