@@ -18,6 +18,9 @@
         = banner.input :picture_type, :as => :hidden
         = banner.input :image_cache, :as => :hidden
         = banner.input :image, :as => :file, :label => 'Banner Image'
+      %br/
+      = f.input :welcome, :as => :ckeditor, :label => "Welcome Message ", :input_html => { :rows => 5, :columns => 100 }
+
       %fieldset
         %legend Notifications
         = f.input :notifications_on, :label => 'Notifications ON'

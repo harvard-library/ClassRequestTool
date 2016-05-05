@@ -6,12 +6,8 @@
       .panel-heading
         %h1.panel-title Welcome
       .panel-body
-        %p
-          Teach with us! Class sessions at participating special collections libraries and archives can range from surveys of faculty-selected collection material to sessions for which our staff provide guided explorations. Bring your class in for an hour or schedule several visits for in-depth investigations of archives, manuscripts, maps, rare books, and more.
-        %p
-          %strong NOTE:
-          %a{:href => "https://hcl.harvard.edu:8001/forms/requests/instruction.cfm", :target => "_new"} general library instruction sessions
-          are scheduled separately.
+        = sanitize Customization.current[:welcome].html_safe
+
 
   .col-md-4
     .panel.panel-primary
