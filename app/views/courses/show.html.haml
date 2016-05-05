@@ -47,11 +47,11 @@
       %span#avgHeadcount= @course.avg_headcount || 'None recorded'
     %li
       %span.summary-label Syllabus:
-      - if @course.syllabus.blank? && @course.external_syllabus.nil?
+      - if @course.syllabus.blank? && (@course.external_syllabus.blank? || @course.external_syllabus == "http://")
         None
       - else
         = link_to @course.syllabus.file.filename, @course.syllabus_url unless @course.syllabus.blank?
-        - unless @course.external_syllabus.nil?
+        - unless @course.external_syllabus.blank? || @course.external_syllabus == "http://"
           = link_to @course.external_syllabus, @course.external_syllabus, :target => "blank"
     %li
       %span.summary-label Goal for Class Visit:

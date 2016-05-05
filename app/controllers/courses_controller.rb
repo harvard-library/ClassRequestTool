@@ -499,7 +499,10 @@ class CoursesController < ApplicationController
       else
         params[:course][:affiliation] = params[:local_affiliation]
       end
-
+      # if the external syllabus is just 'http://', blank it out!
+      if !params[:course][:external_syllabus].blank? && params[:course][:external_syllabus].strip == 'http://'
+        params[:course][:external_syllabus] = ""
+      end
       # Use flash to save affiliation parameters in case there is a form error
       @affiliation_selection = params[:affiliation_selection]
       @other_affiliation   = params[:other_affiliation]
