@@ -3,7 +3,7 @@
   .panel.panel-default
     .panel-body
       .form_full_width
-        = render partial: 'repositories/staff_services', locals: { staff_services: @course.staff_services, all_staff_services: @all_staff_services }
+        = render partial: 'repositories/staff_services', locals: { :f=>f, staff_services: @course.staff_services, all_staff_services: @all_staff_services }
       - if current_user.can_admin? || current_user.staff?
         .form_full_width.admin-box
           %h3 Staff Assignments

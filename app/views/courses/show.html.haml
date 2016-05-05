@@ -110,13 +110,16 @@
               %br
             
   %h4 Staff Services Requested
-  - if @course.staff_services.blank?
+  - if @course.staff_services.blank? && @course.staff_involvement.blank?
     %p No services have been selected yet.
   - else
     %ul
-      - @course.staff_services.each do |si|
-        %li= si.description
-        
+      - if !@course.staff_services.blank?
+        - @course.staff_services.each do |si|
+          %li= si.description
+      -if !@course.staff_involvement.blank?
+        %li= @course.staff_involvement
+
   %h4 Technologies Requested
   - if @course.item_attributes.blank?
     %p No technologies have been selected yet.
