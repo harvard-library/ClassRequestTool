@@ -4,7 +4,7 @@
   has been uncancelled.
 
 - unless @custom_text.blank?
-  = @custom_text.html_safe
+  = sanitize @custom_text.html_safe
 
 %p
   If you have any questions or additional details to share, please add a note to the

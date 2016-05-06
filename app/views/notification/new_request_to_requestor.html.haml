@@ -16,6 +16,6 @@
 %br/
 
 - unless @custom_text.blank?
-  = @custom_text.html_safe
+  = sanitize @custom_text.html_safe
 
 %p Thank you for your request. We look forward to working with you.

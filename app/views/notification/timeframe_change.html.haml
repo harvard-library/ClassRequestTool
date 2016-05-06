@@ -3,7 +3,7 @@
 = render :partial => 'shared/notification_course_info', :locals => { course: @course, test: @test  }
 
 - unless @custom_text.blank?
-  = @custom_text.html_safe
+  = sanitize @custom_text.html_safe
 
 %p
   If you have any questions or additional details to share, please add a note to the

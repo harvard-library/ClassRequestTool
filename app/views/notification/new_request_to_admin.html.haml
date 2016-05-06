@@ -30,5 +30,5 @@
         %a{:href => edit_course_url(@course)} edit the course
         
 - unless @custom_text.blank?
-  = @custom_text.html_safe
+  = sanitize @custom_text.html_safe
 
