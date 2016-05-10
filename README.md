@@ -23,6 +23,7 @@ The Class Request Tool (CRT) is a class reservation system that lets instructors
 * Bundler
 * NodeJS (for assets compilation and running Bower
 * Bower (non-global installs are fine, regardless of what error messages might say)
+* [ImageMagick](http://imagemagick.org/)
 * A webserver capable of interfacing with Rails applications.  Ideally, Apache or Nginx with mod_passenger
 * Linux/OSX.  Windows will probably work fine, but we don't test on Windows as of now.
 
@@ -77,3 +78,7 @@ Additional development notes can be found [here](DEV_NOTES.md)
 This application is licensed under the GPL, version 3.
 
 2011 President and Fellows of Harvard College
+
+
+
+> Written with [StackEdit](https://stackedit.io/).
