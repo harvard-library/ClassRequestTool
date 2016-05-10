@@ -35,7 +35,7 @@
         %div{:class => "notifications-status #{Customization.current.notifications_on? ? 'ON' : 'OFF' }"}
           Notifications:
           %b= Customization.current.notifications_on? ? 'SENDING NORMALLY' : "TEST MODE - delivering to #{test_mail_recipient}"
-      %div.navbar.navbar-inverse.navbar-static-top{:role => "navigation"}
+      %nav.navbar.navbar-inverse.navbar-static-top{:role => "navigation"}
         = render :partial => 'shared/user'
         .container
           .nav.navbar-header.row
