@@ -27,10 +27,10 @@
       .panel-heading
         %h4.panel-title Recent Classes
       .panel-body
-        %ul.list-group.no-borders
-        - unless @courses.nil?
-          - @courses.each do |course|
-            %li.list-group-item= link_to(course.title, recent_show_course_url(course) )
+        - if !@courses.nil?
+          %ul.list-group.no-borders
+            - @courses.each do |course|
+              %li.list-group-item= link_to(course.title, recent_show_course_url(course) )
         - else
           None yet.
 
