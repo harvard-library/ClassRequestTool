@@ -1,6 +1,6 @@
 asset "highcharts"
 asset "icheck"
-asset "jquery", "2.1.4"
+asset "jquery", "~1"
 asset "jquery-tablesorter", github: "Mottie/tablesorter"
 asset "jquery-ujs"
 asset "jquery-ui"

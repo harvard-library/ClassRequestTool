@@ -3,7 +3,7 @@
   "dependencies": {
     "highcharts": "latest",
     "icheck": "latest",
-    "jquery": "2.1.4",
+    "jquery": "~1",
     "jquery-tablesorter": "git://github.com/Mottie/tablesorter",
     "jquery-ujs": "latest",
     "jquery-ui": "latest",
