@@ -3,18 +3,6 @@
   %head
     %title #{page_title(controller)} | Class Request Tool
     %meta{:content => "width=device-width, initial-scale=1.0", :name => "viewport"}/
-    = stylesheet_link_tag    'application', :media => "all"
-    /
-      [if lt IE 9]>
-      = stylesheet_link_tag 'iefix', :media => 'all'
-      <![endif]
-    /
-      [if lt IE 10]>
-      = stylesheet_link_tag 'application_split2_ie.css', :media => 'all'
-      <![endif]
-    = javascript_include_tag 'application'
-    = csrf_meta_tags
-    = yield :header_tags
     /
       [if IE]>
       <script type="text/javascript">
@@ -28,6 +16,19 @@
       document.createElement("footer");
       </script>
       <![endif]
+
+    = stylesheet_link_tag    'application', :media => "all"
+    /
+      [if lt IE 9]>
+      = stylesheet_link_tag 'iefix', :media => 'all'
+      <![endif]
+    /
+      [if lt IE 10]>
+      = stylesheet_link_tag 'application_split2_ie.css', :media => 'all'
+      <![endif]
+    = javascript_include_tag 'application'
+    = csrf_meta_tags
+    = yield :header_tags
   %body{:class => "c_#{controller.controller_name} a_#{controller.action_name} u_#{current_user ? current_user.user_type : "anon"}"}
     #wrap
       - if current_user && current_user.can_admin?
