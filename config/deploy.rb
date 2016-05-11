@@ -7,8 +7,17 @@ namespace :bower do
       end
     end
   end
+  desc 'Resolve bower'
+  task :resolve do
+     on roles(:web) do
+      within release_path do
+        execute :rake, 'bower:resolve CI=true'
+      end
+    end
+  end
 end
-before 'deploy:compile_assets', 'bower:install'
+before 'bower:resolve', 'bower:install'
+before 'deploy:compile_assets', 'bower:resolve'
 
 
 set :application, 'class_request_tool'
