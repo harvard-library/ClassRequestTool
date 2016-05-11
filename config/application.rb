@@ -17,6 +17,11 @@ module ClassRequestTool
     # Use delayed_job as the queueing backend
     config.active_job.queue_adapter = :delayed_job   
     
+    # deal with ugly IE compatibility mode issues:
+    config.action_dispatch.default_headers.merge!({
+        'X-UA-Compatible' => 'IE=edge,chrome=1'
+    })
+
     #** Removed for Rails 4
 
     # Settings in config/environments/* take precedence over those specified here.
