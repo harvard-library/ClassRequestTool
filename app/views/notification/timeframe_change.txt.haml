@@ -1,0 +1,17 @@
+Thank you for submitting your request for a class session at #{@course.repo_name}. The request has been reviewed and confirmed.
+
+= render :partial => 'shared/notification_course_info'}, :locals => { course: @course, test: @test  }
+
+- unless @custom_text.blank?
+  = strip_tags(@custom_text)
+
+
+If you have any questions or additional details to share, please add a note to the class request:
+
+- if @test
+  (link to course)
+- else
+  = course_url(@course)}
+
+- unless @pre_class.blank?
+  %p= @pre_class

@@ -1,0 +1,129 @@
+div.to_be_deleted {
+  opacity: 0.5;
+}
+
+div.session {
+  @include clearfix();
+  padding:16px;padding: 1rem;
+/*
+  border: 1px solid #999;
+  border-radius: 10px;
+*/
+  margin-bottom: 1em;
+  &:last-child {
+    margin-bottom: 0;
+  }
+/*
+  &:nth-child(even) {
+    background-color: #dfefff;
+  }
+*/
+  .sections {
+    .section {
+      padding: 1em;
+      border-top: 1px solid #eee;
+      &:first-child {
+        border-top: none;
+      }
+    }
+  }
+}
+
+input[type=number] {
+  max-width: 7em;
+}
+
+/* course/#/summary */
+.summary-label {
+  font-weight: bold;
+}
+
+ul.summary-info {
+  list-style: none outside none;
+  padding-left: 1em;
+  li {
+    padding-bottom: 0.2em;
+  }
+}
+/* styling for course form */
+span .form_wrapper  h4 {
+	      color: #A51C30;
+}
+
+select#repository {
+  margin-top: 1em;
+  @include make-xs-column(9);
+  @include make-xs-column-offset(1);
+}
+
+select#repository + input {
+  margin-top: 1em;
+  float: left;
+  margin-left: 10px;
+}
+
+form div.calendar {
+  padding-bottom: 1em;
+}
+
+.add_section-button-block {
+  padding-left: 1em;
+}
+
+/* TK modifications */
+.section-times.multiple {
+  position: relative;
+  .glyphicon {
+    position: absolute;
+    top: 8px;
+    left: 0;
+    cursor: pointer;
+    color: $slate;
+  }
+  li {
+    padding-left: 10px;
+  }
+}
+ul.course-actions {
+  list-style-type: none;
+  margin-left: 0;
+  padding-left: 0;
+  li {
+    margin-left: 0;
+    padding-left: 0;
+  }
+}
+.status {
+  color: $brand-info;
+  font-weight: bold;
+  &.warning {
+    color: $brand-warning;
+  }
+  &.danger {
+    color: $brand-danger;
+  }
+  &.inactive {
+    color: white;
+    background-color: $shade;
+  }
+}
+.bordered {
+  border: solid 1px #ccc;
+  padding: 10px;
+  margin: 3px 0;
+  border-radius: 5px;
+}
+
+// needed to properly position from & to for date ranges 
+tr.tablesorter-filter-row td label { 
+			  display: block;
+}
+
+// Hide AEon data
+#aeon-data {
+  height: 0px;
+  display: none;
+}
+.nature-of-collaboration {
+  display: none;
+}

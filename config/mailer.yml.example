@@ -1,0 +1,19 @@
+mailer:
+ development:
+    delivery_method: :smtp
+    settings:
+      :address:        smtp.gmail.com
+      :domain:         localhost
+      :port:           587
+      :user_name:      <your gmail account>
+      :password:       <your password>
+      :authentication: :plain
+ qa:
+    delivery_method: :sendmail
+    settings:
+      :domain:         <your qa domain>
+ production:
+    delivery_method: :sendmail
+    settings:
+      :domain:         <your production domain>
+    

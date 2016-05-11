@@ -4,7 +4,7 @@ class RoomsController < ApplicationController
   before_filter :authenticate_admin_or_staff!
   
   def index
-    @rooms = Room.order('name')
+    @rooms = Room.order('name').includes(:repositories, :item_attributes)
   end  
   
   def new
@@ -16,7 +16,7 @@ class RoomsController < ApplicationController
   end
   
   def create
-    @room = Room.new(params[:room])
+    @room = Room.new(room_params)
     respond_to do |format|
       if @room.save
         format.html { redirect_to rooms_url, notice: 'Room was successfully created.' }
@@ -32,7 +32,7 @@ class RoomsController < ApplicationController
     @room = Room.find(params[:id])
 
     respond_to do |format|
-      if @room.update_attributes(params[:room])
+      if @room.update_attributes(room_params)
         format.html { redirect_to rooms_url, notice: 'Room was successfully updated.' }
         format.json { head :no_content }
       else
@@ -51,4 +51,10 @@ class RoomsController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  private
+    def room_params
+      rm_params = params.require(:room).permit(:name, {:repository_ids => []}, {:item_attribute_ids => []}, :class_limit)
+      rm_params
+    end
 end

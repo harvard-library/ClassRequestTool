@@ -1,0 +1,28 @@
+.form_wrapper
+  %h4 Staff Services
+  .panel.panel-default
+    .panel-body
+      .form_full_width
+        = render partial: 'repositories/staff_services', locals: { :f=>f, staff_services: @course.staff_services, all_staff_services: @all_staff_services }
+      - if current_user.can_admin? || current_user.staff?
+        .form_full_width.admin-box
+          %h3 Staff Assignments
+          - if @course.repository.nil?
+            = f.input :primary_contact_id, :as => :select, :collection => User.all_admins, :label => "Primary Staff Contact: "
+            = f.input :users, :as => :check_boxes, :collection => User.all_admins, :label => "Additional Staff: "
+          - else
+            = f.input :primary_contact_id, :as => :select, :collection => @course.repository.users, :label => "Primary Staff Contact: ", :include_blank => '-- Select Contact --'
+            %span.help-block Staff member primarily responsible for course
+            - unless @course.primary_contact_id.nil?
+              = render partial: 'repositories/staff_list', locals: { form: true, staff_members: @additional_staff, assigned_staff: @course.users.blank? ? [] : @course.users }
+
+            - else
+              = f.input :users, :as => :check_boxes, :collection => @course.repository.users, :label => "Additional Staff: "
+          = f.input :assisting_repository_id, :as => :select, :collection => possible_collaborations, :label => 'Collaboration with library/archive (if any)', :include_blank => '-- Select Library/Archive --'
+          .nature-of-collaboration
+            %label Nature of Collaboration
+            - @collaboration_options.each do |option|
+              .checkbox
+                %label.choice{ for: option }  
+                  = check_box_tag 'course[collaboration_options][]', option, @course.collaboration_options.blank? ? false : @course.collaboration_options.include?(option)
+                  %span{ class: 'collaboration_options' } #{option}

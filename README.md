@@ -19,8 +19,11 @@ The Class Request Tool (CRT) is a class reservation system that lets instructors
 ## System Requirements
 
 ### General
-* Ruby 1.9.3+ (2.x preferred)
+* Ruby 2.1.X or higher
 * Bundler
+* NodeJS (for assets compilation and running Bower
+* Bower (non-global installs are fine, regardless of what error messages might say)
+* [ImageMagick](http://imagemagick.org/)
 * A webserver capable of interfacing with Rails applications.  Ideally, Apache or Nginx with mod_passenger
 * Linux/OSX.  Windows will probably work fine, but we don't test on Windows as of now.
 
@@ -32,7 +35,7 @@ The Class Request Tool (CRT) is a class reservation system that lets instructors
 4. Create a .env file for your environment. Currently, the following variables are needed to run Class Request Tool:
 
   ```
-  SECRET_TOKEN=ThirtyPlusCharStringOfRandomnessGottenFromRakeSecretMaybe # Only needed in RAILS_ENV=production
+  SECRET_KEY_BASE=ThirtyPlusCharStringOfRandomnessGottenFromRakeSecretMaybe # Only needed in RAILS_ENV=production
   DEVISE_SECRET_KEY=anotherThirtyPluscharStringOfRandomness              # Also only needed in production
   ROOT_URL=my.crt.host.com
   DEFAULT_MAILER_SENDER=email.address.for.mails@my.crt.host.com
@@ -44,6 +47,7 @@ The Class Request Tool (CRT) is a class reservation system that lets instructors
    rake crt:bootstrap:run_all
   ```
 6. Set up cron jobs to run various tasks, detailed in [lib/tasks/bootstrap.rb](lib/tasks/bootstrap.rb)
+7. Run `rake bower:install`. Note that this must be run at least once in any environment where the application or tests is going to be run, and must be re-run when JS assets included via `bower-rails` are changed.  It is recommended that this be automated for deployment.
 
 ## Capistrano
 
@@ -65,7 +69,7 @@ Additional development notes can be found [here](DEV_NOTES.md)
 
 ## Contributors
 
-* Bobbi Fox: http://github.com/bobbi_smr
+* Bobbi Fox: http://github.com/bobbi-SMR
 * Dave Mayo: http://github.com/pobocks (primary contact)
 * Anita Patel: http://github.com/apatel
 
@@ -74,3 +78,7 @@ Additional development notes can be found [here](DEV_NOTES.md)
 This application is licensed under the GPL, version 3.
 
 2011 President and Fellows of Harvard College
+
+
+
+> Written with [StackEdit](https://stackedit.io/).

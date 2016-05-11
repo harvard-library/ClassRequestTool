@@ -1,0 +1,53 @@
+%h3 Superadmin Dashboard
+.panel.panel-default
+  .panel-heading
+    %h4.panel-title Email Status
+  .panel-body
+    %p
+      %button{:class => "toggle-notification-status btn btn-#{Customization.current.notifications_on? ? 'danger' : 'warning'}"}
+        #{Customization.current.notifications_on? ? 'GO TO TEST MODE' : 'SEND NORMALLY'}
+    %p
+      Send a test email to #{current_user.email}. You can send queued using delayed_job or unqueued.
+    %p
+      = link_to 'Send Queued', admin_send_test_email_path(:queued => true), :class => 'btn btn-warning'
+      \&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      \#{link_to 'Send Unqueued', admin_send_test_email_path(:queued => false), :class => 'btn btn-warning'}
+    %h5 Mail Queue
+    #mail-queue-info
+      - if @delayed_jobs.blank?
+        %p There are no jobs in the mail queue.
+      - else
+        %button#clear-mail-queue.btn.btn-primary Clear Mail Queue
+        %table.table
+          %thead
+            %tr
+              %th Queue
+              %th Attempts
+              %th Handler
+              %th Run At
+              %th Error?
+              %th Failed At
+              %th
+          %tbody
+            - @delayed_jobs.each do |job|
+              %tr
+                %td= job.queue
+                %td= job.attempts
+                %td= job.handler
+                %td= job.run_at
+                %td= job.last_error.blank? ? 'No' : 'Yes'
+                %td= job.failed_at
+.panel.panel-default
+  .panel-heading
+    %h4.panel-title Update Course Stats
+  .panel-body
+    %p
+      = link_to 'Update', admin_update_stats_path, :class => 'btn btn-warning'
+      Recalculates session, section, and attendance counts
+.panel.panel-default
+  .panel-heading
+    %h4.panel-title Localization
+  .panel-body
+    %p
+      = link_to "Go", admin_localize_path, :class => 'btn btn-warning'
+      Set local site variables

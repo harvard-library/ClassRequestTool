@@ -1,0 +1,67 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+# This model initially had no columns defined.  If you add columns to the
+# model remove the '{}' from the fixture names and add the columns immediately
+# below each fixture, per the syntax in the comments below
+#
+patron:
+  encrypted_password:   'password_cant_be_blank'    
+  email:      'patron@example.com'
+  username:   'PatronUser'
+  first_name: 'Patron'
+  last_name:  'PUser'
+  patron:     true
+  admin:      false
+  staff:      false
+  superadmin: false
+  pinuser:    false
+    
+admin:
+  encrypted_password:   'password_cant_be_blank'    
+  email:      'admin@example.com'
+  username:   'AdminUser'
+  first_name: 'Admin'
+  last_name:  'AUser'
+  patron:     false
+  admin:      true
+  staff:      true
+  superadmin: false
+  pinuser:    false
+
+superadmin:
+  encrypted_password:   'password_cant_be_blank'    
+  email:      'superadmin@example.com'
+  username:   'SuperadminUser'
+  first_name: 'Superadmin'
+  last_name:  'SAUser'
+  patron:     false
+  admin:      false
+  staff:      false
+  superadmin: true
+  pinuser:    false
+
+primary_contact:
+  encrypted_password:   'password_cant_be_blank'    
+  email:        'primary_contact@example.com'
+  username:     'PrimaryContact'
+  first_name:   'Primary'
+  last_name:    'Contact'
+  patron:       false
+  admin:        false
+  staff:        true
+  superadmin:   false
+  pinuser:      false
+  repositories: repo
+
+staff:
+  encrypted_password:   'password_cant_be_blank'    
+  email:        'staff@example.com'
+  username:     'StaffUser'
+  first_name:   'Staff'
+  last_name:    'STUser'
+  patron:       false
+  admin:        false
+  staff:        true
+  superadmin:   false
+  pinuser:      false
+  repositories: repo

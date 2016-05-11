@@ -1,0 +1,42 @@
+- unless @notes.nil? || @notes.empty?
+  - if current_user.can_admin?
+    - if @note_type[:patron]
+      %button.btn.btn-info.btn-xs.note-toggle#patron Patron Notes (Show/Hide)
+      %br
+    - else
+      %p 
+        %em No patron notes
+    %br
+    - if @note_type[:staff]
+      %button.btn.btn-info.btn-xs.note-toggle#staff Staff Notes (Show/Hide)
+      %br
+    - else
+      %p 
+        %em No staff notes
+    %br
+    - if @note_type[:system]
+      %button.btn.btn-info.btn-xs.note-toggle#autogen System-generated Notes (Show/Hide)
+      %br
+    - else
+      %p 
+        %em No system notes
+    %br
+  - @notes.each do |note|
+    %div{ :id => "note-#{note.id}", :class => "well well-sm #{(note.auto? ? 'autogen' : nil)} #{(note.staff_comment? ? 'staff' : 'patron')}" }
+      - if current_user.staff? || current_user.can_admin?
+        - case
+        - when note.auto?
+          - title = 'System-generated Note'
+        - when note.staff_comment?
+          - title = 'Staff-only Note'
+        - else
+          - title = 'Patron-Staff Note'
+          
+        %h5= title
+      %p= note.note_text
+      %p
+        %em #{note.user.full_name unless note.user.nil?}(#{note.user.user_type unless note.user.nil?}) on: #{note.created_at.strftime(DATETIME_FORMAT)}
+      - if current_user.staff? || current_user.can_admin?
+        %br/
+        = link_to "Edit", edit_note_path(note.id)
+        | #{link_to('Delete', note_path(note), :data => { :confirm => "Are you sure?" }, :method => :delete)}

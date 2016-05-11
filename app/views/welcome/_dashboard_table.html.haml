@@ -1,0 +1,19 @@
+.dash_widget
+  %h4= title
+  - unless courses.blank?
+    %table.table.sortable.2-up{:id => id}
+      %thead
+        %tr
+          %th Title
+          %th.first-class-meeting.date.filter-parsed.sorter-sugar First Class Meeting
+          / %th.hidden Search fodder
+      %tbody
+        - courses.each do |course|
+          %tr
+            %td.course-title= link_to(course.title, course )
+            %td.section-times= first_plus_multiple_sections(course).html_safe
+            %td.hidden= searchable_fields(course)
+    %div{ class: "pager-#{id}" }
+      = render :partial => '/shared/tablesorter_pager'
+  - else
+    None yet.

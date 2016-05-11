@@ -1,0 +1,14 @@
+%p Your class session
+= render :partial => 'shared/notification_course_info', :locals => { course: @course, test: @test  }
+%p was recently completed.
+
+- unless @custom_text.blank?
+  = sanitize @custom_text.html_safe
+
+%p
+  If you would consider taking five minutes to help us improve our services by filling out
+  = succeed "," do
+    %a{:href => new_assessment_url(@course)} a short assessment about your experience
+  we would greatly appreciate it.
+%p
+  Thank you for utilizing #{@course.repo_name} in your course. We hope to work with you again soon.

@@ -1,0 +1,76 @@
+!!!
+%html
+  %head
+    %title #{page_title(controller)} | Class Request Tool
+    %meta{:content => "width=device-width, initial-scale=1.0", :name => "viewport"}/
+    /
+      [if IE]>
+      <script type="text/javascript">
+      document.createElement("article");
+      document.createElement("nav");
+      document.createElement("section");
+      document.createElement("header");
+      document.createElement("aside");
+      document.createElement("figure");
+      document.createElement("legend");
+      document.createElement("footer");
+      </script>
+      <![endif]
+
+    = stylesheet_link_tag    'application', :media => "all"
+    /
+      [if lt IE 9]>
+      = stylesheet_link_tag 'iefix', :media => 'all'
+      <![endif]
+    /
+      [if lt IE 10]>
+      = stylesheet_link_tag 'application_split2_ie.css', :media => 'all'
+      <![endif]
+    = javascript_include_tag 'application'
+    = csrf_meta_tags
+    = yield :header_tags
+  %body{:class => "c_#{controller.controller_name} a_#{controller.action_name} u_#{current_user ? current_user.user_type : "anon"}"}
+    #wrap
+      - if current_user && current_user.can_admin?
+        %div{:class => "notifications-status #{Customization.current.notifications_on? ? 'ON' : 'OFF' }"}
+          Notifications:
+          %b= Customization.current.notifications_on? ? 'SENDING NORMALLY' : "TEST MODE - delivering to #{test_mail_recipient}"
+      %div#nav.navbar.navbar-inverse.navbar-static-top{:role => "navigation"}
+        = render :partial => 'shared/user'
+        .container
+          .nav.navbar-header.row
+            %p.slogan= Customization.current[:slogan]
+            %h1.tool-title= Customization.current[:tool_name]
+            = image_tag(((Customization.current.attached_image.nil? || !Customization.current.attached_image.image?) ? image_url('default_banner.jpg') : Customization.current.attached_image.image_url), :class => " banner img-responsive col-xs-12")
+            %button.navbar-toggle.col-xs-12{"data-target" => "#main-nav", "data-toggle" => "collapse", :type => "button"}
+              %span.sr-only Toggle navigation
+              %span.icon-bar{:style => "margin-left: auto;margin-right:auto;"}
+              %span.icon-bar{:style => "margin-left: auto;margin-right:auto;"}
+              %span.icon-bar{:style => "margin-left: auto;margin-right:auto;"}
+          = render :partial => 'shared/navigation'
+      #main{:role => "main"}
+        .container
+          .content
+            .row
+              .col-md-12
+                -if current_user && current_user.can_admin?
+                  - unless mail_process_running?
+                    %div{:class => "alert alert-danger"}
+                      %strong The mail process is not running. Please notify a superadmin.
+                - flash.each do |type, msgs|
+                  - next if type.match(/affiliation/) || msgs.blank?
+                  - msgs = [msgs] if msgs.is_a?(String)
+                  - msgs.each do |msg|
+                    %div{:class => "alert alert-#{type_to_class(type)}"}
+                      %a.close{"data-dismiss" => "alert"} ×
+                      = content_tag :div, msg.html_safe, :class => "flash-#{type}"
+            .row
+              .col-md-12
+                = yield
+        / ! end of .container
+      / ! end of #main
+      #push
+    / ! end of #wrap
+    #footer
+      .container
+        = render :partial => 'shared/footer'

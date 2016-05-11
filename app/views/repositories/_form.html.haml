@@ -1,0 +1,51 @@
+= semantic_form_for(@repository, :html => { :multipart => true }) do |f|
+  = f.inputs do
+    = f.input :name, :label => 'Name'
+    %br/
+    = f.input :description, :as => :ckeditor, :label => 'Description'
+    %br/
+    = f.input :landing_page, :label => 'Landing Page', :hint => "http://..."
+    %br/
+    = f.input :class_policies, :label => 'Class Policies', :hint => "http://..."
+    %br/
+    = f.input :email_details, :as => :ckeditor, :label => 'Class confirmation details (next steps, etc.) which appear in email to patrons'
+    %br/
+    = f.input :calendar, :label => 'Calendar (if applicable)'
+    %br/
+    = f.input :class_limit, :label => 'Class Limit'
+    %br/
+    = f.input :rooms, :as => :check_boxes, :label => 'Available Rooms for this Library/Archive'
+    %br/
+    .panel.panel-info
+      .panel-heading
+        %label  #{repo_name_or_new(@repository.name).humanize} Staff
+      .panel-body
+        = render partial: 'staff_list', locals: { form: false, staff_members: @repository.users }
+      
+    = f.input :users, :as => :check_boxes, :collection => User.where(:patron => false).order('first_name ASC'), :label => "Staff Assigned to this Library/Archive "
+    %br/
+    = f.input :item_attributes, :as => :check_boxes, :label => 'Technology Available in this Library/Archive'
+
+    .panel.panel-info
+      .panel-heading
+        %label Collections for the #{repo_name_or_new(@repository.name)}
+      .panel-body
+        = f.semantic_fields_for :collections do |c|
+          = render 'collection_fields', f: c
+        .links
+          = link_to_add_association 'Add a collection', f, :collections, class: 'btn btn-local-action'
+
+    .panel.panel-info
+      .panel-heading
+        %label Images for the #{@repository.name.blank? ? 'new library/archive' : @repository.name}
+      %p.hint Largest recommended size: 1200x1200 pixels.
+      %p.hint Maximum image size is 400x400 pixels, so make sure your image is larger than that.
+      %p.hint Images are all cropped square, so if the center of focus is not at the center of the image, you may want to crop the image first yourself.
+      .panel-body
+        = f.semantic_fields_for :attached_images do |pic|
+          = render 'attached_image_fields', f: pic
+        
+        .links
+          = link_to_add_association 'Add an image', f, :attached_images, class: 'btn btn-local-action'
+  = f.actions do
+    = f.action :submit, :as => :button, :button_html => {:class => 'btn btn-primary'}

@@ -1,0 +1,20 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+# This model initially had no columns defined.  If you add columns to the
+# model remove the '{}' from the fixture names and add the columns immediately
+# below each fixture, per the syntax in the comments below
+#
+by_staff:
+  note_text:     This is a brilliantly incisive staff comment for the patron
+  user:          staff
+  staff_comment: false                                          # This staff member wants to send to the patron
+
+by_admin:
+  note_text:      This is a brilliantly incisive admin comment just for staff
+  user:           admin
+  staff_comment:  true                                          # This admin member wants to send only to staff
+
+by_patron:
+  note_text:      This is a brilliantly incisive patron comment
+  user:           patron
+  staff_comment:  false                                         # Patron notes are by definition not staff comments

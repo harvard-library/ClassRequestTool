@@ -1,0 +1,6 @@
+- unless @custom_text.blank?
+  = sanitize @custom_text.html_safe
+
+= render :partial => 'shared/notification_course_info', :locals => { course: @course, test: @test  }
+%p
+  Comment: #{@note.note_text}

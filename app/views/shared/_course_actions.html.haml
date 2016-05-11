@@ -1,0 +1,8 @@
+.btn-group.course-actions{ :style => "width: 200px" }
+  - if course.status == 'Cancelled'
+    = link_to 'Uncancel', "#{course_path(course)}/uncancel", :class => 'btn btn-sm btn-warning', :data => { :confirm => "This will reset the course to its last known status." },  :method => :get
+  - else
+    = link_to 'Edit', edit_course_path(course), :class => "action-edit", :class => 'btn btn-sm btn-primary'
+    = link_to 'Cancel', "#{course_path(course)}/cancel", :class => 'btn btn-sm btn-info', :data => { :confirm => "Are you sure?" }, :method => :get
+  - if current_user.superadmin?
+    = link_to 'Delete', course_path(course), :method => :delete, :class => 'btn btn-sm btn-danger', :data => { :confirm => "Are you sure?" }, :method => :delete

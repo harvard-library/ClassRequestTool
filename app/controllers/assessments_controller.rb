@@ -3,7 +3,11 @@ class AssessmentsController < ApplicationController
   before_filter :authenticate_admin_or_staff!, :except => [:new, :create]
 
   def index
-    @assessments = Assessment.joins(:course).order('assessments.created_at DESC')
+    if params[:test]
+      @assessments = Assessment.where('course_id < 0').order('assessments.created_at DESC')
+    else
+      @assessments = Assessment.joins(:course).where('course_id > 0').order('assessments.created_at DESC').includes(:course)
+    end
     @fields = {
       "staff_experience" => {
         :title => 'Reference Staff expertise',
@@ -84,11 +88,17 @@ class AssessmentsController < ApplicationController
 
   def create
     params[:assessment][:involvement] = params[:assessment][:involvement].reject{ |e| e.empty? }.join(", ")
-    @assessment = Assessment.new(params[:assessment])
+    @assessment = Assessment.new(assessment_params)
     @assessment.course = Course.find(params[:course_id])
     respond_to do |format|
       if @assessment.save
-        @assessment.new_assessment_email
+        if @assessment.course.primary_contact.blank? && @assessment.course.users.blank?
+          Notification.assessment_received_to_admins(@assessment).deliver_later(:queue => 'notifications')
+          flash_message :info, "Assessment receipt notification sent to admins"  unless Customization.current.notifications_on?
+        else
+          Notification.assessment_received_to_users(@assessment).deliver_later(:queue => 'notifications')
+          flash_message :info, "Assessment receipt notification sent to users"  unless Customization.current.notifications_on?
+        end
         format.html { redirect_to course_url(@assessment.course), notice: 'assessment was successfully created.' }
         format.json { render json: @assessment, status: :created, assessment: @assessment }
       else
@@ -103,7 +113,7 @@ class AssessmentsController < ApplicationController
     params[:assessment][:involvement] = params[:assessment][:involvement].reject{ |e| e.empty? }.join(", ")
 
     respond_to do |format|
-      if @assessment.update_attributes(params[:assessment])
+      if @assessment.update_attributes(assessment_params)
         format.html { redirect_to assessments_url, notice: 'assessment was successfully updated.' }
         format.json { head :no_content }
       else
@@ -123,19 +133,22 @@ class AssessmentsController < ApplicationController
     end
   end
 
-  # CSV export
-  def export
-    @assessments = Assessment.joins(:course).order('assessments.created_at DESC')
-    respond_to do |format|
-      format.csv do
-        csv = CSV.generate(:encoding => 'utf-8') do |csv|
-          csv << Assessment.attribute_names + ['course_title']
-          @assessments.each do |row|
-            csv << Assessment.attribute_names.map{|name| row.send name} + [row.course.title]
-          end
-        end
-        render :text => csv
-      end
+  private
+    def assessment_params
+      params.require(:assessment).permit(
+        :using_materials,
+        :involvement,
+        :staff_experience,
+        :staff_availability,
+        :space,
+        :request_materials,
+        :digital_collections,
+        :involve_again,
+        :not_involve_again,
+        :better_future,
+        :request_course,
+        :catalogs,
+        :comments
+      )
     end
-  end
 end

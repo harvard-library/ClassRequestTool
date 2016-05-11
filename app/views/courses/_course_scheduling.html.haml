@@ -1,0 +1,49 @@
+.form_wrapper
+  %h4 Scheduling
+  .form_full_width
+    = f.input :duration,                                                      |
+      :as => :number,                                                         |
+      :min => 0, :max => 3, :step => 0.5, :only_integer => false,             |
+      :label => "Class Duration (hours): ",                                   |
+      :input_html => {:maxlength => 4, :placeholder => "e.g. 1.5"  }          |
+  .form_full_width
+    %p Depending on your teaching needs and class size, we offer the following options:
+    %ul
+      %li Single class sessions (most common request)
+      %li Multiple class sessions (bring a class more than once a semester)
+      %li Multiple sections (for large classes that exceed room capacity)
+    %p Please enter your preferred date and time for each class visit. If your only options for scheduling fall outside normal business hours, please use the note field to detail your availability.
+    %p Final scheduling of a class visit is subject to both room and staff availability.
+
+  = render :partial => 'scheduling_block'
+
+  - if current_user.can_schedule?
+    .form_full_width.admin-box
+      = f.input :pre_class_appt,                                                                            |
+        :label => "Actual Pre-Class Appointment Date/Time (if necessary): ",                                |
+        :as => :string,                                                                                     |
+        :input_html => {                                                                                    |
+        :size => 30,                                                                                        |
+        :value => @course.pre_class_appt.nil? ? nil : @course.pre_class_appt.strftime(DATETIME_AT_FORMAT),  |
+        :readonly => true,                                                                                  |
+        :class => 'pre-class-date date',                                                                    |
+        :placeholder => "Click to select date/time" }                                                       |
+
+    .form_full_width.admin-box
+      %label Confirm class date/time
+      %p.hint (Also use to confirm changes to class dates/times or a scheduled pre-class appointment, if applicable.)
+      .checkbox
+        = check_box_tag 'send_timeframe_email', 1, false, :class => 'checkbox'
+        Check to send email notification of confirmed or changed class date/time and (if applicable) scheduled pre-class appointment to requester.
+      %br/
+      %br/
+  #form_full_width
+    = render partial: 'repositories/technologies', locals: { technologies: @course.item_attributes, all_technologies: @all_technologies }
+    %br/
+    = f.input :comments,                                                                                                                                                                                                                       |
+      :label => "If you have any special room arrangements or further instructions regarding your class visit, please enter them below. It is also helpful to note any accessibility issues the library/archive can endeavor to accommodate.", |
+      :input_html => { :rows => 5, :cols => 30 }                                                                                                                                                                                               |
+  .form_full_width
+    %br/
+    %p Be sure to review your information and make any edits before submitting your request.
+    %p Please note that some of the information you provide may be used in reports and promotional materials.

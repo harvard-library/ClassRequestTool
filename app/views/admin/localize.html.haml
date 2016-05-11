@@ -1,0 +1,105 @@
+%h2
+  Site Localization
+  %h3 Custom Fields
+  = semantic_form_for([:admin, custom], :input_html => { :multipart => true } ) do |f|
+    = f.inputs do
+      = f.input :institution, :label => 'Institution Short Name (e.g. Harvard)'
+      %br/
+      = f.input :institution_long, :label => 'Institution Long Name (e.g. Harvard University)'
+      %br/
+      = f.input :tool_name, :label => 'Local Name for this Tool'
+      %br/
+      = f.input :slogan, :label => 'Slogan for this Tool'
+      %br/
+      = f.inputs "Banner Image", :for => [:attached_image_attributes, f.object.attached_image || AttachedImage.new] do |banner|
+        = image_tag(banner.object.image_url(:banner_thumb)) unless (banner.object.id.nil? || banner.object.image.nil?)
+        = banner.input :id, :as => :hidden
+        = banner.input :picture_id, :as => :hidden
+        = banner.input :picture_type, :as => :hidden
+        = banner.input :image_cache, :as => :hidden
+        = banner.input :image, :as => :file, :label => 'Banner Image'
+      %br/
+      = f.input :welcome, :as => :ckeditor, :label => "Welcome Message ", :input_html => { :rows => 5, :columns => 100 }
+
+      %fieldset
+        %legend Notifications
+        = f.input :notifications_on, :label => 'Notifications ON'
+        %br/
+      %fieldset
+        %legend Content Admin
+        = f.input :tool_content_admin_name, :label => 'Name'
+        %br/
+        = f.input :tool_content_admin_email, :label => 'Email'
+        %br/
+      %fieldset
+        %legend Tech Admin
+        = f.input :tool_tech_admin_name, :label => 'Name'
+        %br/
+        = f.input :tool_tech_admin_email, :label => 'Email'
+        %br/
+      = f.input :default_email_sender, :label => 'Default Sender for Tool Emails'
+      = f.input :collaboration_options, :label => 'Collaboration Types', :hint => 'Enter one type per line', :input_html => {:value => @custom.collaboration_options.join($/), :rows => 5}
+
+      %fieldset
+        %legend Homeless Course Options
+        =f.input :homeless_staff_services, :as => :check_boxes, :collection => StaffService.pluck(:description, :id)           
+        =f.input :homeless_technologies, :as => :check_boxes, :collection => ItemAttribute.pluck(:name, :id)           
+        
+      %br/
+    %br/
+    = f.actions do
+      = f.action :submit, :as => :button, :label => 'Update Localization', :button_html => {:class => 'btn btn-primary'}
+  %h3 
+    Affiliates
+    %span.sort-info
+  %table.table.affiliates
+    %thead
+      %th.col-md-1 Sort
+      %th Name
+      %th Actions
+    %tbody
+      - affiliates.each do |aff|
+        %tr.existing-affiliate{:id => "affiliate-#{aff.id}"}
+          %td.col-md-1.glyphicon.glyphicon-sort
+          %td= text_field_tag :name, nil, :value => aff.name, :class => 'form-control'
+          %td
+            = link_to 'Update', '#', :id => "update-affiliate-#{aff.id}", :class => 'btn btn-xs bnt-default'
+            | #{link_to 'Delete', '#', :id => "delete-affiliate-#{aff.id}", :class => 'btn btn-xs btn-danger'}
+      %tr.new-affiliate
+        %td{ colspan: 2 }= text_field_tag :name, nil, :placeholder => 'Add new affiliate', :class => 'form-control'
+        %td= link_to 'Save', '#', :id => 'save-affiliate', :class => 'btn btn-xs bnt-default'
+
+  %h3 Brand Colors
+  .well.well-lg
+    %h4 Site Colors
+    %p.info (Bootstrap classes)
+    .color-swatches
+      .brand-primary.color-swatch brand-primary
+      .brand-success.color-swatch brand-success
+      .brand-info.color-swatch brand-info
+      .brand-warning.color-swatch brand-warning
+      .brand-danger.color-swatch brand-danger
+
+    .color-swatches
+      .gray-darker.color-swatch gray-darker
+      .gray-dark.color-swatch gray-dark
+      .gray.color-swatch gray
+      .gray-light.color-swatch gray-light
+      .gray-lighter.color-swatch.light-color gray-lighter
+  
+    %h4 Institutional Colors
+    .color-swatches
+      .crimson.color-swatch                   crimson
+      .ink.color-swatch                       ink
+      .mortar.color-swatch                    mortar
+      .parchment.color-swatch.light-color     parchment
+      .slate.color-swatch                     slate
+      .shade.color-swatch                     shade
+      .indigo.color-swatch                    indigo
+      .bluebonnet.color-swatch                bluebonnet
+      .ivy.color-swatch                       ivy
+      .pear.color-swatch                      pear
+      .saffron.color-swatch                   saffron
+      .creme.color-swatch.light-color         creme
+      .gold.color-swatch                      gold
+      .lemon.color-swatch                     lemon

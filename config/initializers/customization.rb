@@ -1,0 +1,15 @@
+# set up the default Customization
+if File.exists? File.join(Rails.root, 'config', 'customization.yml')
+  ::Customization::DEFAULTS = Rails.application.config_for(:customization)
+else
+  ::Customization::DEFAULTS = { institution: 'Academia',
+      institution_long:         'Academia University',
+      tool_name:                'Class Request Tool',
+      tool_tech_admin_name:     'Technical Contact',
+      tool_tech_admin_email:    'tech@academia.edu',
+      tool_content_admin_name:  'Content Contact',
+      tool_content_admin_email: 'librarian@academia.edu',
+      default_email_sender:     'library_crt@academia.edu'
+ }
+end
+

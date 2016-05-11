@@ -2,7 +2,7 @@ class NotesController < ApplicationController
   before_filter :authenticate_admin_or_staff!, :only => [:destroy, :update]
 
   def index
-    @notes = Note.order('created_at ASC')
+    @notes = Note.order('created_at ASC').include(:user)
   end
 
   def new
@@ -12,36 +12,41 @@ class NotesController < ApplicationController
   def edit
     @note = Note.find(params[:id])
     @course = @note.course
-    unless current_user.try(:staff?) || current_user.try(:admin?) || current_user.try(:superadmin?) || @note.course.contact_email == current_user.email
+    unless current_user.staff? || current_user.can_admin? || @note.course.contact_email == current_user.email
        redirect_to('/') and return
     end
   end
 
   def create
-    @note = Note.new(params[:note])
-    respond_to do |format|
-      if @note.save
-        @note.new_note_email(current_user)
-        unless @note.staff_comment || @note.course.contact_email == current_user.email
-          @note.new_patron_note_email
+    params[:note][:staff_comment] = params[:note][:staff_comment].to_bool || params[:note][:auto].to_bool
+
+    @note = Note.new(note_params)
+
+    unless params[:note][:note_text].blank?
+      respond_to do |format|
+        if @note.save
+          Notification.new_note(@note, current_user).deliver_later(:queue => 'notifications')
+          flash_message :info, "New note notification sent"  unless Customization.current.notifications_on?
+          format.html { redirect_to course_url(@note.course), notice: 'Note was successfully created.' }
+          format.json { render json: @note, status: :created, note: @note }
+        else
+          format.html { render action: "new" }
+          format.json { render json: @note.errors, status: :unprocessable_entity }
         end
-        format.html { redirect_to course_url(@note.course), notice: 'Note was successfully created.' }
-        format.json { render json: @note, status: :created, note: @note }
-      else
-        format.html { render action: "new" }
-        format.json { render json: @note.errors, status: :unprocessable_entity }
       end
+    else
+      redirect_to course_url(@note.course), alert: 'Your note must contain text'
     end
   end
 
   def update
     @note = Note.find(params[:id])
-    unless current_user.try(:staff?) || current_user.try(:admin?) || current_user.try(:superadmin?) || @note.course.contact_email == current_user.email
+    unless current_user.staff? || current_user.can_admin? || @note.course.contact_email == current_user.email
        redirect_to('/') and return
     end
 
     respond_to do |format|
-      if @note.update_attributes(params[:note])
+      if @note.update_attributes(note_params)
         format.html { redirect_to course_url(@note.course), notice: 'Note was successfully updated.' }
         format.json { head :no_content }
       else
@@ -54,7 +59,7 @@ class NotesController < ApplicationController
   def destroy
     @note = Note.find(params[:id])
     @course = @note.course
-    unless current_user.try(:staff?) || current_user.try(:admin?) || current_user.try(:superadmin?) || @course.contact_email == current_user.email
+    unless current_user.staff? || current_user.can_admin? || @course.contact_email == current_user.email
        redirect_to('/') and return
     end
     @note.destroy
@@ -64,4 +69,9 @@ class NotesController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  private
+    def note_params
+      params.require(:note).permit(:note_text, :user_id, :course_id, :staff_comment)
+    end
 end

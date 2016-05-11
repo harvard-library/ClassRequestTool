@@ -1,0 +1,14 @@
+%p
+  You have been assigned to a class for #{@course.repo_name}.
+= render :partial => 'shared/notification_course_info', :locals => { course: @course, test: @test  }
+
+- unless @custom_text.blank?
+  = sanitize @custom_text.html_safe
+
+%p
+  Please
+  - if @test
+    %a{ href: '#' } confirm the class date and time (linked to class)
+  - else  
+    %a{:href => edit_course_url(@course)} confirm the class date and time
+  and if applicable, add the class to your event management system (e.g. Aeon) and/or room calendar.

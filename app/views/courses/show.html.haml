@@ -1,0 +1,269 @@
+/
+  NOTE: spans with ids on this page, with the exception of span#headcount and span#avgHeadcount,
+  are used by Aeon to pull information out of the CRT.
+  
+  span#headcount and span#avgHeadcount are there for potential future use by Aeon
+  
+  DO NOT CHANGE THEM without also changing the Aeon plugin that relies on them.
+- if current_user && current_user.can_admin?
+  %div{ :class => "alert alert-#{status_class(@course.status)}"} 
+    This class is
+    %strong= @course.status.downcase
+
+%h3= @course.title
+%br/
+  
+#welcome-left
+  - if current_user.can_schedule?
+    = render :partial => 'shared/course_actions', :locals => { :course => @course }
+    %br
+    %br
+  %h4 Course Information
+  %ul.summary-info
+    %li
+      %span.summary-label Library/Archive:
+      %span#a_repository= @course.repository.nil? ? "Not Sure - Help me Choose" : @course.repository.name
+    %li
+      %span.summary-label Title:
+      %span#a_title= @course.title unless @course.title.nil?
+      %span.summary-label Subject:
+      %span#a_subject= @course.subject unless @course.subject.nil?
+      %br/
+    %li
+      %span.summary-label Course Number:
+      %span#a_class= @course.course_number unless @course.course_number.nil?
+    %li
+      %span.summary-label Affiliation:
+      %span#a_affiliation= @course.affiliation unless @course.affiliation.nil?
+    %li
+      %span.summary-label Number of Students:
+      %span#studentNo= @course.number_of_students unless @course.number_of_students.nil?
+    %li
+      %span.summary-label Actual Attendance (So far):
+      %span#headcount
+        = @course.headcount || 'None recorded'
+    %li
+      %span.summary-label Average Attendance per section:
+      %span#avgHeadcount= @course.avg_headcount || 'None recorded'
+    %li
+      %span.summary-label Syllabus:
+      - if @course.syllabus.blank? && (@course.external_syllabus.blank? || @course.external_syllabus == "http://")
+        None
+      - else
+        = link_to @course.syllabus.file.filename, @course.syllabus_url unless @course.syllabus.blank?
+        - unless @course.external_syllabus.blank? || @course.external_syllabus == "http://"
+          = link_to @course.external_syllabus, @course.external_syllabus, :target => "blank"
+    %li
+      %span.summary-label Goal for Class Visit:
+      = @course.goal.html_safe unless @course.goal.nil?
+  - unless !user_signed_in? || current_user.patron?
+    %h4 Requester Information
+    %ul.summary-info
+      %li
+        %span.summary-label Primary Contact Username:
+        %span#a_requestorUsername= @course.contact_username unless @course.contact_username.nil?
+      %li
+        %span.summary-label Primary Contact Name:
+        %span#a_patronContact
+          = @course.contact_first_name unless @course.contact_first_name.nil?
+          = @course.contact_last_name unless @course.contact_last_name.nil?
+      %li
+        %span.summary-label Primary Contact Email:
+        = @course.contact_email unless @course.contact_email.nil?
+      %li
+        %span.summary-label Primary Contact Phone:
+        = @course.contact_phone unless @course.contact_phone.nil?
+      %li
+        %h5 Additional Contacts
+        %ul.summary-info
+          - @course.additional_patrons.each do |ap|
+            %li= "#{ap.first_name} #{ap.last_name}, #{ap.email}, (#{ap.role})"
+  %h4 Staff Assignments
+  %ul.summary-info
+    %li
+      %span.summary-label Primary Library/Archive Contact:
+      - unless @course.primary_contact.nil?
+        = mail_to @course.primary_contact.email, "#{@course.primary_contact.full_name}"
+      - else
+        None
+    - unless @course.users.blank?
+      %li
+        %span.summary-label Additional Staff:
+        %ul
+          -@course.users.each do |u|
+            %li #{u.full_name}      
+  
+  - unless @course.assisting_repository.blank?
+    %h4 Collaborating Library/Archive
+    %ul.summary-info
+      %li
+        #{@course.assisting_repository.name}
+      %li
+        %span.summary-label Nature of Collaboration
+        %br
+          - if @course.collaboration_options.blank?
+            None selected
+            %br
+          - else
+            - @course.collaboration_options.each do |option|
+              #{option}
+              %br
+            
+  %h4 Staff Services Requested
+  - if @course.staff_services.blank? && @course.staff_involvement.blank?
+    %p No services have been selected yet.
+  - else
+    %ul
+      - if !@course.staff_services.blank?
+        - @course.staff_services.each do |si|
+          %li= si.description
+      -if !@course.staff_involvement.blank?
+        %li= @course.staff_involvement
+
+  %h4 Technologies Requested
+  - if @course.item_attributes.blank?
+    %p No technologies have been selected yet.
+  - else
+    %ul
+      - @course.item_attributes.each do |tech|
+        %li= tech.name
+
+  %h4 Pre-Class Appointment
+  %ul.summary-info
+    - if !@course.pre_class_appt.nil?
+      %li
+        %span.summary-label Pre-Class Appt:
+        = @course.pre_class_appt.strftime(DATETIME_AT_FORMAT) unless @course.pre_class_appt.nil?
+    - elsif !@course.pre_class_appt_choice_1.nil? || !@course.pre_class_appt_choice_2.nil? || !@course.pre_class_appt_choice_3.nil?
+      %li
+        %span.summary-label Choice 1:
+        = @course.pre_class_appt_choice_1.strftime(DATETIME_AT_FORMAT) unless @course.pre_class_appt_choice_1.nil?
+      %li
+        %span.summary-label Choice 2:
+        = @course.pre_class_appt_choice_2.strftime(DATETIME_AT_FORMAT) unless @course.pre_class_appt_choice_2.nil?
+      %li
+        %span.summary-label Choice 3:
+        = @course.pre_class_appt_choice_3.strftime(DATETIME_AT_FORMAT) unless @course.pre_class_appt_choice_3.nil?
+    - else
+      %li To be scheduled, if required.
+  %h4 Scheduling
+  %ul.summary-info
+    %li
+      %span.summary-label
+        Number of Class Visits: #{@course.sessions.count}
+  %h4 Class Dates & Times
+  - if !@course.sections.map(&:actual_date).reject(&:nil?).blank? || !@course.sections.map(&:requested_dates).reject(&:nil?).blank?
+    %div
+      - aeon_timeframe_emitted = false # Has the first timeframe been specified for Aeon?
+      - @course.sessions.each do |i, sesh|
+        %h5 Session #{i}
+        - sort_sections(sesh).each.with_index(1) do |sect, j|
+          .well.well-sm
+            %h6 Section #{j}
+            %ul.summary-info.no-bullet
+              - if sect.actual_date
+                %li
+                  %span.summary-label Actual Date:
+                  - actual_date = sect.try(:actual_date).try(:in_time_zone, Rails.configuration.time_zone).try(:strftime, DATETIME_AT_FORMAT)
+                  - if  !aeon_timeframe_emitted 
+                    %span#timeframe #{actual_date}
+                  - else
+                    = actual_date
+                - aeon_timeframe_emitted = true
+              - elsif sect.requested_dates
+                %li
+                  %span.summary-label 
+                    Requested Times:
+                  %ul
+                    %li
+                      = sect.requested_dates.map {|rd| rd.in_time_zone(Rails.configuration.time_zone).strftime(DATETIME_AT_FORMAT) }.join('</li><li>').html_safe
+              - if 'Closed' == @course.status
+                %li
+                  %span.summary-label Headcount:
+                  = sect.headcount ? sect.headcount : "Not Recorded"
+              %li
+                %span.summary-label Room:
+                = sect.room ? sect.room.name : 'No room assigned'
+  - else
+    %div No class dates selected.
+  %ul.summary-info
+    %li
+      %span.summary-label Class Duration:
+      %span#a_duration= pluralize(@course.duration, 'hour') unless @course.duration.nil?
+    %li
+      %span.summary-label Comments:
+      = @course.comments unless @course.comments.nil?
+#welcome-right
+  - if current_user.staff? || current_user.can_admin?
+    %h4 Admin Actions
+    %ul.summary-info
+      %li
+        %span.summary-label Status:
+        %br/
+        = full_status(@course)
+      %li
+        %span.summary-label Primary Library/Archive Contact:
+        - unless @course.primary_contact.nil?
+          %span#a_staffContact
+            = @course.primary_contact.first_name
+            = @course.primary_contact.last_name unless @course.contact_last_name.nil?
+          \- #{mail_to @course.primary_contact.email, "Send Email"}
+        - else
+          None
+    %h4 Other Staff Assigned:
+    %ul.summary-info
+      - unless @course.users.blank?
+        - @course.users.each do |user|
+          %li= mail_to user.email, "#{user.full_name}"
+      - else
+        %li None
+    %h4 Assessments
+    %p After your class we may send you an assessment form to learn about your experience and improve our service.
+    %p
+      If you would like to submit an additional assessment, please #{link_to "click here", new_assessment_path(:course_id => @course.id)}.
+    - @course.assessments.each do |assessment|
+      = link_to "View Assessment", assessment_path(assessment)
+      %br/
+    %h4 Notes
+    - unless @notes.blank?
+      = render :partial => 'notes/index', :locals => {:notes => @notes }
+    = render :partial => 'notes/form', :locals => {:note => @note, :course => @course }
+    %br
+    - if !@course.completed? && @course.status == "Active"
+      .admin-box
+        %p When class is complete, click box to send class assessment, if desired. Use button below to close class.
+        = semantic_form_for(@course, :method => :put, :html => {:multipart => true}) do |f|
+          #headcounts.panel.panel-default
+            .panel-heading
+              %h4.panel-title
+                %a{"data-parent" => "#headcounts", "data-toggle" => "collapse", :href => "#headcounts-entry"} Headcounts
+            #headcounts-entry.panel-collapse.collapse.out
+              .panel-body
+                = f.semantic_fields_for :sections do |section|
+                  - if section.object.try(:actual_date)
+                    = section.inputs :headcount, :name => "Visit #{section.object.session}: #{display_with_tz(section.object.actual_date)}"
+          = f.inputs do
+            = f.input :status, :as => :hidden, :input_html => { :value => "Closed" }
+            .checkbox
+              = check_box_tag :send_assessment_email
+              Send assessment email to requester
+            %br/
+            %br/
+          = f.actions do
+            = f.action :submit, :as => :button, :button_html => {:class => 'btn btn-primary'}, :label => 'Close Course'
+  - elsif current_user.patron?
+    %h4 Assessments
+    %p After your class we may send you an assessment form to learn about your experience and improve our service.
+    %p
+      If you would like to submit an additional assessment, please #{link_to "click here", new_assessment_path(:course_id => @course.id)}.
+    - @course.assessments.each do |assessment|
+      = link_to "View Assessment", assessment_path(assessment)
+      %br/
+    %h4 Notes
+    = render :partial => 'notes/form', :locals => {:note => @note, :course => @course }
+    = render :partial => 'notes/index'
+
+#aeon-data
+  - @aeon_data.each do |id, value|
+    %div{ :id => id } #{value}
+    

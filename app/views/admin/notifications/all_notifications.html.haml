@@ -1,0 +1,6 @@
+%h3 Notification Previews
+%ul.list-group
+  - Notification.instance_methods(false).each do |n|
+    - next if /^_/.match(n.to_s)
+    - next if /test_email/.match(n.to_s)
+    %li.list-group-item= link_to n.to_s.gsub('_', ' ').capitalize, "#{admin_notifications_path}/#{n.to_s}"

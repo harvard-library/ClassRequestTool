@@ -1,0 +1,15 @@
+%p
+  The class request for
+  %em= @course.title
+  has been uncancelled.
+
+- unless @custom_text.blank?
+  = sanitize @custom_text.html_safe
+
+%p
+  If you have any questions or additional details to share, please add a note to the
+  = succeed "." do
+    - if @test
+      %a{ href: '#' } class request (linked to course)
+    - else
+      %a{:href => course_url(@course)} class request

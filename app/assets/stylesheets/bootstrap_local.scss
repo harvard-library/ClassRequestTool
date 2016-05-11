@@ -1,0 +1,145 @@
+/* Institutional Color Palette */
+$crimson: #A51C30;
+$ink: #1E1E1E;
+$mortar: #8C8179;
+$parchment: #F3F3F1;
+$slate: #8996A0;
+$shade: #BAC5C6;
+$indigo: #293352;
+$bluebonnet: #4E84C4;
+$ivy: #52854C;
+$pear: #C3D7A4;
+$saffron: #D16103;
+$creme: #F4EDCA;
+$gold: #C4961A;
+$lemon: #FFDB6D;
+
+// Bootstrap site colors
+// Brand
+$brand-primary: $bluebonnet;
+$brand-success: $ivy;
+$brand-info:    $shade;
+$brand-warning: $gold;
+$brand-danger:  $crimson;
+
+// Grays (bootstrap defaults)
+$gray-darker:   lighten(#000, 13.5%); // #222
+$gray-dark:     lighten(#000, 20%);   // #333
+$gray:          lighten(#000, 33.5%); // #555
+$gray-light:    lighten(#000, 46.7%); // #777
+$gray-lighter:  lighten(#000, 93.5%); // #eee
+
+/* Scaffolding - most basic stuff */
+$text-color: $gray;
+
+// Link color
+$link-color: $bluebonnet;
+
+/* Typography */
+$font-size-base:          14px;  // Bootstrap default
+$font-family-sans-serif:  Roboto, Helvetica, Arial, sans-serif;
+$font-family-serif:       Vollkorn, Georgia, "Times New Roman", Times, serif;
+
+$headings-font-family: $font-family-serif;
+$headings-font-weight: normal;
+
+h5, h6 {
+  font-family: $font-family-sans-serif;
+  font-style: italic;
+}
+
+h5 {
+  font-size: ceil(($font-size-base * 1.20));
+}
+h6 {
+  font-size: $font-size-base;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  -moz-osx-font-smoothing: grayscale;
+}
+
+label {
+  font-family: $font-family-sans-serif;
+}
+
+/* Components */
+//Border radius
+$radius: 7px;
+
+// Panels
+$panel-default-heading-bg:  $creme;
+$panel-primary-heading-bg:  $brand-primary;
+$panel-success-heading-bg:  $brand-success;
+$panel-info-heading-bg:     lighten($brand-info, 20%);
+$panel-info-heading-color:  $brand-info;
+
+// Button defaults
+$btn-default-color: $gray-dark;
+$btn-default-bg:    $creme;
+$btn-font-weight:   bold;
+
+// button for actions that change *on the page*
+.btn-local-action {
+   background-color: #FFFFFF;
+   color:  $brand-primary;
+   border-style: solid;
+   border-color: $brand-primary !important;
+   border-width: 2px !important;
+
+}
+
+
+// Dropdown defaults
+$dropdown-bg:       $creme;
+$dropdown-color:    $gray-dark;
+
+/* Define color swatches */
+.color-swatches {
+  font-weight: bold;
+  color: white;
+  .color-swatch {
+    text-align: center;
+    margin: 10px;
+    border-radius: $radius;
+    width: 120px;
+    padding: 50px 0;
+    display: inline-block;
+    &.light-color { color: $gray-light; border: solid 1px $gray-light }
+    &.brand-primary { background-color: $brand-primary}
+    &.brand-success { background-color: $brand-success}
+    &.brand-info    { background-color: $brand-info}
+    &.brand-warning { background-color: $brand-warning}
+    &.brand-danger  { background-color: $brand-danger}
+    &.gray-darker   { background-color: $gray-darker}
+    &.gray-dark     { background-color: $gray-dark}
+    &.gray          { background-color: $gray}
+    &.gray-light    { background-color: $gray-light}
+    &.gray-lighter  { background-color: $gray-lighter}
+
+    //Institutional palette
+    &.crimson     { background-color: $crimson}
+    &.ink         { background-color: $ink}
+    &.mortar      { background-color: $mortar}
+    &.parchment   { background-color: $parchment}
+    &.slate       { background-color: $shade}
+    &.shade       { background-color: $gray-darker}
+    &.indigo      { background-color: $indigo}
+    &.bluebonnet  { background-color: $bluebonnet}
+    &.ivy         { background-color: $ivy}
+    &.pear        { background-color: $pear}    
+    &.saffron     { background-color: $saffron}
+    &.creme       { background-color: $creme}
+    &.gold        { background-color: $gold}
+    &.lemon       { background-color: $lemon}    
+  }
+}
+
+// Customizations
+// No borders on list groups
+ul.list-group.no-borders {
+  li.list-group-item {
+    border: none;
+  }
+}
+.input-mini { width: 60px; } .input-small { width: 90px; } .input-medium { width: 150px; } .input-large { width: 210px; } .input-xlarge { width: 270px; } .input-xxlarge { width: 530px; }

@@ -1,0 +1,13 @@
+- unless @custom_text.blank?
+  = strip_tags(@custom_text)
+
+Please review the feedback for:
+
+= render :partial => 'shared/notification_course_info'}, :locals => { course: @assessment.course, test: @test }
+
+here:
+
+- if @test
+  (link to assessment)
+- else
+  #{"#{site_url}#{assessment_path(@assessment)}"}

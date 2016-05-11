@@ -1,0 +1,49 @@
+- if user_signed_in?
+  %p Welcome, #{current_user.display_name}
+.row
+  .col-md-4
+    .panel.panel-info
+      .panel-heading
+        %h1.panel-title Welcome
+      .panel-body
+        = sanitize Customization.current[:welcome].html_safe
+
+
+  .col-md-4
+    .panel.panel-primary
+      .panel-heading
+        %h2.panel-title Request A Class
+      .panel-body
+        %p
+          %strong Select a library or archive:
+        %p.text-center
+          .form#select-repo
+            = select_tag :repo, options_from_collection_for_select(@repositories, :id, :name), :prompt => '-- Choose a Library/Archive --', :class => 'form-control'
+            %br
+            %p
+              %button.btn.btn-primary Request Class
+
+    .panel.panel-info
+      .panel-heading
+        %h4.panel-title Recent Classes
+      .panel-body
+        - if !@courses.nil?
+          %ul.list-group.no-borders
+            - @courses.each do |course|
+              %li.list-group-item= link_to(course.title, recent_show_course_url(course) )
+        - else
+          None yet.
+
+  .col-md-4
+    .featured-image
+      = render :partial => 'shared/repo_image', :locals => { image: @featured_image, size: :welcome_page, repo: @featured_repository, show_credit: true   }
+
+    .well.well-sm
+      %h4 Join Us!
+      %p
+        Are you a special collections library/archive at #{Customization.current[:institution]}?
+      %p
+        Would you like to participate?
+      %p.email
+        %span.glyphicon.glyphicon-envelope
+        %a{:href => "mailto:#{Customization.current[:tool_content_admin_email]}"} Let us know!

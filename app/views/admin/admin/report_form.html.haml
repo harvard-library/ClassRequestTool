@@ -1,0 +1,86 @@
+.row
+  .col-md-12
+    %h3 Export to CSV
+    .panel.panel-default
+      .panel-body
+        .well.well-md
+          = form_tag '/admin/csv/export' do
+            = hidden_field_tag :klass, 'Course'
+            %p
+              = submit_tag 'Export Course Data', :class => 'btn btn-primary'
+              %label Repository:
+              = select_tag 'filters[0][repository][value]', options_from_collection_for_select(@repositories, :id, :name), :include_blank => '-- All --', :style => "width: 40 em"
+              = hidden_field_tag 'filters[0][repository][column]', 'id'
+              = hidden_field_tag 'filters[0][repository][comparison]', 'eq'
+          = form_tag '/admin/csv/export' do
+            = hidden_field_tag :klass, 'Assessment'
+            %p
+              = submit_tag 'Export Assessment Data', :class => 'btn btn-primary'
+              %label Repository: 
+              = select_tag 'filters[0][repository][value]', options_from_collection_for_select(@repositories, :id, :name), :include_blank => '-- All --', :style => "width: 40 em"
+              = hidden_field_tag 'filters[0][repository][column]', 'id'
+              = hidden_field_tag 'filters[0][repository][comparison]', 'eq'
+              
+    %h3 Create a Report
+    = form_tag '/admin/build_report' do
+      .panel.panel-default
+        .panel-heading
+          %h4.panel-title Filters
+        .panel-body
+          %table.table
+            %tr
+              %td
+                %label Closed classes only:
+              %td
+                .checkbox= check_box_tag :closed_only, 1, true
+            %tr
+              %td
+                %label Library/archive:
+              %td= select_tag :repo, options_from_collection_for_select(@repositories, :id, :name), :include_blank => "-- All --", :style => "width: 40em"
+            %tr
+              %td
+                %label Affiliate:
+              %td
+                = select_tag :affiliate, options_for_select($affiliates.map{ |a| a.name}), :include_blank => "-- All --", :style => "width: 40em"
+            %tr
+              %td
+                %label Start date:
+              %td
+                = text_field_tag :start_date, '',        |
+                  :label => "Start",                     |
+                  :size => 20,                           |
+                  :maxlength => 20,                      |
+                  :class => 'start_date datepicker',     |
+                  :placeholder => "Click to select date" |
+            %tr
+              %td
+                %label End date:
+              %td
+                = text_field_tag :end_date,'',           |
+                  :label => "End",                       |
+                  :size => 20,                           |
+                  :maxlength => 20,                      |
+                  :class => 'end_date datepicker',       |
+                  :placeholder => "Click to select date" |
+      .panel.panel-default
+        .panel-heading
+          %h4.panel-title Select Report Sections
+        .panel-body
+          %table.table
+            %thead
+              %th
+                .checkbox
+                  = check_box_tag 'toggle', 1, true, :class => 'report-toggle'
+                  Toggle All
+              %th Description
+            %tbody
+              - Rails.configuration.crt_reports.each do |report, options|
+                %tr
+                  %td
+                    .checkbox= check_box_tag "selected_reports[#{report}]", 1, true, :class => 'include-report'
+                  %td= Rails.configuration.crt_reports[report]['type'].capitalize + ':'
+                  %td
+                    = options['description']
+                    .glyphicon.glyphicon-info-sign{ "data-help_info" => options['help'] }
+
+      = submit_tag 'Build report', :class => 'btn btn-primary'

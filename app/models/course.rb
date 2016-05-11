@@ -1,40 +1,56 @@
 class Course < ActiveRecord::Base
   include ActionDispatch::Routing::UrlFor
   include Rails.application.routes.url_helpers
-
-  attr_accessible( :room_id, :repository_id, :user_ids, :item_attribute_ids, :primary_contact_id, :staff_involvement_ids, :sections_attributes, # associations
-                   :title, :subject, :course_number, :affiliation, :number_of_students, :session_count,  #values
-                   :comments,  :staff_involvement, :instruction_session, :goal,
-                   :contact_username, :contact_first_name, :contact_last_name, :contact_email, :contact_phone, #contact info
-                   :status, :file, :remove_file, :external_syllabus, #syllabus
-                   :pre_class_appt, :timeframe, :timeframe_2, :timeframe_3, :timeframe_4, :duration, #concrete schedule vals
-                   :time_choice_1, :time_choice_2, :time_choice_3, :time_choice_4, # tentative schedule vals
-                   :pre_class_appt_choice_1, :pre_class_appt_choice_2, :pre_class_appt_choice_3 #unused
-                   )
-
+  
   has_and_belongs_to_many :users
   belongs_to :room
   belongs_to :repository
-  has_many :sections, :dependent => :destroy
-  accepts_nested_attributes_for :sections, :reject_if => ->(s){s.blank?}, :allow_destroy => true
+  belongs_to :assisting_repository, foreign_key: :assisting_repository_id, class_name: 'Repository'
+  
   has_many :notes, :dependent => :destroy
   has_and_belongs_to_many :item_attributes
   has_many :assessments, :dependent => :destroy
-  has_and_belongs_to_many :staff_involvements
+  has_and_belongs_to_many :staff_services
   belongs_to :primary_contact, :class_name => 'User'
 
+  has_many :additional_patrons, :dependent => :destroy, :autosave => true
+  accepts_nested_attributes_for :additional_patrons, :reject_if => ->(ap){ap.blank?}, :allow_destroy => true
+
+  has_many :sections, :dependent => :destroy
+  accepts_nested_attributes_for :sections, :reject_if => ->(s){s.nil?}, :allow_destroy => true
+  
   validates_presence_of :title, :message => "can't be empty"
   validates_presence_of :contact_first_name, :contact_last_name
   validates_presence_of :contact_email, :message => "contact email is required"
-  validates_format_of :contact_email, :with => /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i, :message => "Invalid email"
+  validates_format_of :contact_email, :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i, :message => "Invalid email"
   validates_presence_of :contact_phone
   validates_presence_of :number_of_students, :message => "please enter a number"
   validates_presence_of :goal, :message => "please enter a goal"
   validates_presence_of :duration, :message => "please enter a duration in hours"
 
-  mount_uploader :file, FileUploader
+  mount_uploader :syllabus, SyllabusUploader
+  
+  scope :unclaimed,             ->{ where(primary_contact_id: nil) }
+  scope :claimed,               ->{ where('primary_contact_id IS NOT NULL') }
+  scope :unscheduled,           ->{ where(:scheduled => false) }
+  scope :scheduled,             ->{ where(:scheduled => true) }
+  scope :homeless,              ->{ where(:repository_id => nil) }
+  scope :housed,                ->{ where(:repository_id => !nil) }
+  scope :with_status,           ->(status) { where(status: status) }
+  scope :upcoming,              ->{ where("last_date > ?", DateTime.now) }
+  scope :past,                  ->{ where("last_date < ?", DateTime.now) }  
+  scope :user_is_patron,        ->(email){ where(:contact_email => email) }
+  scope :user_is_primary_staff, ->(id){ where(:primary_contact_id => id) }
+  scope :user_is_staff,         ->(id_array){ where(:repository_id => id_array) }
+  scope :order_by_first_date,   ->{ order('first_date DESC NULLS LAST') }  
+  scope :order_by_last_date,    ->{ order('last_date DESC NULLS LAST') }  
+  scope :order_by_submitted,    ->{ order('courses.created_at DESC') }  
 
-  STATUS = ['Scheduled, Unclaimed', 'Scheduled, Claimed', 'Claimed, Unscheduled', 'Unclaimed, Unscheduled', 'Homeless', 'Closed']
+
+  after_save :update_stats
+
+  
+  STATUS = ['Active', 'Cancelled', 'Closed']  
   validates_inclusion_of :status, :in => STATUS
 
   # Note: DO NOT replace MAX(actual_date) with alias, .count will error out
@@ -49,28 +65,17 @@ class Course < ActiveRecord::Base
   #    or an error will be thrown, because actual_date doesn't exist in the final relation/select
   #    .limit is affected for performance reasons.
   # e.g.
-  #    You should prefer Course.limit(10).ordered_by_last_section to Course.ordered_by_last_section.limit(10)
+  #    You should prefer Course.limit(10).order_by_last_date to Course.order_by_last_date.limit(10)
   # and
-  #    Course.ordered_by_last_section.having('ANY_SQL_REFERENCING(actual_date)') will throw an exception,
-  def self.ordered_by_last_section
-    inner_scope = joins('LEFT OUTER JOIN sections ON sections.course_id = courses.id').
-      group('courses.id').order('MAX(actual_date) DESC NULLS LAST, courses.created_at DESC')
-    self.unscoped do
-      from(inner_scope.as(table_name))
-    end
-  end
+  #    Course.order_by_last_date.having('ANY_SQL_REFERENCING(actual_date)') will throw an exception,
+#   def self.order_by_last_date
+#     inner_scope = joins('LEFT OUTER JOIN sections ON sections.course_id = courses.id').
+#       group('courses.id').order('MAX(actual_date) DESC NULLS LAST, courses.created_at DESC')
+#     self.unscoped do
+#       from(inner_scope.as(table_name))
+#     end
+#   end
 
-  def self.homeless
-    where(:status => 'Homeless').ordered_by_last_section
-  end
-
-  def self.unscheduled_unclaimed
-    where(:status => 'Unclaimed, Unscheduled').ordered_by_last_section
-  end
-
-  def self.scheduled_unclaimed
-    where(:status => 'Scheduled, Unclaimed').ordered_by_last_section
-  end
 
   # Headcounts represent after-the-fact, definite attendance numbers
   #   The following functions depend on Course::Session,
@@ -87,187 +92,218 @@ class Course < ActiveRecord::Base
       nil
     end
   end
+  
+  def contact_full_name
+    "#{contact_first_name} #{contact_last_name}"
+  end
 
   # Returns an array of sessions, ordered by session number
   def sessions
-    sesh = sections.group_by(&:session)
-    sesh.keys.sort.reduce([]) {|result, key| result << Session.new(sesh[key]);result}
-  end
-
-  def new_request_email
-    # send email to requester
-    Email.create(
-      :from => DEFAULT_MAILER_SENDER,
-      :reply_to => DEFAULT_MAILER_SENDER,
-      :to => self.contact_email,
-      :subject => "[ClassRequestTool] Class Request Successfully Submitted for #{self.title}",
-      :body => "<p>Your class request has been successfully submitted for #{self.title}.</p>
-      <p>You may review your request <a href='http://#{ROOT_URL}#{course_path(self)}'>here</a> and update it with any new details or comments by leaving a note for staff.</p>
-      <p>Thank you for your request. We look forward to working with you.</p>"
-    )
-    # if repository is empty (homeless), send to all admins of tool
-    if self.repository.nil? || self.repository.blank?
-      admins = User.where('admin = ? OR superadmin = ?', true, true).collect{|a| a.email + ","}
-      Email.create(
-        :from => DEFAULT_MAILER_SENDER,
-        :reply_to => DEFAULT_MAILER_SENDER,
-        :to => admins.join(", "),
-        :subject => "[ClassRequestTool] A New Homeless Class Request has been Received",
-        :body => "<p>A new homeless class request has been received in the Class Request Tool.</p>
-        <p>
-        Library/Archive: Not yet assigned<br />
-        <a href='http://#{ROOT_URL}#{course_path(self)}'>#{self.title}</a><br />
-        Subject: #{self.subject}<br />
-        Course Number: #{self.course_number}<br />
-        Affiliation: #{self.affiliation}<br />
-        Number of Students: #{self.number_of_students}<br />
-        Syllabus: #{self.external_syllabus}<br />
-        </p>
-        <p>If this class is appropriate for your library or archive, please, <a href='http://#{ROOT_URL}#{edit_course_path(self)}'>edit the course</a> and assign it to your repository.</p>"
-      )
-
-    # if repository is not empty, send to all users assigned to repository selected
+    if (sections.length == 1 && sections[0].course_id.nil?)      # This handles the case of a new unattached session
+      sesh = { sections[0].session => [sections[0]] }
     else
-      users = self.repository.users.collect{|u| u.email}
-      superadmins = User.all(:conditions => {:superadmin => true}).collect{|s| s.email}
-      users << superadmins
-      users.flatten!
-      repository = self.repository.nil? ? 'Not yet assigned' : self.repository.name
-      Email.create(
-        :from => DEFAULT_MAILER_SENDER,
-        :reply_to => DEFAULT_MAILER_SENDER,
-        :to => users.join(", "),
-        :subject => "[ClassRequestTool] A new class request has been received for #{repository}",
-        :body => "<p>
-        Library/Archive: #{repository}<br />
-        <a href='http://#{ROOT_URL}#{course_path(self)}'>#{self.title}</a><br />
-        Subject: #{self.subject}<br />
-        Course Number: #{self.course_number}<br />
-        Affiliation: #{self.affiliation}<br />
-        Number of Students: #{self.number_of_students}<br />
-        Syllabus: #{self.external_syllabus}<br />
-        </p>
-        <p>If you wish to manage or confirm details, claim this class or assign it to another staff member at #{repository}, please <a href='http://#{ROOT_URL}#{edit_course_path(self)}'>edit the course</a>.</p>"
-      )
+      sesh = sections.order(:session).group_by(&:session)
     end
   end
-
-  def send_repo_change_email
-    # send to all users of selected repository
-      users = self.repository.users.collect{|u| u.email}
-      superadmins = User.all(:conditions => {:superadmin => true}).collect{|s| s.email}
-      users << superadmins
-      users.flatten!
-      repository = self.repository.nil? ? 'Not yet assigned' : self.repository.name
-      Email.create(
-        :from => DEFAULT_MAILER_SENDER,
-        :reply_to => DEFAULT_MAILER_SENDER,
-        :to => users.join(", "),
-        :subject => "[ClassRequestTool] A Class has been Transferred to #{repository}",
-        :body => "<p>A class has been transferred to #{repository}. This may be a formerly Homeless class or a class another repository has suggested would be more appropriate for #{repository}.</p>
-        <p>
-        Library/Archive: #{repository}<br />
-        <a href='http://#{ROOT_URL}#{course_path(self)}'>#{self.title}</a><br />
-        Subject: #{self.subject}<br />
-        Course Number: #{self.course_number}<br />
-        Affiliation: #{self.affiliation}<br />
-        Number of Students: #{self.number_of_students}<br />
-        Syllabus: #{self.external_syllabus}<br />
-        </p>
-        <p>If you wish to manage or confirm details, claim this class or assign it to another staff member at #{repository}, please <a href='http://#{ROOT_URL}#{edit_course_path(self)}'>edit the course</a>.</p>"
-      )
+  
+  # Returns a repo name, whether the course repo is defined yet or not
+  def repo_name
+    self.homeless? ? 'Homeless' : self.repository.name
   end
-
-  def send_staff_change_email(current_user)
-    # send to assigned staff members
-    emails = self.users.collect{|u| u == current_user ? '' : u.email}
-    unless self.primary_contact.nil? || self.primary_contact.blank? || self.primary_contact == current_user
-      emails << self.primary_contact.email
+    
+  def backdated?
+    self.sections.each do |s|
+      return false if s.actual_date.blank? || s.actual_date > DateTime.now
     end
-    repository = self.repository.nil? ? 'Not yet assigned' : self.repository.name
-    Email.create(
-      :from => DEFAULT_MAILER_SENDER,
-      :reply_to => DEFAULT_MAILER_SENDER,
-      :to => emails.join(", "),
-      :subject => "[ClassRequestTool] You have been assigned a class",
-      :body => "<p>You have been assigned to a class for #{repository}.</p>
-      <p>
-      Library/Archive: #{repository}<br />
-      <a href='http://#{ROOT_URL}#{course_path(self)}'>#{self.title}</a><br />
-      Subject: #{self.subject}<br />
-      Course Number: #{self.course_number}<br />
-      Affiliation: #{self.affiliation}<br />
-      Number of Students: #{self.number_of_students}<br />
-      Syllabus: #{self.external_syllabus}<br />
-      </p>
-      <p>Please <a href='http://#{ROOT_URL}#{edit_course_path(self)}'>confirm the class date and time</a> and if applicable, add the class to your event management system (e.g. Aeon) and/or room calendar.</p>"
-    )
+    true
   end
 
-  def send_timeframe_change_email
-    # figure out if there is a primary contact, if not send to first staff contact with email
-    unless self.primary_contact.nil? || self.primary_contact.email.blank?
-      email = primary_contact.email
-      name = "#{self.primary_contact.full_name}"
-    else
-      unless self.users.nil?
-        self.users.each do |user|
-          unless user.email.blank?
-            email = user.email
-            name = "#{user.full_name}"
-            break
-          end
-        end
+  def claimed?
+    !self.primary_contact_id.blank?
+  end
+  
+  def completed?
+    now = Time.now
+    self.sections.each do |section|
+      if section.actual_date.nil? || ( section.actual_date > now )
+        return false
       end
     end
-    repository = self.repository.nil? ? 'Not yet assigned' : self.repository.name
-    unless self.pre_class_appt.nil? || self.pre_class_appt.blank?
-      pre_class = "<p>Additionally, your pre-class planning appointment is scheduled for #{self.pre_class_appt} with #{name} at #{repository}.</p>"
-    else
-      pre_class = ""
+    return true
+  end
+  
+  def cancelled?
+    self.status == 'Cancelled'
+  end
+  
+  def closed?
+    self.status == 'Closed'
+  end
+  
+  def homeless?
+    self.repository.blank?
+  end
+  
+  def unclaimed?
+    self.primary_contact.blank? & self.users.blank?
+  end
+  
+  # This function returns true if all sections are scheduled, an array of unscheduled section ids if not
+  def missing_dates?
+    self.sections.each do |section|
+      if section.actual_date.blank?
+        missing_dates ||= []
+        missing_dates << section.id
+      end
     end
-
-    # send email to requester
-    Email.create(
-      :from => DEFAULT_MAILER_SENDER,
-      :reply_to => DEFAULT_MAILER_SENDER,
-      :to => self.contact_email,
-      :subject => "Your class at #{repository} has been confirmed.",
-      :body => "<p>Thank you for submitting your request for a class session at #{repository}. The request has been reviewed and confirmed.</p>
-      <p>Title: <a href='http://#{ROOT_URL}#{course_path(self)}'>#{self.title}</a><br />
-      Confirmed Date: #{self.sections.first.try(:actual_date)}<br />
-      Duration: #{self.duration} hours<br />
-      Staff contact:<a href='mailto:#{email}'> #{name}</a>
-      </p>
-      <p>If you have any questions or additional details to share, please add a note to the <a href='http://#{ROOT_URL}#{course_path(self)}'>class request</a>.</p>
-      <p>#{pre_class}</p>"
-    )
+    missing_dates ||= false
   end
-
-  def send_assessment_email
-    # send email to requester
-    repository = self.repository.nil? ? 'Not yet assigned' : self.repository.name
-    Email.create(
-      :from => DEFAULT_MAILER_SENDER,
-      :reply_to => DEFAULT_MAILER_SENDER,
-      :to => self.contact_email,
-      :subject => "[ClassRequestTool] Please Assess your Recent Class at #{repository}",
-      :body => "<p>Your class session</p>
-      <p>
-      Library/Archive: #{repository}<br />
-      <a href='http://#{ROOT_URL}#{course_path(self)}'>#{self.title}</a><br />
-      Subject: #{self.subject}<br />
-      Course Number: #{self.course_number}<br />
-      Affiliation: #{self.affiliation}<br />
-      Number of Students: #{self.number_of_students}<br />
-      Syllabus: #{self.external_syllabus}<br />
-      </p>
-      <p>was recently completed.</p>
-      <p>If you would consider taking five minutes to help us improve our services by filling out <a href='http://#{ROOT_URL}#{new_assessment_path(:course_id => self.id)}'> a short assessment about your experience, we would greatly appreciate it.</a></p>
-      <p>Thank you for utilizing #{repository} in your course. We hope to work with you again soon.</p>"
-    )
+  
+  # Quick update of course stats with direct db query
+  def update_stats
+  
+    # Update section and session numbers
+    nsections = nsessions = nattendance = 0
+    
+    # First and last dates
+    first_date = last_date = nil
+    
+    # Scheduled
+    if !self.sections.blank?
+      scheduled = true
+      self.sections.each do |s|
+        nsections += 1 if s.session == 1
+        nsessions = s.session.to_i if s.session > nsessions
+        nattendance += s.headcount.to_i
+        if s.actual_date
+          first_date = s.actual_date if (first_date.nil? || s.actual_date < first_date)
+          last_date = s.actual_date if (last_date.nil? || s.actual_date > last_date)
+        elsif s.requested_dates
+          scheduled = false
+          requested_dates = s.requested_dates.reject { |d| d.blank? }.sort        
+          first_date  = requested_dates.first if (first_date.nil? || requested_dates.first < first_date)
+          last_date   = requested_dates.last if (last_date.nil? || requested_dates.last > last_date)
+        else
+          scheduled = false
+        end
+      end
+    else
+      scheduled = false
+    end
+    
+    # Use update_column to avoid autosave issues
+    self.update_column(:section_count, nsections)
+    self.update_column(:session_count, nsessions)
+    self.update_column(:total_attendance, nattendance)
+    self.update_column(:first_date, first_date) unless first_date.nil?
+    self.update_column(:last_date, last_date) unless first_date.nil?
+    self.update_column(:scheduled, scheduled)
   end
-
+  
+  # Class functions
+  # Implemented for the CSVExport class
+  def self.csv_data(filters = [])
+    fields = ["c.created_at",
+              'title',
+#               'subject',
+#               'course_number',
+#               'affiliation',
+#               'contact_email',
+#               'contact_phone',
+#               'pre_class_appt',
+#               'r.name',                             # Repositories column
+#               'u.first_name || u.last_name',
+               "ss.description",                     # staff services are now in a separate table, aggregate - see formatted_fields and group_by
+#               'number_of_students',
+#               'status',
+#               'syllabus',
+#               'external_syllabus',
+              'duration',
+#              'comments',
+              'session_count',
+              'goal',
+              'contact_first_name',
+              'contact_last_name',
+              'contact_username',
+              's.session',                          # Sections column 
+              's.id',                               # Sections column
+#              "s.actual_date",                      # Sections column 
+#              's.headcount'                         # Sections column
+            ]
+            
+    # Have to aggregate on everything that isn't aggregated. How aggravating.
+    group_by = []
+    formatted_fields = []
+    header_row = []
+    
+    fields.each do |field|
+      case field
+      when "c.created_at"
+        header_row << 'Submitted'
+        formatted_fields << "to_char(#{field}, 'YYYY-MM-DD HH:MIam')"
+        group_by << field
+      when 'r.name'
+        header_row << 'Repository'
+        formatted_fields << field
+        group_by << field
+      when 'u.first_name || u.last_name'
+        header_row << 'Primary staff contact'
+        formatted_fields << '(u.first_name || " " || u.last_name) AS full_name'
+        group_by << fieeld
+      when 's.session'
+        header_row << 'Session'
+        formatted_fields << field
+        group_by << field
+      when 's.id'
+        header_row << 'Section ID'
+        formatted_fields << field
+        group_by << field
+      when "s.actual_date"
+        header_row <<'Section date'
+        formatted_fields << "to_char(#{field}, 'YYYY-MM-DD HH:MIam')"
+        group_by << field
+      when 's.headcount'
+        header_row << 'Attendance'
+        formatted_fields << field
+        group_by << field
+      when "ss.description"
+        header_row << 'Staff Services'
+        formatted_fields << "string_agg(#{field}, ',')"
+        # Do not add into group_by - we're aggregating these
+      else
+        header_row << field.humanize
+        formatted_fields << field
+        group_by << field
+      end
+    end
+    
+    select = "SELECT #{formatted_fields.join(',')} FROM courses c "
+    joins = [
+      "LEFT JOIN repositories r ON c.repository_id = r.id",
+      "LEFT JOIN sections s ON s.course_id = c.id",
+      "LEFT JOIN users u ON u.id = c.primary_contact_id",
+      "LEFT JOIN courses_staff_services css ON c.id = css.course_id",
+      "LEFT JOIN staff_services ss ON css.staff_service_id = ss.id"
+    ]
+    
+    order = 'c.created_at ASC, s.session ASC NULLS LAST, s.actual_date ASC NULLS LAST'
+    
+    if filters.empty?
+      sql = "#{select} #{joins.join(' ')} GROUP BY #{group_by.join(',')} ORDER BY #{order} "
+    else
+      sql = "#{select} #{joins.join(' ')} WHERE #{filters.join(' AND ')} GROUP BY #{group_by.join(',')} ORDER BY #{order}"
+    end
+    
+    [header_row, sql]    
+  end
+  
+  def self.update_all_stats
+    courses = Course.all
+    courses.each do |course|
+      course.update_stats
+    end
+  end
+    
   # Internal class for attaching functions to sessions
   class Session < Array
     def headcount
@@ -283,5 +319,15 @@ class Course < ActiveRecord::Base
       end
     end
   end
-
+  
+  private
+  
+    # Convert form parameters to where clauses
+    def where_filters(filters)
+      where_filters = []
+      
+      unless filters[:repository.blank?]
+        where_filters << "repositories.id = #{filters[:repository_id]}"
+      end
+    end
 end

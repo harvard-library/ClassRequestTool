@@ -24,10 +24,5 @@
 class Section < ActiveRecord::Base
   belongs_to :course
   belongs_to :room
-  attr_accessible(:requested_dates, # Postgres array of DateTimes
-                  :actual_date,     # Single DateTime
-                  :session,         # Integer representing session membership
-                  :room_id,
-                  :course,
-                  :headcount)       # actual number of people in room, recorded after the fact
+  
 end

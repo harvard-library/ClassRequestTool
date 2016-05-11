@@ -1,0 +1,7 @@
+= semantic_form_for(@staff_service) do |f|
+  = f.input :description, :label => 'Service'
+  %br
+  = f.input :required, :as => :boolean, :label => "Automatically require this service"
+  %br
+  = f.input :repositories, :as => :check_boxes, :label => false
+  = f.action :submit,  :as => :button, :button_html => {:class => 'btn btn-primary'}

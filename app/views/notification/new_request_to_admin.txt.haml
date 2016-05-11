@@ -1,0 +1,20 @@
+- if @course.repository.blank?
+  A new homeless class request has been received in the Class Request Tool.
+  - render :partial => 'shared/notification_course_info', :locals => { course: @course, test: @test  }
+  If this class is appropriate for your library or archive, please edit the course and assign it to your repository:
+  
+  - if @test
+    (link to course)
+  - else
+    = edit_course_url(@course)}
+- else
+  = render :partial => 'shared/notification_course_info', :locals => { course: @course }
+  If you wish to manage or confirm details, claim this class or assign it to another staff member at #{@course.repo_name}, please edit the course:
+  
+  - if @test
+    (link to course)
+  - else
+    = edit_course_url(@course)}"
+    
+- unless @custom_text.blank?
+  = strip_tags(@custom_text)

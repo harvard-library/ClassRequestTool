@@ -1,37 +1,41 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.22.2'
-
-gem 'dotenv-rails', '~> 0.10.0'
+gem 'dotenv-rails'
+gem 'rails', '~> 4.2.5.1'
+gem 'sprockets-rails', :require => 'sprockets/railtie'
+gem 'stackprof'                  # For ruby 2.1
 gem 'therubyracer'
-gem 'devise', '3.5.4'
+gem 'devise', '~> 3.5.6'
 gem 'formtastic'
-gem 'will_paginate', '>= 3.0.5'
+gem 'formtastic-bootstrap'
+gem 'will_paginate'
 gem 'pg'
 gem 'postgres_ext'
 gem 'carrierwave'
-gem 'bootstrap-sass'
-gem 'bootflat-rails'
-gem 'formtastic-bootstrap'
-gem 'jquery-tablesorter'
+gem 'descriptive_statistics', :require => 'descriptive_statistics/safe'
+gem 'mini_magick'
+gem 'delayed_job_active_record'
+gem 'daemons'
 gem 'ckeditor'
-gem 'devise_harvard_auth_proxy', :git => 'https://github.com/berkmancenter/devise_harvard_auth_proxy.git', :ref => '2a58ea07a8'
+gem 'devise_harvard_auth_proxy', :git => 'https://github.com/harvard-library/devise_harvard_auth_proxy.git'
 gem 'css_splitter'
+gem 'haml-rails'
+gem 'bower-rails'
+gem 'cocoon'
+gem 'bootstrap-sass'
+gem 'sass-rails'
+gem 'uglifier'
 
-# Gems used only for assets and not required
-# in production environments by default.
-group :assets do
-  gem 'sass-rails',   '~> 3.2.6'
-  gem 'coffee-rails', '~> 3.2.1'
-  gem 'uglifier', '>= 1.0.3'
-  gem 'turbo-sprockets-rails3'
-end
+# one of devise_harvard_auth_proxy or devise itself relies on deprecated finder methods
+gem 'activerecord-deprecated_finders', require: 'active_record/deprecated_finders'
 
 group :test, :development do
+  gem 'rspec-rails'
   gem 'stepford'
   gem 'pry-rails'
   gem 'pry-remote'
   gem 'pry-doc'
+  gem 'pry-byebug'
 end
 
 group :test do
@@ -42,13 +46,16 @@ group :test do
 end
 
 group :development do
-  gem 'capistrano',        '~> 3.1.0'
-  gem 'capistrano-rails',  '~> 1.0.0'
-  gem 'capistrano-rvm',    '~> 0.1.1'
-  gem 'capistrano-bundler','~> 1.1.2'
+  gem 'capistrano',        '~> 3.1'
+  gem 'capistrano-rails',  '~> 1.1'
+  gem 'capistrano-rvm'
   gem 'better_errors'
   gem 'binding_of_caller'
-end
+  gem 'puma'
+  gem 'railroady' # for pretty pictures of db
 
-gem 'jquery-rails', '~> 3.1.4'
-gem 'jquery-ui-rails', '~> 4.2.0'
+  # Performance analysis
+  gem 'bullet'
+  gem 'rack-mini-profiler', require: false
+  gem 'flamegraph'
+end

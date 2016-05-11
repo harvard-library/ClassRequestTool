@@ -1,0 +1,48 @@
+div.repo-section {
+  margin-bottom: 1.5em;
+  &:last-child {
+    margin-bottom: 0;
+  }
+  span.summary-label {
+    margin-bottom: 0.5em;
+  }
+}
+
+/* Styled repo page */
+.c_repositories.a_show {
+  .repo-header {
+    text-align: center;
+    margin-bottom: 60px;
+  }
+  h4.column-head {
+    padding-top: 30px;
+    border-top: solid 2px black;
+    height: 4em;
+  }
+  .info {
+    margin-bottom: 30px;
+  }
+  .return-to-list {
+    margin-top: 30px;
+  }
+  fieldset.images {
+    border: solid 1px #999;
+    border-radius: 15px;
+    padding: 20px;
+  }
+}
+.row.repo-images {
+  text-align: center;
+  .display {
+    width: 16.66%;
+    margin: 0 auto;
+    display: inline-block;
+    vertical-align: top;
+    img {
+      border-radius: 3px;
+      width: 100%;
+    }
+  }
+}
+
+  

@@ -18,6 +18,8 @@
 /tmp
 .DS_Store
 config/database.yml
+config/mailer.yml
+config/mailer.yml.erb
 
 public/uploads/*
 
@@ -25,7 +27,13 @@ public/uploads/*
 config/deploy.rb
 config/deploy/*.rb
 
+# Ignore any bower componenets
+bower_components
+
 # various editor/config files
 \#*
 .#*
 *.swp
+
+# Ignore cache files
+*cache

@@ -1,0 +1,12 @@
+%h3= @course.title
+%div
+  %h4 Class Information
+  Library/Archive: #{@course.repository.nil? ? "Not Sure - Help me Choose" : @course.repository.name}
+  %br/
+  Title: #{@course.title unless @course.title.nil?}
+  %br/
+  Subject: #{@course.subject unless @course.subject.nil?}
+  %br/
+  Course Number: #{@course.course_number unless @course.course_number.nil?}
+  %br/
+  Date of Class: #{@course.sections.first.try(:actual_date).try(:strftime, DATE_FORMAT) unless @course.sections.first.try(:actual_date).nil?}

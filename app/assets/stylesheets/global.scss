@@ -1,0 +1,263 @@
+html,body {
+  height: 100%;
+  /* The html and body elements cannot have any padding or margin. */
+  font-family: Roboto, Helvetica, Arial, sans-serif;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
+/* Wrapper for page content to push down footer */
+#wrap {
+  min-height: 100%;
+  height: auto !important;
+  height: 100%;
+  /* Negative indent footer by it's height */
+  margin: 0 auto -60px;
+}
+.navbar-inverse {
+  background-color: #333;
+}
+
+/* Set the fixed height of the footer here */
+#push, #footer {
+  height: 60px;
+}
+
+#footer {
+  padding: 20px 0px 20px 0px;
+  text-align: center;
+}
+
+#welcome-left {
+  @include make-md-column(6);
+}
+
+#welcome-right {
+	@include make-md-column(6);
+}
+
+.admin-box {
+	border: 1px solid $crimson;
+	padding: 10px;
+	margin-bottom: 1em;
+	background-color: $lemon;
+}
+
+.form_wrapper {
+	width: 100%;
+	float: left;
+}
+
+.form_col1 {
+	width: 30%;
+	float: left;
+	padding-right: 50px;
+	padding-bottom: 10px;
+}
+
+#course_file {
+	width: 65%;
+	float: left;
+	word-wrap: normal
+}
+
+.form_col2 {
+	width: 60%;
+	float: left;
+	padding-bottom: 1em;
+}
+.form_full_width {
+	width: 96%;
+	float: left;
+	padding-bottom: 1em; 
+}
+
+.form_date {
+	width: 42%;
+	float: left;
+	margin-right: 5%;
+	padding-bottom: 10px;
+}
+
+// &*&*^! ckeditor changes divs to li's - make them look like divs
+li.ckeditor {
+  display: block;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  label {
+    color: #555;
+    font-size: 14px;
+  }
+}
+
+.delete-button {
+  width: 4%;
+  float: left;
+  padding-top: 28px;
+}
+
+th {
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.controls {
+	display: inline-block;
+}
+
+.pager {
+	position: relative;
+	top: 0px;
+}
+
+div.ui-datepicker{
+ font-size: 75%;
+}
+
+.link-color {
+   color: #0088cc;
+}
+#footer .container {
+	padding-left: 10em;
+	padding-right: 10em;
+	font-size: 90%;
+}
+@media (max-width: $screen-sm-max) {
+  #footer .container {
+    padding-left: 1em;
+    padding-right: 1em;
+  }
+}
+
+.cal-icon {
+  margin-right:1em;
+}
+
+.help-text {
+  font-size: 0.9em;
+  color: #666;
+}
+
+/* iCheck */
+.icheckbox_square-blue,
+.iradio_square-blue {
+  background-color: white;
+}
+
+
+/* Default picture captions */
+.caption {
+  text-align: center;
+  margin-top: 2px;
+  margin-bottom: 2px;
+/*  padding: 10px; */
+  min-height: 100px;
+  font-size: $font-size-base * 0.9;
+  color: $gray-dark;
+  background-color: $brand-info;
+  border-radius: 3px;
+  width: 100%;
+}
+.credit {
+  font-size: $font-size-base * 0.8;
+  color: $gray-light;
+}
+
+
+td.course-title {
+  font-weight: bold;
+}
+
+/* Class status columns */
+th.status-column {
+  background-color: $gray-lighter;
+}
+td.status-column {
+  background-color: $gray-lighter;
+}
+
+/* Notifications */
+.notifications-status {
+  width: 100%;
+  color: white;
+  padding: 3px 40px;
+  &.OFF {
+    background-color: #800;
+  }
+  &.ON {
+    background-color: #080;
+  }
+}
+
+/* info sign */
+.glyphicon-info-sign {
+  color: $bluebonnet;
+  cursor: pointer;
+}
+
+/* hint text */
+p.hint {
+  margin: 10px 0 10px 20px;
+  font-size: 0.95em;
+  color: #555;
+}
+
+/* Account management bar at top */
+.user-account {
+  text-align: right;
+  padding: 4px 0;
+  background-color: #444;
+  color:$creme;
+  font-size: 0.9em;
+  .btn {
+    font-size: 0.9em;
+  }
+}
+ul.no-bullets {
+  list-style-type: none;
+  margin-left: 0;
+  padding-left: 0;
+  li {
+    margin-left: 0;
+    padding-left: 0;
+    line-height: 1.2;
+    padding-bottom: .5em;
+  }
+}
+
+/* Increase font size for the pop-up calendars */
+div.ui-datepicker {
+  font-size: 100%;
+}
+
+/* Header */
+.slogan {
+  font-family: 'Times';
+  font-weight: bold;
+  font-style: italic;
+  color: $creme;
+  font-size: 1.2em;
+  margin: 40px 0 3px 6px;
+  padding: 0;
+}
+h1.tool-title {
+  color: $creme;
+  font-size: 1.8em;
+  margin: 0 0 3px 4px;
+  padding: 0;
+}
+.glyphicon {
+  &.upcoming {
+    color: $ivy;
+    font-size: 1.2em
+  }
+  &.past {
+    color: $shade;
+    font-size: 1.2em
+  }
+  &.nil {
+    color: red;
+    font-size: 1.2em
+  }
+}

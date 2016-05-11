@@ -1,0 +1,31 @@
+.form_wrapper
+  %h4 Requester Information
+  .panel.panel-default
+    .panel-heading
+      %h5 Primary Contact
+    .panel-body
+      - if current_user.can_admin? || current_user.staff?
+        .form_col1
+          = f.input :contact_username, :label => "Username: ", :input_html => { :value => @course.contact_username.nil? ? current_user.username : @course.contact_username }
+        .clearfix
+      - else
+        = f.hidden_field :contact_username, :value => @course.contact_username.nil? ? current_user.username : @course.contact_username
+      .form_col1
+        = f.input :contact_first_name, :label => "Primary Contact First Name: ", :input_html => { :value => @course.contact_first_name.nil? ? current_user.first_name : @course.contact_first_name, :class => 'fl' }
+      .form_col1
+        = f.input :contact_last_name, :label => "Primary Contact Last Name: ", :input_html => { :value => @course.contact_last_name.nil? ? current_user.last_name : @course.contact_last_name, :class => 'fl' }
+      .form_col2
+        = f.input :contact_email, :label => "Primary Contact Email: ", :input_html => { :value => @course.contact_email.nil? ? current_user.email : @course.contact_email }
+      .form_col2
+        = f.input :contact_phone, :label => "Primary Contact Phone: "
+      .clearfix
+
+  .panel.panel-default
+    .panel-heading
+      %h5 Additional Contacts
+    .panel-body
+      %p.help-text Please add anyone else who should receive communications about this course.
+      = f.semantic_fields_for :additional_patrons do |additional_patron|
+        = render :partial => 'additional_patron_fields', :locals => { :f => additional_patron }
+      .links
+        = link_to_add_association 'Add additional contact', f, :additional_patrons, :partial => 'additional_patron_fields'

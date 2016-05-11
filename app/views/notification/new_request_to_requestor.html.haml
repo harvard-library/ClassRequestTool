@@ -1,0 +1,21 @@
+%p
+  Your class request has been successfully submitted for
+  = succeed "." do
+    %em= @course.title
+%p
+  You may review your request
+  - if @test
+    %a{ href: '#' } here (linked to course)
+  - else
+    %a{:href => course_url(@course)} here
+  and update it with any new details or comments by leaving a note for staff.
+- unless @course.repository.blank? || @course.repository.email_details.blank?
+  %p
+    You have requested a class at the #{@course.repo_name}, which has the following specific details and/or instructions:
+  = sanitize @course.repository.email_details.html_safe
+%br/
+
+- unless @custom_text.blank?
+  = sanitize @custom_text.html_safe
+
+%p Thank you for your request. We look forward to working with you.

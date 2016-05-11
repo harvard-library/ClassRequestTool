@@ -1,0 +1,6 @@
+= image_tag image.image_url(size)
+.caption
+  %p= sanitize image.caption.html_safe
+  %br
+- if show_credit
+  %p.credit= sanitize photo_credit(repo).html_safe

@@ -1,0 +1,28 @@
+// The following are for in-place editing of custom text
+%h1 Custom Text Entries
+%p Custom text entries allow you to customize elements of text throughout the application. Currently, they are only used in Notifications.
+%p If you want to add custom text in a new location, please see your application tech admin to add the code to the correct template.
+%p Texts are pulled in via their key strings. Here are the key string labels that you can currently use:
+%ul
+  - Notification.instance_methods(false).each do |n|
+    - next if /^_/.match(n.to_s)
+    - next if /test_email/.match(n.to_s)
+    %li 
+      %i For #{n.to_s.gsub('_', ' ').capitalize}: 
+      %b #{n.to_s }
+%table{ class: 'table', id: 'custom_texts' }
+  %thead
+    %th Key String
+    %th Text
+    %th
+  %tbody
+    - unless @custom_texts.blank?
+      - @custom_texts.each do |custom_text|
+        = render partial: 'table_row', locals: { custom_text: custom_text }
+
+    %tr#new_custom_text
+      %td.field
+        = text_field_tag :key, nil, :name => "custom_text[key]", class: 'form-control key', :placeholder => 'Key string'
+        %br
+        %button.btn.btn-primary Add custom text
+      %td.field= text_area_tag :text, nil, :name => "custom_text[text]", class: 'form-control', class: 'ckeditor', size: "60x10"

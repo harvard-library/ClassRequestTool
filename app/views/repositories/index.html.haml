@@ -1,0 +1,29 @@
+%h3 Libraries/Archives
+%div
+  - if @repositories.blank?
+    %p None available yet
+  - else  
+    .pager-repositories
+      = render :partial => '/shared/tablesorter_pager'
+    %table#repositories.sortable.table
+      %thead
+        %tr
+          %th Name
+          - if current_user && current_user.can_admin?
+            %th{class: "{sorter: false, filter: false}"}
+      %tbody
+        - @repositories.each do |repo|
+          %tr
+            %td= link_to repo.name, repo
+            - if current_user && current_user.can_admin?
+              %td
+                = link_to('Edit', edit_repository_path(repo), :class => "action-edit")
+                - if current_user.superadmin?
+                  | #{link_to('Delete', repository_path(repo), :data => { :confirm => "Are you sure?" }, :method => :delete)}
+    %br/
+    .pager-repositories
+      = render :partial => '/shared/tablesorter_pager'
+  %br/
+  %br/
+  - if current_user && current_user.can_admin?
+    = link_to("Add New Library/Archive", new_repository_path, :class => "btn btn-primary" )

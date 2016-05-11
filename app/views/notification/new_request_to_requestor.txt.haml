@@ -1,0 +1,18 @@
+Your class request has been successfully submitted for #{@course.title}.
+
+You may review your request and update it with any new details or comments by leaving a note for staff here:
+
+- if @test
+  (link to course)
+- else
+  = course_url(@course)}
+  
+- unless @course.repository.blank? || @course.repository.email_details.blank?
+  You have requested a class at the #{@course.repository.name}, which has the following specific details and/or instructions:
+  
+  \#{@course.repository.email_details.raw}
+
+- unless @custom_text.blank?
+  = strip_tags(@custom_text)
+
+Thank you for your request. We look forward to working with you.

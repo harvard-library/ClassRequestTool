@@ -1,0 +1,22 @@
+%h3 Assessments
+%h4= link_to 'Download as CSV', export_assessments_path(:format => :csv)
+.pager-assessment-current
+  = render 'shared/tablesorter_pager'
+%table.table#assessment-current.sortable
+  %thead
+    %th Course Title
+    - @fields.each_pair do |attribute, text|
+      %th{:title => text[:title]}= text[:slug]
+    %th{class: "{sorter: false, filter: false}"} Text Fields
+  %tbody
+    - @assessments.each do |a|
+      %tr
+        %td= assessment_course(a)
+        - @fields.keys.each do |name|
+          %td= a.send name
+        %td
+          - @text_fields.each do |attribute, text|
+            - unless a.send(attribute).blank?
+              %button{"data-content" => a.send(attribute), "data-placement" => "left", "data-title" => text[:title], :class => 'btn btn-default'}= text[:slug]
+.pager-assessment-current
+  = render 'shared/tablesorter_pager'

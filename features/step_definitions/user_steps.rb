@@ -4,23 +4,20 @@
 #Password is too short (minimum is 6 characters)
 #Password can't be blank
 
-Given /^a user clicks on Not Sure$/ do 
+Given /^a user clicks on Help Me Choose$/ do 
   visit("/courses/new")
 end
 
-Given /^an admin user named "([^"]*)"$/ do |name|
-  @user = FactoryGirl.create(:user, :username => name, :password => 'adminpassword', 
-                             :password_confirmation =>  'adminpassword',
-                             :admin=> true, :patron => false)
+Given /^an admin with username "([^"]*)"$/ do |name|
+  @user = FactoryGirl.create(:user, :admin, :username => name, :first_name => 'Admin', :last_name => 'User')
 end
 
-Given /^a staff user named "([^"]*)"$/ do |name|
-  @user = FactoryGirl.create(:user, :username => name, :password => 'staffpassword',  :password_confirmation =>'staffpassword', 
-                             :staff => true,  :patron => false)
+Given /^a staff member with username "([^"]*)"$/ do |name|
+  @user = FactoryGirl.create(:user, :staff, :username => name, :first_name => 'Staff', :last_name => 'User')
 end
 
-Given /^a user named "([^"]*)"$/ do |name|
-  @user = FactoryGirl.create(:user, :username => name, :password => 'password',  :password_confirmation =>'password')
+Given /^a user with username "([^"]*)"$/ do |name|
+  @user = FactoryGirl.create(:user, :username => name, :first_name => 'Test', :last_name => 'User')
 end
 
 Given /^(?:"([^"]*)"|user) logs in$/ do |name|
@@ -36,7 +33,7 @@ Given /^(?:"([^"]*)"|user) logs in$/ do |name|
   within "#welcome-left" do
     fill_in "Username", :with => name
     fill_in "Password", :with => passw
-    click_button "Sign in"
+    click_button "Sign In"
   end
 end
 Given(/^user logs out$/) do
@@ -49,19 +46,17 @@ Given(/^admin user goes to Users$/) do
 end
 Given(/^a user with invalid credentials$/) do
   visit('/users/sign_in')
-  within "#welcome-left" do
-    fill_in "Username", :with => 'badname'
-    fill_in "Password", :with => 'invalid'
-    click_button "Sign in"
-  end
+  find('#user_username').set('badname')
+  find('#user_password').set('invalid')
+  click_button "Sign In"
 end
 
-Given(/^a new user named "(.*?)"$/) do |name|
-  @user = FactoryGirl.build(:user, :username => name, :email => '')
+Given(/^a new user with username "(.*?)"$/) do |name|
+  @user = FactoryGirl.build(:user, :username => name, :password => nil, :password_confirmation => nil, :email => nil, :first_name => nil, :last_name => nil)
 end
 
 
-Given(/^"(.*?)" has email of "(.*?)"$/) do |name, email|
+Given(/^"(.*?)" has email "(.*?)"$/) do |name, email|
   if @user && @user.username == name
     @user.email = email
   else 
@@ -69,7 +64,7 @@ Given(/^"(.*?)" has email of "(.*?)"$/) do |name, email|
   end
 end
 
-Given(/^"(.*?)" has first of "(.*?)"$/) do |name, first_name|
+Given(/^"(.*?)" has first name "(.*?)"$/) do |name, first_name|
   if @user && @user.username == name
     @user.first_name = first_name
   else 
@@ -77,7 +72,7 @@ Given(/^"(.*?)" has first of "(.*?)"$/) do |name, first_name|
   end
 end
 
-Given(/^"(.*?)" has last of "(.*?)"$/) do |name, last_name|
+Given(/^"(.*?)" has last name "(.*?)"$/) do |name, last_name|
   if @user && @user.username == name
     @user.last_name = last_name
   else
@@ -85,7 +80,7 @@ Given(/^"(.*?)" has last of "(.*?)"$/) do |name, last_name|
   end  
 end
 
-Given(/^"(.*?)" has password of "(.*?)"$/) do |name, pw|
+Given(/^"(.*?)" has password "(.*?)"$/) do |name, pw|
   if @user && @user.username == name
     @user.password = pw
   else
@@ -93,7 +88,7 @@ Given(/^"(.*?)" has password of "(.*?)"$/) do |name, pw|
   end  
 end
 
-Given(/^"(.*?)" has pwconf of "(.*?)"$/) do |name, pwconf|
+Given(/^"(.*?)" has password confirmation "(.*?)"$/) do |name, pwconf|
   if @user && @user.username == name
     @user.password_confirmation = pwconf
   else
@@ -104,56 +99,32 @@ end
 
 Given(/^"(.*?)" signs up$/) do |name|
   visit('/users/sign_in')
-  within "#welcome-right" do
-    fill_in "Username", :with => name
-    fill_in "Email", :with => @user.email
-    fill_in "First name", :with => @user.first_name
-    fill_in "Last name", :with => @user.last_name
-    fill_in "Password", :with => @user.password, :match => :first
-    fill_in "Password confirmation", :with => @user.password_confirmation
-    click_button "Sign Up"
-  end
+  find('#new_user_username').set(name)
+  find('#user_email').set(@user.email)
+  find('#user_first_name').set(@user.first_name)
+  find('#user_last_name').set(@user.last_name)
+  find('#new_user_password').set(@user.password)
+  find('#user_password_confirmation').set(@user.password_confirmation)
+  click_button 'Sign Up'
 end
 
 
 
 
-Then /^(?:|I )should see "([^"]*)"$/ do |text|
-#  binding.pry
-  if page.respond_to? :should
-    page.should have_content(text)
-  else
-    assert page.has_content?(text)
-  end
+Then /^(?:|I )expect to see "([^"]*)"$/ do |text|
+    expect(page).to have_content(text)
 end
 
-
-Then /^(?:|I )should see \/([^\/]*)\/$/ do |regexp|
+Then /^(?:|I )expect to see \/([^\/]*)\/$/ do |regexp|
   regexp = Regexp.new(regexp)
-
-  if page.respond_to? :should
-    page.should have_xpath('//*', :text => regexp)
-  else
-    assert page.has_xpath?('//*', :text => regexp)
-  end
+  expect(page).to have_xpath('//*', :text => regexp)
 end
 
-Then /^(?:|I )should not see "([^"]*)"$/ do |text|
-  if page.respond_to? :should
-    page.should have_no_content(text)
-  else
-    assert page.has_no_content?(text)
-  end
+Then /^(?:|I )do not expect to see "([^"]*)"$/ do |text|
+  expect(page).not_to have_content(text)
 end
 
-Then /^(?:|I )should not see \/([^\/]*)\/$/ do |regexp|
+Then /^(?:|I )do not expect to see \/([^\/]*)\/$/ do |regexp|
   regexp = Regexp.new(regexp)
-
-  if page.respond_to? :should
-    page.should have_no_xpath('//*', :text => regexp)
-  else
-    assert page.has_no_xpath?('//*', :text => regexp)
-  end
+  expect(page).not_to have_xpath('//*', :text => regexp)
 end
-
-

@@ -1,5 +1,4 @@
 class Email < ActiveRecord::Base
-  attr_accessible :to, :bcc, :from, :reply_to, :subject, :body, :date_sent, :message_sent
 
   validates_presence_of :to, :from, :reply_to, :subject, :body
 

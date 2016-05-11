@@ -1,0 +1,94 @@
+.row.repo-header
+  %h3= @repository.name
+  = form_tag new_course_path, :method => :get do
+    %p
+      = hidden_field_tag :repository, @repository.id
+      = submit_tag "Request a class at the #{@repository.name}", :class => 'btn btn-primary'
+.row.description
+  = raw @repository.description unless @repository.description.nil?
+  - unless @recent_courses.empty?
+    %p #{the_recent_courses(@recent_courses, @repository.name).html_safe}
+
+- unless @repository.attached_images.blank?
+  .row.repo-images
+    - @repository.attached_images.each do |pic|
+      .display
+        = render :partial => 'shared/repo_image', :locals => { image: pic, size: :display, repo: @repository, show_credit: false }
+.row
+  .col-md-3.collections
+    .info
+      %h4.column-head Collections
+      - unless @repository.collections.empty?
+        %ul.list-group
+        - @repository.collections.each do |c|
+          %li.list-group-item 
+            = link_to c.name, c.url
+            = c.description
+      - else
+        %p (none)
+  .col-md-3.technology
+    .info
+      %h4.column-head Staff Services
+      - unless @repository.staff_services.blank?
+        %ul.no-bullets
+          - @repository.staff_services.each do |service|
+            %li
+              = service.description
+      - else
+        (None)
+  .col-md-3.technology
+    .info
+      %h4.column-head Technology Available
+      - unless @repository.item_attributes.blank?
+        %ul.no-bullets
+          - @repository.item_attributes.each do |attribute|
+            %li
+              = attribute.name
+              = "- #{ attribute.description }" unless attribute.description.blank?
+      - else
+        (None)
+  .col-md-3.facilities
+    .info
+      %h4.column-head Administrative Information
+       
+      %p
+        %span.glyphicon.glyphicon-user &nbsp
+        Class limit:
+        %span.class-limit= @repository.class_limit.blank? ? '(none)' : @repository.class_limit
+    - unless @repository.landing_page.blank?
+      .info
+        %p
+          %span.glyphicon.glyphicon-eye-open &nbsp
+          = link_to  @repository.landing_page do
+            More on teaching at the #{@repository.name}
+    .info
+      - unless @repository.calendar.blank?
+        %p
+          %span.glyphicon.glyphicon-calendar &nbsp
+          = link_to @repository.calendar, :onclick=>"window.open(this.href,'view_calendar', 'height=600, width=600');return false;" do
+            View calendar &nbsp;
+            #{image_tag('calendar_icon.png', :class => 'cal-icon' )}
+      - else
+        %p
+          The #{@repository.name} does not have a publicly available calendar. When making a request, please submit with your preferred times and a staff member will get back to you.
+    - unless @repository.class_policies.blank?
+      .info
+        %p
+          %span.glyphicon.glyphicon-list-alt &nbsp
+          = link_to "Class policies", @repository.class_policies
+- if current_user && current_user.can_admin?
+  .row
+    .admin-box
+      .staff
+        %h4 Assigned Staff Member(s)
+        %ul.no-bullets
+          - @repository.users.each do |user|
+            %li
+              = user.first_name
+              = user.last_name
+      .manage
+        %h4 Edit this repository
+        = link_to('Edit', edit_repository_path(@repository), :class => "action-edit")
+        | #{link_to('Delete', repository_path(@repository), :data => { :confirm => "Are you sure?" }, :method => :delete)}
+.row.return-to-list
+  = link_to "Return to homepage", root_url, :class => 'btn btn-primary'

@@ -1,0 +1,11 @@
+A class has been transferred to #{@course.repo_name}. This may be a formerly Homeless class or a class another repository has suggested would be more appropriate for #{@course.repo_name}.
+- render :partial => 'shared/notification_course_info', :locals => { course: @course, test: @test  }
+If you wish to manage or confirm details, claim this class or assign it to another staff member at #{@course.repo_name}, please edit the course:
+
+- if @test
+  (link to course)
+- else
+  = edit_course_url(@course)}
+
+- unless @custom_text.blank?
+  = strip_tags(@custom_text)

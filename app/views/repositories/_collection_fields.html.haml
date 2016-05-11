@@ -1,0 +1,7 @@
+.nested-fields.well.well-md
+  = f.inputs do
+    = f.input :name, required: true
+    = f.input :url, label: 'URL', required: false
+    = f.input :description, as: :string, required: false
+    = link_to_remove_association 'Remove collection', f, class: 'btn btn-warning'
+    

@@ -1,0 +1,43 @@
+- if test
+  %p
+    Test: Course Title
+    %br/
+    Library/Archive: Test
+    %br/
+    Subject: Test
+    %br/
+    Course Number: Test
+    %br/
+    Affiliation: Test
+    %br/
+    Number of Students: Test
+    %br/
+    
+- else
+  %p
+    Title:
+    %a{:href => course_url(course)}
+      %em= course.title
+    %br/
+    Requester: #{course.contact_first_name} #{course.contact_last_name}
+    %br/
+    - unless course.additional_patrons.blank?
+      Additional Contacts:
+      %br/
+      - course.additional_patrons do |ap|
+        &ndash; #{ap.full_name} (#{ap.role})
+        %br/
+    %br/
+    Library/Archive: #{course.repo_name}
+    %br/
+    Subject: #{course.subject}
+    %br/
+    Course Number: #{course.course_number}
+    %br/
+    Affiliation: #{course.affiliation}
+    %br/
+    Number of Students: #{course.number_of_students}
+    %br/
+    - unless course.external_syllabus == 'http://'
+      Syllabus: #{course.external_syllabus}
+      %br/

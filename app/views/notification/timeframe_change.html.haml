@@ -1,0 +1,16 @@
+%p
+  Thank you for submitting your request for a class session at #{@course.repo_name}. The request has been reviewed and confirmed.
+= render :partial => 'shared/notification_course_info', :locals => { course: @course, test: @test  }
+
+- unless @custom_text.blank?
+  = sanitize @custom_text.html_safe
+
+%p
+  If you have any questions or additional details to share, please add a note to the
+  = succeed "." do
+    - if @test
+      %a{ href: '#' } class request (linked to course)
+    - else
+      %a{:href => course_url(@course)} class request
+- unless @pre_class.blank?
+  %p= @pre_class

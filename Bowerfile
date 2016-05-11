@@ -1,0 +1,8 @@
+asset "highcharts"
+asset "icheck"
+asset "jquery", "~1"
+asset "jquery-tablesorter", github: "Mottie/tablesorter"
+asset "jquery-ujs"
+asset "jquery-ui"
+asset "jqueryui-timepicker-addon"
+asset "qtip2"

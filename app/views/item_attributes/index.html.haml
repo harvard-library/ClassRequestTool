@@ -1,0 +1,29 @@
+%h3 Classroom Technologies Available
+%div
+  - if @attributes.blank?
+    %p None available yet
+  - else  
+    .pager-attributes
+      = render :partial => '/shared/tablesorter_pager'
+    %table#attributes.sortable.table
+      %thead
+        %tr
+          %th Name
+          - if current_user && current_user.can_admin?
+            %th{class: "{sorter: false, filter: false}"}
+      %tbody
+        - @attributes.each do |attribute|
+          %tr
+            %td= attribute.name
+            - if current_user.can_admin?
+              %td
+                = link_to('Edit', edit_item_attribute_path(attribute), :class => "action-edit")
+                - if current_user.superadmin?
+                  | #{link_to('Delete', item_attribute_path(attribute), :data => { :confirm => "Are you sure?" }, :method => :delete)}
+    %br/
+    .pager-attributes
+      = render :partial => '/shared/tablesorter_pager'
+  %br/
+  %br/
+  - if current_user.can_admin?
+    = link_to("Add New Technology", new_item_attribute_path, :class => "btn btn-primary" )

@@ -1,0 +1,37 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+# This model initially had no columns defined.  If you add columns to the
+# model remove the '{}' from the fixture names and add the columns immediately
+# below each fixture, per the syntax in the comments below
+#
+course_with_users:
+  using_materials:      'The television was perfect because my students are zombies.'
+  involvement:          'Class visit to see particular materials'
+  staff_experience:     5
+  staff_availability:   4
+  space:                3
+  request_materials:    2
+  digital_collections:  4
+  involve_again:        no
+  not_involve_again:    "Just because I'm negative."
+  better_future:        Provide food
+  request_course:       3
+  catalogs:             5
+  comments:             This is a comment
+  course:               attached_course
+
+course_no_users:
+  using_materials:      'The television was perfect because my students are zombies.'
+  involvement:          'Class visit to see particular materials'
+  staff_experience:     5
+  staff_availability:   4
+  space:                3
+  request_materials:    2
+  digital_collections:  4
+  involve_again:        no
+  not_involve_again:    "Just because I'm negative."
+  better_future:        Provide food
+  request_course:       3
+  catalogs:             5
+  comments:             This is a comment
+  course:               no_users_course

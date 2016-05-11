@@ -1,0 +1,62 @@
+:javascript
+  $(function() {
+    $('.nav-tabs[role="tablist"] a').each(function (i,el) {
+      $(el).click(function (e) {
+        e.preventDefault();
+        $(this).tab('show');
+      });
+    });
+   });
+%h3 My Dashboard
+%ul.nav.nav-tabs{:role => "tablist"}
+  %li.active
+    %a{"data-toggle" => "tab", :href => "#upcoming", :role => "tab"} Upcoming Classes
+  %li
+    %a{"data-toggle" => "tab", :href => "#homeless", :role => "tab"} Homeless Classes
+  %li
+    %a{"data-toggle" => "tab", :href => "#unclaimed", :role => "tab"} Classes to Claim
+  %li
+    %a{"data-toggle" => "tab", :href => "#closed", :role => "tab"} Completed Classes
+.dash-wrap.tab-content
+  #upcoming.tab-pane.active.row
+    = render :partial => 'dashboard_table',   |
+      :locals => { :id => 'user-unscheduled',  |
+      :title => 'My Unscheduled Classes', |
+      :courses => @claimed_unscheduled }                |
+    -#
+    = render :partial => 'dashboard_table', |
+      :locals => { :id => 'user-upcoming',   |
+      :title => 'My Scheduled Classes', |
+      :courses => @claimed_scheduled }                 |
+  / END #upcoming
+  #homeless.tab-pane.row
+    .clearfix
+      = render :partial => 'dashboard_table', |
+        :locals => { :id => 'homeless',        |
+        :title => 'Homeless Classes',                |
+        :courses => @homeless }                      |
+  / END homeless
+  #unclaimed.tab-pane.row
+    .clearfix
+      = render :partial => 'dashboard_table', |
+        :locals => { :id => 'unassigned',      |
+        :title => 'Unclaimed Classes to be Scheduled',         |
+        :courses => @unclaimed_unscheduled }         |
+      -#
+      = render :partial => 'dashboard_table', |
+        :locals => { :id => 'roomless',        |
+        :title => 'Unclaimed Scheduled Classes',               |
+        :courses => @unclaimed_scheduled }           |
+  / END unclaimed
+  #closed.tab-pane.row
+    = render :partial => 'dashboard_table', |
+      :locals => { :id => 'user-to-close',   |
+      :title => 'My Classes To Close',           |
+      :courses => @to_close }         |
+    -#
+    = render :partial => 'dashboard_table', |
+      :locals => { :id => 'user-past-table',       |
+      :title => 'My Closed Classes',             |
+      :courses => @closed }                     |
+  / END #closed
+/ END .dash-wrap

@@ -1,7 +1,85 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
-#
-# Examples:
-#
-#   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
-#   Mayor.create(name: 'Emanuel', city: cities.first)
+# Basic file for seeding the database
+
+# Create a default superadmin user
+User.create(
+  :username               => 'superadmin',
+  :password               => 'password',
+  :password_confirmation  => 'password',
+  :email                  => 'superadmin@example.edu',
+  :first_name             => 'Super',
+  :last_name              => 'Admin',
+  :superadmin             => true
+)
+
+# Create a default admin user
+User.create(
+  :username               => 'admin',
+  :password               => 'password',
+  :password_confirmation  => 'password',
+  :email                  => 'admin@example.edu',
+  :first_name             => 'Merely',
+  :last_name              => 'Admin',
+  :admin                  => true
+)
+
+# Create a basic customization - this should be changed and a banner added
+Customization.create(
+  :institution              => 'Harvard',
+  :institution_long         => 'Harvard University',
+  :tool_name                => 'Class Request Tool',
+  :slogan                   => 'We have what you want to see',
+  :tool_tech_admin_name     => 'Penelope Infotech',
+  :tool_tech_admin_email    => 'infotech@example.edu',
+  :tool_content_admin_name  => 'Percival Content-Guru',
+  :tool_content_admin_email => 'content_admin@example.edu',
+  :default_email_sender     => 'library@example.edu',
+  :notifications_on         => false,
+  :collaboration_options    => [
+    'Share planning and selection responsibilities',
+    'Share instructional responsibilities',
+    'Share materials'
+  ]
+  
+)
+# Example repository
+Repository.create(
+  :name => 'The Example Library',
+  :description => 'This is an example of a library or archive.',
+  :class_limit => 17,
+  :landing_page => 'http://library.example.edu',
+  :class_policies => 'First, do no harm.'
+)
+
+# Example staff service
+StaffService.create(
+  :description => "Pedicure in Harvard crimson.",
+  :required => true,
+#  :global => true
+)
+
+# Example item attribute
+ItemAttribute.create(
+  :name => 'Multimedia player',
+  :description => 'This can play MP3, MP4, DVDs, and CDs'
+)
+
+
+# Custom text which is inserted into notification emails. See the notification previews.  
+custom_notification_texts = {
+  'assessment_received_to_admins' => '<p>Replace custom text here or delete</p>',
+  'assessment_received_to_users'  => '<p>Replace custom text here or delete</p>',
+  'assessment_requested'          => '<p>Replace custom text here or delete</p>',
+  'cancellation'                  => '<p>Replace custom text here or delete</p>',
+  'homeless_courses_reminder'     => '<p>Replace custom text here or delete</p>',
+  'new_note'                      => '<p>Replace custom text here or delete</p>',
+  'new_request_to_admin'          => '<p>Replace custom text here or delete</p>', 
+  'new_request_to_requestor'      => '<p>Replace custom text here or delete</p>',
+  'uncancellation'                => '<p>Replace custom text here or delete</p>',
+  'repo_change'                   => '<p>Replace custom text here or delete</p>', 
+  'staff_change'                  => '<p>Replace custom text here or delete</p>', 
+  'timeframe_change'              => '<p>Replace custom text here or delete</p>',
+}
+
+custom_notification_texts.each do |k, v|
+  Admin::CustomText.create( key: k, text: v )
+end

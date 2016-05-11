@@ -1,0 +1,20 @@
+- course_id = course_id.blank? ? '' : course_id
+- @course = Course.find(course_id) if (@course.nil? && !course_id.blank?)
+- section_index = section_index.blank? ? 0 : section_index.to_i
+.col-xs-12
+  %div{:class => "session session-#{session_count} panel panel-info", "data-session_count" => session_count, :id => "session-#{session_count}"}
+    .panel-heading.clearfix
+      %h4{ :class => "panel-title pull-left", :style => "padding-top: 7.5px" }= "Session #{session_count}"
+      - unless session_count == 1
+        %div{ :class => "delete-button pull-right", :style => "padding-top: 0; padding-right: 70px;" }
+          %button.btn.btn-local-action.delete{ "data-to_delete" => 'session' }  Remove
+    .panel-body
+      .sections
+        -# sesh = [Section.new] if sesh.nil?
+        - sort_sections(sesh).each.with_index(1) do |sect, sect_count|
+          = render :partial => 'section_block', :locals => { :course_id => course_id, :sesh => sesh, :sect => sect, :session_count => session_count, :section_count => sect_count, :section_index => section_index }       
+          - section_index += 1
+      / END .sections
+      .add_section-button-block
+        %button.add_section.btn.btn-local-action Add A Section
+        .glyphicon.glyphicon-info-sign{ "data-help_info" => "Add one or more sections if your group is too large to view the materials all at once." }

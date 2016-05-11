@@ -1,0 +1,18 @@
+.sort-info {
+  font-family: Roboto, Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  padding: 5px 10px;
+  display: none;
+  border-radius: $radius;
+  &.success {
+    background-color: $pear;
+    color: #060;
+  }
+  &.danger {
+    background-color: #ecc;
+    color: #600;
+  }
+}
+tr.existing-affiliate {
+  cursor: pointer;
+}

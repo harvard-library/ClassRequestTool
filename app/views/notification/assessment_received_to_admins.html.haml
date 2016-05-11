@@ -1,0 +1,14 @@
+- unless @custom_text.blank?
+  = sanitize @custom_text.html_safe
+
+%p
+  Please review the feedback for:
+  
+= render :partial => 'shared/notification_course_info', :locals => { course: @assessment.course, test: @test }
+
+
+= succeed "." do
+  - if @test
+    %a{ href: '#' } here (linked to assessment)
+  - else
+    %a{:href => assessment_url(@assessment)} here

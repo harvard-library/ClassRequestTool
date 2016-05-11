@@ -1,0 +1,83 @@
+- today = DateTime.now
+%div
+  %h3= @title
+  - if current_user.can_admin?
+    %h4= link_to('Export Courses to CSV', export_courses_path(:format => :csv))
+    - if @nil_date_warning
+      .alert.alert-warning There are classes without requested or actual dates at the end of this list.
+      
+  - if current_user.patron?
+    %p To submit a new class, choose a Library/Archive:
+    = form_tag new_course_path, :method => :get do
+      .row
+        = select_tag :repository, options_from_collection_for_select(@repositories, "id", "name"), :class => 'input select form-control', :prompt => "Not Sure - Help me Choose"
+        = submit_tag "Go", :class => 'btn btn-primary'
+      
+  %br/
+  - unless @courses.nil? || @courses.empty?
+    %p
+      %em
+        %span.glyphicon.glyphicon-th-list
+        &mdash; Hover to see all meeting times&nbsp;&nbsp;&nbsp;&nbsp;
+
+    .search
+      - column = current_user.can_admin? ? 7 : 3
+      %input{:class => 'table-search', 'data-column' => column, :type => 'search', :placeholder => 'Search table...' }
+    %br
+    .pager-courses-current
+      = render 'shared/tablesorter_pager'
+    %table#courses-current.sortable.table
+      %thead
+        %tr.active-headers
+          %th Course Title
+          - if current_user.can_admin?
+            %th.status-column.filter-select{'data-placeholder' => 'Select...'} Library/Archive
+            %th.status-column.filter-select{'data-placeholder' => 'Select...', :class => "{sorter: false, filter: false}"} Scheduling
+            %th.status-column Owner
+          %th.submission-date.date{ "data-help_info" => "For filtering, enter a date in either 'From' OR 'To'."} 
+            Submission Date
+            .glyphicon.glyphicon-info-sign
+          %th.first-class-meeting.date{ "data-help_info" => "For filtering, enter a date in either 'From' OR 'To'."}
+            First Class Meeting
+            .glyphicon.glyphicon-info-sign
+          - if current_user.can_admin?
+            %th Requester
+          / %th{class: "{sorter: false, filter: false}"} Actions
+          %th.hidden.filter-false.sorter-false  search index
+      %tbody
+        - @courses.each do |c|
+          %tr
+            %td.course-title
+              #{link_to(c.title, c )}
+            - if current_user.can_admin?
+              %td.status-column.starts_with
+                - if c.homeless?
+                  %span.status.danger Homeless
+                - else
+                  %span #{c.repository.name}
+              %td.status-column.starts_with #{scheduling_status(c.sections).html_safe}
+              %td.status-column
+                - if c.claimed? && !c.primary_contact.nil?
+                  %span #{c.primary_contact.full_name}
+                  = mail_to c.primary_contact.email, "<span class='glyphicon glyphicon-envelope'></span>".html_safe
+                - elsif c.claimed? && c.primary_contact.nil?
+                  %span.status.danger Erroneous claim: unknown user with ID: #{c.primary_contact_id}
+                - else
+                  %span.status.warning Unclaimed
+            %td{'data-date' =>  c.created_at.strftime(SORTTIME_FORMAT)} #{c.created_at.strftime(DATE_FORMAT).html_safe}
+            %td.section-times{'data-date' =>  first_class(c)}  #{first_plus_multiple_sections(c).html_safe}
+            - if current_user.can_admin?
+              %td
+                #{c.contact_first_name} #{c.contact_last_name}
+                %br
+                = mail_to c.contact_email, "<span class='glyphicon glyphicon-envelope'></span>".html_safe
+            %td.hidden= searchable_fields(c)
+    .pager-courses-current
+      = render 'shared/tablesorter_pager'
+    %br/
+    %br/
+  - else
+    - if current_user.can_admin?
+      %p There are no classes yet.
+    - elsif current_user.patron?
+      %p You have no classes yet.
