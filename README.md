@@ -9,7 +9,7 @@ The Class Request Tool (CRT) is a class reservation system that lets instructors
   2. Routes requests to relevant administrators
   3. Handles scheduling of classes
   4. Sends out post-class assessment to instructors (Optional)
-* Supports managing multiple respositories
+* Supports managing multiple repositories
   * Patrons can request a class at a specific repository, or defer that decision to administrators
   * Individual portal pages allow for per-repository display customization
   * Repositories can define and display individualized policies
