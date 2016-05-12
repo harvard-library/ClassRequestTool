@@ -75,7 +75,7 @@ Some basic notes:
   ```
 ## Unusual Gems
 
-The [Gemfile](Gemfile) contains the gem `[devise_harvard_auth_proxy](https://github.com/harvard-library/devise_harvard_auth_proxy)`, which wraps harvard-specific login functionality.  It can safely be removed if you like, or you can leave it in, since it is not used unless a particular environment variable is defined.
+The [Gemfile](Gemfile) contains the gem [devise_harvard_auth_proxy](https://github.com/harvard-library/devise_harvard_auth_proxy), which wraps harvard-specific login functionality.  It can safely be removed if you like, or you can leave it in, since it is not used unless a particular environment variable is defined.
 
 ## Additional Dev Notes
 
