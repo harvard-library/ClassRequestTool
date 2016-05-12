@@ -84,8 +84,8 @@ Additional development notes can be found [here](DEV_NOTES.md)
 ## Contributors
 
 * Bobbi Fox: https://github.com/bobbi-SMR (maintainer)
-* Tim Kinnel: https://github.com/timmykat
 * Emilie Hardman: https://github.com/emiliehardman
+* Tim Kinnel: https://github.com/timmykat
 * Dave Mayo: https://github.com/pobocks
 * Anita Patel: http://github.com/apatel
 
