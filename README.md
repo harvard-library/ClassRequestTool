@@ -43,7 +43,7 @@ The Class Request Tool (CRT) is a class reservation system that lets instructors
   EMAIL_BATCH_LIMIT=100
   OVERRIDE_RECIPIENTS=foo@bar.com,bar@foo.com                    # a comma-delimited list of people who should get any email notifications when the Notifications switch is off
   ```
-6. To add your initial customizations, create a `config/customization.yml` file based on [config/customization.yml.example](config/customization.yml.example), and a `config/mailer.yml` file based on [config/mailer.yml.example](config/mailer.yml.example] .
+6. To add your initial customizations, create a `config/customization.yml` file based on [config/customization.yml.example](config/customization.yml.example), and a `config/mailer.yml` file based on [config/mailer.yml.example](config/mailer.yml.example).
 
 7. Run:
    ```Shell
@@ -86,6 +86,14 @@ Additional development notes can be found [here](DEV_NOTES.md)
 * Dave Mayo: https://github.com/pobocks
 * Anita Patel: http://github.com/apatel
 
+## Supporting Institutions
+
+This tool was developed with the generous support of:
+* The [Arcadia Fund](http://www.arcadiafund.org.uk/)
+* [Berkman Center for Internet & Society](http://cyber.law.harvard.edu/)
+* [Harvard Library Lab](http://lab.library.harvard.edu/)
+* [Harvard Library Technology Services](http://huit.harvard.edu/services/library-technology-services)
+* [Houghton Library](http://hcl.harvard.edu/libraries/houghton/)
 
 ## License and Copyright
 
@@ -95,4 +103,3 @@ This application is licensed under the GPL, version 3.
 
 
 
-> Written with [StackEdit](https://stackedit.io/).
