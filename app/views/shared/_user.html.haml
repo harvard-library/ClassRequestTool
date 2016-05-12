@@ -9,4 +9,5 @@
     - else
       Guest session
       \#{link_to "Sign In/Sign Up", new_user_session_path, :class => 'btn btn-primary btn-xs'}
-      \#{link_to "Sign In/Sign Up with Harvard PIN", user_hauthproxy_sign_in_path, :class => 'btn btn-primary btn-xs'}
+      - if ENV.key?('AUTHEN_APPLICATION')
+        \#{link_to "Sign In/Sign Up with Harvard PIN", user_hauthproxy_sign_in_path, :class => 'btn btn-primary btn-xs'}

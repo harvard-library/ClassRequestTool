@@ -238,8 +238,8 @@ Devise.setup do |config|
   end
 
   # Only if devise_harvard_auth_proxy is installed
-  if Rails.const_defined?("DeviseHarvardAuthProxy") && DeviseHarvardAuthProxy.is_a?(Module)
-    config.authen_application = ENV['AUTHEN_APPLICATION'] || 'HLS_BCIS_CRT_DEV' #'HLS_BCIS_LRRS_DEV'
+  if Rails.const_defined?("DeviseHarvardAuthProxy") && DeviseHarvardAuthProxy.is_a?(Module) && ENV.key?('AUTHEN_APPLICATION')
+    config.authen_application = ENV['AUTHEN_APPLICATION']
     config.gpg_home = ENV['GPG_HOME'] || '/web/numfar/rails3.2dev/docs/classrequest-dev/fakehome2'
     config.gpg_path = ENV['GPG_PATH'] if ENV['GPG_PATH']
     config.debug = Rails.env.development?
