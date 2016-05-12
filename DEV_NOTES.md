@@ -1,14 +1,5 @@
 # Development Notes
 
-## Unusual gems and extensions
-
-### pluck_all
-In versions of Rails < 4, the `pluck` method can only be used on a single column.  Class Request Tool uses an initializer located at `ROOT/config/pluck_all.rb` to add a `pluck_all` method to the `ActiveRecord::Relation` and `ActiveRecord::Base` classes, to allow convenient memory-efficient operations on multiple columns.
-
-The basic code is taken from [here](http://meltingice.net/2013/06/11/pluck-multiple-columns-rails/), and wrapped in an `ActiveSupport::Concern`
-
-Documentation for Rails 3.2 API objects and methods can be found here: http://rails.documentation.codyrobbins.com/3.2.18/
-
 ## Git Workflow Conventions
 
 At any point in time, there are several git branches that can be meaningful to general developers.
