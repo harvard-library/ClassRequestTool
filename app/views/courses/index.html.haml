@@ -55,7 +55,11 @@
                   %span.status.danger Homeless
                 - else
                   %span #{c.repository.name}
-              %td.status-column.starts_with #{scheduling_status(c.sections).html_safe}
+              %td.status-column.starts_with 
+                - if c.homeless?
+                  %span.status.danger Cancelled
+                -else
+                  #{scheduling_status(c.sections).html_safe}
               %td.status-column
                 - if c.claimed? && !c.primary_contact.nil?
                   %span #{c.primary_contact.full_name}
