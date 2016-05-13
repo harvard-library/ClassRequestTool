@@ -11,14 +11,12 @@
         - courses.each do |course|
           %tr
             %td.course-title= link_to(course.title, course )
-            - if course.completed?
-              - if course.closed?
-                %td.text-danger Closed
-              - elsif course.cancelled?
-                %td.text-info Cancelled
-              - else
-                %td.text-success Active
-                
+            - if course.closed?
+              %td.text-danger Closed
+            - elsif course.cancelled?
+              %td.text-info Cancelled
+            - elsif course.completed?
+              %td.text-success Active
             - else
               %td.section-times= first_plus_multiple_sections(course).html_safe
             %td.hidden= searchable_fields(course)

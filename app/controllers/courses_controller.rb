@@ -106,20 +106,23 @@ class CoursesController < ApplicationController
     @unclaimed_scheduled    = []
     @claimed_unscheduled    = []
     @claimed_scheduled      = []
+    @cancelled               = [] # we currently don't display these
 
     #Loop over courses and slot them into their categories
     @courses = Course.order_by_submitted.eager_load(:repository, :sections, :users, :primary_contact)
 
     @courses.each do |course|
       if course.homeless?
-        @homeless << course
+        if !course.cancelled? # we don't care about a cancelled homeless class!
+          @homeless << course
+        end
       elsif course_owner?(course)
-        if course.completed?
-          if course.closed?
-            @closed << course
-          else
-            @to_close << course
-          end
+        if course.closed?
+          @closed << course
+        elsif course.cancelled?
+          @cancelled << course
+        elsif course.completed?
+          @to_close << course
         else
           if course.scheduled?
             @claimed_scheduled << course
@@ -131,7 +134,6 @@ class CoursesController < ApplicationController
             end
           end
         end
-
       elsif course.unclaimed? && current_user.repositories.include?(course.repository)
         if course.scheduled?
           @unclaimed_scheduled << course
