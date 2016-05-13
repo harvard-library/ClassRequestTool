@@ -106,10 +106,10 @@ class CoursesController < ApplicationController
     @unclaimed_scheduled    = []
     @claimed_unscheduled    = []
     @claimed_scheduled      = []
-    @cancelled               = [] # we currently don't display these
+    @cancelled               = [] # we currently don't display these; they're being filtered out in the db grab
 
     #Loop over courses and slot them into their categories
-    @courses = Course.order_by_submitted.eager_load(:repository, :sections, :users, :primary_contact)
+    @courses = Course.where('status <> ?', 'Cancelled').order_by_submitted.eager_load(:repository, :sections, :users, :primary_contact)
 
     @courses.each do |course|
       if course.homeless?
