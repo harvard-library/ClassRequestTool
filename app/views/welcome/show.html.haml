@@ -6,7 +6,8 @@
       .panel-heading
         %h1.panel-title Welcome
       .panel-body
-        = sanitize Customization.current[:welcome].html_safe
+        = if ! Customization.current[:welcome].blank?
+          = sanitize Customization.current[:welcome].html_safe
 
 
   .col-md-4
