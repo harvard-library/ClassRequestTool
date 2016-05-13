@@ -134,7 +134,7 @@ class CoursesController < ApplicationController
             end
           end
         end
-      elsif course.unclaimed? && current_user.repositories.include?(course.repository)
+      elsif course.unclaimed? && current_user.repositories.include?(course.repository) && !course.closed? && !course.cancelled?
         if course.scheduled?
           @unclaimed_scheduled << course
         else
