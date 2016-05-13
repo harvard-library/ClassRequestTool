@@ -1,11 +1,10 @@
 ClassRequestTool::Application.configure do
-  #++ Added for Rails 4 
-  config.eager_load = true
-
   # Settings specified here will take precedence over those in config/application.rb
 
   # Code is not reloaded between requests
   config.cache_classes = true
+  
+  config.eager_load = true
 
   # Full error reports are disabled and caching is turned on
   config.consider_all_requests_local       = false
@@ -20,6 +19,14 @@ ClassRequestTool::Application.configure do
   # Don't fallback to assets pipeline if a precompiled asset is missed
   config.assets.compile = true
 
+
+  # Generate digests for assets URLs
+  config.assets.digest = true
+  
+  config.assets.expire_after 2.weeks
+  
+  # Defaults to nil and saved in location specified by config.assets.prefix
+  # config.assets.manifest = YOUR_PATH
 
   # Specifies the header that your server uses for sending files
   # config.action_dispatch.x_sendfile_header = "X-Sendfile" # for apache
@@ -40,21 +47,17 @@ ClassRequestTool::Application.configure do
   # Use a different cache store in production
   # config.cache_store = :mem_cache_store
 
-  # Enable serving of images, stylesheets, and JavaScripts from an asset server
-  # config.action_controller.asset_host = "http://assets.example.com"
+  # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
+  # config.assets.precompile += %w( search.js )
 
   # Disable delivery errors, bad email addresses will be ignored
   # config.action_mailer.raise_delivery_errors = false
   
-  # Set up action mailer
-  mailer_data = YAML.load(ERB.new(File.read("#{Rails.root}/config/mailer.yml.erb")).result)
-  config.action_mailer.raise_delivery_errors = true
-  mailconf = mailer_data[:mailer][:production]
-  config.action_mailer.delivery_method = mailconf[:delivery_method]
-  config.action_mailer.smtp_settings = mailconf[:settings].clone
-  config.action_mailer.default_url_options = { :protocol => 'http://', :host => mailconf[:settings][:domain] }
+  config.action_mailer.default_url_options = { :host => ENV[ROOT_URL] }
+  config.action_mailer.delivery_method = :sendmail
 
-    
+  MAIL_RECIPIENT_OVERRIDE = (ENV['OVERRIDE_RECIPIENTS']||[]).split(",")
+
   # Enable threaded mode
   # config.threadsafe!
 
