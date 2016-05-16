@@ -6,6 +6,8 @@ require 'open3'
 
 Bundler.require(:default, Rails.env)
 
+Dotenv::Railtie.load   # bring in .env early enough for the config/ files to be able to handle it.
+
 module ClassRequestTool
   class Application < Rails::Application
 
