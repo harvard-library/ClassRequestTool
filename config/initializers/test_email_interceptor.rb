@@ -1,7 +1,7 @@
 if defined?(MAIL_RECIPIENT_OVERRIDE) && !MAIL_RECIPIENT_OVERRIDE.blank?
   class TestEmailInterceptor
     def self.delivering_email(message)
-      unless Rails.env.production? || Rails.env.test?
+      unless Rails.env.production? || Rails.env.test? || Customization.current.notifications_on?
         if message.to.kind_of?(Array)
           recipients = message.to.join(', ')
         else
