@@ -24,8 +24,8 @@
     - unless course.additional_patrons.blank?
       Additional Contacts:
       %br/
-      - course.additional_patrons do |ap|
-        &ndash; #{ap.full_name} (#{ap.role})
+      - course.additional_patrons.each do |ap|
+        &ndash; #{ap.full_name}, #{ap.email} (#{ap.role})
         %br/
     %br/
     Library/Archive: #{course.repo_name}

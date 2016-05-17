@@ -9,6 +9,11 @@
 - else
   Title: #{course.title} (#{"http://#{site_url}#{course_path(course)}"})
   Requester: #{course.contact_first_name} #{course.contact_last_name}
+    - unless course.additional_patrons.blank?
+      Additional Contacts:
+        - course.additional_patrons.each do |ap|
+           #{ap.full_name}, #{ap.email} (#{ap.role})
+
   Library/Archive: #{course.repo_name}
   Subject: #{course.subject}
   course Number: #{course.course_number}
