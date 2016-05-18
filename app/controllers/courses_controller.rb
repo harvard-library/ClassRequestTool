@@ -522,7 +522,7 @@ class CoursesController < ApplicationController
 
     def staff_change?
       return true if @course.primary_contact.blank? && !params[:course][:primary_contact_id].blank?
-      return true if !@course.primary_contact.blank? && (@course.primary_contact.id != params[:course][:primary_contact_id])
+      return true if !@course.primary_contact.blank? && (@course.primary_contact.id.to_s != params[:course][:primary_contact_id])
       return true if @course.users.blank? && !params[:course][:user_ids].blank?
       return true if !params[:course][:user_ids].nil? && (@course.users.map{ |u| u.id.to_s }.sort != params[:course][:user_ids].sort)
       false
