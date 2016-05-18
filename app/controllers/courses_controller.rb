@@ -414,6 +414,10 @@ class CoursesController < ApplicationController
     end
 
     @course = Course.find(params[:id])
+    # since the changed status is dependent on comparing current with input params, need to do this 
+    #  *before* we set the new attributes in the @course!!
+    changed_repo = repo_change?
+    changed_staff = staff_change?
 
     # Do some parameter manipulation
     process_params
@@ -431,7 +435,7 @@ class CoursesController < ApplicationController
         end
       end
 
-      if repo_change?
+      if changed_repo
         # FIX INFO_NEEDED Should "changed from" repos get email? Inquiring Bobbis want to know
         Notification.repo_change(@course).deliver_later(:queue => 'changes') unless @course.repository.blank?
         flash_message :info, "Repository change notification sent"  unless Customization.current.notifications_on?
@@ -439,7 +443,7 @@ class CoursesController < ApplicationController
                              :user_id => current_user.id, :auto => true)
       end
 
-      if staff_change?
+      if changed_staff
         # FIX INFO_NEEDED Should "dropped" staff members get this email?
         Notification.staff_change(@course, current_user).deliver_later(:queue => 'notifications')
         flash_message :info, "Staff change notification sent"  unless Customization.current.notifications_on?
