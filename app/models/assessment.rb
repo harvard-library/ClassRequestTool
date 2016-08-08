@@ -31,7 +31,7 @@ class Assessment < ActiveRecord::Base
       case field
       when "a.created_at"
         header_row << 'Submitted'
-        formatted_fields << "to_char(#{field}, 'YYYY-MM-DD HH:MIam')"
+        formatted_fields << "to_char(#{field}, 'YYYY-MM-DD HH:MIam') AS submitted"
       when 'a.comments'
         header_row << 'Comments'
         formatted_fields << field

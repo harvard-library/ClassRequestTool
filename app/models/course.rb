@@ -227,6 +227,7 @@ class Course < ActiveRecord::Base
               'contact_username',
               's.session',                          # Sections column 
               's.id',                               # Sections column
+              'c.first_date',
 #              "s.actual_date",                      # Sections column 
 #              's.headcount'                         # Sections column
             ]
@@ -240,7 +241,7 @@ class Course < ActiveRecord::Base
       case field
       when "c.created_at"
         header_row << 'Submitted'
-        formatted_fields << "to_char(#{field}, 'YYYY-MM-DD HH:MIam')"
+        formatted_fields << "to_char(#{field}, 'YYYY-MM-DD HH:MIam') AS created"
         group_by << field
       when 'r.name'
         header_row << 'Repository'
@@ -259,8 +260,8 @@ class Course < ActiveRecord::Base
         formatted_fields << field
         group_by << field
       when "s.actual_date"
-        header_row <<'Section date'
-        formatted_fields << "to_char(#{field}, 'YYYY-MM-DD HH:MIam')"
+        header_row << 'Section date'
+        formatted_fields << "to_char(#{field}, 'YYYY-MM-DD HH:MIam') AS section_date"
         group_by << field
       when 's.headcount'
         header_row << 'Attendance'
@@ -270,7 +271,11 @@ class Course < ActiveRecord::Base
         header_row << 'Staff Services'
         formatted_fields << "string_agg(#{field}, ',')"
         # Do not add into group_by - we're aggregating these
-      else
+      when 'c.first_date'
+        header_row << 'First Date'
+        formatted_fields << "to_char(#{field}, 'YYYY-MM-DD HH:MIam') AS first"
+        group_by << field
+     else
         header_row << field.humanize
         formatted_fields << field
         group_by << field
@@ -293,7 +298,6 @@ class Course < ActiveRecord::Base
     else
       sql = "#{select} #{joins.join(' ')} WHERE #{filters.join(' AND ')} GROUP BY #{group_by.join(',')} ORDER BY #{order}"
     end
-    
     [header_row, sql]    
   end
   
