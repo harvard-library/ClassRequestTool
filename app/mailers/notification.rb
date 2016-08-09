@@ -82,13 +82,13 @@ class Notification < ActionMailer::Base
 
     recipients = []
 
-    # Send to all admins and repository staff if there are no repository contacts
+    # If there are no course contacts/users, send to repository contacts (if any) or else to all admin contacts
     if @note.course.primary_contact.blank? && @note.course.users.blank?
-      recipients += User.where('admin = ? OR superadmin = ?', true, true).map{|u| u.email }
-      unless @note.course.repository.nil?
+      if @note.course.repository.nil?
+        recipients += User.where('admin = ? OR superadmin = ?', true, true).map{|u| u.email }
+      else
         recipients += @note.course.repository.users.map{|u| u.email}
       end
-
     # Otherwise send to all users assigned to course
     else
       recipients += @note.course.users.map{|u| u.email}
