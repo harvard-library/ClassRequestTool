@@ -56,6 +56,6 @@ group :development do
 
   # Performance analysis
   gem 'bullet'
-  gem 'rack-mini-profiler', require: false
+  gem 'rack-mini-profiler', '~> 0.10.1', require: false
   gem 'flamegraph'
 end
