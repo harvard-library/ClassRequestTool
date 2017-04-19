@@ -23,11 +23,8 @@ $(function () {
   nextSectionIndex = function() {
     return $('#scheduling_info .section').length;
   };
-  thisSessionCount = function() {
-    return $('#scheduling_info .session').length;
-  };
   nextSessionCount = function() {
-    return thisSessionCount() + 1;
+    return $('#scheduling_info .session').length + 1;
   };
 
   $thisSession = function(target) {
@@ -106,14 +103,15 @@ $(function () {
       e.preventDefault();
 
       var target = e.currentTarget;
+      var $session = $thisSession(target);
+      var sessionCount = $session.data('session_count');
+      var nextSectionCount = $session.find('.section').length + 1;
 
-      var nextSectionCount = $thisSession(target).find('.section').length + 1;
-
-      $.get('/courses/new_section_or_session_block', { to_render: 'section', course_id: courseId, session_count: thisSessionCount(), section_count: nextSectionCount, section_index: nextSectionIndex() }, function (data) {
-          $thisSession(target).find('.sections').append(data);
+      $.get('/courses/new_section_or_session_block', { to_render: 'section', course_id: courseId, session_count: sessionCount, section_count: nextSectionCount, section_index: nextSectionIndex() }, function (data) {
+          $session.find('.sections').append(data);
 
           // Set duration of added section to that of first section in this session
-          $sessionDurations = $thisSession(target).find('.session_duration_val');
+          $sessionDurations = $session.find('.session_duration_val');
           $sessionDurations.last().val($sessionDurations.first().val());
 
           updateSectionHeader();
