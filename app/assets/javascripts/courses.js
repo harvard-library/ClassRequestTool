@@ -40,8 +40,8 @@ $(function () {
 
 
   /* Set up required content warnings */
-  /* NOTE: This does not include ckeditor text areas - that's a more complicated problem */
-  $('.required input, .required select').each(function(i) {
+  /* NOTE: the textarea ckeditor textarea has additional processing */
+  $('.required input, .required select, .required textarea').each(function(i) {
     $('#missing-fields').append('<div class="alert alert-danger" id="warning_' + $(this).attr('id') + '">Missing field: ' + $(this).closest('.required').find('label').text().replace(': *','') + '</div>');
     if ($(this).selector.match(/ckeditor/)) {
       var has_content = $($(this).selector + ' iframe').contents().find("body").text();
@@ -54,7 +54,7 @@ $(function () {
   });
 
   /* Check required fields to make sure they have something in them */
-  $('body').on('change', '.required input, .required select', function(e) {
+    $('body').on('change', '.required input, .required select .required textarea', function(e) {
     $input = $(e.currentTarget);
     if ($input.val()) {
       $('#missing-fields #warning_' + $input.attr('id')).hide();
