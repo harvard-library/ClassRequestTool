@@ -54,7 +54,7 @@ $(function () {
   });
 
   /* Check required fields to make sure they have something in them */
-    $('body').on('change', '.required input, .required select .required textarea', function(e) {
+    $('body').on('change', '.required input, .required select, .required textarea', function(e) {
     $input = $(e.currentTarget);
     if ($input.val()) {
       $('#missing-fields #warning_' + $input.attr('id')).hide();
