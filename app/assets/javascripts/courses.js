@@ -58,6 +58,7 @@ $(function () {
   ** if the ckeditor markup changes, this won't work 
   */
   var ck = CKEDITOR.instances.course_goal;
+  if (ck) {
     ck.on('change', function(e){
 	var txt = $('#course_goal_input iframe').contents().find('body').text();
 	if (txt) {
@@ -66,6 +67,7 @@ $(function () {
 	     $('#missing-fields #warning_course_goal').show();
         }
     });
+ }
   /* Check required fields to make sure they have something in them */
     $('body').on('change', '.required input, .required select, .required textarea', function(e) {
     $input = $(e.currentTarget);
