@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'dotenv-rails'
-gem 'rails', '~> 4.2.7.1'
+gem 'rails', '~> 4.2.11'
 gem 'sprockets-rails', :require => 'sprockets/railtie'
 gem 'stackprof'                  # For ruby 2.1
 gem 'therubyracer'
@@ -25,7 +25,7 @@ gem 'cocoon'
 gem 'bootstrap-sass'
 gem 'sass-rails'
 gem 'uglifier'
-gem 'nokogiri', '~> 1.7.2'
+gem 'nokogiri', '~> 1.8.2'
 
 # one of devise_harvard_auth_proxy or devise itself relies on deprecated finder methods
 gem 'activerecord-deprecated_finders', require: 'active_record/deprecated_finders'
