@@ -2,7 +2,7 @@
 %div
   - if @users.blank?
     %p No users yet
-  - else  
+  - else
     .pager-users
       = render :partial => '/shared/tablesorter_pager'
     %table#users.sortable.table
@@ -10,7 +10,7 @@
         %tr
           %th First Name
           %th Last Name
-          %th Username
+          %th Username (email if Pinuser)
           %th Email
           %th Superadmin?
           %th Admin?
@@ -23,7 +23,7 @@
           %tr
             %td= user.first_name
             %td= user.last_name
-            %td= link_to(user.username, user )
+            %td= link_to((user.pinuser? ? user.email : user.username), user )
             %td= user.email
             %td= user.superadmin ? "Yes" : "No"
             %td= user.admin ? "Yes" : "No"
