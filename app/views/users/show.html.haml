@@ -1,7 +1,7 @@
 %h3
   = @user.first_name
   = @user.last_name
-= @user.username
+= @user.pinuser? ? "Pin users use HUID, which is hidden" : @user.username
 %br/
 = @user.email
 %br/
