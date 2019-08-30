@@ -338,7 +338,7 @@ DEPENDENCIES
   activerecord-deprecated_finders
   better_errors
   binding_of_caller
-  bootstrap-sass
+  bootstrap-sass (~> 3.4.1)
   bower-rails
   bullet
   capistrano (~> 3.1)
