@@ -23,7 +23,7 @@ gem 'haml-rails'
 gem 'bower-rails'
 gem 'cocoon'
 gem 'bootstrap-sass'
-gem 'sass-rails'
+gem 'sass-rails',   '~> 5.0.4'
 gem 'uglifier'
 gem 'nokogiri', '~> 1.10.4'
 

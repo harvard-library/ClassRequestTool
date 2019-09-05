@@ -374,7 +374,7 @@ DEPENDENCIES
   railroady
   rails (~> 4.2.11)
   rspec-rails
-  sass-rails
+  sass-rails (~> 5.0.4)
   schema_to_scaffold
   sprockets-rails
   stackprof
