@@ -201,7 +201,7 @@ GEM
     nokogiri (1.10.4)
       mini_portile2 (~> 2.4.0)
     orm_adapter (0.5.0)
-    pg (1.1.4)
+    pg (0.21.0)
     pg_array_parser (0.0.9)
     postgres_ext (3.0.1)
       activerecord (~> 4.0)
@@ -361,7 +361,7 @@ DEPENDENCIES
   haml-rails
   mini_magick
   nokogiri (~> 1.10.4)
-  pg
+  pg (~> 0.18)
   postgres_ext
   pry-byebug
   pry-doc
