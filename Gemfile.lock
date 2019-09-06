@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/harvard-library/devise_harvard_auth_proxy.git
-  revision: 42174b6d1f53b3fffe899da02e55e9d00630bc20
+  revision: 39e96ccbe0ef8ec4b8f2102f14e4582620e899da
   specs:
     devise_harvard_auth_proxy (0.2.0)
       devise (>= 3.0.1)
