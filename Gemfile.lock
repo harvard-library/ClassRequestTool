@@ -224,7 +224,7 @@ GEM
       slop (~> 3.0)
     public_suffix (2.0.5)
     puma (3.6.0)
-    rack (1.6.11)
+    rack (1.6.12)
     rack-mini-profiler (0.10.1)
       rack (>= 1.2.0)
     rack-test (0.6.3)
