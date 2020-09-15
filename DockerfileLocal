@@ -1,0 +1,29 @@
+# Quickstart: Compose and Rails https://docs.docker.com/compose/rails/
+
+# Base image
+FROM ruby:2.5
+
+# Install dependencies
+RUN curl -sL https://deb.nodesource.com/setup_12.x | bash - && \
+  apt-get update -qq && apt-get install -y nodejs postgresql-client imagemagick cron
+
+# Add app user
+RUN useradd --create-home appuser
+WORKDIR /home/appuser
+
+COPY Gemfile /home/appuser/Gemfile
+COPY Gemfile.lock /home/appuser/Gemfile.lock
+RUN bundle install
+
+# Copy code
+COPY --chown=appuser . /home/appuser
+
+RUN npm install -g bower && \
+  rake bower:install['--allow-root']
+
+USER appuser
+
+RUN rake crt:cron_task:setup_crontab
+
+# Start the main process
+CMD ["rails", "server", "-b", "0.0.0.0"]
