@@ -1,0 +1,12 @@
+version: '3'
+services:
+  crt-app:
+    container_name: crt-app
+    build:
+      context: ./
+      dockerfile: DockerfileLocal
+    env_file: .env
+    volumes:
+      - ./:/usr/src
+    ports:
+      - "3001:3000"
