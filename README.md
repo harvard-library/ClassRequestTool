@@ -36,30 +36,52 @@ The Class Request Tool (CRT) is a class reservation system that lets instructors
 3. To add your initial customizations, create a `config/customization.yml` file based on [config/customization.yml.example](config/customization.yml.example).
 4. Create a mailer file `config/mailer.yml.erb` file on [config/mailer.yml.example](config/mailer.yml.example).
 5. Create a `config/database.yml` file based on [config/database.yml.postgres](config/database.yml.postgres). There are no changes required to the database.yml file since it reads the environment varibles in the `.env` file for the database connection.
+6. Read the instructions in [Database Connection](#database-connection) to create a local database or connect to an existing remote database
+
+### Database Connection
+
+**Database connection options for local development**
+
+#### Option 1 (Recommended): Create a local postgres database
+
+* Create a local postgres database
+  * This project has a database configuration in the `docker-compose-local.yml` file that can be used for local development
+  * Another option is to create a database on the host machine directly
+* Set the configuration values for the database name, host, port, and credentials in the `.env` file. Read (Configuration)[#configuration] for more information.
+* Run the rake tasks in the ruby environment
+  * Run `rake db:schema:load` to automatically load the schema in `./db/schema.rb`.
+  * Run `rake db:seed` to seed the database. Make sure you pay attention to the output of this rake task, as it will give you a random password for the Superadmin user created in the database.
+  * Run `rake db:custom_seed` to load placeholder data.
+
+##### Docker compose database container
+This option is recommended when running docker compose locally. The local docker compose configuration `docker-compose-local.yml` creates a postgres database instance in a container for the application to connect to locally.
+
+A new database will be initialized with the values in the `.env` file if it does not exist already. The postgres hostname in the `.env` configuration should match the name of the container in the docker compose configuration. The data directory in the container is mounted to a directory on the local filesystem.
+
+    ```
+    volumes:
+      - ./postgresql/data:/var/lib/postgresql/data
+    ```
+
+Initialize a new database
+To re-initialize a new database, delete the entire directory `./postgresql` on the host machine. Note: All data and configurations will be deleted. A new database will be initialized when the container starts if the postgres data directory is empty.
+
+#### Option 2: Connect to an existing database
+
+* Creating a local database is recommended when possible, in order to more safely test migrations or any changes to the data
+* Connecting to an existing database on a server such as the QA database is NOT recommended when testing migrations or making any changes to the schema or the data since any issues during the development would impact the QA environment
+* Update the database coniguration values in `.env` to connect to an existing database such as the QA database
 
 ### Running the app manually
 These instructions are for running the application and database directly on a host.
 
 1. Complete all steps in the [Preparation](#preparation) instructions
 2. Run `bundle install`. You will probably have to install OS-vendor supplied libraries to satisfy some gem install requirements.
-3. Create a local database or connect to an existing remote database
-
-* Option 1: Create a local database
-  * Create a local postgres database with the database name, host, port, and credentials matching the values in `.env` file
-  * Run `rake db:schema:load` to automatically load the schema in `./db/schema.rb`.
-  * Run `rake db:seed` to seed the database. Make sure you pay attention to the output of this rake task, as it will give you a random password for the Superadmin user created in the database.
-
-* Option 2: Connect to an existing remote database
-  * Update the database coniguration values in `.env` to connect to a remote database such as the QA database
-
-6. Set up the cron tasks by running `rake crt:cron_task:setup_crontab`(as the Unix user of the application)
-7. Run `rake bower:install`. Note that this must be run at least once in any environment where the application or tests is going to be run, and must be re-run when JS assets included via `bower-rails` are changed. It is recommended that this be automated for deployment, as it is in the [config/deploy.rb](config/deploy.rb) that we provide here.
+3. Set up the cron tasks by running `rake crt:cron_task:setup_crontab`(as the Unix user of the application)
+4. Run `rake bower:install`. Note that this must be run at least once in any environment where the application or tests is going to be run, and must be re-run when JS assets included via `bower-rails` are changed. It is recommended that this be automated for deployment, as it is in the [config/deploy.rb](config/deploy.rb) that we provide here.
 
 ### Running the app with Docker Compose
 These instructions are for running the application locally using docker compose. A custom image `DockerfileLocal` based on the docker ruby base image installs all required dependencies and then starts the rails application. The docker-compose file `docker-compose-local.yml` orchestrates building the image and running the container for the rails application.
-
-#### Database Connection for local development in Docker Compose
-The docker compose configuration does not currently create a postgres database instance for the application to connect to locally. The database configuration for local development must connect to a non-production remote database (such as QA) or to a local database instance installed directly on the host machine. If connecting to a local database instance, the database schema must be loaded and the data must be loaded from a backup.
 
 #### Running the app with Docker Compose
 
@@ -70,7 +92,23 @@ The docker compose configuration does not currently create a postgres database i
   docker-compose -f docker-compose-local.yml up -d --build --force-recreate
   ```
 
-3. The rake tasks are run in the entrypoint script and will appear in the console output.
+3. Open a shell in the container
+To run commands inside the container, open a shell into the container. This is only necessary to run commands inside the container, such as rake tasks.
+
+Example running rake tasks inside the app container
+
+  ```
+  docker exec -it crt-app bash
+  rake db:schema:load
+  rake db:seed
+  ```
+
+Example running psql commands inside the postgresql container
+
+  ```
+  docker exec -it postgreshost bash
+  psql -U crt_local_user crt_local_db
+  ```
 
 4. Stop and remove the containers
 
