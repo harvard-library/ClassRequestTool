@@ -5,7 +5,7 @@ gem 'rails', '~> 4.2.11'
 gem 'sprockets-rails', :require => 'sprockets/railtie'
 gem 'stackprof'                  # For ruby 2.1
 gem 'therubyracer'
-gem 'devise', '~> 4.6.0'
+gem 'devise', '~> 4.7.1'
 gem 'formtastic'
 gem 'formtastic-bootstrap'
 gem 'will_paginate'
@@ -25,7 +25,7 @@ gem 'cocoon'
 gem 'bootstrap-sass', '~> 3.4.1'
 gem 'sass-rails',   '~> 5.0.4'
 gem 'uglifier'
-gem 'nokogiri', '~> 1.10.4'
+gem 'nokogiri', '~> 1.10.8'
 
 # one of devise_harvard_auth_proxy or devise itself relies on deprecated finder methods
 gem 'activerecord-deprecated_finders', require: 'active_record/deprecated_finders'
