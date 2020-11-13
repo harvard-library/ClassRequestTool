@@ -414,7 +414,7 @@ class CoursesController < ApplicationController
     end
 
     @course = Course.find(params[:id])
-    # since the changed status is dependent on comparing current with input params, need to do this 
+    # since the changed status is dependent on comparing current with input params, need to do this
     #  *before* we set the new attributes in the @course!!
     changed_repo = repo_change?
     changed_staff = staff_change?
@@ -563,7 +563,8 @@ class CoursesController < ApplicationController
           :session_duration,          # Section/session duration
           :room_id,
           :course,
-          :headcount
+          :headcount,
+          :meeting_link
         ]}
       )
     end
