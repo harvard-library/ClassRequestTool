@@ -7,7 +7,7 @@ services:
       dockerfile: DockerfileLocal
     env_file: .env
     volumes:
-      - ./:/usr/src
+      - ./:/home/appuser/
     ports:
       - "8199:3000"
 

@@ -47,10 +47,11 @@ The Class Request Tool (CRT) is a class reservation system that lets instructors
 * Create a local postgres database
   * This project has a database configuration in the `docker-compose-local.yml` file that can be used for local development
   * Another option is to create a database on the host machine directly
-* Set the configuration values for the database name, host, port, and credentials in the `.env` file. Read (Configuration)[#configuration] for more information.
+* Set the configuration values for the database name, host, port, and credentials in the `.env` file. Read [Configuration](#configuration) for more information.
 * Run the rake tasks in the ruby environment
+  * Open a shell in the app container to run these commands `docker exec -it crt-app bash`
   * Run `rake db:schema:load` to automatically load the schema in `./db/schema.rb`.
-  * Run `rake db:seed` to seed the database. Make sure you pay attention to the output of this rake task, as it will give you a random password for the Superadmin user created in the database.
+  * Run `rake db:seed` to seed the database. *Make sure to pay attention to the output of this rake task, as it will show the random password for the Superadmin user created in the database.*
   * Run `rake db:custom_seed` to load placeholder data.
 
 ##### Docker compose database container
@@ -93,14 +94,15 @@ These instructions are for running the application locally using docker compose.
   ```
 
 3. Open a shell in the container
-To run commands inside the container, open a shell into the container. This is only necessary to run commands inside the container, such as rake tasks.
+To run commands inside the container, open a shell into the container. This is only necessary to run commands inside the container, such as rails commands and rake tasks.
 
-Example running rake tasks inside the app container
+Example running rails commands inside the app container
 
   ```
   docker exec -it crt-app bash
   rake db:schema:load
   rake db:seed
+  rails generate migration AddMeetingLinkToSections meeting_link:string
   ```
 
 Example running psql commands inside the postgresql container
