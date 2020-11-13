@@ -1,18 +1,18 @@
 /
   NOTE: spans with ids on this page, with the exception of span#headcount and span#avgHeadcount,
   are used by Aeon to pull information out of the CRT.
-  
+
   span#headcount and span#avgHeadcount are there for potential future use by Aeon
-  
+
   DO NOT CHANGE THEM without also changing the Aeon plugin that relies on them.
 - if current_user && current_user.can_admin?
-  %div{ :class => "alert alert-#{status_class(@course.status)}"} 
+  %div{ :class => "alert alert-#{status_class(@course.status)}"}
     This class is
     %strong= @course.status.downcase
 
 %h3= @course.title
 %br/
-  
+
 #welcome-left
   - if current_user.can_schedule?
     = render :partial => 'shared/course_actions', :locals => { :course => @course }
@@ -91,8 +91,8 @@
         %span.summary-label Additional Staff:
         %ul
           -@course.users.each do |u|
-            %li #{u.full_name}      
-  
+            %li #{u.full_name}
+
   - unless @course.assisting_repository.blank?
     %h4 Collaborating Library/Archive
     %ul.summary-info
@@ -108,7 +108,7 @@
             - @course.collaboration_options.each do |option|
               #{option}
               %br
-            
+
   %h4 Staff Services Requested
   - if @course.staff_services.blank? && @course.staff_involvement.blank?
     %p No services have been selected yet.
@@ -165,14 +165,14 @@
                 %li
                   %span.summary-label Actual Date:
                   - actual_date = sect.try(:actual_date).try(:in_time_zone, Rails.configuration.time_zone).try(:strftime, DATETIME_AT_FORMAT)
-                  - if  !aeon_timeframe_emitted 
+                  - if  !aeon_timeframe_emitted
                     %span#a_timeframe #{actual_date}
                   - else
                     = actual_date
                 - aeon_timeframe_emitted = true
               - elsif sect.requested_dates
                 %li
-                  %span.summary-label 
+                  %span.summary-label
                     Requested Times:
                   %ul
                     %li
@@ -183,7 +183,12 @@
                   = sect.headcount ? sect.headcount : "Not Recorded"
               %li
                 %span.summary-label Room:
-                = sect.room ? sect.room.name : 'No room assigned'
+                = sect.room ? sect.room.name : "No room assigned"
+              - if current_user.staff? || current_user.can_admin?
+                %li
+                  %span.summary-label Meeting Link:
+                  = sect.meeting_link ? sect.meeting_link : "No meeting link"
+
   - else
     %div No class dates selected.
   %ul.summary-info
@@ -266,4 +271,4 @@
 #aeon-data
   - @aeon_data.each do |id, value|
     %div{ :id => id } #{value}
-    
+

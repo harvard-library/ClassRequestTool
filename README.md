@@ -59,10 +59,10 @@ This option is recommended when running docker compose locally. The local docker
 
 A new database will be initialized with the values in the `.env` file if it does not exist already. The postgres hostname in the `.env` configuration should match the name of the container in the docker compose configuration. The data directory in the container is mounted to a directory on the local filesystem.
 
-    ```
-    volumes:
-      - ./postgresql/data:/var/lib/postgresql/data
-    ```
+  ```
+  volumes:
+    - ./postgresql/data:/var/lib/postgresql/data
+  ```
 
 Initialize a new database
 To re-initialize a new database, delete the entire directory `./postgresql` on the host machine. Note: All data and configurations will be deleted. A new database will be initialized when the container starts if the postgres data directory is empty.
@@ -99,17 +99,23 @@ To run commands inside the container, open a shell into the container. This is o
 Example running rails commands inside the app container
 
   ```
+  # Open a shell inside the app container
   docker exec -it crt-app bash
+  # Load the schema in `./db/schema.rb`
   rake db:schema:load
+  # Seed the database
   rake db:seed
-  rails generate migration AddMeetingLinkToSections meeting_link:string
+  # Add new column
+  rails generate migration AddMeetingLinkToSections meeting_link:text
+  # Run migration
+  rake db:migrate
   ```
 
 Example running psql commands inside the postgresql container
 
   ```
   docker exec -it postgreshost bash
-  psql -U crt_local_user crt_local_db
+  psql -U crt_local_db_user crt_local_db
   ```
 
 4. Stop and remove the containers

@@ -41,4 +41,5 @@
                 :name => "#{name_prefix}[room_id]",       |
                 :class => "form-control"                  |
               %span.help-block Room that section is scheduled in.
+          = formtastic_wrapper('text', "Meeting Link", (text_field_tag :meeting_link, sect.meeting_link, :type => 'text', :name => "#{name_prefix}[meeting_link]", :id => "#{id_prefix}_meeting_link", :class => 'meeting_link_val form-control')).html_safe
 / END .section
