@@ -39,7 +39,7 @@ USER appuser
 # Create cron task
 RUN rake crt:cron_task:setup_crontab
 
-# Expose app port inside the container
+# Expose app port on docker host
 EXPOSE 8199
 
 ENTRYPOINT ["./entrypoint.sh"]

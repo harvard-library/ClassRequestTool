@@ -30,3 +30,7 @@ bower_components
 
 # Ignore cache files
 *cache
+
+# Ignore local postgresql database directory
+postgresql/
+data/

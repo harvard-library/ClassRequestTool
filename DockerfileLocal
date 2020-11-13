@@ -25,5 +25,8 @@ USER appuser
 
 RUN rake crt:cron_task:setup_crontab
 
+# Expose app port on docker host
+EXPOSE 8199
+
 # Start the main process
 CMD ["rails", "server", "-b", "0.0.0.0"]
