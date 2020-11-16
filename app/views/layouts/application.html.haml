@@ -63,7 +63,7 @@
                   - msgs.each do |msg|
                     %div{:class => "alert alert-#{type_to_class(type)}"}
                       %a.close{"data-dismiss" => "alert"} ×
-                      = content_tag :div, msg.html_safe, :class => "flash-#{type}"
+                      = sanitize content_tag :div, msg.html_safe, :class => "flash-#{type}"
             .row
               .col-md-12
                 = yield

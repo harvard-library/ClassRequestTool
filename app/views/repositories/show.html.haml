@@ -7,7 +7,8 @@
 .row.description
   = sanitize @repository.description unless @repository.description.nil?
   - unless @recent_courses.empty?
-    %p #{the_recent_courses(@recent_courses, @repository.name).html_safe}
+    %p
+    = sanitize the_recent_courses(@recent_courses, @repository.name).html_safe
 
 - unless @repository.attached_images.blank?
   .row.repo-images
