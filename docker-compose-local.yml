@@ -6,8 +6,12 @@ services:
       context: ./
       dockerfile: DockerfileLocal
     env_file: .env
+    # Mount directories into the container individually
+    # Note: Do not mount the vendor directory into the container as that causes an issue with the bower_components directory
     volumes:
-      - ./:/home/appuser/
+      - ./app:/home/appuser/app
+      - ./db:/home/appuser/db
+      - ./log:/home/appuser/log
     ports:
       - "8199:3000"
 
