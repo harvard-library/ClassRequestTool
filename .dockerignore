@@ -11,7 +11,10 @@
 /log/*.log
 /tmp
 .DS_Store
+.bash_history
+# Config files are required during the build process, which is not ideal, but they need to be included in the docker image for now
 #config/mailer.yml.erb
+#config/database.yml
 #config/customization.yml
 
 public/uploads/*

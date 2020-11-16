@@ -17,6 +17,7 @@
 /log/*.log
 /tmp
 .DS_Store
+.bash_history
 config/mailer.yml.erb
 config/database.yml
 config/customization.yml
