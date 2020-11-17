@@ -13,7 +13,7 @@
       .panel-body
         %ul
           - @filters.each do |filter|
-            %li= sanitize filter.html_safe
+            %li= sanitize filter
     - @data.each do |k, v|
       .panel.panel-primary
         .panel-heading

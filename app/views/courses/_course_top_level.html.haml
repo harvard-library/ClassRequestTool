@@ -21,7 +21,7 @@
     = f.inputs do
       .form_wrapper
         .form_col2
-          %h4= sanitize "Location: </em>#{@course.repository.nil? ? 'Not Sure - Help me Choose' : html_escape(@course.repository.name)}</em>".html_safe
+          %h4= sanitize "Location: </em>#{@course.repository.nil? ? 'Not Sure - Help me Choose' : html_escape(@course.repository.name)}</em>"
           - if current_user.can_admin? || current_user.staff?
             .admin-box
               = f.input :repository_id, :as => :select, :collection => Repository.all, :label => "Assign Library/Archive: "

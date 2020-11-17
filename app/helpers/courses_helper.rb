@@ -32,7 +32,7 @@ module CoursesHelper
     else
       status = "<span class='status inactive'>#{course.status}</span>"
     end
-    ActionController::Base.helpers.sanitize status.html_safe
+    ActionController::Base.helpers.sanitize status
   end
   
   # Sorts sections based first on actual date, then first requested date
