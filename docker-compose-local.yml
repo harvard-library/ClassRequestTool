@@ -10,8 +10,10 @@ services:
     # Note: Do not mount the vendor directory into the container as that causes an issue with the bower_components directory
     volumes:
       - ./app:/home/appuser/app
+      - ./config:/home/appuser/config
       - ./db:/home/appuser/db
       - ./log:/home/appuser/log
+      - ./uploads:/home/appuser/uploads
     ports:
       - "8199:3000"
 

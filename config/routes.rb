@@ -41,6 +41,8 @@ ClassRequestTool::Application.routes.draw do
   get  "/courses/:id/uncancel",  to: 'courses#uncancel'
   get  "/courses/:id/close",     to: 'courses#close'
   post "/courseas/search",      to: 'courses#search'
+  
+  get  "/syllabus/download/:course_id/:basename.:extension", :controller => "syllabus", :action => "download"
 
   devise_for :users,
     :controllers => {

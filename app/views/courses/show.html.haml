@@ -50,7 +50,7 @@
       - if @course.syllabus.blank? && (@course.external_syllabus.blank? || @course.external_syllabus == "http://")
         None
       - else
-        = link_to @course.syllabus.file.filename, @course.syllabus_url unless @course.syllabus.blank?
+        = link_to @course.syllabus.file.filename, "/syllabus/download/#{@course.id}/#{@course.syllabus.file.filename}" unless @course.syllabus.blank?
         - unless @course.external_syllabus.blank? || @course.external_syllabus == "http://"
           = link_to @course.external_syllabus, @course.external_syllabus, :target => "blank"
     %li

@@ -23,6 +23,7 @@ config/database.yml
 config/customization.yml
 
 public/uploads/*
+uploads/*
 
 # capistrano stuff to ignore
 config/deploy.rb
