@@ -25,7 +25,7 @@
             = text_field_tag :other_affiliation, @other_affiliation, class: 'form-control'
       .form_full_width
         - unless @course.syllabus.blank?
-          = link_to @course.syllabus.file.filename, @course.syllabus_url
+          = link_to @course.syllabus.file.filename, "/syllabus/download/#{@course.id}/#{@course.syllabus.file.filename}"
           %br/
           = f.input :remove_syllabus, :as => :boolean, :label => "Delete Current Syllabus? "
         %label.control-label{:for => "course_syllabus"}
