@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'dotenv-rails'
-gem 'rails', '~> 4.2.11'
+gem 'rails', '~> 5.2.4.4'
 gem 'sprockets-rails', :require => 'sprockets/railtie'
 gem 'stackprof'                  # For ruby 2.1
 gem 'therubyracer'
@@ -9,8 +9,7 @@ gem 'devise', '~> 4.6.0'
 gem 'formtastic'
 gem 'formtastic-bootstrap'
 gem 'will_paginate'
-gem 'pg', '~> 0.18'
-gem 'postgres_ext'
+gem 'pg', '~> 1.2.3'
 gem 'carrierwave'
 gem 'descriptive_statistics', :require => 'descriptive_statistics/safe'
 gem 'mini_magick'
@@ -26,9 +25,6 @@ gem 'bootstrap-sass', '~> 3.4.1'
 gem 'sass-rails',   '~> 5.0.4'
 gem 'uglifier'
 gem 'nokogiri', '~> 1.10.4'
-
-# one of devise_harvard_auth_proxy or devise itself relies on deprecated finder methods
-gem 'activerecord-deprecated_finders', require: 'active_record/deprecated_finders'
 
 group :test, :development do
   gem 'rspec-rails'

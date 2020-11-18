@@ -1,5 +1,6 @@
 # Enable the asset pipeline and bower
 Rails.application.config.assets.enabled = true
+# Be sure to restart your server when you modify this file.
 
 Rails.root.join('vendor', 'assets', 'bower_components').to_s.tap do |bower_path|
   Rails.application.config.assets.paths << bower_path
@@ -28,8 +29,14 @@ Rails.application.config.assets.precompile += %w( icheck/skins/square/blue.png i
 # Generate digests for assets URLs
 Rails.application.config.assets.digest = true
 
-# Defaults to nil and saved in location specified by config.assets.prefix
-# Rails.application.config.assets.manifest = YOUR_PATH
+# Add additional assets to the asset load path.
+# Rails.application.config.assets.paths << Emoji.images_path
+# Add Yarn node_modules folder to the asset load path.
+Rails.application.config.assets.paths << Rails.root.join('node_modules')
 
 # Expire assets
 Rails.application.config.assets.expire_after 2.weeks
+# Precompile additional assets.
+# application.js, application.css, and all non-JS/CSS in the app/assets
+# folder are already added.
+# Rails.application.config.assets.precompile += %w( admin.js admin.css )
