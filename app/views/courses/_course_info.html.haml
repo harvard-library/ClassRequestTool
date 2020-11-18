@@ -30,9 +30,9 @@
           = f.input :remove_syllabus, :as => :boolean, :label => "Delete Current Syllabus? "
         %label.control-label{:for => "course_syllabus"}
           Share Your Syllabus (Optional)
-          %span.help-block Providing your syllabus helps staff to tailor suggestions for teaching and to identify class themes most richly supported by the collections.
+          %span.help-block Providing your syllabus helps staff to tailor suggestions for teaching and to identify class themes most richly supported by the collections. Upload formats: pdf and Microsoft Word.
       .form_full_width
-        = f.input :syllabus, :as => :file, :label => "&nbsp; "
+        = f.file_field :syllabus, :accept => "application/msword, application/pdf, application/vnd.openxmlformats-officedocument.wordprocessingml.document"
       .form_full_width
         %div{:style => "padding-left:5em; font-weight:bold; font-size: 1.2em;"} OR
         = f.input :external_syllabus, :label => "Enter URL: ", :input_html => { :value => @course.external_syllabus.nil? ? "" : @course.external_syllabus }
