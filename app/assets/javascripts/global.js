@@ -1,9 +1,22 @@
 // Configure CKEditor
-CKEDITOR.config.toolbarGroups = [
-    { name: 'clipboard',   groups: [ 'clipboard', 'undo' ] },
-    { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
-    { name: 'paragraph',   groups: [ 'list', 'indent', 'blocks', 'align' ] },
-];
+// Remove unwanted buttons
+CKEDITOR.config.removeButtons = 'Image,Flash';
+
+// Remove "Upload" tab from link dialogue
+CKEDITOR.on( 'dialogDefinition', function( ev )
+   {
+      // Take the dialog name and its definition from the event data.
+      var dialogName = ev.data.name;
+      var dialogDefinition = ev.data.definition;
+
+      // Check if the definition is from the dialog we're interested on (the Link dialog).
+      if ( dialogName == 'link')
+      {
+         // remove Upload tab
+         dialogDefinition.removeContents( 'upload' );
+      }
+   });
+
 $(function () {
   $('#nav.navbar li').each(function (i, el) {
     var $el = $(el);
