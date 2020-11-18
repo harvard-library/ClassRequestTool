@@ -4,7 +4,6 @@ class CoursesController < ApplicationController
   before_filter :authenticate_login!, :except => [:recent_show]
   before_filter :authenticate_admin_or_staff!, :only => [:take, :export, :edit]
   before_filter :process_datetimes, :only => [:create, :update]
-#  before_filter :backdated?, :only => [:create, :update]
 
   # Formtastic inserts blank entry in user_ids, strip out any such from :user_ids
   # Ref: https://github.com/justinfrench/formtastic/issues/633
