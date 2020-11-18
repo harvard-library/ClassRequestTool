@@ -14,6 +14,7 @@ services:
       - ./db:/home/appuser/db
       - ./log:/home/appuser/log
       - ./uploads:/home/appuser/uploads
+      - ./tmp:/home/appuser/tmp
     ports:
       - "8199:3000"
 

@@ -1,4 +1,4 @@
-class Course < ActiveRecord::Base
+class Course < ApplicationRecord
   include ActionDispatch::Routing::UrlFor
   include Rails.application.routes.url_helpers
   

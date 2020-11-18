@@ -1,4 +1,4 @@
-class StaffService < ActiveRecord::Base
+class StaffService < ApplicationRecord
   
   has_and_belongs_to_many :repositories
   has_and_belongs_to_many :courses

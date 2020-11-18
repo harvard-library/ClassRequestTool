@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 
 gem 'dotenv-rails'
 gem 'rails', '~> 5.2.4.4'
+gem 'bootsnap'
 gem 'sprockets-rails', :require => 'sprockets/railtie'
 gem 'stackprof'                  # For ruby 2.1
 gem 'therubyracer'
@@ -28,6 +29,7 @@ gem 'nokogiri', '~> 1.10.4'
 
 group :test, :development do
   gem 'rspec-rails'
+  gem 'listen'
   gem 'stepford'
   gem 'pry-rails'
   gem 'pry-remote'
