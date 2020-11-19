@@ -59,7 +59,7 @@
                 - if c.homeless?
                   %span.status.danger Cancelled
                 -else
-                  #{scheduling_status(c.sections).html_safe}
+                  #{sanitize scheduling_status(c.sections)}
               %td.status-column
                 - if c.claimed? && !c.primary_contact.nil?
                   %span #{c.primary_contact.full_name}
@@ -68,8 +68,8 @@
                   %span.status.danger Erroneous claim: unknown user with ID: #{c.primary_contact_id}
                 - else
                   %span.status.warning Unclaimed
-            %td{'data-date' =>  c.created_at.strftime(SORTTIME_FORMAT)} #{c.created_at.strftime(DATE_FORMAT).html_safe}
-            %td.section-times{'data-date' =>  first_class(c)}  #{first_plus_multiple_sections(c).html_safe}
+            %td{'data-date' =>  c.created_at.strftime(SORTTIME_FORMAT)} #{sanitize c.created_at.strftime(DATE_FORMAT)}
+            %td.section-times{'data-date' =>  first_class(c)}  #{sanitize first_plus_multiple_sections(c)}
             - if current_user.can_admin?
               %td
                 #{c.contact_first_name} #{c.contact_last_name}

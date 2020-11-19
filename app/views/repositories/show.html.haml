@@ -5,9 +5,10 @@
       = hidden_field_tag :repository, @repository.id
       = submit_tag "Request a class at the #{@repository.name}", :class => 'btn btn-primary'
 .row.description
-  = raw @repository.description unless @repository.description.nil?
+  = sanitize @repository.description unless @repository.description.nil?
   - unless @recent_courses.empty?
-    %p #{the_recent_courses(@recent_courses, @repository.name).html_safe}
+    %p
+    = sanitize the_recent_courses(@recent_courses, @repository.name)
 
 - unless @repository.attached_images.blank?
   .row.repo-images

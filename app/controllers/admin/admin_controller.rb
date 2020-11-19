@@ -85,7 +85,7 @@ class Admin::AdminController < ApplicationController
       sessionless_courses.each do |sc|
         sessionless_course_warning += "<p>#{sc.id} - #{sc.title}</p>\n"
       end
-      flash_message :warning, sessionless_course_warning.html_safe
+      flash_message :warning, "#{ActionController::Base.helpers.sanitize sessionless_course_warning}"
     end
     redirect_to :back
   end

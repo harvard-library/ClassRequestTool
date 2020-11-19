@@ -28,7 +28,7 @@ class CoursesController < ApplicationController
     course.status = 'Cancelled'
     if course.save(validate: false)         # Don't bother with validation since the class is being cancelled
       # Don't bother with notification
-      flash_message :info, "The class <em>#{course.title}</em> was successfully cancelled.".html_safe
+      flash_message :info, "The class <em>#{ActionController::Base.helpers.sanitize course.title}</em> was successfully cancelled."
     else
       flash_message :danger, "There was an error cancelling the class."
     end
@@ -398,7 +398,7 @@ class CoursesController < ApplicationController
 
     if course.save(validate: false)         # Don't bother with validation since the class is being recovered
 #      Notification.uncancellation(course).deliver_later(:queue => 'notifications')
-      flash_message :info, "The class <em>#{course.title}</em> was successfully uncancelled.".html_safe
+      flash_message :info, "The class <em>#{ActionController::Base.helpers.sanitize course.title}</em> was successfully uncancelled."
     else
       flash_message :danger, "There was an error uncancelling the class."
     end
