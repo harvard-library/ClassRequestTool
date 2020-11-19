@@ -1,7 +1,7 @@
 class ItemAttributesController < ApplicationController
-  before_filter :authenticate_superadmin!, :only => [:destroy]
-  before_filter :authenticate_admin_or_superadmin!, :except => [:index]
-  before_filter :authenticate_admin_or_staff!
+  before_action :authenticate_superadmin!, :only => [:destroy]
+  before_action :authenticate_admin_or_superadmin!, :except => [:index]
+  before_action :authenticate_admin_or_staff!
   
   def index
     @attributes = ItemAttribute.order('name')

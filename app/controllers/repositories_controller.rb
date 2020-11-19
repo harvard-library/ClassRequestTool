@@ -1,6 +1,6 @@
 class RepositoriesController < ApplicationController
-  before_filter :authenticate_superadmin!, :only => [:destroy]
-  before_filter :authenticate_admin_or_staff!, :except => [:index, :show]
+  before_action :authenticate_superadmin!, :only => [:destroy]
+  before_action :authenticate_admin_or_staff!, :except => [:index, :show]
 
   def index
     @repositories = Repository.order('name')

@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_filter :authenticate_admin_or_staff!, :only => [:edit, :update]
+  before_action :authenticate_admin_or_staff!, :only => [:edit, :update]
   
   def index
     @users = User.order('username')

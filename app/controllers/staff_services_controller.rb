@@ -1,7 +1,7 @@
 class StaffServicesController < ApplicationController
-  before_filter :authenticate_superadmin!, :only => [:destroy]
-  before_filter :authenticate_admin_or_superadmin!, :except => [:index]
-  before_filter :authenticate_admin_or_staff!
+  before_action :authenticate_superadmin!, :only => [:destroy]
+  before_action :authenticate_admin_or_superadmin!, :except => [:index]
+  before_action :authenticate_admin_or_staff!
   
   def index
     @staff_services = StaffService.order('description').includes(:repositories)
