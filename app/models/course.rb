@@ -23,7 +23,6 @@ class Course < ApplicationRecord
   validates_presence_of :contact_first_name, :contact_last_name
   validates_presence_of :contact_email, :message => "contact email is required"
   validates_format_of :contact_email, :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i, :message => "Invalid email"
-  #validates_presence_of :contact_phone
   validates_presence_of :number_of_students, :message => "please enter a number"
   validates_presence_of :goal, :message => "please enter a goal"
   validates_presence_of :duration, :message => "please enter a duration in hours"
