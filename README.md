@@ -35,7 +35,7 @@ The Class Request Tool (CRT) is a class reservation system that lets instructors
 2. Create a .env file for your environment. Copy the example text file `env-example.txt` and rename it to `.env`. Read [Environment variables](#environment-variables) and [Database configuration](#database-configuration) for more information.
 3. To add your initial customizations, create a `config/customization.yml` file based on [config/customization.yml.example](config/customization.yml.example).
 4. Create a mailer file `config/mailer.yml.erb` file on [config/mailer.yml.example](config/mailer.yml.example).
-5. Create a `config/database.yml` file based on [config/database.yml.postgres](config/database.yml.postgres). There are no changes required to the database.yml file since it reads the environment varibles in the `.env` file for the database connection.
+5. Create a `config/database.yml` file based on [config/database.yml.postgres](config/database.yml.postgres). There are no changes required to the database.yml file since it reads the environment variables in the `.env` file for the database connection.
 6. Read the instructions in [Database Connection](#database-connection) to create a local database or connect to an existing remote database
 
 ### Database Connection
@@ -51,7 +51,8 @@ The Class Request Tool (CRT) is a class reservation system that lets instructors
 * Run the rake tasks in the ruby environment
   * Open a shell in the app container to run these commands `docker exec -it crt-app bash`
   * Run `rake db:schema:load` to automatically load the schema in `./db/schema.rb`.
-  * Run `rake db:seed` to seed the database. *Make sure to pay attention to the output of this rake task, as it will show the random password for the Superadmin user created in the database.*
+  * Run `rake db:seed` to seed the database.
+    * *Make sure to pay attention to the output of this rake task, as it will show the random password for the superadmin user created in the database. Save the superadmin username and password in commented out lines in the `.env` file for documentation purposes only, since you will need the superadmin password to login to the application.*
   * Run `rake db:custom_seed` to load placeholder data.
 
 ##### Docker compose database container
@@ -146,7 +147,26 @@ Currently, the following variables are needed to run Class Request Tool:
   POSTGRES_PASSWORD=password
   POSTGRES_DB=dbname
   DATABASE_URL=postgres://pguser:password@postgreshost:5432/dbname
+  # Save the superadmin username and password in commented out lines for documentation purposes only
+  # Superadmin USERNAME is: 'superadmin'
+  # Superadmin PASSWORD is: 'password'
   ```
+
+#### Change a user password
+To change a user password from the command line, open the rails console and run a database query.
+
+  ```
+  rails console
+  User.find_by(username: 'superadmin').tap {|u| u.password = 'keyboardcat'}.save!
+  ```
+
+Here is the command to set the superadmin role on an existing user.
+
+  ```
+  rails console
+  User.find_by(email: 'test@example.com').tap do |me| me.superadmin = true end.save!
+  ```
+
 
 ### Database configuration
 The database username, password, and databse name must match the configuration in database.yml. The database.yml file is configured to use environment variables for the username, password, and database name. The environment variable values are set in the `.env` configuration file.
