@@ -209,7 +209,7 @@ class CoursesController < ApplicationController
       @csv = params[:csv]
     elsif current_user.staff?
       @title = 'Classes for Your Library/Archive'
-      @courses = Course.where("repository_id IN (#{current_user.repositories.map { |r| r.id  }.join(',')})").order_by_submitted.includes(:sections)
+      @courses = Course.where(repository_id: current_user.repository_ids).order_by_submitted.includes(:sections)
     elsif current_user.patron?
       @title = 'My Classes'
       @courses = Course.user_is_patron(current_user.email).order_by_submitted.includes(:sections, :repository)
