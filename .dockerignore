@@ -18,7 +18,7 @@
 #config/customization.yml
 
 public/uploads/*
-uploads/*
+private/uploads/*
 
 # capistrano stuff to ignore
 config/deploy.rb
