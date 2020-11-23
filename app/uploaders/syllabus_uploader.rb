@@ -17,7 +17,7 @@ class SyllabusUploader < CarrierWave::Uploader::Base
   # Override the directory where uploaded files will be stored.
   # This is a sensible default for uploaders that are meant to be mounted:
   def store_dir
-    "#{Rails.root.to_s}/uploads/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
+    "#{Rails.root.to_s}/private/uploads/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
   end
 
   def extension_white_list

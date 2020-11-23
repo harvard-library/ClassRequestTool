@@ -12,7 +12,7 @@ class SyllabusController < ApplicationController
       # Get syllabus from private directory
       basename = params[:basename]
       extension = params[:extension]
-      download_path = "uploads/course/syllabus/#{course_id}/#{basename}.#{extension}"
+      download_path = "private/uploads/course/syllabus/#{course_id}/#{basename}.#{extension}"
       send_file download_path, :x_sendfile=>true
     else
       redirect_to('/') and return
