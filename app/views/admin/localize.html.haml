@@ -20,7 +20,7 @@
         = banner.input :image, :as => :file, :label => 'Banner Image'
       %br/
       = f.input :welcome, :as => :ckeditor, :label => "Welcome Message ", :input_html => { :rows => 5, :columns => 100 }
-
+      = f.input :scheduling_intro, :as => :ckeditor, :label => "Intro for scheduling section of form ", :input_html => {:rows => 5, :columns => 100 }
       %fieldset
         %legend Notifications
         = f.input :notifications_on, :label => 'Notifications ON'
@@ -42,14 +42,14 @@
 
       %fieldset
         %legend Homeless Course Options
-        =f.input :homeless_staff_services, :as => :check_boxes, :collection => StaffService.pluck(:description, :id)           
-        =f.input :homeless_technologies, :as => :check_boxes, :collection => ItemAttribute.pluck(:name, :id)           
-        
+        =f.input :homeless_staff_services, :as => :check_boxes, :collection => StaffService.pluck(:description, :id)
+        =f.input :homeless_technologies, :as => :check_boxes, :collection => ItemAttribute.pluck(:name, :id)
+
       %br/
     %br/
     = f.actions do
       = f.action :submit, :as => :button, :label => 'Update Localization', :button_html => {:class => 'btn btn-primary'}
-  %h3 
+  %h3
     Affiliates
     %span.sort-info
   %table.table.affiliates
@@ -86,7 +86,7 @@
       .gray.color-swatch gray
       .gray-light.color-swatch gray-light
       .gray-lighter.color-swatch.light-color gray-lighter
-  
+
     %h4 Institutional Colors
     .color-swatches
       .crimson.color-swatch                   crimson
