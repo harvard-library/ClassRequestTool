@@ -50,6 +50,7 @@ The Class Request Tool (CRT) is a class reservation system that lets instructors
 * Set the configuration values for the database name, host, port, and credentials in the `.env` file. Read [Configuration](#configuration) for more information.
 * Run the rake tasks in the ruby environment
   * Open a shell in the app container to run these commands `docker exec -it crt-app bash`
+  * Run `rake db:create` to create the databases for development and test environments.
   * Run `rake db:schema:load` to automatically load the schema in `./db/schema.rb`.
   * Run `rake db:seed` to seed the database.
     * *Make sure to pay attention to the output of this rake task, as it will show the random password for the superadmin user created in the database. Save the superadmin username and password in commented out lines in the `.env` file for documentation purposes only, since you will need the superadmin password to login to the application.*
@@ -257,6 +258,3 @@ This tool was developed with the generous support of:
 This application is licensed under the GPL, version 3.
 
 2011 President and Fellows of Harvard College
-
-
-
