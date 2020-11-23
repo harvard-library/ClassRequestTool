@@ -6,7 +6,7 @@ gem 'bootsnap'
 gem 'sprockets-rails', :require => 'sprockets/railtie'
 gem 'stackprof'                  # For ruby 2.1
 gem 'therubyracer'
-gem 'devise', '~> 4.6.0'
+gem 'devise', '~> 4.7.1'
 gem 'formtastic'
 gem 'formtastic-bootstrap'
 gem 'will_paginate'
