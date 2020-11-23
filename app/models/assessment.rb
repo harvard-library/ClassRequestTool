@@ -1,4 +1,4 @@
-class Assessment < ActiveRecord::Base
+class Assessment < ApplicationRecord
   include ActionDispatch::Routing::UrlFor
   include Rails.application.routes.url_helpers
 

@@ -1,6 +1,6 @@
 class AssessmentsController < ApplicationController
   require 'csv'
-  before_filter :authenticate_admin_or_staff!, :except => [:new, :create]
+  before_action :authenticate_admin_or_staff!, :except => [:new, :create]
 
   def index
     if params[:test]

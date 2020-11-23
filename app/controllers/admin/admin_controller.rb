@@ -2,7 +2,7 @@ class Admin::AdminController < ApplicationController
 
   require 'csv'
 
-  before_filter :admins_only
+  before_action :admins_only
 
   def report_form
     @repositories = Repository.select([:id, :name]).order("name ASC").all      # Add CSV options

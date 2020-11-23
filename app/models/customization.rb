@@ -9,7 +9,7 @@ class HomelessAttributesValidator < ActiveModel::Validator
   end
 end
 
-class Customization < ActiveRecord::Base
+class Customization < ApplicationRecord
 
 #   serialize :homeless_staff_services  // store as PG array
 #   serialize :homeless_technologies    // store as PG array

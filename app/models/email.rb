@@ -1,4 +1,4 @@
-class Email < ActiveRecord::Base
+class Email < ApplicationRecord
 
   validates_presence_of :to, :from, :reply_to, :subject, :body
 

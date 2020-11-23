@@ -21,7 +21,7 @@
 #             |  6 |        42 |       6 |       3 | 2015-02-03... |
 #             |----------------------------------------------------|
 
-class Section < ActiveRecord::Base
+class Section < ApplicationRecord
   belongs_to :course
   belongs_to :room
   

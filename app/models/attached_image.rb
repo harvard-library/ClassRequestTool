@@ -1,4 +1,4 @@
-class AttachedImage < ActiveRecord::Base
+class AttachedImage < ApplicationRecord
 
   mount_uploader :image, ImageUploader
   

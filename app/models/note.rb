@@ -1,4 +1,4 @@
-class Note < ActiveRecord::Base
+class Note < ApplicationRecord
   include ActionDispatch::Routing::UrlFor
   include Rails.application.routes.url_helpers
   

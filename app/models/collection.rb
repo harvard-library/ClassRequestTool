@@ -1,3 +1,3 @@
-class Collection < ActiveRecord::Base
+class Collection < ApplicationRecord
   belongs_to :repository
 end
