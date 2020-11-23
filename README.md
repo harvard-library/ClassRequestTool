@@ -147,7 +147,7 @@ Currently, the following variables are needed to run Class Request Tool:
   POSTGRES_USER=pguser
   POSTGRES_PASSWORD=password
   POSTGRES_DB=dbname
-  DATABASE_URL=postgres://pguser:password@postgreshost:5432/dbname
+  POSTGRES_HOST=postgreshost
   # Save the superadmin username and password in commented out lines for documentation purposes only
   # Superadmin USERNAME is: 'superadmin'
   # Superadmin PASSWORD is: 'password'
