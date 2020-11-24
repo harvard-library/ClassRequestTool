@@ -7,13 +7,7 @@
       :label => "Class Duration (hours): ",                                   |
       :input_html => {:maxlength => 4, :placeholder => "e.g. 1.5"  }          |
   .form_full_width
-    %p Depending on your teaching needs and class size, we offer the following options:
-    %ul
-      %li Single class sessions (most common request)
-      %li Multiple class sessions (bring a class more than once a semester)
-      %li Multiple sections (for large classes that exceed room capacity)
-    %p Please enter your preferred date and time for each class visit. If your only options for scheduling fall outside normal business hours, please use the note field to detail your availability.
-    %p Final scheduling of a class visit is subject to both room and staff availability.
+    = sanitize Customization.current[:scheduling_intro]
 
   = render :partial => 'scheduling_block'
 

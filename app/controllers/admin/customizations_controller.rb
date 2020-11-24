@@ -46,6 +46,7 @@ class Admin::CustomizationsController < Admin::AdminController
         :tool_content_admin_email,
         :default_email_sender,
         :welcome,
+        :scheduling_intro,
         {:collaboration_options => []},
         :notifications_on,
         :homeless_staff_services => [],
