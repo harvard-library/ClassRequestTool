@@ -56,6 +56,10 @@ The Class Request Tool (CRT) is a class reservation system that lets instructors
     * *Make sure to pay attention to the output of this rake task, as it will show the random password for the superadmin user created in the database. Save the superadmin username and password in commented out lines in the `.env` file for documentation purposes only, since you will need the superadmin password to login to the application.*
   * Run `rake db:custom_seed` to load placeholder data.
 
+##### Note regarding Rails db:* tasks
+
+it is important to keep in mind that Rails, on purpose, runs tasks in the `db` namespace for both the `development` AND `test` environments.  The local development environment exemplars are set up to allow for this, but if you use the development environment in a context where the postgres user doesn't have create rights or where a database is provisioned ahead of time, it can cause problems.  In any environment where you don't need it, you may want to remove the test environment from database.yml to prevent this behavior.
+
 ##### Docker compose database container
 This option is recommended when running docker compose locally. The local docker compose configuration `docker-compose-local.yml` creates a postgres database instance in a container for the application to connect to locally.
 
