@@ -5,6 +5,8 @@ ClassRequestTool::Application.routes.draw do
   # Home
   root :to => 'welcome#show'
 
+  get       '/healthcheck',          to: proc { [200, {}, ['']] }
+
   resources :emails
   resources :item_attributes
   resources :notes
