@@ -15,7 +15,7 @@ class WelcomeController < ApplicationController
   end
 
   def healthcheck
-    render body: "healthcheck"
+    render plain: "healthcheck"
   end
 
   private
