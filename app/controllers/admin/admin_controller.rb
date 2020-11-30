@@ -34,7 +34,7 @@ class Admin::AdminController < ApplicationController
   def build_report
     if params[:selected_reports].blank?
       flash_message :warning, "You must select at least one report item"
-      redirect_to :back
+      redirect_back(fallback_location: root_path)
       return
     end
 
@@ -73,7 +73,7 @@ class Admin::AdminController < ApplicationController
     end
 
     flash_message :info, "You should receive an email shortly"
-    redirect_to :back
+    redirect_back(fallback_location: root_path)
   end
 
   def update_stats
@@ -87,7 +87,7 @@ class Admin::AdminController < ApplicationController
       end
       flash_message :warning, "#{ActionController::Base.helpers.sanitize sessionless_course_warning}"
     end
-    redirect_to :back
+    redirect_back(fallback_location: root_path)
   end
 
   def clear_mail_queue
