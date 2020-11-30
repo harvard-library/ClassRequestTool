@@ -14,6 +14,7 @@ services:
       - ./db:/home/appuser/db
       - ./log:/home/appuser/log
       - ./private:/home/appuser/private
+      - ./public:/home/appuser/public
     ports:
       - "8199:3000"
 
