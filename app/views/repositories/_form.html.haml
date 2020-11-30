@@ -38,8 +38,9 @@
     .panel.panel-info
       .panel-heading
         %label Images for the #{@repository.name.blank? ? 'new library/archive' : @repository.name}
+      %p.hint Maximum file size: 5MB
       %p.hint Largest recommended size: 1200x1200 pixels.
-      %p.hint Maximum image size is 400x400 pixels, so make sure your image is larger than that.
+      %p.hint Minimum image size is 400x400 pixels, so make sure your image is larger than that.
       %p.hint Images are all cropped square, so if the center of focus is not at the center of the image, you may want to crop the image first yourself.
       .panel-body
         = f.semantic_fields_for :attached_images do |pic|
