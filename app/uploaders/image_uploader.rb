@@ -49,4 +49,9 @@ class ImageUploader < CarrierWave::Uploader::Base
     %w(jpg jpeg gif png)
   end
 
+  # Add a size range for uploaded files (bytes measured in binary)
+  def size_range
+    1...5242880
+  end
+
 end

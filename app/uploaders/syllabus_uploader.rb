@@ -56,4 +56,9 @@ class SyllabusUploader < CarrierWave::Uploader::Base
   #   "something.jpg" if original_filename
   # end
 
+  # Add a size range for uploaded files (bytes measured in binary)
+  def size_range
+    1...5242880
+  end
+
 end
