@@ -2,7 +2,7 @@ version: '3'
 
 services:
   crt-app:
-    image: registry.lts.harvard.edu/lts/crt-app:1.3.2
+    image: registry.lts.harvard.edu/lts/crt-app:1.3.3
     build:
       context: ./
       dockerfile: DockerfilePub
