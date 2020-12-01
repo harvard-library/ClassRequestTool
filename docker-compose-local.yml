@@ -13,8 +13,8 @@ services:
       - ./config:/home/appuser/config
       - ./db:/home/appuser/db
       - ./log:/home/appuser/log
-      - ./private:/home/appuser/private
-      - ./public:/home/appuser/public
+      - ./private/uploads:/home/appuser/private/uploads
+      - ./public/uploads:/home/appuser/public/uploads
     ports:
       - "8199:3000"
 
