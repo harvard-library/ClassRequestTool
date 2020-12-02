@@ -1,19 +1,29 @@
 # Environment `development`, `test`, or `production`
 RAILS_ENV=development
+
 # Secret key required for production only
 SECRET_KEY_BASE=ThirtyPlusCharStringOfRandomnessGottenFromRakeSecretMaybe
+
 # A second secret key required for production only
 DEVISE_SECRET_KEY=anotherThirtyPluscharStringOfRandomness
 ROOT_URL=my.crt.host.com
 DEFAULT_MAILER_SENDER=email.address.for.mails@my.crt.host.com
 EMAIL_BATCH_LIMIT=100
+
 # A comma-delimited list of people who should get any email notifications when the Notifications switch is off
 OVERRIDE_RECIPIENTS=foo@bar.com,bar@foo.com
+
 # Database
 POSTGRES_USER=pguser
 POSTGRES_PASSWORD=password
 POSTGRES_DB=dbname
 POSTGRES_HOST=postgreshost
+
+# Set AUTHEN_APPLICATION, GPG_PATH, and GPG_HOME if using devise_harvard_auth_proxy
+#AUTHEN_APPLICATION=app_name
+#GPG_PATH=/usr/bin/gpg
+#GPG_HOME=/home/appuser/.gnupg
+
 # Save the superadmin username and password in commented out lines for documentation purposes only
 # Superadmin USERNAME is: 'superadmin'
 # Superadmin PASSWORD is: 'password'

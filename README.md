@@ -34,7 +34,8 @@ The Class Request Tool (CRT) is a class reservation system that lets instructors
 `git clone https://github.com/harvard-library/class_request_tool`
 2. Create a .env file for your environment. Copy the example text file `env-example.txt` and rename it to `.env`. Read [Environment variables](#environment-variables) and [Database configuration](#database-configuration) for more information.
 3. To add your initial customizations, create a `config/customization.yml` file based on [config/customization.yml.example](config/customization.yml.example).
-4. Create a mailer file `config/mailer.yml.erb` file on [config/mailer.yml.example](config/mailer.yml.example).
+4. Create a mailer file `config/mailer.yml.erb` file based on [config/mailer.yml.example](config/mailer.yml.example).
+4. Create a reports file `config/reports.yml` file based on [config/reports.yml.example](config/reports.yml.example).
 5. Create a `config/database.yml` file based on [config/database.yml.postgres](config/database.yml.postgres).
   * The database.yml reads the environment variables in the `.env` file for the database connection. It is recommended to use only one database configuration at a time (remove the other instances 'test' and 'production' from the database.yml file). This is to avoid issues that seem to happen when there are multiple databases defined in the configuration file simultaneously.
 6. Read the instructions in [Database Connection](#database-connection) to create a local database or connect to an existing remote database
@@ -187,40 +188,20 @@ The database username, password, and databse name must match the configuration i
     password: <%= ENV['POSTGRES_PASSWORD'] %>
   ```
 
-## Build and Deploy with Docker
-The docker image is built in a local environment using the docker-compose.yml. The code and .rb configurations are copied into the image during the build. The .env file is mounted as a volume into the container from the docker server filesystem.
+## Deployment
 
-*Build image locally*
+Deployment is beyond the scope of this README, and generally site-specific. 
 
-* Build image:
-`docker-compose build`
+### Docker
+We provide docker compose files that reflect the deployment practice at Harvard.
 
-* Push image to repository:
-`docker-compose push`
+* [docker-compose-local.yml](docker-compose-local.yml) - used to build images and run containers for local development only
+* [docker-compose-build.yml](docker-compose-build.yml) - used to build the image only, note that the application code will be copied into the image except the files excluded in `.dockerignore` such as config files and data
+* [docker-compose-swarm.yml.example](docker-compose-local.yml.example) - an example docker compose that can be edited and used to run the containers in a docker swarm stack, this reflects how the docker swarm stack is setup at Harvard
 
-* Docker server application-specific account:
-`crtadm`
+### Capistrano
 
-*Deploy image to docker server*
-
-* Docker server docker-compose file:
-`/docker/crtadm/docker/docker-compose.yml`
-
-* Docker server .env config:
-`/docker/crtadm/config/.env`
-
-* Docker stack up:
-`docker stack up --compose-file /docker/crtadm/docker/docker-compose.yml CRT-QA`
-
-* Check on the running services:
-`docker service ps CRT-QA_crt-app`
-
-* Remove swarm stack:
-`docker stack rm CRT-QA`
-
-## Capistrano
-
-Deployment is beyond the scope of this README, and generally site-specific. We provide a [config/deploy.rb](config/deploy.rb), as well as stage `.example` files that reflect deployment practice at Harvard.
+Capistrano was the old method of deploying the application and still can be used if not using docker compose for the deployment process. We provide a [config/deploy.rb](config/deploy.rb), as well as stage `.example` files that reflect the old deployment practice.
 
 Some basic notes:
 * The example files are written with this environment in mind:
@@ -232,9 +213,38 @@ Some basic notes:
   ```Shell
   cap qa deploy:rrake T=db:seed
   ```
-## Unusual Gems
 
-The [Gemfile](Gemfile) contains the gem [devise_harvard_auth_proxy](https://github.com/harvard-library/devise_harvard_auth_proxy), which wraps harvard-specific login functionality.  It can safely be removed if you like, or you can leave it in, since it is not used unless a particular environment variable is defined.
+## Harvard Auth Proxy
+
+The [Gemfile](Gemfile) contains the gem [devise_harvard_auth_proxy](https://github.com/harvard-library/devise_harvard_auth_proxy), which wraps harvard-specific login functionality.  It can safely be removed if you like, or you can leave it in, since it is not used unless a particular environment variable `AUTHEN_APPLICATION` is defined.
+
+### Keys
+To setup the keys for the authentication proxy, create the pgp keys and run the setup keys script in the docker compose file.
+
+Create the keys directory with the keys named accordingly.
+
+`keys/authzproxy_public.pgp`
+`keys/crt_private.pgp`
+
+Update the docker compose file that will be used to run the containers. The docker compose settings that are necessary for setting up keys are shown in the example docker compose file `docker-compose-swarm.yml.example`.
+
+Add a volume to mount the keys into the container. 
+
+```
+  crt-app:
+    volumes:
+      # Add the keys volume to the volumes array
+      # Keys are only required if using the devise_harvard_auth_proxy login
+      - ./keys:/home/appuser/keys
+```
+
+Add a command to run the setup-keys.sh script before the rails server is started.
+
+```
+  crt-app:
+    # Setup GPG keys and start the rails server
+    command: /bin/sh -c "sh ./setup-keys.sh && rails server -b 0.0.0.0"
+```
 
 ## Additional Dev Notes
 

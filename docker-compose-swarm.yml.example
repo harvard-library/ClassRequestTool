@@ -1,0 +1,42 @@
+version: '3.5'
+
+services:
+
+  crt-app:
+    image: registry.example.com/crt-app:0.0.1
+    # Load the global .env file for use inside the container
+    env_file:
+      - '/example/crt/config/.env'
+    ports:
+      - '3001:3000'
+    # Mount volumes for logs, uploads, and configs
+    volumes:
+      - '/example/crt/logs:/home/appuser/log'
+      - '/example/crt/private/uploads:/home/appuser/private/uploads'
+      - '/example/crt/public/uploads:/home/appuser/public/uploads'
+      - '/example/crt/config/mailer.yml.erb:/home/appuser/config/mailer.yml.erb'
+      - '/example/crt/config/database.yml:/home/appuser/config/database.yml'
+      - '/example/crt/config/customization.yml:/home/appuser/config/customization.yml'
+      - '/example/crt/config/reports.yml:/home/appuser/config/reports.yml'
+      # Keys are only required if using the devise_harvard_auth_proxy login
+      - ./keys:/home/appuser/keys
+    # Setup GPG keys and start the rails server
+    command: /bin/sh -c "sh ./setup-keys.sh && rails server -b 0.0.0.0"
+    healthcheck:
+      test: curl -k --fail -s http://localhost:3000/healthcheck || exit 1
+      interval: 1m
+      timeout: 10s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 3G
+      mode: replicated
+      replicas: 2
+      update_config:
+        parallelism: 1
+        delay: 10s
+        failure_action: rollback
+      restart_policy:
+        condition: any

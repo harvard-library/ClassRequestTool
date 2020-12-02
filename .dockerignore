@@ -12,13 +12,22 @@
 /tmp
 .DS_Store
 .bash_history
-# Config files are required during the build process, which is not ideal, but they need to be included in the docker image for now
-#config/mailer.yml.erb
-#config/database.yml
-#config/customization.yml
 
+# Config files
+config/database.yml
+config/customization.yml
+# Some config files are required during the build process, which is not ideal, but they need to be included in the docker image for now
+#config/mailer.yml.erb
+#config/reports.yml
+
+# Uploads
 public/uploads/*
 private/uploads/*
+
+# Keys
+keys/
+*.gpg
+*.key
 
 # capistrano stuff to ignore
 config/deploy.rb
