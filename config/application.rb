@@ -39,7 +39,11 @@ module ClassRequestTool
 
     # Enable escaping HTML in JSON.
     config.active_support.escape_html_entities_in_json = true
-    config.crt_reports = YAML::load(File.open("#{Rails.root}/config/reports.yml")).symbolize_keys
+    crt_reports_config = YAML::load(File.open("#{Rails.root}/config/reports.yml")).symbolize_keys
+    if crt_reports_config
+      config.crt_reports = crt_reports_config
+    end
+    
     # Application configuration can go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded after loading
     # the framework and any gems in your application.

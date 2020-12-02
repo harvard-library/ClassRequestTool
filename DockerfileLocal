@@ -5,7 +5,7 @@ FROM ruby:2.5
 
 # Install dependencies
 RUN curl -sL https://deb.nodesource.com/setup_12.x | bash - && \
-  apt-get update -qq && apt-get install -y nodejs postgresql-client imagemagick cron
+  apt-get update -qq && apt-get install -y nodejs postgresql-client imagemagick cron gnupg2
 
 # Add app user
 RUN useradd --create-home appuser

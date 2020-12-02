@@ -6,7 +6,7 @@ services:
       context: ./
       dockerfile: DockerfileLocal
     env_file: .env
-    # Mount directories into the container individually
+    # Mount volumes for logs, uploads, and configs
     # Note: Do not mount the vendor directory into the container as that causes an issue with the bower_components directory
     volumes:
       - ./app:/home/appuser/app
