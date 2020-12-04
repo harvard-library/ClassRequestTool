@@ -24,12 +24,16 @@ module ClassRequestTool
         'X-UA-Compatible' => 'IE=edge,chrome=1'
     })
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 5.0
+    config.load_defaults 6.0
 
+    config.autoloader = :classic
+    
     # Settings in config/environments/* take precedence over those specified here.
     # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
     # Run "rake -D time" for a list of tasks for finding time zone names. Default is UTC.
     config.time_zone = 'Eastern Time (US & Canada)'
+
+    
 
     # Configure the default encoding used in templates for Ruby 1.9.
     config.encoding = "utf-8"
