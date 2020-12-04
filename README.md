@@ -65,7 +65,7 @@ it is important to keep in mind that Rails, on purpose, runs tasks in the `db` n
 ##### Docker compose database container
 This option is recommended when running docker compose locally. The local docker compose configuration `docker-compose-local.yml` creates a postgres database instance in a container for the application to connect to locally.
 
-A new database will be initialized with the values in the `.env` file if it does not exist already. The postgres hostname in the `.env` configuration should match the name of the container in the docker compose configuration. The data directory in the container is mounted to a directory on the local filesystem.
+A new database will be initialized with the values in the `.env` file if it does not exist already. The postgres hostname in the `.env` configuration should match the name of the container in the docker compose configuration. The data directory in the container is mounted to a directory on the local filesystem.
 
   ```
   volumes:
@@ -92,7 +92,7 @@ These instructions are for running the application and database directly on a ho
 ### Running the app with Docker Compose
 These instructions are for running the application locally using docker compose. A custom image `DockerfileLocal` based on the docker ruby base image installs all required dependencies and then starts the rails application. The docker-compose file `docker-compose-local.yml` orchestrates building the image and running the container for the rails application.
 
-#### Running the app with Docker Compose
+#### Running the app locally with Docker Compose
 
 1. Complete all steps in the [Preparation](#preparation) instructions
 2. Run the docker-compose command to build the images and run the containers
@@ -131,6 +131,30 @@ Example running psql commands inside the postgresql container
   ```
   docker-compose -f docker-compose-local.yml down
   ```
+
+#### Installing new Gems with Docker Compose
+
+1. Add the new Gem to the Gemfile manually using a text editor.
+
+2. Run the app locally with Docker compose as shown in the instructions in "Running the app locally with Docker Compose".
+
+*More information*
+
+After adding the new gem to the Gemfile manually and rebuilding the app image, the bundle install command will install the new gem and update the Gemfile.lock accordingly. The `bundle install` command runs when the image is built, as per the command in the dockerfile.
+
+```
+  RUN bundle install
+```
+
+The local version of the docker compose file `docker-compose-local.yml` has volumes to mount the `Gemfile` and `Gemfile.lock` files into the container. That way, updates made to `Gemfile.lock` after running `bundle install` will appear on the host filesystem immediately after the build completes.
+
+```
+  volumes:
+    - ./Gemfile:/home/appuser/Gemfile
+    - ./Gemfile.lock:/home/appuser/Gemfile.lock
+```
+
+*Note: Opening a shell in an existing crt-app container and running the bundle install command will not work because the container is running as `appuser` and that user does not have permissions to run this command. This is why it is recommended to re-build the image after updating the Gemfile manually as this is the easiest way to install new gems without modifying the image permissions.*
 
 ## Configuration
 
