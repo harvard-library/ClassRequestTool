@@ -137,12 +137,16 @@ Example running psql commands inside the postgresql container
 1. Add the new Gem to the Gemfile manually using a text editor.
 
 2. Run the app locally with Docker compose as shown in the instructions in "Running the app locally with Docker Compose".
-Make sure to rebuild the image and force restart the containers. 
 
-**More information**
-The bundle install command runs when the image is built, since the command is included in the dockerfile i.e. `RUN bundle install`. Since the new Gem was added to the Gemfile in step 1, the bundle install command will install the new gem and will update the Gemfile.lock accordingly.
+*More information*
 
-The local docker compose file docker-compose-local.yml has volumes to mount the Gemfile and Gemfile.lock into the container. That way, any updates made to the Gemfile.lock after running `bundle install` will appear on the host filesystem immediately after the build completes.
+After adding the new gem to the Gemfile manually and rebuilding the app image, the bundle install command will install the new gem and update the Gemfile.lock accordingly. The `bundle install` command runs when the image is built, as per the command in the dockerfile.
+
+```
+  RUN bundle install
+```
+
+The local version of the docker compose file `docker-compose-local.yml` has volumes to mount the `Gemfile` and `Gemfile.lock` files into the container. That way, updates made to `Gemfile.lock` after running `bundle install` will appear on the host filesystem immediately after the build completes.
 
 ```
   volumes:
