@@ -92,7 +92,7 @@ These instructions are for running the application and database directly on a ho
 ### Running the app with Docker Compose
 These instructions are for running the application locally using docker compose. A custom image `DockerfileLocal` based on the docker ruby base image installs all required dependencies and then starts the rails application. The docker-compose file `docker-compose-local.yml` orchestrates building the image and running the container for the rails application.
 
-#### Running the app with Docker Compose
+#### Running the app locally with Docker Compose
 
 1. Complete all steps in the [Preparation](#preparation) instructions
 2. Run the docker-compose command to build the images and run the containers
@@ -131,6 +131,26 @@ Example running psql commands inside the postgresql container
   ```
   docker-compose -f docker-compose-local.yml down
   ```
+
+#### Installing new Gems with Docker Compose
+
+1. Add the new Gem to the Gemfile manually using a text editor.
+
+2. Run the app locally with Docker compose as shown in the instructions in "Running the app locally with Docker Compose".
+Make sure to rebuild the image and force restart the containers. 
+
+**More information**
+The bundle install command runs when the image is built, since the command is included in the dockerfile i.e. `RUN bundle install`. Since the new Gem was added to the Gemfile in step 1, the bundle install command will install the new gem and will update the Gemfile.lock accordingly.
+
+The local docker compose file docker-compose-local.yml has volumes to mount the Gemfile and Gemfile.lock into the container. That way, any updates made to the Gemfile.lock after running `bundle install` will appear on the host filesystem immediately after the build completes.
+
+```
+  volumes:
+    - ./Gemfile:/home/appuser/Gemfile
+    - ./Gemfile.lock:/home/appuser/Gemfile.lock
+```
+
+*Note: Opening a shell in an existing crt-app container and running the bundle install command will not work because the container is running as `appuser` and that user does not have permissions to run this command. This is why it is recommended to re-build the image after updating the Gemfile manually as this is the easiest way to install new gems without modifying the image permissions.*
 
 ## Configuration
 
