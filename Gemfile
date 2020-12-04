@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'dotenv-rails'
-gem 'rails', '~> 5.2.4.4'
+gem 'rails', '~> 6.0.3'
 gem 'bootsnap'
 gem 'sprockets-rails', :require => 'sprockets/railtie'
 gem 'stackprof'                  # For ruby 2.1
@@ -56,6 +56,5 @@ group :development do
 
   # Performance analysis
   gem 'bullet'
-  gem 'rack-mini-profiler', '~> 0.10.1', require: false
   gem 'flamegraph'
 end
