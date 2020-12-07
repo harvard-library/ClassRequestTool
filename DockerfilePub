@@ -45,4 +45,4 @@ EXPOSE 8199
 ENTRYPOINT ["./entrypoint.sh"]
 
 # Start the main process
-CMD ["rails", "server", "-b", "0.0.0.0"]
+CMD bin/delayed_job start && rails server -b 0.0.0.0
