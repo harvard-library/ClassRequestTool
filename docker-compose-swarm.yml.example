@@ -21,7 +21,7 @@ services:
       # Keys are only required if using the devise_harvard_auth_proxy login
       - ./keys:/home/appuser/keys
     # Setup GPG keys and start the rails server
-    command: /bin/sh -c "sh ./setup-keys.sh && rails server -b 0.0.0.0"
+    command: /bin/sh -c "sh ./setup-keys.sh && bin/delayed_job start && rails server -b 0.0.0.0"
     healthcheck:
       test: curl -k --fail -s http://localhost:3000/healthcheck || exit 1
       interval: 1m
