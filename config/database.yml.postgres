@@ -1,25 +1,9 @@
+# Set to match RAILS_ENV value 'development', 'qa', or 'production'
 development:
   adapter: postgresql
   encoding: unicode
   database: <%= ENV['POSTGRES_DB'] %>
   pool: 5
   host: <%= ENV['POSTGRES_HOST'] %>
-  username: <%= ENV['POSTGRES_USER'] %>
-  password: <%= ENV['POSTGRES_PASSWORD'] %>
-
-qa:
-  adapter: postgresql
-  encoding: unicode
-  database: <%= ENV['POSTGRES_DB'] + '_qa' %>
-  pool: 5
-  host: <%= ENV['POSTGRES_HOST'] %>
-  username: <%= ENV['POSTGRES_USER'] %>
-  password: <%= ENV['POSTGRES_PASSWORD'] %>
-
-production:
-  adapter: postgresql
-  encoding: unicode
-  database: <%= ENV['POSTGRES_DB'] + '_prod' %>
-  pool: 5
   username: <%= ENV['POSTGRES_USER'] %>
   password: <%= ENV['POSTGRES_PASSWORD'] %>

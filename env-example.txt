@@ -27,3 +27,8 @@ POSTGRES_HOST=postgreshost
 # Save the superadmin username and password in commented out lines for documentation purposes only
 # Superadmin USERNAME is: 'superadmin'
 # Superadmin PASSWORD is: 'password'
+
+# Email notifications
+SMTP_ADDRESS=smtp.example.com
+SMTP_PORT=25
+SMTP_DOMAIN=example.com

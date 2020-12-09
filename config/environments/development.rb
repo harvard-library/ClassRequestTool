@@ -1,72 +1,81 @@
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
-  # In the development environment your application's code is reloaded on
-  # every request. This slows down response time but is perfect for development
-  # since you don't have to restart the web server when you make code changes.
-  config.cache_classes = false
+  # The test environment is used exclusively to run your application's
+  # test suite. You never need to work with it otherwise. Remember that
+  # your test database is "scratch space" for the test suite and is wiped
+  # and recreated between test runs. Don't rely on the data there!
+  config.cache_classes = true
 
-  # Set up action mailer
-  mailer_data = ERB.new File.new("#{Rails.root}/config/mailer.yml.erb").read
-  mailer_config = YAML::load(mailer_data.result(binding)).with_indifferent_access
-  config.action_mailer.raise_delivery_errors = true
-  mailconf = mailer_config[:mailer][:development]
-  config.action_mailer.delivery_method = mailconf[:delivery_method]
-  config.action_mailer.smtp_settings = mailconf[:settings].clone
-  config.action_mailer.default_url_options = { :protocol => 'http://', :host => mailconf[:settings][:domain], :port => ':3000' }
-
-  MAIL_RECIPIENT_OVERRIDE = (ENV['OVERRIDE_RECIPIENTS']||[]).split(",")
-  
-  # Do not eager load code on boot.
+  # Do not eager load code on boot. This avoids loading your whole application
+  # just for the purpose of running a single test. If you are using a tool that
+  # preloads Rails for running tests, you may have to set it to true.
   config.eager_load = false
 
-  # Show full error reports.
-  config.consider_all_requests_local = true
+  # Configure public file server with Cache-Control for performance.
+  config.public_file_server.enabled = true
+  config.public_file_server.headers = {
+    'Cache-Control' => "public, max-age=#{1.hour.to_i}"
+  }
 
-  # Enable/disable caching. By default caching is disabled.
-  # Run rails dev:cache to toggle caching.
-  if Rails.root.join('tmp', 'caching-dev.txt').exist?
-    config.action_controller.perform_caching = true
+  # Disable serving static files from the `/public` folder by default since
+  # Apache or NGINX already handles this.
+  #config.public_file_server.enabled = ENV['RAILS_SERVE_STATIC_FILES'].present?
 
-    config.cache_store = :memory_store
-    config.public_file_server.headers = {
-      'Cache-Control' => "public, max-age=#{2.days.to_i}"
-    }
-  else
-    config.action_controller.perform_caching = false
+  # Show full error reports and disable caching.
+  config.consider_all_requests_local       = true
+  config.action_controller.perform_caching = false
 
-    config.cache_store = :null_store
-  end
+  # Raise exceptions instead of rendering exception templates.
+  config.action_dispatch.show_exceptions = false
 
-  # Store uploaded files on the local file system (see config/storage.yml for options)
+  # Disable request forgery protection in test environment.
+  #config.action_controller.allow_forgery_protection = false
+
   config.active_storage.service = :local
 
-  # Don't care if the mailer can't send.
-  config.action_mailer.raise_delivery_errors = false
+  # Use the lowest log level to ensure availability of diagnostic information when problems arise.
+  config.log_level = :debug
 
   config.action_mailer.perform_caching = false
 
-  # Print deprecation notices to the Rails logger.
-  config.active_support.deprecation = :log
+  # Tell Action Mailer not to deliver emails to the real world.
+  # The :test delivery method accumulates sent emails in the
+  # ActionMailer::Base.deliveries array.
+  config.action_mailer.delivery_method = :smtp
 
-  # Raise an error on page load if there are pending migrations.
-  config.active_record.migration_error = :page_load
+  config.action_mailer.smtp_settings = {
+    address:              ENV['SMTP_ADDRESS'],
+    port:                 ENV['SMTP_PORT'],
+    domain:               ENV['SMTP_DOMAIN'],
+    authentication:       ENV['SMTP_DOMAIN'],
+    enable_starttls_auto: ENV['SMTP_TLS']||false
+  }
 
-  # Highlight code that triggered database queries in logs.
-  config.active_record.verbose_query_logs = true
+  MAIL_RECIPIENT_OVERRIDE = (ENV['OVERRIDE_RECIPIENTS']||[]).split(",")
+  config.action_mailer.perform_caching = false
 
-  # Debug mode disables concatenation and preprocessing of assets.
-  # This option may cause significant delays in view rendering with a large
-  # number of complex assets.
-  config.assets.debug = true
+  # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
+  # the I18n.default_locale when a translation cannot be found).
+  config.i18n.fallbacks = true
 
-  # Suppress logger output for asset requests.
-  config.assets.quiet = true
+  # Send deprecation notices to registered listeners.
+  config.active_support.deprecation = :notify
 
-  # Raises error for missing translations
-  # config.action_view.raise_on_missing_translations = true
+  # Use default logging formatter so that PID and timestamp are not suppressed.
+  config.log_formatter = ::Logger::Formatter.new
 
-  # Use an evented file watcher to asynchronously detect changes in source code,
-  # routes, locales, etc. This feature depends on the listen gem.
-  config.file_watcher = ActiveSupport::EventedFileUpdateChecker
+  # Use a different logger for distributed setups.
+  # require 'syslog/logger'
+  # config.logger = ActiveSupport::TaggedLogging.new(Syslog::Logger.new 'app-name')
+
+  if ENV["RAILS_LOG_TO_STDOUT"].present?
+    logger           = ActiveSupport::Logger.new(STDOUT)
+    logger.formatter = config.log_formatter
+    config.logger    = ActiveSupport::TaggedLogging.new(logger)
+  end
+
+  # Do not dump schema after migrations.
+  config.active_record.dump_schema_after_migration = false
+
 end

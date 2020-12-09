@@ -14,7 +14,6 @@ services:
       - '/example/crt/logs:/home/appuser/log'
       - '/example/crt/private/uploads:/home/appuser/private/uploads'
       - '/example/crt/public/uploads:/home/appuser/public/uploads'
-      - '/example/crt/config/mailer.yml.erb:/home/appuser/config/mailer.yml.erb'
       - '/example/crt/config/database.yml:/home/appuser/config/database.yml'
       - '/example/crt/config/customization.yml:/home/appuser/config/customization.yml'
       - '/example/crt/config/reports.yml:/home/appuser/config/reports.yml'

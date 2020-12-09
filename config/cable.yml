@@ -1,6 +1,9 @@
 development:
   adapter: async
 
+qa:
+  adapter: async
+
 test:
   adapter: async
 

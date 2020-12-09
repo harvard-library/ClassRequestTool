@@ -31,6 +31,10 @@ Rails.application.configure do
   # Store uploaded files on the local file system in a temporary directory
   config.active_storage.service = :test
 
+  # Use the lowest log level to ensure availability of diagnostic information
+  # when problems arise.
+  config.log_level = :debug
+
   config.action_mailer.perform_caching = false
 
   # Tell Action Mailer not to deliver emails to the real world.
@@ -39,7 +43,8 @@ Rails.application.configure do
   config.action_mailer.delivery_method = :test
 
   MAIL_RECIPIENT_OVERRIDE = (ENV['OVERRIDE_RECIPIENTS']||[]).split(",")
-
+  config.action_mailer.perform_caching = false
+  
   # Print deprecation notices to the stderr.
   config.active_support.deprecation = :stderr
 
