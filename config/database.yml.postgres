@@ -7,10 +7,10 @@ development:
   username: <%= ENV['POSTGRES_USER'] %>
   password: <%= ENV['POSTGRES_PASSWORD'] %>
 
-test:
+qa:
   adapter: postgresql
   encoding: unicode
-  database: <%= ENV['POSTGRES_DB'] + '_test' %>
+  database: <%= ENV['POSTGRES_DB'] + '_qa' %>
   pool: 5
   host: <%= ENV['POSTGRES_HOST'] %>
   username: <%= ENV['POSTGRES_USER'] %>

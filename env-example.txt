@@ -1,4 +1,4 @@
-# Environment `development`, `test`, or `production`
+# Environment `development`, `qa`, or `production`
 RAILS_ENV=development
 
 # Secret key required for production only
