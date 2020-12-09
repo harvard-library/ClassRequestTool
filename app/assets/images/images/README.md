@@ -1,0 +1,2 @@
+December 9, 2020:
+This folder is intended to store copies of image assets used by jqueryui-timepicker-addon (the UI calendar picker) that were unable to be found otherwise after the upgrade to Rails 6.
