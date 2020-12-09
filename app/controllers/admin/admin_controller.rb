@@ -14,7 +14,7 @@ class Admin::AdminController < ApplicationController
     filters = []
     params[:filters].each do |i, filter|
       unless filter.values.first['value'].blank?
-        filter_string = filter.collect { |k,v| "#{k[0]}.#{v['column']}#{op(v['comparison'])}#{v['value']}" }.first
+        filter_string = filter.to_h.collect { |k,v| "#{k[0]}.#{v['column']}#{op(v['comparison'])}#{v['value']}" }.first
         filters << filter_string
       end
     end
