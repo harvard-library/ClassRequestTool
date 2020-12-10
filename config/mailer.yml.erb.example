@@ -1,5 +1,5 @@
 mailer:
- development:
+  development:
     delivery_method: :smtp
     settings:
       :address:        smtp.gmail.com
@@ -8,12 +8,21 @@ mailer:
       :user_name:      <your gmail account>
       :password:       <your password>
       :authentication: :plain
- qa:
-    delivery_method: :sendmail
+  qa:
+    delivery_method: :smtp
     settings:
-      :domain:         <your qa domain>
- production:
-    delivery_method: :sendmail
+      address: "example.com"
+      port: 25
+      authentication: :plain,
+      enable_starttls_auto: false
+      tls: false
+      domain: "example.com"
+  production:
+    delivery_method: :smtp
     settings:
-      :domain:         <your production domain>
-    
+      address: "example.com"
+      port: 25
+      authentication: :plain,
+      enable_starttls_auto: false
+      tls: false
+      domain: "example.com"

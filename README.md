@@ -34,7 +34,6 @@ The Class Request Tool (CRT) is a class reservation system that lets instructors
 `git clone https://github.com/harvard-library/class_request_tool`
 2. Create a .env file for your environment. Copy the example text file `env-example.txt` and rename it to `.env`. Read [Environment variables](#environment-variables) and [Database configuration](#database-configuration) for more information.
 3. To add your initial customizations, create a `config/customization.yml` file based on [config/customization.yml.example](config/customization.yml.example).
-4. Create a mailer file `config/mailer.yml.erb` file based on [config/mailer.yml.example](config/mailer.yml.example).
 4. Create a reports file `config/reports.yml` file based on [config/reports.yml.example](config/reports.yml.example).
 5. Create a `config/database.yml` file based on [config/database.yml.postgres](config/database.yml.postgres).
   * The database.yml reads the environment variables in the `.env` file for the database connection. It is recommended to use only one database configuration at a time (remove the other instances 'test' and 'production' from the database.yml file). This is to avoid issues that seem to happen when there are multiple databases defined in the configuration file simultaneously.
@@ -181,6 +180,10 @@ Currently, the following variables are needed to run Class Request Tool:
   # Save the superadmin username and password in commented out lines for documentation purposes only
   # Superadmin USERNAME is: 'superadmin'
   # Superadmin PASSWORD is: 'password'
+  # Email notifications
+  SMTP_ADDRESS=smtp.example.com
+  SMTP_PORT=25
+  SMTP_DOMAIN=example.com
   ```
 
 #### Change a user password
