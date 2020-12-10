@@ -33,6 +33,7 @@ SMTP_ADDRESS=smtp.example.com
 SMTP_PORT=25
 SMTP_DOMAIN=example.com
 # Email notifications optional settings
-SMTP_AUTH=plain
+SMTP_AUTHENTICATION=plain
+SMTP_TLS=false
 SMTP_USERNAME=example
 SMTP_PASSWORD=password
