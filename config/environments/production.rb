@@ -6,7 +6,7 @@ Rails.application.configure do
   # Do not eager load code on boot. This avoids loading your whole application
   # just for the purpose of running a single test. If you are using a tool that
   # preloads Rails for running tests, you may have to set it to true.
-  config.eager_load = false
+  config.eager_load = true
 
   # Configure public file server with Cache-Control for performance.
   config.public_file_server.enabled = true
@@ -18,7 +18,7 @@ Rails.application.configure do
   # Apache or NGINX already handles this.
   #config.public_file_server.enabled = ENV['RAILS_SERVE_STATIC_FILES'].present?
 
-  # Show full error reports and disable caching.
+  # Hide full error reports and disable caching.
   config.consider_all_requests_local       = false
   config.action_controller.perform_caching = false
 
@@ -27,15 +27,6 @@ Rails.application.configure do
 
   # Disable request forgery protection in test environment.
   #config.action_controller.allow_forgery_protection = false
-
-  # Compress JavaScripts and CSS.
-  # Note: Enabling compression has caused issues on the docker server
-  # config.assets.js_compressor = :uglifier
-  # config.assets.css_compressor = :sass
-
-  # Do fallback to assets pipeline if a precompiled asset is missed.
-  # Note: Enabling assets pipeline fallback causes issues on the docker server
-  # config.assets.compile = true
   
   config.active_storage.service = :local
 
@@ -53,7 +44,9 @@ Rails.application.configure do
     address:              ENV['SMTP_ADDRESS'],
     port:                 ENV['SMTP_PORT'],
     domain:               ENV['SMTP_DOMAIN'],
-    authentication:       ENV['SMTP_AUTHENTICATION']||:plain,
+    username:             ENV['SMTP_USERNAME']||'',
+    password:             ENV['SMTP_PASSWORD']||'',
+    authentication:       ENV['SMTP_AUTHENTICATION']||:plan,
     enable_starttls_auto: ENV['SMTP_TLS']||false
   }
 

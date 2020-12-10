@@ -48,7 +48,9 @@ Rails.application.configure do
     address:              ENV['SMTP_ADDRESS'],
     port:                 ENV['SMTP_PORT'],
     domain:               ENV['SMTP_DOMAIN'],
-    authentication:       ENV['SMTP_DOMAIN'],
+    username:             ENV['SMTP_USERNAME']||'',
+    password:             ENV['SMTP_PASSWORD']||'',
+    authentication:       ENV['SMTP_AUTHENTICATION']||:plan,
     enable_starttls_auto: ENV['SMTP_TLS']||false
   }
 
@@ -75,7 +77,7 @@ Rails.application.configure do
     config.logger    = ActiveSupport::TaggedLogging.new(logger)
   end
 
-  # Do not dump schema after migrations.
-  config.active_record.dump_schema_after_migration = false
+  # Enable dumping schema after migrations in development only
+  config.active_record.dump_schema_after_migration = true
 
 end

@@ -28,7 +28,11 @@ POSTGRES_HOST=postgreshost
 # Superadmin USERNAME is: 'superadmin'
 # Superadmin PASSWORD is: 'password'
 
-# Email notifications
+# Email notifications required settings
 SMTP_ADDRESS=smtp.example.com
 SMTP_PORT=25
 SMTP_DOMAIN=example.com
+# Email notifications optional settings
+SMTP_AUTH=plain
+SMTP_USERNAME=example
+SMTP_PASSWORD=password
