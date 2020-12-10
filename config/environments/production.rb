@@ -31,7 +31,7 @@ Rails.application.configure do
   config.active_storage.service = :local
 
   # Use the lowest log level to ensure availability of diagnostic information when problems arise.
-  config.log_level = :debug
+  # config.log_level = :debug
 
   config.action_mailer.perform_caching = false
 
@@ -61,7 +61,7 @@ Rails.application.configure do
   config.active_support.deprecation = :notify
 
   # Use default logging formatter so that PID and timestamp are not suppressed.
-  config.log_formatter = ::Logger::Formatter.new
+  # config.log_formatter = ::Logger::Formatter.new
 
   # Use a different logger for distributed setups.
   # require 'syslog/logger'
