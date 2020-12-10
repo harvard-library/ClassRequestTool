@@ -44,11 +44,14 @@ Rails.application.configure do
     address:              ENV['SMTP_ADDRESS'],
     port:                 ENV['SMTP_PORT'],
     domain:               ENV['SMTP_DOMAIN'],
-    username:             ENV['SMTP_USERNAME']||'',
-    password:             ENV['SMTP_PASSWORD']||'',
     authentication:       ENV['SMTP_AUTHENTICATION']||:plain,
     enable_starttls_auto: ENV['SMTP_TLS']||false
   }
+
+  if ENV["SMTP_USERNAME"].present? && ENV["SMTP_PASSWORD"].present?
+    config.action_mailer.smtp_settings.username = ENV['SMTP_USERNAME']
+    config.action_mailer.smtp_settings.password = ENV['SMTP_PASSWORD']
+  end
 
   MAIL_RECIPIENT_OVERRIDE = (ENV['OVERRIDE_RECIPIENTS']||[]).split(",")
   config.action_mailer.perform_caching = false
