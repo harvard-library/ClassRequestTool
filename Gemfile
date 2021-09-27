@@ -25,7 +25,7 @@ gem 'cocoon'
 gem 'bootstrap-sass', '~> 3.4.1'
 gem 'sass-rails',   '~> 5.0.4'
 gem 'uglifier'
-gem 'nokogiri', '~> 1.10.4'
+gem 'nokogiri', '~> 1.12.5'
 
 group :test, :development do
   gem 'rails-controller-testing'
