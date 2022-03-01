@@ -192,7 +192,7 @@ GEM
     factory_girl_rails (4.9.0)
       factory_girl (~> 4.9.0)
       railties (>= 3.0.0)
-    ffi (1.13.1)
+    ffi (1.15.5)
     flamegraph (0.9.5)
     formtastic (3.1.5)
       actionpack (>= 3.2.13)
@@ -216,7 +216,7 @@ GEM
       ruby_parser (~> 3.5)
     i18n (1.8.5)
       concurrent-ruby (~> 1.0)
-    image_processing (1.12.1)
+    image_processing (1.12.2)
       mini_magick (>= 4.9.5, < 5)
       ruby-vips (>= 2.0.17, < 3)
     libv8 (3.16.14.19)
@@ -235,7 +235,9 @@ GEM
     mime-types (3.3.1)
       mime-types-data (~> 3.2015)
     mime-types-data (3.2020.1104)
-    mimemagic (0.3.5)
+    mimemagic (0.3.10)
+      nokogiri (~> 1)
+      rake
     mini_magick (4.11.0)
     mini_mime (1.0.2)
     mini_portile2 (2.4.0)
@@ -273,8 +275,6 @@ GEM
     puma (5.0.4)
       nio4r (~> 2.0)
     rack (2.2.3)
-    rack-mini-profiler (0.10.7)
-      rack (>= 1.2.0)
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
     railroady (1.5.3)
@@ -334,8 +334,8 @@ GEM
       rspec-mocks (~> 3.9)
       rspec-support (~> 3.9)
     rspec-support (3.10.0)
-    ruby-vips (2.0.17)
-      ffi (~> 1.9)
+    ruby-vips (2.1.4)
+      ffi (~> 1.12)
     ruby_parser (3.15.0)
       sexp_processor (~> 4.9)
     sass (3.7.4)
@@ -435,7 +435,6 @@ DEPENDENCIES
   pry-rails
   pry-remote
   puma
-  rack-mini-profiler (~> 0.10.1)
   railroady
   rails (~> 6.0.3)
   rails-controller-testing
