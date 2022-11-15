@@ -35,7 +35,7 @@ Rails.application.configure do
   config.active_storage.service = :local
 
   # Use the lowest log level to ensure availability of diagnostic information when problems arise.
-  config.log_level = :debug
+  config.log_level = ENV.fetch("CRT_LOG_LEVEL", "debug").to_sym
 
   config.action_mailer.perform_caching = false
 
